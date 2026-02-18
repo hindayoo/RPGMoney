@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.95: Strict & Sort</title>
+    <title>SakuraWallet V22.0: Character Build</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -37,12 +37,14 @@
                 'pulse-slow': 'pulse 3s infinite', 
                 'glow': 'glow 3s infinite alternate',
                 'spin-slow': 'spin 8s linear infinite',
-                'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards'
+                'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                'breathing': 'breathing 4s ease-in-out infinite'
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
-                popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
+                popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                breathing: { '0%, 100%': { filter: 'brightness(1)' }, '50%': { filter: 'brightness(1.1)' } }
             }
           }
         }
@@ -166,6 +168,15 @@
 
         /* Level Up Rays */
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
+        
+        /* HD-2D Effect */
+        .hd-2d-container { position: relative; overflow: hidden; border-radius: 1.5rem; background: #1a1a1a; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+        .hd-2d-bg { position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%); opacity: 0.5; }
+        .hd-2d-spotlight { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); background: radial-gradient(circle, var(--accent-color) 0%, transparent 60%); opacity: 0.15; filter: blur(20px); }
+        
+        .pixel-char { image-rendering: pixelated; transform: scale(4); }
+        .equip-slot { @apply w-12 h-12 rounded-lg border-2 border-theme-sub bg-theme-bg/80 flex items-center justify-center cursor-pointer transition-all active:scale-95 hover:border-theme-accent shadow-lg; }
+        .equip-slot.active { @apply border-theme-accent bg-theme-accent/20; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -305,13 +316,14 @@
             { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
         ];
         
+        // Re-mapped to Equipment Slots
         const TALENTS = [
-            {id:'t1', icon:'Crown', name:'黃金律法', desc:'增加收入經驗值'}, 
-            {id:'t2', icon:'Book', name:'森羅萬象', desc:'解鎖更多圖表'}, 
-            {id:'t3', icon:'Shield', name:'絕對防禦', desc:'減少衝動消費'}, 
-            {id:'t4', icon:'Zap', name:'疾風迅雷', desc:'記帳速度提升'}, 
-            {id:'t5', icon:'Gem', name:'幸運女神', desc:'隨機獲得金幣'}, 
-            {id:'t6', icon:'Hammer', name:'神工鬼斧', desc:'資產上限提升'}
+            {id:'t1', slot: 'head', icon:'Book', name:'智慧之冠', desc:'增加知識獲取'}, 
+            {id:'t2', slot: 'armor', icon:'Shield', name:'守護者之鎧', desc:'減少意外支出'}, 
+            {id:'t3', slot: 'weapon', icon:'Sword', name:'黃金之劍', desc:'增加主動收入'}, 
+            {id:'t4', slot: 'back', icon:'Briefcase', name:'工匠背包', desc:'增加資產上限'}, 
+            {id:'t5', slot: 'hand', icon:'Gem', name:'幸運手環', desc:'提升暴擊機率'}, 
+            {id:'t6', slot: 'shoes', icon:'Zap', name:'疾風之靴', desc:'提升記帳速度'}
         ];
 
         const TITLES_LIST = [
@@ -326,11 +338,11 @@
         ];
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
             log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵' }, 
-            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
+            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
             log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward' }, 
-            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
+            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
             log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬' } 
         };
         
@@ -525,6 +537,67 @@
             );
         };
 
+        // --- Character Build Tab ---
+        const CharacterTab = ({ talents, onUpgrade }) => {
+            const getSlot = (s) => TALENTS.find(t => t.slot === s);
+            const renderSlot = (slotName) => {
+                const t = getSlot(slotName);
+                if (!t) return null;
+                const lv = talents[t.id] || 0;
+                return (
+                    <div onClick={() => onUpgrade(t.id)} className={`equip-slot ${lv > 0 ? 'active' : ''}`}>
+                        <Icon name={t.icon} size={24} className={lv > 0 ? 'text-theme-accent' : 'text-theme-sub'}/>
+                        {lv > 0 && <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white">{lv}</span>}
+                    </div>
+                );
+            };
+
+            return (
+                <div className="animate-[fadeIn_0.5s] space-y-6">
+                    <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text mb-4">
+                        <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character} (Character Build)
+                    </h3>
+                    
+                    <div className="hd-2d-container w-full h-80 flex items-center justify-center relative">
+                        <div className="hd-2d-bg"></div>
+                        <div className="hd-2d-spotlight"></div>
+                        
+                        <div className="relative z-10 flex w-full max-w-xs justify-between px-6 items-center">
+                            {/* Left Slots */}
+                            <div className="flex flex-col gap-6">
+                                {renderSlot('head')}
+                                {renderSlot('armor')}
+                                {renderSlot('weapon')}
+                            </div>
+
+                            {/* Pixel Character */}
+                            <div className="pixel-char animate-breathing filter drop-shadow-lg">
+                                {/* Simple SVG Pixel Art Hero */}
+                                <svg width="40" height="40" viewBox="0 0 10 10" className="text-theme-text">
+                                    <rect x="3" y="1" width="4" height="3" fill="currentColor"/>
+                                    <rect x="2" y="4" width="6" height="4" fill="var(--accent-color)"/>
+                                    <rect x="3" y="8" width="1" height="2" fill="currentColor"/>
+                                    <rect x="6" y="8" width="1" height="2" fill="currentColor"/>
+                                    <rect x="1" y="5" width="1" height="2" fill="currentColor"/>
+                                    <rect x="8" y="5" width="1" height="2" fill="currentColor"/>
+                                </svg>
+                            </div>
+
+                            {/* Right Slots */}
+                            <div className="flex flex-col gap-6">
+                                {renderSlot('back')}
+                                {renderSlot('hand')}
+                                {renderSlot('shoes')}
+                            </div>
+                        </div>
+                        
+                        {/* Floor Reflection */}
+                        <div className="absolute bottom-10 w-20 h-4 bg-black/30 rounded-[100%] blur-md"></div>
+                    </div>
+                </div>
+            );
+        };
+
         // --- Main App ---
         const App = () => {
             useSakura();
@@ -704,7 +777,7 @@
                     const item = newAccs[index];
                     newAccs.splice(index, 1);
                     newAccs.splice(targetIndex, 0, item);
-                    saveData({ ...data, accounts: newAccs }); // Direct save for smooth feel
+                    saveData({ ...data, accounts: newAccs }); 
                     setAccountDragIndex(targetIndex);
                 }
             };
@@ -712,7 +785,6 @@
             const handleAuth = async () => { 
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
-                    // Local Simulation
                     const fakeUid = 'local_' + Date.now();
                     const newUser = { uid: fakeUid, name: regName || 'Adventurer', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' };
                     const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
@@ -783,23 +855,22 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic (Fixed: Targets scale, Rewards are purely EXP, Strict Currency Filter)
+            // Quests Logic (Fixed: Strict Currency Filter)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
                 
-                // STRICT FILTERING: Only count transactions/assets that MATCH the current mainCurrency
+                // STRICT FILTERING
                 const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
                 const relevantAccs = data.accounts.filter(a => a.currency === mainCurrency);
                 
                 const totalExp = relevantTxs.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
-                const txCount = relevantTxs.length; // Count only relevant currency tx? Or all? Usually "First Transaction" is generic. Let's make generic counts generic, but monetary specific.
-                const totalTxCount = data.transactions.length; 
-                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
+                const totalTxCount = data.transactions.length; // Generic (any currency)
+                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length; // Generic
                 
                 const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
                 const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
 
-                // Base values in TWD, converted to target currency for display
+                // Base values in TWD
                 const rawQuests = [
                     { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
                     { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: totalExpenseVal, target: convertMoney(500) },
@@ -898,20 +969,6 @@
                     <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
                         {view === 'adventure' && (
                             <div className="animate-[fadeIn_0.5s] space-y-5">
-                                <div><h3 className="font-bold opacity-60 text-sm mb-2 flex items-center gap-1 text-theme-text"><Icon name="Star" size={14}/> {t('upgrade')}</h3>
-                                    <div className="grid grid-cols-3 gap-2">{TALENTS.map((t,i) => {
-                                        const lv = data.talents[t.id] || 0;
-                                        return (
-                                            <div key={i} className="glass p-2 rounded-2xl flex flex-col items-center justify-center h-20 bg-theme-glass active:scale-95 transition-transform">
-                                                <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-theme-bg text-theme-accent relative">
-                                                    <Icon name={t.icon} size={16}/>
-                                                    {lv > 0 && <span className="absolute -top-1 -right-1 bg-theme-accent text-white text-[8px] rounded-full px-1 border border-white">Lv.{lv}</span>}
-                                                </div>
-                                                <span className="text-[10px] font-bold opacity-80 text-theme-text">{t.name}</span>
-                                            </div>
-                                        );
-                                    })}</div>
-                                </div>
                                 <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div></div>
                                 <div>
                                     <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
@@ -939,7 +996,7 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><h2 className="text-xl font-bold flex items-center gap-2 mb-4 text-theme-text"><Icon name="Sword" size={20}/> 天賦強化</h2><div className="grid gap-3">{TALENTS.map((t,i) => (<div key={i} onClick={()=>upgradeTalent(t.id)} className="glass p-4 rounded-3xl flex items-center justify-between active:scale-95 transition-transform cursor-pointer"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-theme-bg text-theme-accent"><Icon name={t.icon} size={24}/></div><div><h3 className="font-bold text-theme-text">{t.name}</h3><p className="text-xs opacity-60 text-theme-sub">{t.desc}</p></div></div><div className="font-bold text-theme-accent">Lv.{data.talents[t.id]||0}</div></div>))}</div></div> )}
+                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} />}
                         
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
