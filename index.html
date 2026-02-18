@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.2: Mana Analytics</title>
+    <title>SakuraWallet V21.5: Hybrid Login</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -153,6 +153,9 @@
         .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300; }
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
+        
+        /* New Nav Bar Safe Area */
+        .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -180,6 +183,8 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Firebase config (Note: In a real environment, these would be valid keys. 
+        // For this local file, we handle connection failures gracefully.)
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -194,11 +199,13 @@
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const db = getFirestore(app);
-            window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, doc, setDoc, getDoc, onSnapshot };
-            document.getElementById('loading-status').innerText = "Firebase 連接成功";
+            window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, doc, setDoc, getDoc, onSnapshot, app };
+            document.getElementById('loading-status').innerText = "系統連接成功";
         } catch (e) {
-            console.warn("Firebase Offline", e);
+            console.warn("Offline Mode Active");
             document.getElementById('loading-status').innerText = "進入單機模式";
+            // Mock firebase object to prevent immediate crash, handleAuth will handle the logic
+            window.firebase = null; 
         }
     </script>
 
@@ -494,7 +501,7 @@
         const App = () => {
             useSakura();
             const [data, setData] = useState({ 
-                user: { uid: '', name: 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, 
+                user: null, 
                 accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, 
                 claimedQuests: [] 
             });
@@ -511,8 +518,8 @@
             const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
             // New States for V21.2
-            const [flowView, setFlowView] = useState('today'); // 'today' or 'month'
-            const [logFilter, setLogFilter] = useState('all'); // 'all', 'today', 'month'
+            const [flowView, setFlowView] = useState('today'); 
+            const [logFilter, setLogFilter] = useState('all'); 
 
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
@@ -551,14 +558,43 @@
                     if (!localData.claimedQuests) localData.claimedQuests = [];
                     if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
                     setData(localData); 
-                } else { 
-                    setData({ user: { name: 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }); 
+                } else {
+                    // Explicitly set user null to show login screen
+                    setData(prev => ({ ...prev, user: null }));
                 } 
                 setLoading(false); 
             };
             const updateCategories = (newCats) => { saveData({ ...data, categories: newCats }); };
 
-            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; if(!fd.talents) fd.talents = {}; if(!fd.claimedQuests) fd.claimedQuests = []; if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            useEffect(() => { 
+                const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); 
+                const fb = window.firebase; 
+                if (!fb || !fb.auth) { loadLocalData(); return; } 
+                
+                const unsub = fb.onAuthStateChanged(fb.auth, (u) => { 
+                    clearTimeout(t); 
+                    if (u) { 
+                        fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { 
+                            if (d.exists()) { 
+                                let fd = d.data(); 
+                                if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; 
+                                if(!fd.talents) fd.talents = {}; 
+                                if(!fd.claimedQuests) fd.claimedQuests = []; 
+                                if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
+                                setData(fd); 
+                            } else { 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
+                                setData(init); 
+                            } 
+                            setLoading(false); 
+                        }, () => loadLocalData()); 
+                    } else { 
+                        loadLocalData(); 
+                    } 
+                }); 
+                return () => { unsub(); clearTimeout(t); } 
+            }, []);
             
             useEffect(() => { fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, []);
             useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
@@ -618,8 +654,52 @@
                 checkUnlockables(newData);
             };
 
-            const handleAuth = async () => { const fb = window.firebase; if (!fb) return; const email = loginAccount.trim() + "@sakurarpg.com"; try { if (isRegistering) { if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); await fb.updateProfile(cred.user, { displayName: regName }); window.location.reload(); } else await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); } catch (e) { alert(e.message); } };
-            const logout = () => { const fb = window.firebase; if(fb) fb.signOut(fb.auth); window.location.reload(); };
+            const handleAuth = async () => { 
+                const fb = window.firebase; 
+                
+                // If real firebase is missing or fails, we use local simulation
+                // Check if user wants to play offline or simple login simulation
+                if (!fb || !fb.auth || !fb.app) {
+                    // Simulation Mode (for local file opening)
+                    const fakeUid = 'local_' + Date.now();
+                    const newUser = {
+                        uid: fakeUid,
+                        name: regName || 'Adventurer',
+                        level: 1, 
+                        exp: 0, 
+                        title: 'Novice', 
+                        unlockedTitles: ['Novice'], 
+                        photo: ''
+                    };
+                    const initData = { 
+                        user: newUser, 
+                        accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], 
+                        transactions: [], 
+                        quests: [], 
+                        achievements: [], 
+                        logs: [], 
+                        categories: DEFAULT_CATEGORIES, 
+                        talents: {}, 
+                        claimedQuests: [] 
+                    };
+                    localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
+                    window.location.reload();
+                    return;
+                }
+
+                const email = loginAccount.trim() + "@sakurarpg.com"; 
+                try { 
+                    if (isRegistering) { 
+                        if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); 
+                        const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); 
+                        await fb.updateProfile(cred.user, { displayName: regName }); 
+                        window.location.reload(); 
+                    } else {
+                        await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); 
+                    }
+                } catch (e) { alert(e.message); } 
+            };
+            const logout = () => { const fb = window.firebase; if(fb && fb.auth) fb.signOut(fb.auth); localStorage.clear(); window.location.reload(); };
             const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if(file){ const b64 = await resizeImage(file); saveData({...data, user: {...data.user, photo: b64}}); } };
             const openKeypad = (target, initVal) => { setKeypadTarget(target); setTempValue(initVal ? initVal.toString() : ''); setKeypadOpen(true); };
             const confirmKeypad = () => {
@@ -701,12 +781,12 @@
                 return data.logs.filter(l => {
                     if (subView === 'sys') return l.type === 'system';
                     if (subView === 'fin') {
-                        if (l.type === 'system') return false; // Basic safety check
+                        if (l.type === 'system') return false; 
                         const logDate = new Date(l.date);
                         const now = new Date();
                         if (logFilter === 'today') return logDate.toDateString() === now.toDateString();
                         if (logFilter === 'month') return logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear();
-                        return true; // 'all'
+                        return true; 
                     }
                     return false;
                 });
@@ -732,7 +812,7 @@
                         <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
-                    <button onClick={() => saveData({...data, user: {name:'Guest', level:1, exp:0, title:'Novice'}})} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    <button onClick={() => saveData({ user: { uid: 'guest', name: 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
                 </div> 
             );
@@ -808,29 +888,7 @@
                             </div> 
                         )}
                         
-                        {view === 'achievements' && ( 
-                            <div className="grid gap-3 animate-[fadeIn_0.5s]">
-                                {data.achievements.map(a => (
-                                    <div key={a.id} className={`achievement-card ${a.unlocked ? 'unlocked' : 'locked'}`}>
-                                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm">
-                                            <Icon name={a.unlocked ? a.icon : 'Lock'} size={24}/>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="font-bold text-sm text-theme-text">{a.title}</div>
-                                            <div className="text-[10px] opacity-70 text-theme-sub">{a.desc}</div>
-                                            {a.target && (
-                                                <div className="mt-2 flex items-center gap-2">
-                                                    <div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50">
-                                                        <div className="h-full bg-theme-accent" style={{width: `${Math.min(100, (a.progress/a.target)*100)}%`}}></div>
-                                                    </div>
-                                                    <span className="text-[8px] font-bold text-theme-sub">{a.progress}/{a.target}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div> 
-                        )}
+                        {view === 'achievements' && ( <div className="grid gap-3 animate-[fadeIn_0.5s]">{data.achievements.map(a => (<div key={a.id} className={`achievement-card ${a.unlocked ? 'unlocked' : 'locked'}`}><div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm"><Icon name={a.unlocked ? a.icon : 'Lock'} size={24}/></div><div className="flex-1"><div className="font-bold text-sm text-theme-text">{a.title}</div><div className="text-[10px] opacity-70 text-theme-sub">{a.desc}</div>{a.target && (<div className="mt-2 flex items-center gap-2"><div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50"><div className="h-full bg-theme-accent" style={{width: `${Math.min(100, (a.progress/a.target)*100)}%`}}></div></div><span className="text-[8px] font-bold text-theme-sub">{a.progress}/{a.target}</span></div>)}</div></div>))}</div> )}
                         
                         {view === 'exchange' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
@@ -840,12 +898,17 @@
                                         <select value={calcBase} onChange={e=>setCalcBase(e.target.value)} className="bg-transparent font-bold text-sm outline-none w-16 text-[#5D4037]">{EXCHANGE_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}</select>
                                         <div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer">{baseAmount}</div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 pb-20">{EXCHANGE_CURRENCIES.filter(c=>c!==calcBase).map(c => {
-                                        const val = (parseFloat(baseAmount) / (rates[calcBase] || 1)) * (rates[c] || 1);
-                                        return (
-                                            <div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{val.toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>
-                                        );
-                                    })}</div>
+                                    <div className="flex flex-col gap-3 pb-20">
+                                        {EXCHANGE_CURRENCIES.filter(c=>c!==calcBase).map(c => {
+                                            const val = (parseFloat(baseAmount) / (rates[calcBase] || 1)) * (rates[c] || 1);
+                                            return (
+                                                <div key={c} className="glass p-4 rounded-xl flex justify-between items-center text-sm bg-white/40 shadow-sm">
+                                                    <span className="font-bold opacity-70 text-lg">{c}</span>
+                                                    <span className="font-mono text-xl font-bold">{val.toLocaleString(undefined,{maximumFractionDigits:2})}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             </div> 
                         )}
@@ -911,7 +974,7 @@
                         )}
                     </main>
 
-                    <nav className="fixed bottom-0 w-full glass border-t border-theme-border pb-safe pt-2 px-2 flex justify-between items-center z-30 h-16 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
+                    <nav className="fixed bottom-0 w-full glass border-t border-theme-border nav-safe px-2 flex justify-between items-center z-30 h-24 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
                         {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'exchange', icon:'Globe', l:t('exchange')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (<button key={b.id} onClick={()=>setView(b.id)} className={`flex flex-col items-center gap-1 w-full transition-all active:scale-95 ${view===b.id ? 'text-theme-accent -translate-y-2' : 'opacity-40 text-theme-sub'}`}><Icon name={b.icon} size={22} strokeWidth={view===b.id?2.5:2}/><span className="text-[9px] font-bold">{b.l}</span></button>))}
                     </nav>
 
