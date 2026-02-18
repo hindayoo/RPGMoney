@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V23.9: Accessories & Live Avatar</title>
+    <title>SakuraWallet V23.10: Themes & Accessories</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -39,7 +39,6 @@
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                 'hero-breathe': 'heroBreathe 4s ease-in-out infinite',
                 'sparkle': 'sparkle 2s linear infinite',
-                // New Idle Animations
                 'blink': 'blink 4s infinite',
                 'hair-bob': 'hairBob 3s ease-in-out infinite',
                 'cape-flutter': 'capeFlutter 3s ease-in-out infinite',
@@ -51,7 +50,6 @@
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
                 heroBreathe: { '0%, 100%': { transform: 'scale(1) translateY(0)' }, '50%': { transform: 'scale(1.02) translateY(-2px)' } },
                 sparkle: { '0%': { opacity: '0', transform: 'scale(0)' }, '50%': { opacity: '1', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(0) rotate(90deg)' } },
-                // New Keyframes
                 blink: { '0%, 48%, 52%, 100%': { opacity: 1 }, '50%': { opacity: 0 } },
                 hairBob: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-0.5px)' } },
                 capeFlutter: { '0%, 100%': { transform: 'skewX(0deg) scaleX(1)' }, '50%': { transform: 'skewX(-2deg) scaleX(0.98)' } }
@@ -74,10 +72,18 @@
             --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
         }
 
+        /* Standard Themes */
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
         [data-theme="magic"] { --bg-color: #faf5ff; --card-bg: #ffffff; --text-main: #581c87; --text-sub: #a855f7; --accent-color: #9333ea; --border-color: #e9d5ff; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
+        
+        /* New Themes */
+        [data-theme="matcha"] { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-main: #14532d; --text-sub: #166534; --accent-color: #15803d; --border-color: #bbf7d0; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#15803d 0.5px, transparent 0.5px); }
+        [data-theme="latte"] { --bg-color: #fffbeb; --card-bg: #ffffff; --text-main: #78350f; --text-sub: #92400e; --accent-color: #b45309; --border-color: #fde68a; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#b45309 0.5px, transparent 0.5px); }
+        [data-theme="peach"] { --bg-color: #fff1f2; --card-bg: #ffffff; --text-main: #9f1239; --text-sub: #e11d48; --accent-color: #f43f5e; --border-color: #fecdd3; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#f43f5e 0.5px, transparent 0.5px); }
+        [data-theme="lavender"] { --bg-color: #fdf4ff; --card-bg: #ffffff; --text-main: #6b21a8; --text-sub: #86198f; --accent-color: #a855f7; --border-color: #f0abfc; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
+        [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
 
         /* Base Setup */
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; position: fixed; overflow: hidden; }
@@ -234,7 +240,8 @@
             Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
             Male: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
             Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
-            Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3"
+            Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
+            Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -247,10 +254,15 @@
         const EXCHANGE_CURRENCIES = ['HKD', 'TWD', 'JPY', 'KRW', 'CNY'];
         
         const THEMES = [
-            { id: 'ink', name: '水墨卷軸', color: '#343a40' },
-            { id: 'sakura', name: '櫻花祝福', color: '#db2777' },
-            { id: 'sky', name: '天空之境', color: '#0ea5e9' },
-            { id: 'magic', name: '秘法迷霧', color: '#9333ea' }
+            { id: 'ink', name: 'ink', color: '#343a40' },
+            { id: 'sakura', name: 'sakura', color: '#db2777' },
+            { id: 'sky', name: 'sky', color: '#0ea5e9' },
+            { id: 'magic', name: 'magic', color: '#9333ea' },
+            { id: 'matcha', name: 'matcha', color: '#15803d' }, // New
+            { id: 'latte', name: 'latte', color: '#b45309' }, // New
+            { id: 'peach', name: 'peach', color: '#f43f5e' }, // New
+            { id: 'lavender', name: 'lavender', color: '#a855f7' }, // New
+            { id: 'midnight', name: 'midnight', color: '#0f172a' } // New
         ];
         
         const DEFAULT_CATEGORIES = {
@@ -321,11 +333,20 @@
 
         const TRANSLATIONS = { 
             zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
-            log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵' }, 
+            log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
+            theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
+            theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
+            }, 
             en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
-            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward' }, 
+            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
+            theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
+            theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
+            }, 
             ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
-            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬' } 
+            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
+            theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
+            theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
+            } 
         };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
@@ -352,6 +373,7 @@
             const getIcon = () => {
                 if (theme === 'sky') return 'Cloud';
                 if (theme === 'magic') return 'Moon';
+                if (theme === 'midnight') return 'Moon';
                 return 'Sun';
             };
             return (
@@ -475,7 +497,7 @@
             );
         };
 
-        const SelectorSheet = ({ title, options, onSelect, onClose, current, onLockedClick }) => (
+        const SelectorSheet = ({ title, options, onSelect, onClose, current, onLockedClick, getLabel }) => (
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
                 <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[70vh] flex flex-col">
@@ -490,7 +512,7 @@
                                 className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}>
                                 <div className="flex items-center gap-3">
                                     {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
-                                    <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{opt.label}</span>
+                                    <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
                                 </div>
                                 {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
                                 {opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
@@ -666,7 +688,9 @@
 
                         <div className="flex gap-3">
                             <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
-                            <button onClick={() => onSave(colors)} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">儲存</button>
+                            <button onClick={() => onSave(colors)} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">
+                                <span className="flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 保存變更</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1147,7 +1171,7 @@
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
                     <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
-                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
+                    {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                 </div> 
             );
 
@@ -1379,7 +1403,7 @@
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={()=>setShowLevelUp({show:false, level:showLevelUp.level})}/>}
                     
                     {/* Selectors Modals */}
-                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
+                    {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showTitleSelect && <SelectorSheet 
                         title={t('change_title')} 
