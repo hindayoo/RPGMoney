@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V24.2: Avatar Fix & Quests</title>
+    <title>SakuraWallet V25.0: Shop & Equipment</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -30,6 +30,12 @@
                 accent: 'var(--accent-color)',
                 border: 'var(--border-color)',
                 glass: 'var(--glass-bg)'
+              },
+              rarity: {
+                  common: '#94a3b8',
+                  rare: '#3b82f6',
+                  epic: '#a855f7',
+                  legendary: '#eab308'
               }
             },
             animation: { 
@@ -38,7 +44,6 @@
                 'glow': 'glow 3s infinite alternate',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                 'sparkle': 'sparkle 2s linear infinite',
-                // Advanced Idle Animations
                 'idle-breathe': 'idleBreathe 4s ease-in-out infinite',
                 'head-bob': 'headBob 4s ease-in-out infinite',
                 'weapon-sway': 'weaponSway 4s ease-in-out infinite',
@@ -51,7 +56,6 @@
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
                 sparkle: { '0%': { opacity: '0', transform: 'scale(0)' }, '50%': { opacity: '1', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(0) rotate(90deg)' } },
-                // Realistic Idle Keyframes
                 idleBreathe: { '0%, 100%': { transform: 'scaleY(1)' }, '50%': { transform: 'scaleY(1.02)' } },
                 headBob: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-1px)' } },
                 weaponSway: { '0%, 100%': { transform: 'rotate(0deg)' }, '50%': { transform: 'rotate(-2deg)' } },
@@ -65,7 +69,6 @@
     </script>
 
     <style>
-        /* === Theme Engine === */
         :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
@@ -83,7 +86,7 @@
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
         .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
         .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
-        .slot-filled { @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
+        .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         .pixel-art { image-rendering: pixelated; }
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
@@ -110,6 +113,12 @@
         .quest-card-claimed { @apply opacity-60 grayscale bg-theme-bg border border-transparent; }
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
+        
+        /* Rarity Borders */
+        .rarity-common { border-color: var(--border-color); }
+        .rarity-rare { border-color: #3b82f6; box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); }
+        .rarity-epic { border-color: #a855f7; box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); }
+        .rarity-legendary { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); background: linear-gradient(135deg, var(--card-bg), #fffbeb); }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -262,12 +271,26 @@
         
         // Equipment Slots
         const EQUIPMENT_SLOTS = [
-            {id:'t1', slot: '頭部', icon:'Crown', name:'智慧之冠'}, 
-            {id:'t2', slot: '身軀', icon:'Shield', name:'守護者之鎧'}, 
-            {id:'t3', slot: '主手', icon:'Sword', name:'黃金之劍'}, 
-            {id:'t4', slot: '背飾', icon:'Briefcase', name:'工匠背包'}, 
-            {id:'t5', slot: '副手', icon:'Gem', name:'幸運手環'}, 
-            {id:'t6', slot: '足部', icon:'Zap', name:'疾風之靴'}
+            {id:'t1', slot: 'head', icon:'Crown', name:'頭部'}, 
+            {id:'t2', slot: 'body', icon:'Shield', name:'身軀'}, 
+            {id:'t3', slot: 'mainHand', icon:'Sword', name:'主手'}, 
+            {id:'t4', slot: 'back', icon:'Briefcase', name:'背飾'}, 
+            {id:'t5', slot: 'offHand', icon:'Gem', name:'副手'}, 
+            {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
+        ];
+
+        // NEW: Shop Item List
+        const SHOP_ITEMS = [
+            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword' },
+            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, icon: 'Crown' },
+            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap' },
+            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword' },
+            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, icon: 'Shield' },
+            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, icon: 'Briefcase' },
+            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, icon: 'Gem' },
+            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, icon: 'Shield' },
+            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, icon: 'Sun' },
+            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, icon: 'Sword' }
         ];
 
         // Achievement System Data
@@ -310,17 +333,17 @@
         ];
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
             log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
             theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
             theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
             }, 
-            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
+            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
             log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
             theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
             theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
             }, 
-            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
+            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
             log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
             theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
             theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
@@ -519,7 +542,7 @@
             );
         };
 
-        // --- Enhanced Pixel Avatar (Breathing, Swaying, Blinking) ---
+        // --- Enhanced Pixel Avatar ---
         const PixelAvatar = ({ gender, colors, className }) => {
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc', accessory = 'none' } = colors || {};
 
@@ -601,7 +624,7 @@
             );
         };
 
-        // --- Avatar Editor Modal (FIXED: Flex Layout + Fixed Footer) ---
+        // --- Avatar Editor Modal ---
         const AvatarEditor = ({ currentColors, onSave, onClose }) => {
             const [colors, setColors] = useState(currentColors || { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' });
             
@@ -612,18 +635,14 @@
             return (
                 <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90dvh] flex flex-col min-h-0">
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-[85vh]">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest shrink-0">更衣室</h3>
                         
-                        {/* Header & Preview Area (Fixed) */}
-                        <div className="p-6 pb-2 shrink-0">
-                            <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest">角色外觀</h3>
-                            <div className="flex justify-center mb-2 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border">
-                                <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
-                                <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
-                            </div>
+                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border shrink-0">
+                            <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
+                            <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
                         </div>
 
-                        {/* Scrollable Content Area */}
                         <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4">
                             <div className="p-3 rounded-xl bg-theme-glass border border-theme-border">
                                 <span className="font-bold text-theme-text mb-2 block text-sm">飾品 (Accessory)</span>
@@ -662,7 +681,6 @@
                             ))}
                         </div>
 
-                        {/* Footer (Fixed at Bottom, High Z-Index) */}
                         <div className="p-6 pt-4 border-t border-theme-border shrink-0 bg-theme-card pb-safe rounded-b-[2.5rem] z-20">
                             <div className="flex gap-3">
                                 <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
@@ -676,20 +694,25 @@
             );
         };
 
-        const CharacterTab = ({ talents, onUpgrade, gender, onToggleGender, appearance, onUpdateAppearance }) => {
+        // --- Character Equipment Tab ---
+        const CharacterTab = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance }) => {
             const [isEditing, setIsEditing] = useState(false);
             
-            const getSlot = (s) => EQUIPMENT_SLOTS.find(t => t.slot === s);
-            const renderSlot = (slotName) => {
-                const t = getSlot(slotName);
-                if (!t) return null;
-                const lv = talents[t.id] || 0;
-                if (lv === 0) return <div className="slot-empty"><div className="equip-label">{slotName}</div></div>;
+            const renderSlot = (slotData) => {
+                const item = equipped[slotData.slot]; // item object or null
+                
+                if (!item) {
+                    return (
+                        <div className="slot-empty cursor-pointer hover:bg-black/10" onClick={() => onEquipSlot(slotData.slot)}>
+                            <div className="equip-label">{slotData.name}</div>
+                        </div>
+                    );
+                }
+
                 return (
-                    <div className="slot-filled">
-                        <Icon name={t.icon} size={24} className="text-theme-accent"/>
-                        <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white font-bold">{lv}</span>
-                        <div className="equip-label">{slotName}</div>
+                    <div className={`slot-filled cursor-pointer hover:scale-105 active:scale-95 border-2 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}>
+                        <Icon name={item.icon} size={24} className="text-theme-text"/>
+                        <div className="equip-label">{item.name.substring(0,4)}</div>
                     </div>
                 );
             };
@@ -708,8 +731,16 @@
                     <div className="char-stage rounded-3xl">
                         <div className="magic-circle"></div>
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                            <div className="flex flex-col gap-4 mr-32 pointer-events-auto">{renderSlot('頭部')}{renderSlot('身軀')}{renderSlot('主手')}</div>
-                            <div className="flex flex-col gap-4 ml-32 pointer-events-auto">{renderSlot('背飾')}{renderSlot('副手')}{renderSlot('足部')}</div>
+                            <div className="flex flex-col gap-4 mr-32 pointer-events-auto">
+                                {renderSlot({id:'t1', slot: 'head', name:'頭部'})}
+                                {renderSlot({id:'t2', slot: 'body', name:'身軀'})}
+                                {renderSlot({id:'t3', slot: 'mainHand', name:'主手'})}
+                            </div>
+                            <div className="flex flex-col gap-4 ml-32 pointer-events-auto">
+                                {renderSlot({id:'t4', slot: 'back', name:'背飾'})}
+                                {renderSlot({id:'t5', slot: 'offHand', name:'副手'})}
+                                {renderSlot({id:'t6', slot: 'feet', name:'足部'})}
+                            </div>
                         </div>
 
                         <div className="hero-container relative z-10">
@@ -726,10 +757,6 @@
                                 className="w-64 h-64 object-contain drop-shadow-xl"
                             />
                         </div>
-
-                        <button className="absolute bottom-4 bg-black/80 text-white px-4 py-1.5 rounded-full text-xs font-bold font-pixel tracking-widest border border-white/20 active:scale-95 transition-transform z-30 pointer-events-auto" onClick={() => alert('神秘商店即將開幕！')}>
-                            Mystery Shop 🔒
-                        </button>
                     </div>
 
                     {isEditing && (
@@ -747,13 +774,114 @@
             );
         };
 
+        // --- Shop & Inventory Components ---
+        const ShopView = ({ gold, inventory, onBuy }) => {
+            const [selectedItem, setSelectedItem] = useState(null);
+
+            const handleBuyClick = (item) => {
+                if (gold < item.cost) return alert("金幣不足！");
+                if (inventory.some(i => i.id === item.id)) return alert("已擁有此裝備！");
+                setSelectedItem(item);
+            };
+
+            const confirmBuy = () => {
+                onBuy(selectedItem);
+                setSelectedItem(null);
+            };
+
+            return (
+                <div className="animate-[fadeIn_0.5s]">
+                    <div className="glass p-4 rounded-2xl mb-4 flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
+                        <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
+                        <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
+                            <Icon name="Coin" size={14} className="text-yellow-600"/>
+                            <span className="font-bold text-yellow-800">{gold}</span>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 pb-24">
+                        {SHOP_ITEMS.map(item => {
+                            const owned = inventory.some(i => i.id === item.id);
+                            return (
+                                <div key={item.id} className={`bg-theme-card p-4 rounded-xl border-2 flex flex-col items-center gap-2 relative overflow-hidden transition-all ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} rarity-${item.rarity}`} onClick={() => !owned && handleBuyClick(item)}>
+                                    <div className={`absolute top-0 right-0 px-2 py-0.5 text-[9px] font-bold text-white rounded-bl-lg ${item.rarity === 'legendary' ? 'bg-yellow-500' : item.rarity === 'epic' ? 'bg-purple-500' : item.rarity === 'rare' ? 'bg-blue-500' : 'bg-gray-400'}`}>
+                                        {item.rarity.toUpperCase()}
+                                    </div>
+                                    <div className="w-12 h-12 flex items-center justify-center bg-theme-bg rounded-full mt-2">
+                                        <Icon name={item.icon} size={28} className="text-theme-text"/>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="font-bold text-sm text-theme-text">{item.name}</div>
+                                        <div className="text-[10px] text-theme-sub font-mono">{item.type}</div>
+                                    </div>
+                                    <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-1 ${owned ? 'bg-gray-200 text-gray-500' : 'bg-yellow-400 text-yellow-900 shadow-sm'}`}>
+                                        {owned ? '已擁有' : `${item.cost} G`}
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Confirmation Modal */}
+                    {selectedItem && (
+                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
+                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-2 border-theme-border">
+                                <div className="w-16 h-16 bg-theme-bg rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent">
+                                    <Icon name={selectedItem.icon} size={32} />
+                                </div>
+                                <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
+                                <p className="text-xs text-theme-sub mb-4">確定要花費 <span className="font-bold text-yellow-600">{selectedItem.cost} G</span> 購買嗎？</p>
+                                <div className="flex gap-3">
+                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
+                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">購買</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const InventoryModal = ({ slot, inventory, onClose, onEquip }) => {
+            const availableItems = inventory.filter(i => i.type === slot);
+
+            return (
+                <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">選擇裝備 ({slot})</h3>
+                        <div className="grid gap-3 overflow-y-auto pb-4">
+                            <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg">
+                                <div className="w-10 h-10 flex items-center justify-center"><Icon name="X"/></div>
+                                <span className="font-bold">卸下裝備</span>
+                            </button>
+                            {availableItems.length === 0 && <div className="text-center text-theme-sub py-4">沒有可用的裝備</div>}
+                            {availableItems.map(item => (
+                                <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"><Icon name={item.icon}/></div>
+                                        <div className="text-left">
+                                            <div className="font-bold text-theme-text">{item.name}</div>
+                                            <div className="text-[10px] text-theme-sub uppercase">{item.rarity}</div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded">裝備</div>
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={onClose} className="w-full mt-2 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button>
+                    </div>
+                </div>
+            );
+        };
+
         // --- Main App ---
         const App = () => {
             useSakura();
             const [data, setData] = useState({ 
                 user: null, 
                 accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, 
-                claimedQuests: [] 
+                claimedQuests: [], inventory: [], equipped: {} 
             });
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
@@ -767,6 +895,10 @@
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
             const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
+            // New State for Inventory
+            const [equipModalOpen, setEquipModalOpen] = useState(false);
+            const [selectedSlot, setSelectedSlot] = useState(null);
+
             const [flowView, setFlowView] = useState('today'); 
             const [logFilter, setLogFilter] = useState('all'); 
             const [showLevelUp, setShowLevelUp] = useState({ show: false, level: 1 });
@@ -812,6 +944,7 @@
                 if (log.msg.includes('Quest Claimed')) return `${t('log_sys_quest')}: ${log.msg.split(': ')[1]}`;
                 if (log.msg.includes('Title Unlocked')) return `${t('log_sys_title')}: ${log.msg.split(': ')[1]}`;
                 if (log.msg.includes('Achievement Unlocked')) return `🏆 成就解鎖: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Bought')) return `🛒 購買: ${log.msg.split(': ')[1]}`;
                 return log.msg;
             };
 
@@ -828,7 +961,8 @@
                     if (!localData.user.gender) localData.user.gender = 'female';
                     if (!localData.user.gold) localData.user.gold = 0;
                     if (!localData.user.appearance) localData.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' };
-                    else if (!localData.user.appearance.accessory) localData.user.appearance.accessory = 'none';
+                    if (!localData.inventory) localData.inventory = [];
+                    if (!localData.equipped) localData.equipped = {};
                     setData(localData); 
                 } else {
                     setData(prev => ({ ...prev, user: null }));
@@ -847,18 +981,12 @@
                         fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { 
                             if (d.exists()) { 
                                 let fd = d.data(); 
-                                if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; 
-                                if(!fd.talents) fd.talents = {}; 
-                                if(!fd.claimedQuests) fd.claimedQuests = []; 
-                                if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
-                                if(!fd.user.unlockedAchievements) fd.user.unlockedAchievements = [];
-                                if(!fd.user.gender) fd.user.gender = 'female';
+                                if(!fd.inventory) fd.inventory = [];
+                                if(!fd.equipped) fd.equipped = {};
                                 if (!fd.user.gold) fd.user.gold = 0;
-                                if (!fd.user.appearance) fd.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' };
-                                else if (!fd.user.appearance.accessory) fd.user.appearance.accessory = 'none';
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -951,6 +1079,32 @@
                 saveData({ ...data, user: { ...data.user, appearance: newColors } });
             };
 
+            // Shop Logic
+            const handleBuyItem = (item) => {
+                const newGold = data.user.gold - item.cost;
+                const newInventory = [...data.inventory, item];
+                const newLogs = addLog('system', `Bought: ${item.name}`);
+                saveData({
+                    ...data,
+                    user: { ...data.user, gold: newGold },
+                    inventory: newInventory,
+                    logs: newLogs
+                });
+                alert(`購買成功！ ${item.name} 已加入背包。`);
+            };
+
+            // Equip Logic
+            const handleEquipItem = (slot, item) => {
+                const newEquipped = { ...data.equipped };
+                if (item) {
+                    newEquipped[slot] = item;
+                } else {
+                    delete newEquipped[slot]; // Unequip
+                }
+                saveData({ ...data, equipped: newEquipped });
+                setEquipModalOpen(false);
+            };
+
             const handleClaim = (quest) => {
                 let newExp = data.user.exp + quest.exp; 
                 let newGold = (data.user.gold || 0) + (quest.coins || 0);
@@ -995,7 +1149,7 @@
                 if (!fb || !fb.auth || !fb.app) {
                     const fakeUid = 'local_' + Date.now();
                     const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' };
-                    const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
+                    const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} };
                     localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
                     window.location.reload();
                     return;
@@ -1244,8 +1398,10 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} />}
+                        {view === 'upgrade' && <CharacterTab equipped={data.equipped} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} />}
                         
+                        {view === 'shop' && <ShopView gold={data.user.gold || 0} inventory={data.inventory} onBuy={handleBuyItem} />}
+
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
                                 <div className="flex justify-between items-center px-2">
@@ -1277,7 +1433,6 @@
                                     {ACHIEVEMENTS_LIST.map(a => {
                                         const unlocked = data.user.unlockedAchievements.includes(a.id);
                                         let currentVal = 0;
-                                        // Calculate current value dynamically based on type
                                         if (a.type === 'txCount') currentVal = currentStats.txCount;
                                         if (a.type === 'expenseTotal') currentVal = currentStats.expenseTotal;
                                         if (a.type === 'balance') currentVal = currentStats.balance;
@@ -1400,7 +1555,7 @@
                     </main>
 
                     <nav className="fixed bottom-0 w-full glass border-t border-theme-border nav-safe px-2 flex justify-between items-center z-30 h-24 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
-                        {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'exchange', icon:'Globe', l:t('exchange')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (
+                        {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'shop', icon:'Shop', l:t('shop')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (
                             <button key={b.id} onClick={()=>setView(b.id)} className={`flex flex-col items-center gap-1 w-full transition-all active:scale-95 relative ${view===b.id ? 'text-theme-accent -translate-y-2' : 'opacity-40 text-theme-sub'}`}>
                                 <Icon name={b.icon} size={22} strokeWidth={view===b.id?2.5:2}/>
                                 <span className="text-[9px] font-bold">{b.l}</span>
@@ -1413,6 +1568,8 @@
                     {catManagerOpen && <CategoryManager categories={data.categories} onSave={updateCategories} onClose={()=>setCatManagerOpen(false)} />}
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={()=>setShowLevelUp({show:false, level:showLevelUp.level})}/>}
                     
+                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={data.inventory} onClose={()=>setEquipModalOpen(false)} onEquip={handleEquipItem}/>}
+
                     {/* Selectors Modals */}
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
