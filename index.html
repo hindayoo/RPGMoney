@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V20.3: RPG Upgrade</title>
+    <title>SakuraWallet V20.4: RPG Enhanced</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -26,6 +26,8 @@
               ink: '#4a044e',
               wood: '#8B4513',
               paper: '#fdf6e3',
+              forest: { bg: '#1a2e1a', card: '#2d4a2d', text: '#e2f0e2', accent: '#4ade80' },
+              cyber: { bg: '#09090b', card: '#18181b', text: '#22d3ee', accent: '#d946ef' },
               dark: { bg: '#0f172a', card: '#1e293b', text: '#f1f5f9', sub: '#94a3b8' }
             },
             animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'glow': 'glow 3s infinite alternate', 'bounce-sm': 'bounce-sm 0.5s infinite' },
@@ -47,37 +49,68 @@
         /* Base Setup */
         html, body { height: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
         
-        /* New Background Texture */
+        /* === Background Textures & Themes === */
+        
+        /* 1. Default (Sakura/Light) */
         body { 
             background-color: #fff0f5; 
-            background-image: 
-                radial-gradient(#db2777 0.5px, transparent 0.5px), 
-                radial-gradient(#db2777 0.5px, #fff0f5 0.5px);
+            background-image: radial-gradient(#db2777 0.5px, transparent 0.5px), radial-gradient(#db2777 0.5px, #fff0f5 0.5px);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
             color: #4a044e; 
-            transition: background-color 0.5s; 
+            transition: background-color 0.5s, color 0.5s; 
             overflow: hidden; 
         }
-        
-        /* Glass Effect */
         .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2); }
-        
-        /* Dark Mode */
-        .dark body { 
+
+        /* 2. Dark Mode */
+        body.theme-dark { 
             background-color: #0f172a; 
-            background-image: 
-                radial-gradient(#4c1d95 0.5px, transparent 0.5px), 
-                radial-gradient(#4c1d95 0.5px, #0f172a 0.5px);
+            background-image: radial-gradient(#4c1d95 0.5px, transparent 0.5px), radial-gradient(#4c1d95 0.5px, #0f172a 0.5px);
             color: #f1f5f9; 
         }
-        .dark .glass { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); color: #f1f5f9; }
-        .dark .bg-white { background-color: #1e293b; color: #fff; }
-        
+        .theme-dark .glass { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); color: #f1f5f9; }
+        .theme-dark .rpg-btn { box-shadow: 0 6px 0 0 rgba(0,0,0,0.5); }
+        .theme-dark .bg-white { background-color: #1e293b; color: #fff; }
+
+        /* 3. Forest Mode (RPG Nature) */
+        body.theme-forest {
+            background-color: #1a2e1a;
+            background-image: repeating-linear-gradient(45deg, #2d4a2d 0, #2d4a2d 1px, transparent 0, transparent 50%);
+            background-size: 20px 20px;
+            color: #e2f0e2;
+        }
+        .theme-forest .glass { background: rgba(45, 74, 45, 0.9); border: 1px solid #4ade80; box-shadow: 0 8px 32px rgba(0,0,0,0.6); color: #e2f0e2; }
+        .theme-forest .sakura-bg .petal { background: #4ade80; opacity: 0.3; }
+        .theme-forest .text-sakura-dark { color: #4ade80; }
+        .theme-forest .bg-sakura-dark { background-color: #15803d; }
+
+        /* 4. Cyber Mode (Neon) */
+        body.theme-cyber {
+            background-color: #000000;
+            background-image: linear-gradient(0deg, transparent 24%, rgba(34, 211, 238, .3) 25%, rgba(34, 211, 238, .3) 26%, transparent 27%, transparent 74%, rgba(217, 70, 239, .3) 75%, rgba(217, 70, 239, .3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(34, 211, 238, .3) 25%, rgba(34, 211, 238, .3) 26%, transparent 27%, transparent 74%, rgba(217, 70, 239, .3) 75%, rgba(217, 70, 239, .3) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            color: #22d3ee;
+            font-family: "DotGothic16", sans-serif;
+        }
+        .theme-cyber .glass { background: rgba(24, 24, 27, 0.9); border: 1px solid #d946ef; box-shadow: 0 0 15px rgba(217, 70, 239, 0.3); color: #22d3ee; border-radius: 4px; }
+        .theme-cyber .rounded-2xl, .theme-cyber .rounded-3xl, .theme-cyber .rounded-full { border-radius: 4px !important; } /* Blocky Look */
+        .theme-cyber .text-sakura-dark { color: #d946ef; text-shadow: 0 0 5px #d946ef; }
+        .theme-cyber .bg-sakura-dark { background-color: #d946ef; box-shadow: 0 0 10px #d946ef; }
+
+        /* Background Illustrations (RPG Elements) */
+        .bg-illustration {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; height: auto; opacity: 0.05; pointer-events: none; z-index: 0;
+            filter: grayscale(100%);
+        }
+        .theme-forest .bg-illustration { opacity: 0.1; filter: sepia(100%) hue-rotate(90deg); }
+        .theme-cyber .bg-illustration { opacity: 0.1; filter: invert(100%) drop-shadow(0 0 10px cyan); }
+
         /* Sakura Effects */
         .sakura-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .petal { position: absolute; background: #ffd7e6; border-radius: 150% 0 150% 0; animation: fall linear infinite; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .dark .petal { background: #6366f1; opacity: 0.2; box-shadow: 0 0 5px #6366f1; }
+        .theme-dark .petal { background: #6366f1; opacity: 0.2; box-shadow: 0 0 5px #6366f1; }
         .avatar-glow { animation: glow 3s infinite alternate; }
         
         @keyframes fall { 0% { opacity: 0; top: -10%; transform: translateX(0) } 10% { opacity: 1; } 100% { opacity: 0; top: 110%; transform: translateX(20px) rotate(60deg); } }
@@ -87,45 +120,28 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* RPG Keypad Redesign */
-        .rpg-keypad-container {
-            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,240,245,1) 100%);
-        }
-        .dark .rpg-keypad-container {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-        }
+        .rpg-keypad-container { background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,240,245,1) 100%); }
+        .theme-dark .rpg-keypad-container { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+        .theme-forest .rpg-keypad-container { background: linear-gradient(180deg, #2d4a2d 0%, #1a2e1a 100%); }
         
         .rpg-btn { 
             @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden;
-            box-shadow: 0 6px 0 0 rgba(0,0,0,0.15);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            transform: translateY(0);
+            box-shadow: 0 6px 0 0 rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.1); transform: translateY(0);
         }
-        .rpg-btn:active {
-            box-shadow: 0 0 0 0 rgba(0,0,0,0);
-            transform: translateY(6px);
-        }
-        .dark .rpg-btn { box-shadow: 0 6px 0 0 rgba(0,0,0,0.5); }
+        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(6px); }
         
         /* Button Types */
-        .btn-num { 
-            @apply bg-white text-ink font-pixel text-4xl font-bold border-2 border-slate-200;
-            color: #4a044e;
-        }
-        .dark .btn-num { @apply bg-slate-700 text-white border-slate-600; }
+        .btn-num { @apply bg-white text-ink font-pixel text-4xl font-bold border-2 border-slate-200; color: #4a044e; }
+        .theme-dark .btn-num { @apply bg-slate-700 text-white border-slate-600; }
         
-        .btn-op { 
-            @apply bg-sakura-light text-sakura-dark font-pixel text-2xl font-bold border-2 border-sakura-base; 
-        }
-        .dark .btn-op { @apply bg-pink-900/30 text-pink-300 border-pink-900; }
+        .btn-op { @apply bg-sakura-light text-sakura-dark font-pixel text-2xl font-bold border-2 border-sakura-base; }
+        .theme-dark .btn-op { @apply bg-pink-900/30 text-pink-300 border-pink-900; }
         
-        .btn-action { 
-            @apply bg-sakura-dark text-white font-pixel text-2xl font-bold border-2 border-pink-700;
-            box-shadow: 0 6px 0 0 #831843;
-        }
+        .btn-action { @apply bg-sakura-dark text-white font-pixel text-2xl font-bold border-2 border-pink-700; box-shadow: 0 6px 0 0 #831843; }
         
         /* Guild Board */
         .guild-board { background-color: #F5E6D3; background-image: radial-gradient(#D2B48C 1px, transparent 1px); background-size: 20px 20px; border: 4px solid #8B4513; box-shadow: inset 0 0 20px rgba(139, 69, 19, 0.3); color: #5D4037; }
-        .dark .guild-board { background-color: #2c241b; background-image: radial-gradient(#4a3b2a 1px, transparent 1px); border-color: #5d4037; color: #d7ccc8; }
+        .theme-dark .guild-board { background-color: #2c241b; background-image: radial-gradient(#4a3b2a 1px, transparent 1px); border-color: #5d4037; color: #d7ccc8; }
         
         /* Error Display */
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: auto; }
@@ -134,14 +150,13 @@
 <body class="transition-colors duration-500 font-sans">
     
     <div id="sakura-container" class="sakura-bg"></div>
+    <div id="rpg-bg-layer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-10"></div>
     
     <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-sakura-light z-50 transition-opacity duration-500 text-center p-6">
         <div class="text-6xl animate-bounce mb-6">🐉</div>
         <div class="text-sakura-dark font-bold animate-pulse font-pixel text-2xl mb-2">SAKURA WORLD</div>
         <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">召喚中...</div>
-        <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">
-            Force Start (如果卡住)
-        </button>
+        <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">Force Start (如果卡住)</button>
     </div>
 
     <div id="error-display">
@@ -157,7 +172,6 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 🔥 Firebase Config (Keep your original config)
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -223,23 +237,25 @@
             Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z", Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
             UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z", Backspace: "M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM18 9l-6 6M12 9l6 6",
             Minus: "M5 12h14", Plus: "M12 5v14 M5 12h14", Check: "M20 6L9 17l-5-5", Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
-            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+            Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z"
         };
 
-        const Icon = ({ name, size = 20, className = "", color = "currentColor" }) => {
+        const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
             const d = ICON_PATHS[name] || ICON_PATHS['Star'];
-            return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}><path d={d}/></svg>;
+            return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={d}/></svg>;
         };
 
         // --- Data & Config ---
-        const CURRENCIES = ['HKD', 'TWD', 'JPY', 'USD', 'CNY', 'KRW', 'EUR'];
-        // Default Categories
+        // New Currency Order: TWD first
+        const CURRENCIES = ['TWD', 'HKD', 'JPY', 'USD', 'CNY', 'KRW', 'EUR'];
+        
         const DEFAULT_CATEGORIES = {
             bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5' }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171' },
             dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444' }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd' },
             snack: { label: '零食', icon: 'Utensils', color: '#fdba74' },
-            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa' }, mtr: { label: '地鐵', icon: 'Bus', color: '#3b82f6' },
-            taxi: { label: '的士', icon: 'Bus', color: '#2563eb' },
+            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa' }, mtr: { label: '捷運/地鐵', icon: 'Bus', color: '#3b82f6' },
+            taxi: { label: '計程車', icon: 'Bus', color: '#2563eb' },
             shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc' }, game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7' },
             bill: { label: '帳單', icon: 'Zap', color: '#fbbf24' }, rent: { label: '房租', icon: 'Landmark', color: '#f59e0b' },
             health: { label: '醫療', icon: 'Pill', color: '#34d399' }, edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf' },
@@ -249,9 +265,9 @@
         };
 
         const GUARDIAN_STAGES = [
-            { level: 1, name: '初生靈蛋', emoji: '🥚', desc: '潛力無限的存在', pixel: true }, { level: 5, name: '幼年靈鳥', emoji: '🐥', desc: '開始探索世界', pixel: true },
-            { level: 10, name: '櫻花狐', emoji: '🦊', desc: '靈力覺醒', pixel: true }, { level: 20, name: '疾風狼', emoji: '🐺', desc: '財富戰士', pixel: true },
-            { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護', pixel: false }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神', pixel: false },
+            { level: 1, name: '初生靈蛋', emoji: '🥚', desc: '潛力無限的存在' }, { level: 5, name: '幼年靈鳥', emoji: '🐥', desc: '開始探索世界' },
+            { level: 10, name: '櫻花狐', emoji: '🦊', desc: '靈力覺醒' }, { level: 20, name: '疾風狼', emoji: '🐺', desc: '財富戰士' },
+            { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
         ];
         
         const TALENTS = [{icon:'Crown', name:'黃金律法', lv:1, color:'bg-yellow-100 text-yellow-600', desc:'增加收入經驗值'}, {icon:'Book', name:'森羅萬象', lv:1, color:'bg-blue-100 text-blue-600', desc:'解鎖更多圖表'}, {icon:'Shield', name:'絕對防禦', lv:0, color:'bg-gray-100 text-gray-400', desc:'減少衝動消費'}, {icon:'Zap', name:'疾風迅雷', lv:0, color:'bg-gray-100 text-gray-400', desc:'記帳速度提升'}, {icon:'Gem', name:'幸運女神', lv:0, color:'bg-gray-100 text-gray-400', desc:'隨機獲得金幣'}, {icon:'Hammer', name:'神工鬼斧', lv:0, color:'bg-gray-100 text-gray-400', desc:'資產上限提升'}];
@@ -278,7 +294,31 @@
             }, []);
         };
 
-        // --- RPG Keypad Component (Redesigned) ---
+        // --- Background Illustrations Component ---
+        const BackgroundIllustrations = ({ theme }) => {
+            const getIcon = () => {
+                if (theme === 'theme-forest') return 'Tree';
+                if (theme === 'theme-cyber') return 'Ghost';
+                if (theme === 'theme-dark') return 'Moon';
+                return 'Sun'; // default
+            };
+
+            return (
+                <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+                    <div className="absolute top-1/4 -left-10 opacity-5 transform rotate-12 scale-[10]">
+                        <Icon name="Sword" />
+                    </div>
+                    <div className="absolute bottom-1/4 -right-20 opacity-5 transform -rotate-12 scale-[15]">
+                        <Icon name="Shield" />
+                    </div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 scale-[20]">
+                         <Icon name={getIcon()} />
+                    </div>
+                </div>
+            );
+        };
+
+        // --- RPG Keypad Component ---
         const Keypad = ({ value, onChange, onConfirm, onClose, label }) => {
             const handlePress = (key) => {
                 if (key === 'OK') onConfirm();
@@ -354,11 +394,13 @@
         const CategoryManager = ({ categories, onSave, onClose }) => {
             const [localCats, setLocalCats] = useState(categories);
             const [editId, setEditId] = useState(null);
-            const [editForm, setEditForm] = useState({ label: '', color: '#000000' });
+            const [editForm, setEditForm] = useState({ label: '', color: '#000000', icon: 'Star' });
+            const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
             const handleEdit = (key) => {
                 setEditId(key);
-                setEditForm({ label: localCats[key].label, color: localCats[key].color });
+                setEditForm({ label: localCats[key].label, color: localCats[key].color, icon: localCats[key].icon || 'Star' });
+                setIconPickerOpen(false);
             };
 
             const saveEdit = () => {
@@ -373,13 +415,15 @@
                 const newCats = { ...localCats, [id]: { label: '新類別', icon: 'Star', color: '#888888' } };
                 setLocalCats(newCats);
                 setEditId(id);
-                setEditForm({ label: '新類別', color: '#888888' });
+                setEditForm({ label: '新類別', color: '#888888', icon: 'Star' });
             };
             
             const handleSaveAll = () => {
                 onSave(localCats);
                 onClose();
             };
+
+            const availableIcons = Object.keys(ICON_PATHS);
 
             return (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex flex-col justify-center px-4">
@@ -390,20 +434,33 @@
                         </div>
                         <div className="overflow-y-auto flex-1 space-y-2 pr-1">
                             {Object.entries(localCats).map(([key, cat]) => (
-                                <div key={key} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-transparent hover:border-sakura-base transition-colors">
-                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0" style={{backgroundColor: cat.color}}>
-                                        <Icon name={cat.icon} size={14} color="white"/>
-                                    </div>
-                                    {editId === key ? (
-                                        <div className="flex items-center gap-2 flex-1">
-                                            <input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border dark:bg-black dark:text-white text-sm"/>
-                                            <input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/>
-                                            <button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button>
+                                <div key={key} className="flex flex-col gap-2 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-transparent hover:border-sakura-base transition-colors">
+                                    <div className="flex items-center gap-3">
+                                        <div onClick={() => editId === key && setIconPickerOpen(!iconPickerOpen)} className={`w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 ${editId === key ? 'cursor-pointer ring-2 ring-sakura-base' : ''}`} style={{backgroundColor: editId === key ? editForm.color : cat.color}}>
+                                            <Icon name={editId === key ? editForm.icon : cat.icon} size={14} color="white"/>
                                         </div>
-                                    ) : (
-                                        <div className="flex-1 font-bold text-sm dark:text-gray-200">{cat.label}</div>
+                                        {editId === key ? (
+                                            <div className="flex items-center gap-2 flex-1">
+                                                <input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border dark:bg-black dark:text-white text-sm"/>
+                                                <input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/>
+                                                <button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex-1 font-bold text-sm dark:text-gray-200">{cat.label}</div>
+                                        )}
+                                        {editId !== key && <button onClick={()=>handleEdit(key)} className="text-gray-400 hover:text-sakura-dark"><Icon name="Edit" size={16}/></button>}
+                                    </div>
+                                    
+                                    {/* Icon Picker Grid */}
+                                    {editId === key && iconPickerOpen && (
+                                        <div className="grid grid-cols-6 gap-2 bg-gray-100 dark:bg-black/20 p-2 rounded-lg mt-2 max-h-32 overflow-y-auto">
+                                            {availableIcons.map(iconName => (
+                                                <button key={iconName} onClick={() => { setEditForm({...editForm, icon: iconName}); setIconPickerOpen(false); }} className={`p-1 rounded hover:bg-white/50 flex justify-center ${editForm.icon === iconName ? 'bg-sakura-light text-sakura-dark' : 'text-gray-500'}`}>
+                                                    <Icon name={iconName} size={16} />
+                                                </button>
+                                            ))}
+                                        </div>
                                     )}
-                                    {editId !== key && <button onClick={()=>handleEdit(key)} className="text-gray-400 hover:text-sakura-dark"><Icon name="Edit" size={16}/></button>}
                                 </div>
                             ))}
                         </div>
@@ -420,7 +477,6 @@
         const App = () => {
             useSakura();
             
-            // Initial State setup with Categories
             const [data, setData] = useState({ 
                 user: null, 
                 accounts: [], 
@@ -428,7 +484,7 @@
                 quests: [], 
                 achievements: [], 
                 logs: [],
-                categories: DEFAULT_CATEGORIES // Add default categories to state
+                categories: DEFAULT_CATEGORIES 
             });
             
             const [loading, setLoading] = useState(true);
@@ -436,13 +492,13 @@
             const [subView, setSubView] = useState('main');
             const [modalOpen, setModalOpen] = useState(false);
             const [assetModalOpen, setAssetModalOpen] = useState(false);
-            const [catManagerOpen, setCatManagerOpen] = useState(false); // Category Manager State
+            const [catManagerOpen, setCatManagerOpen] = useState(false);
             const [keypadOpen, setKeypadOpen] = useState(false);
             const [keypadTarget, setKeypadTarget] = useState(null); 
             const [tempValue, setTempValue] = useState('');
             
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
-            const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
+            const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'TWD', balance: '', type: 'cash' });
 
             const [isRegistering, setIsRegistering] = useState(false);
             const [loginAccount, setLoginAccount] = useState('');
@@ -450,30 +506,32 @@
             const [regName, setRegName] = useState('');
             const [showPass, setShowPass] = useState(false);
 
+            // Theme: light, dark, forest, cyber
             const [theme, setTheme] = useState(localStorage.getItem('gw_theme') || 'light');
             const [lang, setLang] = useState(localStorage.getItem('gw_lang') || 'zh');
             const [rates, setRates] = useState({});
             const [baseAmount, setBaseAmount] = useState('100');
+            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'TWD');
 
             const t = (key) => TRANSLATIONS[lang][key] || key;
 
             useEffect(() => {
-                if (theme === 'dark') document.documentElement.classList.add('dark');
-                else document.documentElement.classList.remove('dark');
+                document.body.className = `transition-colors duration-500 font-sans theme-${theme}`;
                 localStorage.setItem('gw_theme', theme);
             }, [theme]);
+            
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
+            useEffect(() => { localStorage.setItem('gw_currency', mainCurrency); }, [mainCurrency]);
 
             const addLog = (type, msg) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...(data.logs || [])].slice(0, 50); };
             
             const loadLocalData = () => { 
                 const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); 
                 if (localData) {
-                    // Ensure categories exist in old data
                     if (!localData.categories) localData.categories = DEFAULT_CATEGORIES;
                     setData(localData); 
                 } else {
-                    setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }); 
+                    setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }); 
                 }
                 setLoading(false); 
             };
@@ -485,14 +543,13 @@
                 else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); 
             };
 
-            // Update categories logic
             const updateCategories = (newCats) => {
                 saveData({ ...data, categories: newCats });
             };
 
-            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
             
-            useEffect(() => { if (view === 'exchange' || assetModalOpen) fetch('https://open.er-api.com/v6/latest/HKD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, [view, assetModalOpen]);
+            useEffect(() => { if (view === 'exchange' || assetModalOpen) fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, [view, assetModalOpen]);
 
             const handleAuth = async () => { const fb = window.firebase; if (!fb) return; const email = loginAccount.trim() + "@sakurarpg.com"; try { if (isRegistering) { if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); await fb.updateProfile(cred.user, { displayName: regName }); window.location.reload(); } else await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); } catch (e) { alert(e.message); } };
             const logout = () => { const fb = window.firebase; if(fb) fb.signOut(fb.auth); window.location.reload(); };
@@ -533,7 +590,16 @@
 
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const toggleLang = () => setLang(l => l==='zh'?'en':l==='en'?'ja':'zh');
-            const toggleTheme = () => setTheme(t => t==='dark'?'light':'dark');
+            
+            // Expanded Theme Toggle
+            const toggleTheme = () => {
+                const themes = ['light', 'dark', 'forest', 'cyber'];
+                const nextIndex = (themes.indexOf(theme) + 1) % themes.length;
+                setTheme(themes[nextIndex]);
+            };
+            
+            const toggleCurrency = () => setMainCurrency(c => c === 'TWD' ? 'HKD' : 'TWD');
+
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
             useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
@@ -543,28 +609,47 @@
 
             return (
                 <div className="flex flex-col h-[100dvh] relative z-10 text-ink dark:text-dark-text overflow-hidden">
-                    <header className="px-4 pt-12 pb-2 flex justify-between items-center bg-white/60 dark:bg-black/40 sticky top-0 z-20 backdrop-blur-md border-b border-white/50 dark:border-white/10 shrink-0">
-                        <div className="flex items-center gap-3">
-                            <label className="relative cursor-pointer avatar-glow"><div className="w-11 h-11 rounded-full bg-white dark:bg-gray-700 border-2 border-sakura-base overflow-hidden shadow-md flex items-center justify-center text-xl">{data.user.photo ? <img src={data.user.photo} className="w-full h-full object-cover"/> : "👤"}</div><input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/></label>
-                            <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm dark:text-white">{data.user.name}</h1><span className="text-[9px] bg-sakura-dark text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div className="text-[10px] text-sakura-accent font-bold opacity-80">{data.user.title}</div></div>
+                    <BackgroundIllustrations theme={`theme-${theme}`} />
+                    
+                    <header className="px-4 pt-12 pb-2 flex flex-col gap-2 bg-white/60 dark:bg-black/40 sticky top-0 z-20 backdrop-blur-md border-b border-white/50 dark:border-white/10 shrink-0">
+                        <div className="flex justify-between items-center w-full">
+                            <div className="flex items-center gap-3">
+                                <label className="relative cursor-pointer avatar-glow"><div className="w-11 h-11 rounded-full bg-white dark:bg-gray-700 border-2 border-sakura-base overflow-hidden shadow-md flex items-center justify-center text-xl">{data.user.photo ? <img src={data.user.photo} className="w-full h-full object-cover"/> : "👤"}</div><input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/></label>
+                                <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm dark:text-white">{data.user.name}</h1><span className="text-[9px] bg-sakura-dark text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div className="text-[10px] text-sakura-accent font-bold opacity-80">{data.user.title}</div></div>
+                            </div>
+                            <div className="flex gap-2">
+                                <button onClick={toggleCurrency} className="w-9 h-9 bg-yellow-100/80 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full flex items-center justify-center shadow-sm border border-white/50 text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
+                                <button onClick={toggleLang} className="w-9 h-9 bg-white/50 dark:bg-black/30 rounded-full flex items-center justify-center shadow-sm border border-white/50 text-[10px] font-bold active:scale-95 transition-transform dark:text-white">{lang.toUpperCase()}</button>
+                                <button onClick={toggleTheme} className="w-9 h-9 bg-white/50 dark:bg-black/30 rounded-full flex items-center justify-center shadow-sm border border-white/50 active:scale-95 transition-transform dark:text-white"><Icon name={theme==='dark'?'Moon':theme==='forest'?'Tree':theme==='cyber'?'Zap':'Sun'} size={16}/></button>
+                                <button onClick={logout} className="w-9 h-9 bg-red-100/80 dark:bg-red-900/30 text-red-500 rounded-full flex items-center justify-center shadow-sm border border-white/50 active:scale-95 transition-transform"><Icon name="LogOut" size={16}/></button>
+                            </div>
                         </div>
-                        <div className="flex gap-2"><button onClick={toggleLang} className="w-9 h-9 bg-white/50 dark:bg-black/30 rounded-full flex items-center justify-center shadow-sm border border-white/50 text-[10px] font-bold active:scale-95 transition-transform dark:text-white">{lang.toUpperCase()}</button><button onClick={toggleTheme} className="w-9 h-9 bg-white/50 dark:bg-black/30 rounded-full flex items-center justify-center shadow-sm border border-white/50 active:scale-95 transition-transform dark:text-white"><Icon name={theme==='dark'?'Sun':'Moon'} size={16}/></button><button onClick={logout} className="w-9 h-9 bg-red-100/80 dark:bg-red-900/30 text-red-500 rounded-full flex items-center justify-center shadow-sm border border-white/50 active:scale-95 transition-transform"><Icon name="LogOut" size={16}/></button></div>
+
+                        {/* Always visible EXP Bar */}
+                        <div className="w-full mt-1">
+                            <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 dark:text-gray-300">
+                                <span>NEXT LEVEL</span>
+                                <span>{data.user.exp} / {data.user.level * 100}</span>
+                            </div>
+                            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">
+                                <div className="h-full bg-gradient-to-r from-sakura-base to-sakura-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div>
+                            </div>
+                        </div>
                     </header>
 
-                    <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5">
+                    <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
                         {view === 'adventure' && (
                             <div className="animate-[fadeIn_0.5s] space-y-5">
-                                <div className="glass p-4 rounded-3xl flex items-center justify-between"><div className="w-full"><div className="flex justify-between text-xs font-bold opacity-60 mb-1 dark:text-gray-300"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div><div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-sakura-base to-sakura-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div></div></div>
                                 <div><h3 className="font-bold opacity-60 text-sm mb-2 flex items-center gap-1 dark:text-gray-300"><Icon name="Star" size={14}/> {t('upgrade')}</h3><div className="grid grid-cols-3 gap-2">{TALENTS.map((t,i) => (<div key={i} className="glass p-2 rounded-2xl flex flex-col items-center justify-center h-20 bg-white/30 dark:bg-black/30 active:scale-95 transition-transform"><div className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${t.color}`}><Icon name={t.icon} size={16}/></div><span className="text-[10px] font-bold opacity-80 dark:text-gray-300">{t.name}</span></div>))}</div></div>
                                 <div className="glass p-6 rounded-[2.5rem] relative text-center border-sakura-base/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-white/50 dark:bg-black/40 rounded-xl p-3 border border-white/50 text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel dark:text-white">{guardian.name}</h2><span className="text-[9px] bg-sakura-dark text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight dark:text-gray-300">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-purple-500">EXP</span><div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className="h-full bg-purple-400 transition-all" style={{width: `${(data.user.exp % 100)}%`}}></div></div><span className="text-[8px] opacity-50 dark:text-gray-400">{data.user.exp % 100}%</span></div></div>
-                                <div><div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 dark:text-gray-300"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:'HKD', balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-sakura-dark text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div><div className="space-y-2">{data.accounts.map(acc => (<div key={acc.id} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className="glass p-3 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer"><div className="flex items-center gap-3"><div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm ${acc.type==='card'?'bg-purple-400':acc.type==='bank'?'bg-blue-400':'bg-yellow-400'}`}><Icon name={acc.type==='card'?'CreditCard':acc.type==='bank'?'Landmark':'Wallet'} size={20}/></div><div><div className="font-bold text-sm dark:text-white">{acc.name}</div><div className="text-[10px] opacity-60 uppercase dark:text-gray-400">{acc.type}</div></div></div><div className="text-right"><div className="font-mono font-bold dark:text-white">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold bg-black/5 dark:bg-white/10 px-1 rounded inline-block dark:text-gray-300">{acc.currency}</div></div></div>))}</div></div>
+                                <div><div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 dark:text-gray-300"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-sakura-dark text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div><div className="space-y-2">{data.accounts.map(acc => (<div key={acc.id} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className="glass p-3 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer"><div className="flex items-center gap-3"><div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm ${acc.type==='card'?'bg-purple-400':acc.type==='bank'?'bg-blue-400':'bg-yellow-400'}`}><Icon name={acc.type==='card'?'CreditCard':acc.type==='bank'?'Landmark':'Wallet'} size={20}/></div><div><div className="font-bold text-sm dark:text-white">{acc.name}</div><div className="text-[10px] opacity-60 uppercase dark:text-gray-400">{acc.type}</div></div></div><div className="text-right"><div className="font-mono font-bold dark:text-white">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold bg-black/5 dark:bg-white/10 px-1 rounded inline-block dark:text-gray-300">{acc.currency}</div></div></div>))}</div></div>
                             </div>
                         )}
 
                         {view === 'upgrade' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><h2 className="text-xl font-bold flex items-center gap-2 mb-4 dark:text-white"><Icon name="Sword" size={20}/> 天賦強化</h2><div className="grid gap-3">{TALENTS.map((t,i) => (<div key={i} className="glass p-4 rounded-3xl flex items-center justify-between active:scale-95 transition-transform"><div className="flex items-center gap-4"><div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${t.color}`}><Icon name={t.icon} size={24}/></div><div><h3 className="font-bold dark:text-white">{t.name}</h3><p className="text-xs opacity-60 dark:text-gray-300">{t.desc}</p></div></div><div className="font-bold text-sakura-dark">Lv.{t.lv}</div></div>))}</div></div> )}
                         {view === 'quests' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-sakura-dark text-white' : 'bg-white dark:bg-white/10 text-gray-500'}`}>{t==='main'?TRANSLATIONS[lang].main:t==='daily'?TRANSLATIONS[lang].daily:TRANSLATIONS[lang].challenge}</button>))}</div>{data.quests.filter(q => q.type === subView).map(q => (<div key={q.id} className="glass p-5 rounded-3xl relative active:scale-95 transition-transform"><div className="flex justify-between"><h4 className="font-bold text-ink dark:text-white">{q.title}</h4><span className="text-xs text-sakura-accent font-bold">EXP +{q.exp}</span></div><p className="text-xs opacity-60 mt-1 mb-3 dark:text-gray-300">{q.desc}</p><div className="flex items-center gap-2"><div className="flex-1 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"><div className="h-full bg-blue-400 transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-gray-400">{Math.min(q.progress,q.target)}/{q.target}</span></div></div>))}</div> )}
                         {view === 'achievements' && ( <div className="grid grid-cols-2 gap-3 animate-[fadeIn_0.5s]">{data.achievements.map(a => (<div key={a.id} className={`glass p-4 rounded-3xl flex flex-col items-center text-center border-2 transition-all active:scale-95 ${a.unlocked ? 'border-yellow-400 bg-yellow-50/50 dark:bg-yellow-900/20' : 'border-gray-200 dark:border-gray-700 grayscale opacity-60'}`}><div className="w-14 h-14 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mb-2 shadow-sm text-yellow-500"><Icon name={a.unlocked ? a.icon : 'Key'} size={28}/></div><div className="font-bold text-sm dark:text-white">{a.title}</div><div className="text-[10px] opacity-60 mt-1 dark:text-gray-300">{a.desc}</div></div>))}</div> )}
-                        {view === 'exchange' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><div className="glass p-5 rounded-3xl guild-board"><div className="text-center font-bold mb-4 font-pixel tracking-widest border-b border-wood/30 pb-2 text-xl">公會佈告欄</div><div className="flex items-center gap-2 mb-4 bg-white/50 dark:bg-black/20 p-2 rounded-xl"><span className="font-bold text-sm ml-2">HKD</span><div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer dark:text-gray-800">{baseAmount}</div></div><div className="grid grid-cols-2 gap-3 pb-20">{CURRENCIES.filter(c=>c!=='HKD').map(c => (<div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 dark:border-black/30 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{(parseFloat(baseAmount) * (rates[c]||0)).toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>))}</div></div></div> )}
+                        {view === 'exchange' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><div className="glass p-5 rounded-3xl guild-board"><div className="text-center font-bold mb-4 font-pixel tracking-widest border-b border-wood/30 pb-2 text-xl">公會佈告欄</div><div className="flex items-center gap-2 mb-4 bg-white/50 dark:bg-black/20 p-2 rounded-xl"><span className="font-bold text-sm ml-2">{mainCurrency}</span><div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer dark:text-gray-800">{baseAmount}</div></div><div className="grid grid-cols-2 gap-3 pb-20">{CURRENCIES.filter(c=>c!==mainCurrency).map(c => (<div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 dark:border-black/30 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{(parseFloat(baseAmount) * (rates[c]||0)).toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>))}</div></div></div> )}
                         {view === 'journal' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><div className="flex gap-2 mb-4"><button onClick={()=>setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='sys'?'bg-sakura-dark text-white':'bg-white dark:bg-white/10 dark:text-gray-400'}`}>系統事件</button><button onClick={()=>setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='fin'?'bg-sakura-dark text-white':'bg-white dark:bg-white/10 dark:text-gray-400'}`}>財務變動</button></div><div className="space-y-3">{data.logs.filter(l => subView==='sys' ? l.type==='system' : (l.type==='finance_out' || l.type==='finance_in')).map(l => (<div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform"><div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div><div className="flex-1"><div className="text-[10px] opacity-60 dark:text-gray-400">{new Date(l.date).toLocaleString()}</div><div className="text-sm font-bold dark:text-white">{l.msg}</div></div></div>))}</div></div> )}
                     </main>
 
