@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V22.4: Cartoon Hero</title>
+    <title>SakuraWallet V23.3: Center Build</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -38,13 +38,15 @@
                 'glow': 'glow 3s infinite alternate',
                 'spin-slow': 'spin 10s linear infinite',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                'hero-breathe': 'heroBreathe 3s ease-in-out infinite'
+                'hero-breathe': 'heroBreathe 3s ease-in-out infinite',
+                'sparkle': 'sparkle 2s linear infinite'
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-                heroBreathe: { '0%, 100%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.02)' } }
+                heroBreathe: { '0%, 100%': { transform: 'scale(1) translateY(0)' }, '50%': { transform: 'scale(1.02) translateY(-5px)' } },
+                sparkle: { '0%': { opacity: '0', transform: 'scale(0)' }, '50%': { opacity: '1', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(0) rotate(90deg)' } }
             }
           }
         }
@@ -72,19 +74,21 @@
         /* Base Setup */
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; position: fixed; overflow: hidden; }
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
-        
         #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
-
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
 
-        /* Empty Slot Style (Classic RPG) */
+        /* Slots - Compact for Center Layout */
         .slot-empty { 
-            @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-theme-bg/20 flex flex-col items-center justify-center relative transition-all; 
+            @apply w-12 h-12 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all active:scale-95; 
+        }
+        .slot-empty::after { 
+            content: '+'; 
+            @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; 
         }
         .slot-filled { 
-            @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; 
+            @apply w-12 h-12 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all active:scale-95; 
         }
-        .equip-label { position: absolute; bottom: -18px; font-size: 9px; font-weight: bold; color: var(--text-sub); text-transform: uppercase; white-space: nowrap; }
+        .equip-label { position: absolute; bottom: -16px; font-size: 8px; font-weight: bold; color: var(--text-sub); text-transform: uppercase; white-space: nowrap; }
 
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
@@ -93,9 +97,13 @@
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+
+        /* Character Stage - Center Layout */
+        .char-stage { position: relative; width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; }
+        .magic-circle { position: absolute; bottom: 40px; width: 140px; height: 30px; background: radial-gradient(ellipse at center, var(--accent-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; animation: pulse 3s infinite; }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; opacity: 0; box-shadow: 0 0 4px var(--accent-color); }
         
-        .char-stage { position: relative; width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--glass-bg) 40%, transparent 80%); }
-        .equip-col { display: flex; flex-direction: column; gap: 24px; z-index: 20; }
+        .hero-svg { filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15)); }
         
         /* Mobile Optimized Drag */
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
@@ -211,7 +219,10 @@
             Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
             Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
             Chart: "M18 20V10M12 20V4M6 20v-6",
-            ArrowUp: "M12 19V5M5 12l7-7 7 7", ArrowDown: "M12 5v14M19 12l-7 7-7-7"
+            ArrowUp: "M12 19V5M5 12l7-7 7 7", ArrowDown: "M12 5v14M19 12l-7 7-7-7",
+            Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
+            Male: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
+            Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z" 
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -250,14 +261,14 @@
             { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
         ];
         
-        // Re-mapped to Equipment Slots with English keys but Chinese names
-        const TALENTS = [
-            {id:'t1', slot: 'head', icon:'Book', name:'智慧之冠', desc:'增加知識獲取'}, 
-            {id:'t2', slot: 'armor', icon:'Shield', name:'守護者之鎧', desc:'減少意外支出'}, 
-            {id:'t3', slot: 'weapon', icon:'Sword', name:'黃金之劍', desc:'增加主動收入'}, 
-            {id:'t4', slot: 'back', icon:'Briefcase', name:'工匠背包', desc:'增加資產上限'}, 
-            {id:'t5', slot: 'hand', icon:'Gem', name:'幸運手環', desc:'提升暴擊機率'}, 
-            {id:'t6', slot: 'shoes', icon:'Zap', name:'疾風之靴', desc:'提升記帳速度'}
+        // Equipment Slots
+        const EQUIPMENT_SLOTS = [
+            {id:'t1', slot: 'Head', icon:'Crown', name:'智慧之冠'}, 
+            {id:'t2', slot: 'Body', icon:'Shield', name:'守護者之鎧'}, 
+            {id:'t3', slot: 'Main Hand', icon:'Sword', name:'黃金之劍'}, 
+            {id:'t4', slot: 'Back', icon:'Briefcase', name:'工匠背包'}, 
+            {id:'t5', slot: 'Off Hand', icon:'Gem', name:'幸運手環'}, 
+            {id:'t6', slot: 'Feet', icon:'Zap', name:'疾風之靴'}
         ];
 
         const TITLES_LIST = [
@@ -471,58 +482,67 @@
             );
         };
 
-        // --- Character Build Tab (Cartoon Hero) ---
-        const CartoonHero = () => (
-             /* An SVG Cartoon Character (Chibi Style) */
-            <div className="relative w-48 h-64 flex justify-center items-center animate-hero-breathe">
-                <svg viewBox="0 0 200 250" className="w-full h-full drop-shadow-2xl">
-                    <defs>
-                        <filter id="shadow-blur" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
-                        </filter>
-                    </defs>
-                    
-                    {/* Shadow */}
-                    <ellipse cx="100" cy="230" rx="60" ry="10" fill="black" opacity="0.2" filter="url(#shadow-blur)" />
-
-                    {/* Back Cape */}
-                    <path d="M70 100 Q50 200 40 220 L160 220 Q150 200 130 100 Z" fill="#D32F2F" />
-
-                    {/* Body */}
-                    <rect x="75" y="100" width="50" height="70" rx="10" fill="var(--accent-color)" stroke="#3E2723" strokeWidth="3" />
-                    
-                    {/* Legs */}
-                    <rect x="80" y="160" width="15" height="50" rx="5" fill="#5D4037" />
-                    <rect x="105" y="160" width="15" height="50" rx="5" fill="#5D4037" />
-                    <path d="M75 210 H95 V220 H75 Z" fill="#3E2723" /> {/* Left Boot */}
-                    <path d="M105 210 H125 V220 H105 Z" fill="#3E2723" /> {/* Right Boot */}
-
-                    {/* Head */}
-                    <circle cx="100" cy="70" r="45" fill="#FFCCBC" />
-                    
-                    {/* Face */}
-                    <circle cx="85" cy="70" r="5" fill="#3E2723" /> {/* Left Eye */}
-                    <circle cx="115" cy="70" r="5" fill="#3E2723" /> {/* Right Eye */}
-                    <path d="M95 85 Q100 90 105 85" stroke="#E57373" strokeWidth="2" fill="none" /> {/* Mouth */}
-                    <ellipse cx="80" cy="80" rx="5" ry="3" fill="#FFAB91" opacity="0.6" /> {/* Blush L */}
-                    <ellipse cx="120" cy="80" rx="5" ry="3" fill="#FFAB91" opacity="0.6" /> {/* Blush R */}
-
-                    {/* Hair */}
-                    <path d="M60 60 Q50 30 100 20 Q150 30 140 60 Q145 90 130 90 Q120 70 100 70 Q80 70 70 90 Q55 90 60 60 Z" fill="#5D4037" />
-
-                    {/* Scarf */}
-                    <path d="M70 100 Q100 120 130 100 L135 110 Q100 140 65 110 Z" fill="#FF7043" />
-                    <path d="M120 105 L140 140 L125 150 L115 115" fill="#FF7043" /> {/* Scarf Tail */}
-
-                    {/* Arms */}
-                    <path d="M75 110 Q60 140 70 160" stroke="#FFCCBC" strokeWidth="12" strokeLinecap="round" fill="none" />
-                    <path d="M125 110 Q140 140 130 160" stroke="#FFCCBC" strokeWidth="12" strokeLinecap="round" fill="none" />
+        // --- High Quality Avatars ---
+        const AvatarMale = ({ isHeadshot }) => (
+            <div className={`relative flex justify-center items-center ${isHeadshot ? 'w-full h-full' : 'w-48 h-64 animate-hero-breathe'}`}>
+                <svg viewBox={isHeadshot ? "50 20 100 100" : "0 0 200 250"} className="w-full h-full hero-svg">
+                    {!isHeadshot && <ellipse cx="100" cy="230" rx="50" ry="8" fill="rgba(0,0,0,0.2)" filter="blur(4px)" />}
+                    <path d="M70 90 Q50 200 40 220 L160 220 Q150 200 130 90 Z" fill="#D32F2F" />
+                    <path d="M75 90 L125 90 L130 160 L70 160 Z" fill="var(--accent-color)" stroke="#3E2723" strokeWidth="2"/>
+                    <rect x="70" y="160" width="60" height="10" fill="#5D4037" />
+                    <rect x="80" y="170" width="15" height="50" fill="#3E2723" />
+                    <rect x="105" y="170" width="15" height="50" fill="#3E2723" />
+                    <path d="M75 210 H95 V225 H75 Z" fill="#1A1A1A" />
+                    <path d="M105 210 H125 V225 H105 Z" fill="#1A1A1A" />
+                    <rect x="55" y="95" width="15" height="50" rx="5" fill="#FFCCBC" />
+                    <rect x="130" y="95" width="15" height="50" rx="5" fill="#FFCCBC" />
+                    <circle cx="100" cy="65" r="40" fill="#FFCCBC" />
+                    <path d="M90 75 Q100 85 110 75" stroke="#3E2723" strokeWidth="2" fill="none"/>
+                    <circle cx="85" cy="60" r="5" fill="#1A1A1A" />
+                    <circle cx="115" cy="60" r="5" fill="#1A1A1A" />
+                    <path d="M55 55 L70 20 L90 40 L100 15 L120 40 L145 25 L145 60 Q130 80 100 80 Q70 80 55 55 Z" fill="#5D4037" />
+                    <path d="M70 90 Q100 110 130 90 L135 100 Q100 130 65 100 Z" fill="#FF7043" />
                 </svg>
+                {!isHeadshot && <>
+                    <div className="absolute top-10 left-10 w-2 h-2 bg-yellow-300 rounded-full animate-sparkle" style={{animationDelay:'0s'}}></div>
+                    <div className="absolute bottom-20 right-10 w-2 h-2 bg-yellow-300 rounded-full animate-sparkle" style={{animationDelay:'1s'}}></div>
+                </>}
             </div>
         );
 
-        const CharacterTab = ({ talents }) => {
-            const getSlot = (s) => TALENTS.find(t => t.slot === s);
+        const AvatarFemale = ({ isHeadshot }) => (
+            <div className={`relative flex justify-center items-center ${isHeadshot ? 'w-full h-full' : 'w-48 h-64 animate-hero-breathe'}`}>
+                <svg viewBox={isHeadshot ? "50 20 100 100" : "0 0 200 250"} className="w-full h-full hero-svg">
+                    {!isHeadshot && <ellipse cx="100" cy="230" rx="50" ry="8" fill="rgba(0,0,0,0.2)" filter="blur(4px)" />}
+                    <path d="M60 60 Q40 150 50 180 L150 180 Q160 150 140 60 Z" fill="#FFB74D" />
+                    <path d="M80 90 L120 90 L140 200 L60 200 Z" fill="var(--accent-color)" stroke="#E91E63" strokeWidth="2"/>
+                    <path d="M90 90 L110 90 L110 130 L90 130 Z" fill="#F48FB1" opacity="0.5"/>
+                    <rect x="85" y="200" width="10" height="20" fill="#FFCCBC" />
+                    <rect x="105" y="200" width="10" height="20" fill="#FFCCBC" />
+                    <path d="M82 220 H98 V228 H82 Z" fill="#880E4F" />
+                    <path d="M102 220 H118 V228 H102 Z" fill="#880E4F" />
+                    <path d="M70 100 Q50 130 60 150" stroke="#FFCCBC" strokeWidth="10" strokeLinecap="round" fill="none" />
+                    <path d="M130 100 Q150 130 140 150" stroke="#FFCCBC" strokeWidth="10" strokeLinecap="round" fill="none" />
+                    <circle cx="100" cy="65" r="38" fill="#FFCCBC" />
+                    <circle cx="85" cy="65" r="5" fill="#1A1A1A" />
+                    <circle cx="115" cy="65" r="5" fill="#1A1A1A" />
+                    <circle cx="87" cy="63" r="2" fill="white" />
+                    <circle cx="117" cy="63" r="2" fill="white" />
+                    <ellipse cx="80" cy="72" rx="4" ry="2" fill="#FF8A80" opacity="0.6"/>
+                    <ellipse cx="120" cy="72" rx="4" ry="2" fill="#FF8A80" opacity="0.6"/>
+                    <path d="M95 78 Q100 82 105 78" stroke="#D81B60" strokeWidth="2" fill="none"/>
+                    <path d="M60 60 Q60 20 100 20 Q140 20 140 60 Q140 70 130 60 Q120 40 100 45 Q80 40 70 60 Q60 70 60 60 Z" fill="#FFB74D" />
+                    <path d="M90 25 L80 15 L90 30 L100 15 L110 30" fill="#E91E63" />
+                </svg>
+                 {!isHeadshot && <>
+                    <div className="absolute top-15 left-12 w-2 h-2 bg-pink-200 rounded-full animate-sparkle" style={{animationDelay:'0.5s'}}></div>
+                    <div className="absolute bottom-40 right-12 w-2 h-2 bg-pink-200 rounded-full animate-sparkle" style={{animationDelay:'1.5s'}}></div>
+                 </>}
+            </div>
+        );
+
+        const CharacterTab = ({ talents, onUpgrade, gender, onToggleGender }) => {
+            const getSlot = (s) => EQUIPMENT_SLOTS.find(t => t.slot === s);
             const renderSlot = (slotName) => {
                 const t = getSlot(slotName);
                 if (!t) return null;
@@ -530,15 +550,15 @@
                 
                 if (lv === 0) {
                     return (
-                        <div className="slot-empty">
-                            <span className="text-2xl text-theme-sub/40 font-mono">+</span>
+                        <div onClick={() => onUpgrade(t.id)} className="slot-empty cursor-pointer">
+                            <Icon name={t.icon} size={20} className="opacity-20 text-theme-sub"/>
                             <div className="equip-label">{slotName}</div>
                         </div>
                     );
                 }
 
                 return (
-                    <div className="slot-filled">
+                    <div onClick={() => onUpgrade(t.id)} className="slot-filled cursor-pointer">
                         <Icon name={t.icon} size={24} className="text-theme-accent"/>
                         <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white font-bold">{lv}</span>
                         <div className="equip-label">{slotName}</div>
@@ -553,22 +573,48 @@
                     </h3>
                     
                     <div className="char-stage rounded-3xl">
-                        <div className="absolute inset-0 flex justify-between px-6 py-8 pointer-events-none">
-                            <div className="equip-col justify-center">
-                                {renderSlot('head')}
-                                {renderSlot('armor')}
-                                {renderSlot('weapon')}
+                        <div className="magic-circle"></div>
+                        
+                        <div className="absolute inset-0 flex justify-between px-4 py-8 pointer-events-none items-center">
+                            <div className="flex flex-col gap-6 items-end pointer-events-auto">
+                                {renderSlot('Head')}
+                                {renderSlot('Body')}
+                                {renderSlot('Main Hand')}
                             </div>
-                            <div className="equip-col justify-center">
-                                {renderSlot('back')}
-                                {renderSlot('hand')}
-                                {renderSlot('shoes')}
+                            
+                            <div className="flex flex-col gap-6 items-start pointer-events-auto">
+                                {renderSlot('Back')}
+                                {renderSlot('Off Hand')}
+                                {renderSlot('Feet')}
                             </div>
                         </div>
 
-                        <div className="hero-container">
-                            <CartoonHero />
+                        <div className="hero-container relative z-10">
+                            {/* Gender Switch Button */}
+                            <button 
+                                onClick={onToggleGender}
+                                className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto"
+                            >
+                                <span className="text-xs font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</span>
+                            </button>
+
+                            {gender === 'female' ? <AvatarFemale /> : <AvatarMale />}
                         </div>
+
+                        {/* Decor Lines */}
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" style={{zIndex:0}}>
+                             <path d="M60 90 L120 120" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                             <path d="M60 175 L120 175" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                             <path d="M60 260 L120 230" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                             
+                             <path d="M290 90 L230 120" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                             <path d="M290 175 L230 175" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                             <path d="M290 260 L230 230" stroke="var(--accent-color)" strokeWidth="1" strokeDasharray="4"/>
+                        </svg>
+
+                        <button className="absolute bottom-4 bg-black/80 text-white px-4 py-1.5 rounded-full text-xs font-bold font-pixel tracking-widest border border-white/20 active:scale-95 transition-transform z-30 pointer-events-auto" onClick={() => alert('神秘商店即將開幕！')}>
+                            Mystery Shop 🔒
+                        </button>
                     </div>
                 </div>
             );
@@ -606,6 +652,7 @@
             const [showNameEdit, setShowNameEdit] = useState(false);
             const [tempName, setTempName] = useState('');
 
+            // Auth
             const [isRegistering, setIsRegistering] = useState(false);
             const [loginAccount, setLoginAccount] = useState('');
             const [loginPass, setLoginPass] = useState('');
@@ -649,6 +696,7 @@
                     if (!localData.talents) localData.talents = {};
                     if (!localData.claimedQuests) localData.claimedQuests = [];
                     if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
+                    if (!localData.user.gender) localData.user.gender = 'female';
                     setData(localData); 
                 } else {
                     setData(prev => ({ ...prev, user: null }));
@@ -671,9 +719,10 @@
                                 if(!fd.talents) fd.talents = {}; 
                                 if(!fd.claimedQuests) fd.claimedQuests = []; 
                                 if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
+                                if(!fd.user.gender) fd.user.gender = 'female';
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -712,6 +761,17 @@
             const convertMoney = (amountInTWD) => {
                 const rate = rates[mainCurrency] || 1;
                 return Math.floor(amountInTWD * rate);
+            };
+
+            const upgradeTalent = (tid) => {
+                const currentLv = data.talents[tid] || 0;
+                const newTalents = { ...data.talents, [tid]: currentLv + 1 };
+                saveData({ ...data, talents: newTalents });
+            };
+
+            const toggleGender = () => {
+                const newGender = data.user.gender === 'female' ? 'male' : 'female';
+                saveData({ ...data, user: { ...data.user, gender: newGender } });
             };
 
             const handleClaim = (quest) => {
@@ -756,7 +816,7 @@
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
                     const fakeUid = 'local_' + Date.now();
-                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' };
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' };
                     const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
                     localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
                     window.location.reload();
@@ -891,7 +951,7 @@
             if (!data.user) return ( 
                 <div className="h-[100dvh] flex flex-col items-center justify-center p-6 animate-[fadeIn_0.5s] overflow-y-auto relative">
                     <button onClick={() => setShowThemeSelect(true)} className="absolute top-6 right-6 p-2 rounded-full bg-theme-glass text-theme-accent shadow-sm border border-theme-border z-50"><Icon name="Paint"/></button>
-                    <div className="text-6xl mb-6 animate-float">🛡️</div>
+                    <div className="text-6xl mb-6 animate-pulse">🛡️</div>
                     <h1 className="text-2xl font-bold text-theme-text mb-8 font-pixel tracking-widest text-center">{t('login_title')}</h1>
                     <div className="w-full max-w-sm glass p-8 rounded-[2.5rem] shadow-2xl flex flex-col gap-5 border-4 border-theme-border">
                         <div className="flex bg-theme-bg rounded-full p-1">
@@ -918,7 +978,14 @@
                     <header className="px-4 pt-12 pb-2 flex flex-col gap-2 bg-theme-glass sticky top-0 z-20 backdrop-blur-md border-b border-theme-border shrink-0">
                         <div className="flex justify-between items-center w-full">
                             <div className="flex items-center gap-3">
-                                <label className="relative cursor-pointer avatar-glow"><div className="w-11 h-11 rounded-full bg-theme-card border-2 border-theme-accent overflow-hidden shadow-md flex items-center justify-center text-xl">{data.user.photo ? <img src={data.user.photo} className="w-full h-full object-cover"/> : "👤"}</div><input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/></label>
+                                <label className="relative cursor-pointer avatar-glow">
+                                    <div className="w-11 h-11 rounded-full bg-theme-card border-2 border-theme-accent overflow-hidden shadow-md flex items-center justify-center text-xl overflow-hidden">
+                                        <div className="w-full h-full transform scale-[2] translate-y-[20%]">
+                                            {data.user.gender === 'female' ? <AvatarFemale isHeadshot={true} /> : <AvatarMale isHeadshot={true} />}
+                                        </div>
+                                    </div>
+                                    <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/>
+                                </label>
                                 <div><div className="flex items-center gap-2"><h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div onClick={()=>setShowTitleSelect(true)} className="text-[10px] text-theme-accent font-bold opacity-80 cursor-pointer hover:underline">{data.user.title} <Icon name="Edit" size={10} className="inline"/></div></div>
                             </div>
                             <div className="flex gap-2">
@@ -964,7 +1031,7 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && <CharacterTab talents={data.talents} />}
+                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} gender={data.user.gender || 'female'} onToggleGender={toggleGender} />}
                         
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
