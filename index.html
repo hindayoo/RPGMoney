@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V24.1: Quest Fixes & Rewards</title>
+    <title>SakuraWallet V24.2: Avatar Fix & Quests</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -601,7 +601,7 @@
             );
         };
 
-        // --- Avatar Editor Modal (With Explicit Save) ---
+        // --- Avatar Editor Modal (FIXED: Flex Layout + Fixed Footer) ---
         const AvatarEditor = ({ currentColors, onSave, onClose }) => {
             const [colors, setColors] = useState(currentColors || { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' });
             
@@ -612,15 +612,19 @@
             return (
                 <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-[85vh]">
-                        <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest shrink-0">角色外觀</h3>
+                    <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90dvh] flex flex-col min-h-0">
                         
-                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border shrink-0">
-                            <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
-                            <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
+                        {/* Header & Preview Area (Fixed) */}
+                        <div className="p-6 pb-2 shrink-0">
+                            <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest">角色外觀</h3>
+                            <div className="flex justify-center mb-2 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border">
+                                <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
+                                <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
+                            </div>
                         </div>
 
-                        <div className="overflow-y-auto pr-1 flex-1 mb-4 space-y-4">
+                        {/* Scrollable Content Area */}
+                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4">
                             <div className="p-3 rounded-xl bg-theme-glass border border-theme-border">
                                 <span className="font-bold text-theme-text mb-2 block text-sm">飾品 (Accessory)</span>
                                 <div className="grid grid-cols-4 gap-2">
@@ -658,11 +662,14 @@
                             ))}
                         </div>
 
-                        <div className="flex gap-3 shrink-0 pt-2 border-t border-theme-border">
-                            <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
-                            <button onClick={handleSave} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md active:scale-95 transition-transform">
-                                <span className="flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 保存變更</span>
-                            </button>
+                        {/* Footer (Fixed at Bottom, High Z-Index) */}
+                        <div className="p-6 pt-4 border-t border-theme-border shrink-0 bg-theme-card pb-safe rounded-b-[2.5rem] z-20">
+                            <div className="flex gap-3">
+                                <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
+                                <button onClick={handleSave} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md active:scale-95 transition-transform">
+                                    <span className="flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 保存變更</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
