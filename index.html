@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V22.0: Character Build</title>
+    <title>SakuraWallet V22.1: Clear Hero</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -38,13 +38,13 @@
                 'glow': 'glow 3s infinite alternate',
                 'spin-slow': 'spin 8s linear infinite',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                'breathing': 'breathing 4s ease-in-out infinite'
+                'hero-idle': 'heroIdle 2s ease-in-out infinite'
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-                breathing: { '0%, 100%': { filter: 'brightness(1)' }, '50%': { filter: 'brightness(1.1)' } }
+                heroIdle: { '0%, 100%': { transform: 'translateY(0) scale(1)' }, '50%': { transform: 'translateY(-2%) scale(1.02)' } }
             }
           }
         }
@@ -169,14 +169,18 @@
         /* Level Up Rays */
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
         
-        /* HD-2D Effect */
-        .hd-2d-container { position: relative; overflow: hidden; border-radius: 1.5rem; background: #1a1a1a; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
-        .hd-2d-bg { position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%); opacity: 0.5; }
-        .hd-2d-spotlight { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); background: radial-gradient(circle, var(--accent-color) 0%, transparent 60%); opacity: 0.15; filter: blur(20px); }
+        /* New Hero Stage */
+        .char-stage { position: relative; width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--glass-bg) 30%, transparent 70%); }
+        .equip-col { display: flex; flex-direction: column; gap: 24px; z-index: 20; }
+        .equip-slot { 
+            @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center cursor-pointer transition-all active:scale-95 hover:border-theme-accent shadow-md; 
+            position: relative;
+        }
+        .equip-slot.active { @apply border-theme-accent bg-theme-accent/10; }
+        .equip-label { position: absolute; bottom: -18px; font-size: 9px; font-weight: bold; color: var(--text-sub); text-transform: uppercase; white-space: nowrap; }
         
-        .pixel-char { image-rendering: pixelated; transform: scale(4); }
-        .equip-slot { @apply w-12 h-12 rounded-lg border-2 border-theme-sub bg-theme-bg/80 flex items-center justify-center cursor-pointer transition-all active:scale-95 hover:border-theme-accent shadow-lg; }
-        .equip-slot.active { @apply border-theme-accent bg-theme-accent/20; }
+        .hero-container { position: relative; width: 160px; height: 220px; display: flex; items-center justify-content: center; z-index: 10; }
+        .hero-base { position: absolute; bottom: 10px; width: 100px; height: 20px; background: var(--accent-color); opacity: 0.2; border-radius: 50%; filter: blur(5px); animation: pulse 3s infinite; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -204,7 +208,6 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Mock Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -316,7 +319,7 @@
             { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
         ];
         
-        // Re-mapped to Equipment Slots
+        // Re-mapped to Equipment Slots with English keys but Chinese names
         const TALENTS = [
             {id:'t1', slot: 'head', icon:'Book', name:'智慧之冠', desc:'增加知識獲取'}, 
             {id:'t2', slot: 'armor', icon:'Shield', name:'守護者之鎧', desc:'減少意外支出'}, 
@@ -537,7 +540,7 @@
             );
         };
 
-        // --- Character Build Tab ---
+        // --- Character Build Tab (Updated Visuals) ---
         const CharacterTab = ({ talents, onUpgrade }) => {
             const getSlot = (s) => TALENTS.find(t => t.slot === s);
             const renderSlot = (slotName) => {
@@ -548,6 +551,7 @@
                     <div onClick={() => onUpgrade(t.id)} className={`equip-slot ${lv > 0 ? 'active' : ''}`}>
                         <Icon name={t.icon} size={24} className={lv > 0 ? 'text-theme-accent' : 'text-theme-sub'}/>
                         {lv > 0 && <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white">{lv}</span>}
+                        <div className="equip-label">{slotName}</div>
                     </div>
                 );
             };
@@ -555,44 +559,47 @@
             return (
                 <div className="animate-[fadeIn_0.5s] space-y-6">
                     <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text mb-4">
-                        <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character} (Character Build)
+                        <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
                     </h3>
                     
-                    <div className="hd-2d-container w-full h-80 flex items-center justify-center relative">
-                        <div className="hd-2d-bg"></div>
-                        <div className="hd-2d-spotlight"></div>
-                        
-                        <div className="relative z-10 flex w-full max-w-xs justify-between px-6 items-center">
-                            {/* Left Slots */}
-                            <div className="flex flex-col gap-6">
+                    <div className="char-stage rounded-3xl">
+                         {/* Clear Pixel Hero SVG */}
+                        <div className="hero-container animate-hero-idle">
+                            <div className="hero-base"></div>
+                            {/* Detailed 32-bit Hero SVG */}
+                            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl">
+                                {/* Body/Legs */}
+                                <rect x="35" y="60" width="10" height="25" fill="#5D4037" /> {/* Left Leg */}
+                                <rect x="55" y="60" width="10" height="25" fill="#5D4037" /> {/* Right Leg */}
+                                <rect x="30" y="40" width="40" height="30" fill="var(--accent-color)" rx="4" /> {/* Armor Body */}
+                                {/* Arms */}
+                                <rect x="15" y="45" width="12" height="25" fill="#FFCCBC" rx="2" /> {/* Left Arm */}
+                                <rect x="73" y="45" width="12" height="25" fill="#FFCCBC" rx="2" /> {/* Right Arm */}
+                                {/* Head */}
+                                <rect x="30" y="10" width="40" height="35" fill="#FFCCBC" rx="6" /> {/* Face */}
+                                <rect x="30" y="10" width="40" height="12" fill="#3E2723" rx="4" /> {/* Hair Top */}
+                                <rect x="28" y="10" width="6" height="25" fill="#3E2723" /> {/* Hair Side L */}
+                                <rect x="66" y="10" width="6" height="25" fill="#3E2723" /> {/* Hair Side R */}
+                                {/* Eyes */}
+                                <rect x="38" y="25" width="6" height="6" fill="#1a1a1a" /> 
+                                <rect x="56" y="25" width="6" height="6" fill="#1a1a1a" />
+                                {/* Scarf/Details */}
+                                <path d="M35 40 Q50 55 65 40" stroke="white" strokeWidth="3" fill="none" />
+                            </svg>
+                        </div>
+
+                        <div className="absolute inset-0 flex justify-between px-6 py-8">
+                            <div className="equip-col justify-center">
                                 {renderSlot('head')}
                                 {renderSlot('armor')}
                                 {renderSlot('weapon')}
                             </div>
-
-                            {/* Pixel Character */}
-                            <div className="pixel-char animate-breathing filter drop-shadow-lg">
-                                {/* Simple SVG Pixel Art Hero */}
-                                <svg width="40" height="40" viewBox="0 0 10 10" className="text-theme-text">
-                                    <rect x="3" y="1" width="4" height="3" fill="currentColor"/>
-                                    <rect x="2" y="4" width="6" height="4" fill="var(--accent-color)"/>
-                                    <rect x="3" y="8" width="1" height="2" fill="currentColor"/>
-                                    <rect x="6" y="8" width="1" height="2" fill="currentColor"/>
-                                    <rect x="1" y="5" width="1" height="2" fill="currentColor"/>
-                                    <rect x="8" y="5" width="1" height="2" fill="currentColor"/>
-                                </svg>
-                            </div>
-
-                            {/* Right Slots */}
-                            <div className="flex flex-col gap-6">
+                            <div className="equip-col justify-center">
                                 {renderSlot('back')}
                                 {renderSlot('hand')}
                                 {renderSlot('shoes')}
                             </div>
                         </div>
-                        
-                        {/* Floor Reflection */}
-                        <div className="absolute bottom-10 w-20 h-4 bg-black/30 rounded-[100%] blur-md"></div>
                     </div>
                 </div>
             );
@@ -858,14 +865,12 @@
             // Quests Logic (Fixed: Strict Currency Filter)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
-                
-                // STRICT FILTERING
                 const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
                 const relevantAccs = data.accounts.filter(a => a.currency === mainCurrency);
                 
                 const totalExp = relevantTxs.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
-                const totalTxCount = data.transactions.length; // Generic (any currency)
-                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length; // Generic
+                const totalTxCount = data.transactions.length; 
+                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
                 
                 const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
                 const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
