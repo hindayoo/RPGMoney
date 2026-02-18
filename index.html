@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.5: Hybrid Login</title>
+    <title>SakuraWallet V21.6: Rename Hero</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -154,7 +154,6 @@
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
         
-        /* New Nav Bar Safe Area */
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
     </style>
 </head>
@@ -183,8 +182,6 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase config (Note: In a real environment, these would be valid keys. 
-        // For this local file, we handle connection failures gracefully.)
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -204,7 +201,6 @@
         } catch (e) {
             console.warn("Offline Mode Active");
             document.getElementById('loading-status').innerText = "進入單機模式";
-            // Mock firebase object to prevent immediate crash, handleAuth will handle the logic
             window.firebase = null; 
         }
     </script>
@@ -521,6 +517,10 @@
             const [flowView, setFlowView] = useState('today'); 
             const [logFilter, setLogFilter] = useState('all'); 
 
+            // Rename UI State
+            const [showNameEdit, setShowNameEdit] = useState(false);
+            const [tempName, setTempName] = useState('');
+
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
             const [showTitleSelect, setShowTitleSelect] = useState(false);
@@ -656,37 +656,10 @@
 
             const handleAuth = async () => { 
                 const fb = window.firebase; 
-                
-                // If real firebase is missing or fails, we use local simulation
-                // Check if user wants to play offline or simple login simulation
                 if (!fb || !fb.auth || !fb.app) {
-                    // Simulation Mode (for local file opening)
-                    const fakeUid = 'local_' + Date.now();
-                    const newUser = {
-                        uid: fakeUid,
-                        name: regName || 'Adventurer',
-                        level: 1, 
-                        exp: 0, 
-                        title: 'Novice', 
-                        unlockedTitles: ['Novice'], 
-                        photo: ''
-                    };
-                    const initData = { 
-                        user: newUser, 
-                        accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], 
-                        transactions: [], 
-                        quests: [], 
-                        achievements: [], 
-                        logs: [], 
-                        categories: DEFAULT_CATEGORIES, 
-                        talents: {}, 
-                        claimedQuests: [] 
-                    };
-                    localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
-                    window.location.reload();
+                    alert("目前處於單機環境或 Firebase 未配置，請使用「單機試玩」模式。");
                     return;
                 }
-
                 const email = loginAccount.trim() + "@sakurarpg.com"; 
                 try { 
                     if (isRegistering) { 
@@ -712,6 +685,12 @@
                 setKeypadOpen(false);
             };
             
+            const handleRename = () => {
+                if(!tempName.trim()) return;
+                saveData({...data, user: {...data.user, name: tempName}});
+                setShowNameEdit(false);
+            };
+
             const addTransaction = () => {
                 if(!txForm.amount || !txForm.accountId) return alert(t('missing_info'));
                 const amt = parseFloat(txForm.amount);
@@ -824,7 +803,7 @@
                         <div className="flex justify-between items-center w-full">
                             <div className="flex items-center gap-3">
                                 <label className="relative cursor-pointer avatar-glow"><div className="w-11 h-11 rounded-full bg-theme-card border-2 border-theme-accent overflow-hidden shadow-md flex items-center justify-center text-xl">{data.user.photo ? <img src={data.user.photo} className="w-full h-full object-cover"/> : "👤"}</div><input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/></label>
-                                <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div onClick={()=>setShowTitleSelect(true)} className="text-[10px] text-theme-accent font-bold opacity-80 cursor-pointer hover:underline">{data.user.title} <Icon name="Edit" size={10} className="inline"/></div></div>
+                                <div><div className="flex items-center gap-2"><h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div onClick={()=>setShowTitleSelect(true)} className="text-[10px] text-theme-accent font-bold opacity-80 cursor-pointer hover:underline">{data.user.title} <Icon name="Edit" size={10} className="inline"/></div></div>
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
@@ -992,6 +971,20 @@
                         onLockedClick={(t) => alert(`🔒 [${t.name}]\n\n📜 描述: ${t.desc}\n🔑 解鎖條件: ${t.condition}`)}
                         onClose={() => setShowTitleSelect(false)} 
                     />}
+                    
+                    {/* Rename Modal */}
+                    {showNameEdit && (
+                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
+                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-sm shadow-2xl animate-[slideUp_0.2s]">
+                                <h3 className="font-bold text-lg text-theme-text mb-4 text-center">更換冒險者代號</h3>
+                                <input type="text" value={tempName} onChange={e=>setTempName(e.target.value)} className="rpg-input mb-4" placeholder="輸入新名稱" autoFocus />
+                                <div className="flex gap-3">
+                                    <button onClick={() => setShowNameEdit(false)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
+                                    <button onClick={handleRename} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">確認</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
