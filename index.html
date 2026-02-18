@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.1: Mana Flow & Glory</title>
+    <title>SakuraWallet V21.2: Mana Analytics</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -500,7 +500,7 @@
             });
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
-            const [subView, setSubView] = useState('fin'); // Default to Financial Log
+            const [subView, setSubView] = useState('fin');
             const [modalOpen, setModalOpen] = useState(false);
             const [assetModalOpen, setAssetModalOpen] = useState(false);
             const [catManagerOpen, setCatManagerOpen] = useState(false);
@@ -510,6 +510,10 @@
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
             const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
+            // New States for V21.2
+            const [flowView, setFlowView] = useState('today'); // 'today' or 'month'
+            const [logFilter, setLogFilter] = useState('all'); // 'all', 'today', 'month'
+
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
             const [showTitleSelect, setShowTitleSelect] = useState(false);
@@ -680,10 +684,6 @@
                 const currentMonth = now.getMonth();
                 const currentYear = now.getFullYear();
                 
-                // Assume all transactions stored are already in main currency OR we convert on fly. 
-                // For simplicity in this demo, we assume they matched or we rely on 'amount' directly (ignoring currency mismatch for prototype speed, ideally convertMoney is applied per tx).
-                // Let's do simple sum.
-                
                 const todayTxs = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr);
                 const monthTxs = data.transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear; });
 
@@ -694,11 +694,23 @@
                     };
                 };
 
-                const tStats = calc(todayTxs);
-                const mStats = calc(monthTxs);
-
-                return { tStats, mStats };
+                return { tStats: calc(todayTxs), mStats: calc(monthTxs) };
             }, [data.transactions]);
+
+            const filteredLogs = useMemo(() => {
+                return data.logs.filter(l => {
+                    if (subView === 'sys') return l.type === 'system';
+                    if (subView === 'fin') {
+                        if (l.type === 'system') return false; // Basic safety check
+                        const logDate = new Date(l.date);
+                        const now = new Date();
+                        if (logFilter === 'today') return logDate.toDateString() === now.toDateString();
+                        if (logFilter === 'month') return logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear();
+                        return true; // 'all'
+                    }
+                    return false;
+                });
+            }, [data.logs, subView, logFilter]);
 
             if (loading) return null;
             if (!data.user) return ( 
@@ -840,20 +852,24 @@
                         
                         {view === 'journal' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
-                                {/* Mana Flow Dashboard */}
+                                {/* Mana Flow Dashboard (Switchable) */}
                                 <div className="glass p-4 rounded-3xl border border-theme-border">
-                                    <h3 className="font-bold text-sm text-theme-text mb-3 flex items-center gap-2"><Icon name="Chart" size={16}/> 瑪娜流動 (Mana Flow)</h3>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-theme-bg p-3 rounded-2xl">
-                                            <div className="text-[10px] text-theme-sub font-bold mb-1">今日概況</div>
-                                            <div className="text-xs text-green-500 font-mono flex justify-between"><span>收</span> <span>+{financialStats.tStats.in}</span></div>
-                                            <div className="text-xs text-red-500 font-mono flex justify-between"><span>支</span> <span>-{financialStats.tStats.out}</span></div>
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Chart" size={16}/> 瑪娜流動</h3>
+                                        <div className="flex bg-theme-bg rounded-lg p-0.5">
+                                            <button onClick={()=>setFlowView('today')} className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all ${flowView==='today'?'bg-theme-accent text-white shadow':'text-theme-sub'}`}>今日</button>
+                                            <button onClick={()=>setFlowView('month')} className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all ${flowView==='month'?'bg-theme-accent text-white shadow':'text-theme-sub'}`}>本月</button>
                                         </div>
-                                        <div className="bg-theme-bg p-3 rounded-2xl">
-                                            <div className="text-[10px] text-theme-sub font-bold mb-1">本月概況</div>
-                                            <div className="text-xs text-green-500 font-mono flex justify-between"><span>收</span> <span>+{financialStats.mStats.in}</span></div>
-                                            <div className="text-xs text-red-500 font-mono flex justify-between"><span>支</span> <span>-{financialStats.mStats.out}</span></div>
-                                            <div className="border-t border-theme-border mt-1 pt-1 text-xs font-bold text-theme-text text-right font-mono">= {financialStats.mStats.in - financialStats.mStats.out}</div>
+                                    </div>
+                                    
+                                    <div className="flex gap-4">
+                                        <div className="flex-1 bg-green-50/50 dark:bg-green-900/20 p-3 rounded-2xl border border-green-100 dark:border-green-800/30 flex flex-col items-center">
+                                            <span className="text-[10px] text-green-600 font-bold mb-1">IN</span>
+                                            <span className="text-xl font-mono font-bold text-green-500">+{flowView==='today' ? financialStats.tStats.in : financialStats.mStats.in}</span>
+                                        </div>
+                                        <div className="flex-1 bg-red-50/50 dark:bg-red-900/20 p-3 rounded-2xl border border-red-100 dark:border-red-800/30 flex flex-col items-center">
+                                            <span className="text-[10px] text-red-600 font-bold mb-1">OUT</span>
+                                            <span className="text-xl font-mono font-bold text-red-500">-{flowView==='today' ? financialStats.tStats.out : financialStats.mStats.out}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -862,16 +878,34 @@
                                     <button onClick={()=>setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='fin'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>財務變動</button>
                                     <button onClick={()=>setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='sys'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>系統事件</button>
                                 </div>
-                                <div className="space-y-3 pb-20">
-                                    {data.logs.filter(l => subView==='sys' ? l.type==='system' : (l.type==='finance_out' || l.type==='finance_in')).map(l => (
-                                        <div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform">
-                                            <div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div>
-                                            <div className="flex-1">
-                                                <div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div>
-                                                <div className="text-sm font-bold text-theme-text">{l.msg}</div>
+
+                                {subView === 'fin' && (
+                                    <div className="flex gap-2 mb-2 overflow-x-auto no-scrollbar pb-1">
+                                        {['all', 'month', 'today'].map(f => (
+                                            <button key={f} onClick={()=>setLogFilter(f)} className={`px-4 py-1.5 rounded-full text-[10px] font-bold border transition-colors whitespace-nowrap ${logFilter===f ? 'bg-theme-accent text-white border-theme-accent' : 'bg-transparent text-theme-sub border-theme-border'}`}>
+                                                {f==='all'?'全部':f==='month'?'本月':'今日'}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className="space-y-3 pb-20 min-h-[200px]">
+                                    {filteredLogs.length > 0 ? (
+                                        filteredLogs.map(l => (
+                                            <div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform">
+                                                <div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div>
+                                                <div className="flex-1">
+                                                    <div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div>
+                                                    <div className="text-sm font-bold text-theme-text">{l.msg}</div>
+                                                </div>
                                             </div>
+                                        ))
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center py-10 opacity-50">
+                                            <Icon name="Ghost" size={48} className="text-theme-sub mb-2"/>
+                                            <span className="text-xs text-theme-sub font-bold">尚無相關紀錄</span>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
                             </div> 
                         )}
