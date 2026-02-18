@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V23.5: Pixel & Custom Avatar</title>
+    <title>SakuraWallet V23.8: Custom Avatar Engine</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -97,9 +97,9 @@
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
         .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300; }
-        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
-        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
+        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300 bg-theme-card; }
+        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/20 shadow-md; }
+        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 grayscale opacity-80; }
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
 
         /* Character Stage */
@@ -271,6 +271,24 @@
             {id:'t4', slot: '背飾', icon:'Briefcase', name:'工匠背包'}, 
             {id:'t5', slot: '副手', icon:'Gem', name:'幸運手環'}, 
             {id:'t6', slot: '足部', icon:'Zap', name:'疾風之靴'}
+        ];
+
+        // Achievement System Data
+        const ACHIEVEMENTS_LIST = [
+            { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
+            { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
+            { id: 'ach_tx_100', icon: 'Library', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
+            
+            { id: 'ach_exp_1k', icon: 'ShoppingBag', title: '初級消費者', desc: '累積消費突破 1,000', target: 1000, type: 'expenseTotal' },
+            { id: 'ach_exp_10k', icon: 'Gem', title: '揮金如土', desc: '累積消費突破 10,000', target: 10000, type: 'expenseTotal' },
+            
+            { id: 'ach_bal_5k', icon: 'Wallet', title: '儲蓄見習', desc: '總資產突破 5,000', target: 5000, type: 'balance' },
+            { id: 'ach_bal_50k', icon: 'Landmark', title: '理財專家', desc: '總資產突破 50,000', target: 50000, type: 'balance' },
+            
+            { id: 'ach_qst_5', icon: 'Trophy', title: '賞金獵人', desc: '完成 5 個任務', target: 5, type: 'questCount' },
+            { id: 'ach_qst_20', icon: 'Crown', title: '傳奇傭兵', desc: '完成 20 個任務', target: 20, type: 'questCount' },
+            
+            { id: 'ach_lv_10', icon: 'Star', title: '冒險新星', desc: '等級達到 10', target: 10, type: 'level' }
         ];
 
         const TITLES_LIST = [
@@ -484,32 +502,121 @@
             );
         };
 
-        // --- High Quality Avatars (RPG Style) ---
-        // Refined Pixel Art based on the Blue/Gold Warrior Template (Red Cape, Sword)
-        
-        // 男角：短刺蝟頭，藍色重甲，紅色披風，寬劍
-        const PIXEL_CHAR_MALE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3C!-- Cape --%3E%3Cpath fill='%23630f0f' d='M6 18h20v14H6z'/%3E%3Cpath fill='%239e1a1a' d='M8 18h16v12H8z'/%3E%3C!-- Legs/Boots --%3E%3Cpath fill='%233e2723' d='M11 26h4v6h-4zM17 26h4v6h-4z'/%3E%3C!-- Armor Body --%3E%3Cpath fill='%230d47a1' d='M10 17h12v9H10z'/%3E%3Cpath fill='%231976d2' d='M12 18h8v6h-8z'/%3E%3C!-- Gold Armor Trim --%3E%3Cpath fill='%23ffb300' d='M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z'/%3E%3C!-- Shoulders --%3E%3Cpath fill='%23ffca28' d='M7 16h4v4H7zM21 16h4v4h-4z'/%3E%3C!-- Face --%3E%3Cpath fill='%23ffccbc' d='M10 9h12v8H10z'/%3E%3C!-- Eyes --%3E%3Cpath fill='%231a237e' d='M12 12h2v2h-2zM18 12h2v2h-2z'/%3E%3C!-- Hair --%3E%3Cpath fill='%238d6e63' d='M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z'/%3E%3C!-- Crown/Headband --%3E%3Cpath fill='%23ffb300' d='M9 7h14v2H9z'/%3E%3Cpath fill='%2329b6f6' d='M15 6h2v3h-2z'/%3E%3C!-- Sword --%3E%3Cpath fill='%235d4037' d='M23 19h4v2h-4z'/%3E%3Cpath fill='%23ffb300' d='M24 18h2v4h-2z'/%3E%3Cpath fill='%23e0e0e0' d='M26 19h6v2h-6z'/%3E%3C/svg%3E";
+        // --- NEW: Pixel Avatar Component (SVG based) ---
+        const PixelAvatar = ({ gender, colors, className }) => {
+            // Colors fallback
+            const {
+                hair = '#8d6e63',
+                armor = '#0d47a1',
+                cape = '#c62828',
+                skin = '#ffccbc'
+            } = colors || {};
 
-        // 女角：長髮，藍色輕甲戰裙，紅色披風，細劍
-        const PIXEL_CHAR_FEMALE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3C!-- Cape --%3E%3Cpath fill='%23630f0f' d='M7 18h18v14H7z'/%3E%3Cpath fill='%239e1a1a' d='M9 18h14v12H9z'/%3E%3C!-- Hair Back --%3E%3Cpath fill='%235d4037' d='M8 9h16v12H8z'/%3E%3C!-- Legs/Boots --%3E%3Cpath fill='%233e2723' d='M12 28h3v4h-3zM17 28h3v4h-3z'/%3E%3C!-- Armor Body --%3E%3Cpath fill='%230d47a1' d='M11 17h10v7H11z'/%3E%3Cpath fill='%231976d2' d='M13 18h6v5h-6z'/%3E%3C!-- Skirt --%3E%3Cpath fill='%231565c0' d='M10 24h12v4H10z'/%3E%3C!-- Gold Armor Trim --%3E%3Cpath fill='%23ffb300' d='M11 17h10v1H11zM11 24h10v1H11z'/%3E%3C!-- Shoulders --%3E%3Cpath fill='%23ffca28' d='M9 17h3v3H9zM20 17h3v3h-3z'/%3E%3C!-- Face --%3E%3Cpath fill='%23ffccbc' d='M11 10h10v7H11z'/%3E%3C!-- Eyes --%3E%3Cpath fill='%231a237e' d='M12 13h2v2h-2zM18 13h2v2h-2z'/%3E%3C!-- Hair Front --%3E%3Cpath fill='%23795548' d='M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z'/%3E%3C!-- Crown/Headband --%3E%3Cpath fill='%23ffb300' d='M10 8h12v2H10z'/%3E%3Cpath fill='%23f06292' d='M15 7h2v3h-2z'/%3E%3C!-- Sword --%3E%3Cpath fill='%235d4037' d='M23 20h3v2h-3z'/%3E%3Cpath fill='%23ffb300' d='M24 19h2v4h-2z'/%3E%3Cpath fill='%23e0e0e0' d='M26 20h6v2h-6z'/%3E%3C/svg%3E";
+            return (
+                <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
+                    {/* Common Parts */}
+                    <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9"/>
+                    
+                    {/* Legs/Boots */}
+                    <path fill="#3e2723" d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
 
-        const CharacterTab = ({ talents, onUpgrade, gender, onToggleGender }) => {
+                    {/* Body Armor */}
+                    <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
+                    
+                    {/* Skirt for female */}
+                    {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
+
+                    {/* Gold Trim */}
+                    <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
+
+                    {/* Shoulders */}
+                    <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
+
+                    {/* Face */}
+                    <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
+
+                    {/* Eyes */}
+                    <path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} />
+
+                    {/* Hair */}
+                    {gender === 'male' ? (
+                        <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                    ) : (
+                        <g fill={hair}>
+                            <path d="M8 9h16v12H8z" opacity="0.8" /> {/* Back Hair */}
+                            <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" /> {/* Front Hair */}
+                        </g>
+                    )}
+
+                    {/* Crown */}
+                    <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
+                    <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
+
+                    {/* Weapon */}
+                    <g transform={gender==='male'?"":"translate(0,1)"}>
+                        <path fill="#5d4037" d="M23 19h4v2h-4z" />
+                        <path fill="#ffb300" d="M24 18h2v4h-2z" />
+                        <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                    </g>
+                </svg>
+            );
+        };
+
+        // --- NEW: Avatar Editor Modal ---
+        const AvatarEditor = ({ currentColors, onSave, onClose }) => {
+            const [colors, setColors] = useState(currentColors || { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' });
+            
+            return (
+                <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[80vh] flex flex-col">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest">角色外觀</h3>
+                        
+                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border">
+                            <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
+                            <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
+                        </div>
+
+                        <div className="space-y-4 mb-6">
+                            {[
+                                { id: 'hair', label: '頭髮' },
+                                { id: 'armor', label: '盔甲' },
+                                { id: 'cape', label: '披風' },
+                                { id: 'skin', label: '膚色' }
+                            ].map(item => (
+                                <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-theme-glass border border-theme-border">
+                                    <span className="font-bold text-theme-text">{item.label}</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-mono text-theme-sub">{colors[item.id]}</span>
+                                        <input 
+                                            type="color" 
+                                            value={colors[item.id]} 
+                                            onChange={(e) => setColors({...colors, [item.id]: e.target.value})}
+                                            className="w-10 h-10 rounded-lg overflow-hidden border-none cursor-pointer"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
+                            <button onClick={() => onSave(colors)} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">儲存</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CharacterTab = ({ talents, onUpgrade, gender, onToggleGender, appearance, onUpdateAppearance }) => {
+            const [isEditing, setIsEditing] = useState(false);
+            
             const getSlot = (s) => EQUIPMENT_SLOTS.find(t => t.slot === s);
             const renderSlot = (slotName) => {
                 const t = getSlot(slotName);
                 if (!t) return null;
                 const lv = talents[t.id] || 0;
-                
-                // Empty Slot State
-                if (lv === 0) {
-                    return (
-                        <div className="slot-empty">
-                            <div className="equip-label">{slotName}</div>
-                        </div>
-                    );
-                }
-
-                // Filled Slot State
+                if (lv === 0) return <div className="slot-empty"><div className="equip-label">{slotName}</div></div>;
                 return (
                     <div className="slot-filled">
                         <Icon name={t.icon} size={24} className="text-theme-accent"/>
@@ -521,32 +628,23 @@
 
             return (
                 <div className="animate-[fadeIn_0.5s] space-y-6">
-                    <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text mb-4">
-                        <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
-                    </h3>
+                    <div className="flex justify-between items-center">
+                        <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text">
+                            <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
+                        </h3>
+                        <button onClick={() => setIsEditing(true)} className="text-xs bg-theme-glass px-3 py-1 rounded-full border border-theme-border font-bold text-theme-accent flex items-center gap-1 active:scale-95">
+                            <Icon name="Paint" size={12} /> 自訂外觀
+                        </button>
+                    </div>
                     
                     <div className="char-stage rounded-3xl">
                         <div className="magic-circle"></div>
-                        
-                        {/* Center Layout for Equipment */}
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                             {/* Left Column */}
-                            <div className="flex flex-col gap-4 mr-32 pointer-events-auto">
-                                {renderSlot('頭部')}
-                                {renderSlot('身軀')}
-                                {renderSlot('主手')}
-                            </div>
-                            
-                            {/* Right Column */}
-                            <div className="flex flex-col gap-4 ml-32 pointer-events-auto">
-                                {renderSlot('背飾')}
-                                {renderSlot('副手')}
-                                {renderSlot('足部')}
-                            </div>
+                            <div className="flex flex-col gap-4 mr-32 pointer-events-auto">{renderSlot('頭部')}{renderSlot('身軀')}{renderSlot('主手')}</div>
+                            <div className="flex flex-col gap-4 ml-32 pointer-events-auto">{renderSlot('背飾')}{renderSlot('副手')}{renderSlot('足部')}</div>
                         </div>
 
                         <div className="hero-container relative z-10">
-                            {/* Gender Switch Button */}
                             <button 
                                 onClick={onToggleGender}
                                 className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto"
@@ -554,11 +652,10 @@
                                 <span className="text-xs font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</span>
                             </button>
 
-                             {/* Pixel Art Character */}
-                             <img 
-                                src={gender === 'female' ? PIXEL_CHAR_FEMALE : PIXEL_CHAR_MALE} 
-                                alt="Character" 
-                                className="w-64 h-64 object-contain animate-hero-breathe drop-shadow-xl pixel-art"
+                             <PixelAvatar 
+                                gender={gender} 
+                                colors={appearance}
+                                className="w-64 h-64 object-contain animate-hero-breathe drop-shadow-xl"
                             />
                         </div>
 
@@ -566,6 +663,8 @@
                             Mystery Shop 🔒
                         </button>
                     </div>
+
+                    {isEditing && <AvatarEditor currentColors={appearance} onSave={(colors) => { onUpdateAppearance(colors); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
             );
         };
@@ -634,6 +733,7 @@
                 }
                 if (log.msg.includes('Quest Claimed')) return `${t('log_sys_quest')}: ${log.msg.split(': ')[1]}`;
                 if (log.msg.includes('Title Unlocked')) return `${t('log_sys_title')}: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Achievement Unlocked')) return `🏆 成就解鎖: ${log.msg.split(': ')[1]}`;
                 return log.msg;
             };
 
@@ -646,7 +746,10 @@
                     if (!localData.talents) localData.talents = {};
                     if (!localData.claimedQuests) localData.claimedQuests = [];
                     if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
+                    if (!localData.user.unlockedAchievements) localData.user.unlockedAchievements = [];
                     if (!localData.user.gender) localData.user.gender = 'female';
+                    // Default Appearance
+                    if (!localData.user.appearance) localData.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
                     setData(localData); 
                 } else {
                     setData(prev => ({ ...prev, user: null }));
@@ -669,10 +772,12 @@
                                 if(!fd.talents) fd.talents = {}; 
                                 if(!fd.claimedQuests) fd.claimedQuests = []; 
                                 if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
+                                if(!fd.user.unlockedAchievements) fd.user.unlockedAchievements = [];
                                 if(!fd.user.gender) fd.user.gender = 'female';
+                                if (!fd.user.appearance) fd.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -697,15 +802,55 @@
                 };
                 
                 let newTitles = [...(currentData.user.unlockedTitles || ['Novice'])];
-                let updated = false;
+                let titleUpdated = false;
                 TITLES_LIST.forEach(t => {
                     if (!newTitles.includes(t.id) && t.check(stats, 1)) {
                         newTitles.push(t.id);
-                        updated = true;
+                        titleUpdated = true;
                         addLog('system', `Title Unlocked: ${t.name}`);
                     }
                 });
-                if (updated) saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: [...addLog('system', 'New Titles Unlocked!'), ...(currentData.logs||[])] });
+
+                // Check Achievements
+                let newAchievements = [...(currentData.user.unlockedAchievements || [])];
+                let achUpdated = false;
+                let logBuffer = [];
+
+                ACHIEVEMENTS_LIST.forEach(ach => {
+                    if (newAchievements.includes(ach.id)) return;
+                    
+                    let achieved = false;
+                    if (ach.type === 'txCount' && stats.txCount >= ach.target) achieved = true;
+                    if (ach.type === 'expenseTotal' && stats.totalExp >= ach.target) achieved = true;
+                    if (ach.type === 'balance' && stats.balance >= ach.target) achieved = true;
+                    if (ach.type === 'questCount' && stats.questCount >= ach.target) achieved = true;
+                    if (ach.type === 'level' && stats.level >= ach.target) achieved = true;
+
+                    if (achieved) {
+                        newAchievements.push(ach.id);
+                        achUpdated = true;
+                        logBuffer.push(`Achievement Unlocked: ${ach.title}`);
+                    }
+                });
+
+                if (titleUpdated || achUpdated) {
+                    let newLogs = currentData.logs || [];
+                    if (achUpdated) {
+                        const time = new Date().toISOString();
+                        const achLogs = logBuffer.map((msg, i) => ({ id: Date.now() + i, date: time, type: 'system', msg }));
+                        newLogs = [...achLogs, ...newLogs].slice(0, 50);
+                    }
+                    
+                    saveData({ 
+                        ...currentData, 
+                        user: { 
+                            ...currentData.user, 
+                            unlockedTitles: newTitles,
+                            unlockedAchievements: newAchievements 
+                        }, 
+                        logs: newLogs
+                    });
+                }
             };
 
             const convertMoney = (amountInTWD) => {
@@ -722,6 +867,10 @@
             const toggleGender = () => {
                 const newGender = data.user.gender === 'female' ? 'male' : 'female';
                 saveData({ ...data, user: { ...data.user, gender: newGender } });
+            };
+
+            const updateAppearance = (newColors) => {
+                saveData({ ...data, user: { ...data.user, appearance: newColors } });
             };
 
             const handleClaim = (quest) => {
@@ -766,7 +915,7 @@
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
                     const fakeUid = 'local_' + Date.now();
-                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' };
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' }, photo: '' };
                     const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
                     localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
                     window.location.reload();
@@ -835,7 +984,7 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic (Fixed: Strict Currency Filter)
+            // Quests Logic
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
                 const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
@@ -848,8 +997,8 @@
                 const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
                 const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
 
-                // Base values in TWD
                 const rawQuests = [
+                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 50, progress: 1, target: 1 },
                     { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
                     { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: totalExpenseVal, target: convertMoney(500) },
                     { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
@@ -861,6 +1010,8 @@
                 ];
                 return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [data, subView, mainCurrency, rates]);
+
+            const pendingClaims = useMemo(() => activeQuests.filter(q => q.isCompleted && !q.isClaimed).length, [activeQuests]);
 
             // Financial Summary Logic
             const financialStats = useMemo(() => {
@@ -897,6 +1048,17 @@
                 });
             }, [data.logs, subView, logFilter]);
 
+            // Stats for Achievement View
+            const currentStats = useMemo(() => {
+                return {
+                    txCount: data.transactions.length,
+                    expenseTotal: data.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + (c.amount * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    balance: data.accounts.reduce((a,c) => a + (c.balance * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    questCount: data.claimedQuests.length,
+                    level: data.user ? data.user.level : 1
+                };
+            }, [data]);
+
             if (loading) return null;
             if (!data.user) return ( 
                 <div className="h-[100dvh] flex flex-col items-center justify-center p-6 animate-[fadeIn_0.5s] overflow-y-auto relative">
@@ -917,7 +1079,7 @@
                         <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
-                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
                 </div> 
             );
@@ -985,10 +1147,14 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} gender={data.user.gender || 'female'} onToggleGender={toggleGender} />}
+                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} />}
                         
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
+                                <div className="flex justify-between items-center px-2">
+                                    <div className="text-[10px] text-theme-sub font-bold opacity-70 flex items-center gap-1"><Icon name="Cloud" size={12}/> 每日任務將於 00:00 自動重置</div>
+                                    <div className="text-[10px] font-mono font-bold text-theme-accent">{new Date().toLocaleDateString()}</div>
+                                </div>
                                 <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
                                 {activeQuests.map(q => (
                                     <div key={q.id} className={`glass p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isClaimed ? 'opacity-50 grayscale' : ''}`}>
@@ -1002,7 +1168,50 @@
                             </div> 
                         )}
                         
-                        {view === 'achievements' && ( <div className="grid gap-3 animate-[fadeIn_0.5s]">{data.achievements.map(a => (<div key={a.id} className={`achievement-card ${a.unlocked ? 'unlocked' : 'locked'}`}><div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm"><Icon name={a.unlocked ? a.icon : 'Lock'} size={24}/></div><div className="flex-1"><div className="font-bold text-sm text-theme-text">{a.title}</div><div className="text-[10px] opacity-70 text-theme-sub">{a.desc}</div>{a.target && (<div className="mt-2 flex items-center gap-2"><div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50"><div className="h-full bg-theme-accent" style={{width: `${Math.min(100, (a.progress/a.target)*100)}%`}}></div></div><span className="text-[8px] font-bold text-theme-sub">{a.progress}/{a.target}</span></div>)}</div></div>))}</div> )}
+                        {view === 'achievements' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                <h3 className="font-bold text-lg text-theme-text px-2">成就系統</h3>
+                                <div className="grid gap-3">
+                                    {ACHIEVEMENTS_LIST.map(a => {
+                                        const unlocked = data.user.unlockedAchievements.includes(a.id);
+                                        let currentVal = 0;
+                                        // Calculate current value dynamically based on type
+                                        if (a.type === 'txCount') currentVal = currentStats.txCount;
+                                        if (a.type === 'expenseTotal') currentVal = currentStats.expenseTotal;
+                                        if (a.type === 'balance') currentVal = currentStats.balance;
+                                        if (a.type === 'questCount') currentVal = currentStats.questCount;
+                                        if (a.type === 'level') currentVal = currentStats.level;
+                                        
+                                        const progress = Math.min(100, (currentVal / a.target) * 100);
+
+                                        return (
+                                            <div key={a.id} className={`achievement-card ${unlocked ? 'unlocked' : 'locked'}`}>
+                                                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm">
+                                                    <Icon name={unlocked ? a.icon : 'Lock'} size={24}/>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="font-bold text-sm text-theme-text">{a.title}</div>
+                                                        {unlocked && <Icon name="CheckCircle" size={16} className="text-green-500"/>}
+                                                    </div>
+                                                    <div className="text-[10px] opacity-70 text-theme-sub mb-2">{a.desc}</div>
+                                                    
+                                                    {/* Progress Bar */}
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50">
+                                                            <div className={`h-full transition-all duration-500 ${unlocked ? 'bg-green-500' : 'bg-theme-accent'}`} style={{width: `${progress}%`}}></div>
+                                                        </div>
+                                                        <span className="text-[8px] font-bold text-theme-sub whitespace-nowrap">
+                                                            {unlocked ? "已完成" : `${Math.floor(currentVal).toLocaleString()}/${a.target.toLocaleString()}`}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                         
                         {view === 'exchange' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
@@ -1089,7 +1298,13 @@
                     </main>
 
                     <nav className="fixed bottom-0 w-full glass border-t border-theme-border nav-safe px-2 flex justify-between items-center z-30 h-24 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
-                        {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'exchange', icon:'Globe', l:t('exchange')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (<button key={b.id} onClick={()=>setView(b.id)} className={`flex flex-col items-center gap-1 w-full transition-all active:scale-95 ${view===b.id ? 'text-theme-accent -translate-y-2' : 'opacity-40 text-theme-sub'}`}><Icon name={b.icon} size={22} strokeWidth={view===b.id?2.5:2}/><span className="text-[9px] font-bold">{b.l}</span></button>))}
+                        {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'exchange', icon:'Globe', l:t('exchange')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (
+                            <button key={b.id} onClick={()=>setView(b.id)} className={`flex flex-col items-center gap-1 w-full transition-all active:scale-95 relative ${view===b.id ? 'text-theme-accent -translate-y-2' : 'opacity-40 text-theme-sub'}`}>
+                                <Icon name={b.icon} size={22} strokeWidth={view===b.id?2.5:2}/>
+                                <span className="text-[9px] font-bold">{b.l}</span>
+                                {b.id === 'quests' && pendingClaims > 0 && <span className="absolute top-0 right-3 w-2.5 h-2.5 bg-red-500 rounded-full animate-bounce border border-white shadow-sm"></span>}
+                            </button>
+                        ))}
                     </nav>
 
                     {keypadOpen && <Keypad value={tempValue} onChange={setTempValue} onConfirm={confirmKeypad} onClose={()=>setKeypadOpen(false)} label={t('calculator')} />}
