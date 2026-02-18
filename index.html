@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V22.1: Clear Hero</title>
+    <title>SakuraWallet V22.4: Cartoon Hero</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -33,18 +33,18 @@
               }
             },
             animation: { 
-                'float': 'float 6s ease-in-out infinite', 
+                'float': 'float 4s ease-in-out infinite', 
                 'pulse-slow': 'pulse 3s infinite', 
                 'glow': 'glow 3s infinite alternate',
-                'spin-slow': 'spin 8s linear infinite',
+                'spin-slow': 'spin 10s linear infinite',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                'hero-idle': 'heroIdle 2s ease-in-out infinite'
+                'hero-breathe': 'heroBreathe 3s ease-in-out infinite'
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-                heroIdle: { '0%, 100%': { transform: 'translateY(0) scale(1)' }, '50%': { transform: 'translateY(-2%) scale(1.02)' } }
+                heroBreathe: { '0%, 100%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.02)' } }
             }
           }
         }
@@ -64,89 +64,38 @@
             --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
         }
 
-        [data-theme="ink"] {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #212529;
-            --text-sub: #868e96;
-            --accent-color: #343a40;
-            --border-color: #dee2e6;
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
-        }
-
-        [data-theme="sakura"] {
-            --bg-color: #fff0f5;
-            --card-bg: #ffffff;
-            --text-main: #831843;
-            --text-sub: #be185d;
-            --accent-color: #db2777;
-            --border-color: #fbcfe8;
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px);
-        }
-
-        [data-theme="sky"] {
-            --bg-color: #f0f9ff;
-            --card-bg: #ffffff;
-            --text-main: #0c4a6e;
-            --text-sub: #38bdf8;
-            --accent-color: #0ea5e9;
-            --border-color: #bae6fd;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px);
-        }
-
-        [data-theme="magic"] {
-            --bg-color: #faf5ff;
-            --card-bg: #ffffff;
-            --text-main: #581c87;
-            --text-sub: #a855f7;
-            --accent-color: #9333ea;
-            --border-color: #e9d5ff;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px);
-        }
+        [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
+        [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+        [data-theme="magic"] { --bg-color: #faf5ff; --card-bg: #ffffff; --text-main: #581c87; --text-sub: #a855f7; --accent-color: #9333ea; --border-color: #e9d5ff; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
 
         /* Base Setup */
-        html, body { height: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; position: fixed; overflow: hidden; }
+        body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
         
-        body { 
-            background-color: var(--bg-color);
-            background-image: var(--bg-pattern);
-            background-size: 20px 20px;
-            color: var(--text-main);
-            transition: all 0.5s ease;
-            overflow: hidden; 
-        }
+        #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
 
-        .glass { 
-            background: var(--glass-bg); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid var(--border-color); 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
-        }
+        .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
 
-        /* Particle Effects */
-        .sakura-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .petal { position: absolute; background: var(--accent-color); border-radius: 150% 0 150% 0; animation: fall linear infinite; box-shadow: 0 2px 4px rgba(0,0,0,0.1); opacity: 0.3; }
-        
-        @keyframes fall { 0% { opacity: 0; top: -10%; transform: translateX(0) } 10% { opacity: 0.4; } 100% { opacity: 0; top: 110%; transform: translateX(20px) rotate(60deg); } }
-        
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .rpg-keypad-container { background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg-color) 100%); }
-        
-        .rpg-btn { 
-            @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden;
-            box-shadow: 0 4px 0 0 rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.05); transform: translateY(0);
+        /* Empty Slot Style (Classic RPG) */
+        .slot-empty { 
+            @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-theme-bg/20 flex flex-col items-center justify-center relative transition-all; 
         }
-        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(4px); }
+        .slot-filled { 
+            @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; 
+        }
+        .equip-label { position: absolute; bottom: -18px; font-size: 9px; font-weight: bold; color: var(--text-sub); text-transform: uppercase; white-space: nowrap; }
 
-        .btn-num { background-color: var(--card-bg); color: var(--text-main); font-family: "DotGothic16", sans-serif; font-size: 1.5rem; font-weight: bold; border: 2px solid var(--border-color); }
-        .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
-        .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
+        .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
+        #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+        .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300; }
+        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
+        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
+        .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+        
+        .char-stage { position: relative; width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--glass-bg) 40%, transparent 80%); }
+        .equip-col { display: flex; flex-direction: column; gap: 24px; z-index: 20; }
         
         /* Mobile Optimized Drag */
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
@@ -154,33 +103,15 @@
         .drag-handle { touch-action: none; cursor: grab; }
         .drag-handle:active { cursor: grabbing; }
 
-        .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
-
-        #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+        .rpg-keypad-container { background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg-color) 100%); }
+        .rpg-btn { @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden; box-shadow: 0 4px 0 0 rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.05); transform: translateY(0); }
+        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(4px); }
+        .btn-num { background-color: var(--card-bg); color: var(--text-main); font-family: "DotGothic16", sans-serif; font-size: 1.5rem; font-weight: bold; border: 2px solid var(--border-color); }
+        .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
+        .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         
-        .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        
-        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300; }
-        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
-        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
-        
-        .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
-
         /* Level Up Rays */
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
-        
-        /* New Hero Stage */
-        .char-stage { position: relative; width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--glass-bg) 30%, transparent 70%); }
-        .equip-col { display: flex; flex-direction: column; gap: 24px; z-index: 20; }
-        .equip-slot { 
-            @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center cursor-pointer transition-all active:scale-95 hover:border-theme-accent shadow-md; 
-            position: relative;
-        }
-        .equip-slot.active { @apply border-theme-accent bg-theme-accent/10; }
-        .equip-label { position: absolute; bottom: -18px; font-size: 9px; font-weight: bold; color: var(--text-sub); text-transform: uppercase; white-space: nowrap; }
-        
-        .hero-container { position: relative; width: 160px; height: 220px; display: flex; items-center justify-content: center; z-index: 10; }
-        .hero-base { position: absolute; bottom: 10px; width: 100px; height: 20px; background: var(--accent-color); opacity: 0.2; border-radius: 50%; filter: blur(5px); animation: pulse 3s infinite; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -189,7 +120,7 @@
     <div id="rpg-bg-layer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-10"></div>
     
     <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 transition-opacity duration-500 text-center p-6">
-        <div class="text-6xl animate-bounce mb-6">🐉</div>
+        <div class="text-6xl animate-pulse mb-6">🐉</div>
         <div class="text-gray-800 font-bold animate-pulse font-pixel text-2xl mb-2">LOADING WORLD</div>
         <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">召喚中...</div>
         <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">Force Start</button>
@@ -540,17 +471,76 @@
             );
         };
 
-        // --- Character Build Tab (Updated Visuals) ---
-        const CharacterTab = ({ talents, onUpgrade }) => {
+        // --- Character Build Tab (Cartoon Hero) ---
+        const CartoonHero = () => (
+             /* An SVG Cartoon Character (Chibi Style) */
+            <div className="relative w-48 h-64 flex justify-center items-center animate-hero-breathe">
+                <svg viewBox="0 0 200 250" className="w-full h-full drop-shadow-2xl">
+                    <defs>
+                        <filter id="shadow-blur" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+                        </filter>
+                    </defs>
+                    
+                    {/* Shadow */}
+                    <ellipse cx="100" cy="230" rx="60" ry="10" fill="black" opacity="0.2" filter="url(#shadow-blur)" />
+
+                    {/* Back Cape */}
+                    <path d="M70 100 Q50 200 40 220 L160 220 Q150 200 130 100 Z" fill="#D32F2F" />
+
+                    {/* Body */}
+                    <rect x="75" y="100" width="50" height="70" rx="10" fill="var(--accent-color)" stroke="#3E2723" strokeWidth="3" />
+                    
+                    {/* Legs */}
+                    <rect x="80" y="160" width="15" height="50" rx="5" fill="#5D4037" />
+                    <rect x="105" y="160" width="15" height="50" rx="5" fill="#5D4037" />
+                    <path d="M75 210 H95 V220 H75 Z" fill="#3E2723" /> {/* Left Boot */}
+                    <path d="M105 210 H125 V220 H105 Z" fill="#3E2723" /> {/* Right Boot */}
+
+                    {/* Head */}
+                    <circle cx="100" cy="70" r="45" fill="#FFCCBC" />
+                    
+                    {/* Face */}
+                    <circle cx="85" cy="70" r="5" fill="#3E2723" /> {/* Left Eye */}
+                    <circle cx="115" cy="70" r="5" fill="#3E2723" /> {/* Right Eye */}
+                    <path d="M95 85 Q100 90 105 85" stroke="#E57373" strokeWidth="2" fill="none" /> {/* Mouth */}
+                    <ellipse cx="80" cy="80" rx="5" ry="3" fill="#FFAB91" opacity="0.6" /> {/* Blush L */}
+                    <ellipse cx="120" cy="80" rx="5" ry="3" fill="#FFAB91" opacity="0.6" /> {/* Blush R */}
+
+                    {/* Hair */}
+                    <path d="M60 60 Q50 30 100 20 Q150 30 140 60 Q145 90 130 90 Q120 70 100 70 Q80 70 70 90 Q55 90 60 60 Z" fill="#5D4037" />
+
+                    {/* Scarf */}
+                    <path d="M70 100 Q100 120 130 100 L135 110 Q100 140 65 110 Z" fill="#FF7043" />
+                    <path d="M120 105 L140 140 L125 150 L115 115" fill="#FF7043" /> {/* Scarf Tail */}
+
+                    {/* Arms */}
+                    <path d="M75 110 Q60 140 70 160" stroke="#FFCCBC" strokeWidth="12" strokeLinecap="round" fill="none" />
+                    <path d="M125 110 Q140 140 130 160" stroke="#FFCCBC" strokeWidth="12" strokeLinecap="round" fill="none" />
+                </svg>
+            </div>
+        );
+
+        const CharacterTab = ({ talents }) => {
             const getSlot = (s) => TALENTS.find(t => t.slot === s);
             const renderSlot = (slotName) => {
                 const t = getSlot(slotName);
                 if (!t) return null;
                 const lv = talents[t.id] || 0;
+                
+                if (lv === 0) {
+                    return (
+                        <div className="slot-empty">
+                            <span className="text-2xl text-theme-sub/40 font-mono">+</span>
+                            <div className="equip-label">{slotName}</div>
+                        </div>
+                    );
+                }
+
                 return (
-                    <div onClick={() => onUpgrade(t.id)} className={`equip-slot ${lv > 0 ? 'active' : ''}`}>
-                        <Icon name={t.icon} size={24} className={lv > 0 ? 'text-theme-accent' : 'text-theme-sub'}/>
-                        {lv > 0 && <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white">{lv}</span>}
+                    <div className="slot-filled">
+                        <Icon name={t.icon} size={24} className="text-theme-accent"/>
+                        <span className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border border-white font-bold">{lv}</span>
                         <div className="equip-label">{slotName}</div>
                     </div>
                 );
@@ -563,32 +553,7 @@
                     </h3>
                     
                     <div className="char-stage rounded-3xl">
-                         {/* Clear Pixel Hero SVG */}
-                        <div className="hero-container animate-hero-idle">
-                            <div className="hero-base"></div>
-                            {/* Detailed 32-bit Hero SVG */}
-                            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl">
-                                {/* Body/Legs */}
-                                <rect x="35" y="60" width="10" height="25" fill="#5D4037" /> {/* Left Leg */}
-                                <rect x="55" y="60" width="10" height="25" fill="#5D4037" /> {/* Right Leg */}
-                                <rect x="30" y="40" width="40" height="30" fill="var(--accent-color)" rx="4" /> {/* Armor Body */}
-                                {/* Arms */}
-                                <rect x="15" y="45" width="12" height="25" fill="#FFCCBC" rx="2" /> {/* Left Arm */}
-                                <rect x="73" y="45" width="12" height="25" fill="#FFCCBC" rx="2" /> {/* Right Arm */}
-                                {/* Head */}
-                                <rect x="30" y="10" width="40" height="35" fill="#FFCCBC" rx="6" /> {/* Face */}
-                                <rect x="30" y="10" width="40" height="12" fill="#3E2723" rx="4" /> {/* Hair Top */}
-                                <rect x="28" y="10" width="6" height="25" fill="#3E2723" /> {/* Hair Side L */}
-                                <rect x="66" y="10" width="6" height="25" fill="#3E2723" /> {/* Hair Side R */}
-                                {/* Eyes */}
-                                <rect x="38" y="25" width="6" height="6" fill="#1a1a1a" /> 
-                                <rect x="56" y="25" width="6" height="6" fill="#1a1a1a" />
-                                {/* Scarf/Details */}
-                                <path d="M35 40 Q50 55 65 40" stroke="white" strokeWidth="3" fill="none" />
-                            </svg>
-                        </div>
-
-                        <div className="absolute inset-0 flex justify-between px-6 py-8">
+                        <div className="absolute inset-0 flex justify-between px-6 py-8 pointer-events-none">
                             <div className="equip-col justify-center">
                                 {renderSlot('head')}
                                 {renderSlot('armor')}
@@ -599,6 +564,10 @@
                                 {renderSlot('hand')}
                                 {renderSlot('shoes')}
                             </div>
+                        </div>
+
+                        <div className="hero-container">
+                            <CartoonHero />
                         </div>
                     </div>
                 </div>
@@ -743,12 +712,6 @@
             const convertMoney = (amountInTWD) => {
                 const rate = rates[mainCurrency] || 1;
                 return Math.floor(amountInTWD * rate);
-            };
-
-            const upgradeTalent = (tid) => {
-                const currentLv = data.talents[tid] || 0;
-                const newTalents = { ...data.talents, [tid]: currentLv + 1 };
-                saveData({ ...data, talents: newTalents });
             };
 
             const handleClaim = (quest) => {
@@ -1001,7 +964,7 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && <CharacterTab talents={data.talents} onUpgrade={upgradeTalent} />}
+                        {view === 'upgrade' && <CharacterTab talents={data.talents} />}
                         
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
