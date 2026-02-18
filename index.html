@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.6: Rename Hero</title>
+    <title>SakuraWallet V21.9: Level Up FX</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -32,10 +32,17 @@
                 glass: 'var(--glass-bg)'
               }
             },
-            animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'glow': 'glow 3s infinite alternate' },
+            animation: { 
+                'float': 'float 6s ease-in-out infinite', 
+                'pulse-slow': 'pulse 3s infinite', 
+                'glow': 'glow 3s infinite alternate',
+                'spin-slow': 'spin 8s linear infinite',
+                'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards'
+            },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-                glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } }
+                glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
+                popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
             }
           }
         }
@@ -140,7 +147,8 @@
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         
         /* Mobile Optimized Drag */
-        .draggable-item { touch-action: pan-y; }
+        .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
+        .draggable-item.dragging-active { transform: scale(1.05) rotate(2deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
         .drag-handle { touch-action: none; cursor: grab; }
         .drag-handle:active { cursor: grabbing; }
 
@@ -155,6 +163,9 @@
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
         
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+
+        /* Level Up Rays */
+        .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -263,7 +274,7 @@
         };
 
         // --- Data & Config ---
-        const MAIN_CURRENCIES = ['HKD', 'TWD', 'JPY'];
+        const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const EXCHANGE_CURRENCIES = ['HKD', 'TWD', 'JPY', 'KRW', 'CNY'];
         
         const THEMES = [
@@ -314,9 +325,12 @@
         ];
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖' }, 
-            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions' }, 
-            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除' } 
+            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵' }, 
+            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
+            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward' }, 
+            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
+            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬' } 
         };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
@@ -442,7 +456,7 @@
                         <div className="overflow-y-auto flex-1 space-y-2 pr-1">
                             {localCats.map(([key, cat], index) => (
                                 <div key={key} data-index={index}
-                                     className={`flex flex-col gap-2 p-3 rounded-xl bg-theme-bg border border-transparent transition-colors draggable-item ${draggingIndex === index ? 'bg-theme-accent/10 border-theme-accent z-10' : ''}`}>
+                                     className={`flex flex-col gap-2 p-3 rounded-xl bg-theme-bg border border-transparent transition-all draggable-item ${draggingIndex === index ? 'dragging-active' : ''}`}>
                                     <div className="flex items-center gap-3">
                                         <div 
                                             className="text-theme-sub drag-handle p-2 -ml-2 touch-none" 
@@ -493,6 +507,23 @@
             </div>
         );
 
+        // --- Level Up Modal ---
+        const LevelUpOverlay = ({ level, onClose }) => {
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-[fadeIn_0.3s]">
+                    <div className="relative text-center w-full max-w-sm">
+                        <div className="rays w-96 h-96 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="relative z-10 animate-pop-in">
+                            <div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]">🎉</div>
+                            <h2 className="text-5xl font-pixel text-yellow-300 font-bold tracking-widest drop-shadow-md mb-2 animate-bounce">LEVEL UP!</h2>
+                            <div className="text-9xl font-black text-white drop-shadow-xl my-4">{level}</div>
+                            <button onClick={onClose} className="mt-8 px-8 py-3 bg-white text-ink font-bold rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] active:scale-95 transition-transform">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         // --- Main App ---
         const App = () => {
             useSakura();
@@ -513,18 +544,17 @@
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
             const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
-            // New States for V21.2
             const [flowView, setFlowView] = useState('today'); 
             const [logFilter, setLogFilter] = useState('all'); 
-
-            // Rename UI State
-            const [showNameEdit, setShowNameEdit] = useState(false);
-            const [tempName, setTempName] = useState('');
+            const [showLevelUp, setShowLevelUp] = useState({ show: false, level: 1 });
 
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
             const [showTitleSelect, setShowTitleSelect] = useState(false);
             
+            const [showNameEdit, setShowNameEdit] = useState(false);
+            const [tempName, setTempName] = useState('');
+
             const [isRegistering, setIsRegistering] = useState(false);
             const [loginAccount, setLoginAccount] = useState('');
             const [loginPass, setLoginPass] = useState('');
@@ -534,9 +564,9 @@
             const [theme, setTheme] = useState(localStorage.getItem('gw_theme') || 'ink');
             const [lang, setLang] = useState(localStorage.getItem('gw_lang') || 'zh');
             const [rates, setRates] = useState({});
-            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'HKD');
+            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'TWD');
             const [baseAmount, setBaseAmount] = useState('100');
-            const [calcBase, setCalcBase] = useState('HKD');
+            const [calcBase, setCalcBase] = useState('TWD');
 
             const t = (key) => TRANSLATIONS[lang][key] || key;
 
@@ -547,6 +577,17 @@
             
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
             useEffect(() => { localStorage.setItem('gw_currency', mainCurrency); }, [mainCurrency]);
+
+            const formatLogMsg = (log) => {
+                const parts = log.msg.split(' ');
+                if (parts[0] === 'Out' || parts[0] === 'In') {
+                    const type = parts[0] === 'Out' ? 'log_expense' : 'log_income';
+                    return `${t(type)} ${log.msg.substring(log.msg.indexOf(' ') + 1)}`;
+                }
+                if (log.msg.includes('Quest Claimed')) return `${t('log_sys_quest')}: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Title Unlocked')) return `${t('log_sys_title')}: ${log.msg.split(': ')[1]}`;
+                return log.msg;
+            };
 
             const addLog = (type, msg) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...(data.logs || [])].slice(0, 50); };
             const saveData = (newData) => { setData(newData); const fb = window.firebase; if (fb && fb.auth && fb.auth.currentUser) fb.setDoc(fb.doc(fb.db, "users", fb.auth.currentUser.uid), newData).catch(console.error); else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); };
@@ -559,7 +600,6 @@
                     if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
                     setData(localData); 
                 } else {
-                    // Explicitly set user null to show login screen
                     setData(prev => ({ ...prev, user: null }));
                 } 
                 setLoading(false); 
@@ -570,7 +610,6 @@
                 const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); 
                 const fb = window.firebase; 
                 if (!fb || !fb.auth) { loadLocalData(); return; } 
-                
                 const unsub = fb.onAuthStateChanged(fb.auth, (u) => { 
                     clearTimeout(t); 
                     if (u) { 
@@ -583,15 +622,13 @@
                                 if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
                             setLoading(false); 
                         }, () => loadLocalData()); 
-                    } else { 
-                        loadLocalData(); 
-                    } 
+                    } else { loadLocalData(); } 
                 }); 
                 return () => { unsub(); clearTimeout(t); } 
             }, []);
@@ -611,7 +648,6 @@
                 
                 let newTitles = [...(currentData.user.unlockedTitles || ['Novice'])];
                 let updated = false;
-
                 TITLES_LIST.forEach(t => {
                     if (!newTitles.includes(t.id) && t.check(stats, 1)) {
                         newTitles.push(t.id);
@@ -619,10 +655,7 @@
                         addLog('system', `Title Unlocked: ${t.name}`);
                     }
                 });
-
-                if (updated) {
-                    saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: [...addLog('system', 'New Titles Unlocked!'), ...(currentData.logs||[])] });
-                }
+                if (updated) saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: [...addLog('system', 'New Titles Unlocked!'), ...(currentData.logs||[])] });
             };
 
             const convertMoney = (amountInTWD) => {
@@ -639,25 +672,33 @@
             const handleClaim = (quest) => {
                 let newExp = data.user.exp + quest.exp; 
                 let newLv = data.user.level; 
-                if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
-                
-                let newAccounts = [...data.accounts];
-                if (quest.rewardBase > 0 && newAccounts.length > 0) {
-                    newAccounts[0].balance += convertMoney(quest.rewardBase);
-                }
+                let leveledUp = false;
 
+                if (newExp >= newLv * 100) { 
+                    newLv++; 
+                    newExp -= (newLv-1)*100; 
+                    leveledUp = true;
+                }
+                
+                // Pure EXP Reward - No Money Added Here
                 const newClaimed = [...data.claimedQuests, quest.uniqueId];
                 const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
                 
-                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv }, accounts: newAccounts, claimedQuests: newClaimed, logs: newLogs };
+                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv }, claimedQuests: newClaimed, logs: newLogs };
                 saveData(newData);
                 checkUnlockables(newData);
+                if (leveledUp) setShowLevelUp({ show: true, level: newLv });
             };
 
             const handleAuth = async () => { 
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
-                    alert("目前處於單機環境或 Firebase 未配置，請使用「單機試玩」模式。");
+                    // Local Simulation
+                    const fakeUid = 'local_' + Date.now();
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' };
+                    const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
+                    localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
+                    window.location.reload();
                     return;
                 }
                 const email = loginAccount.trim() + "@sakurarpg.com"; 
@@ -697,7 +738,12 @@
                 const acc = data.accounts.find(a => a.id == txForm.accountId);
                 const newTx = { id: Date.now(), date: new Date().toISOString(), ...txForm, amount: amt, accountName: acc.name, currency: acc.currency };
                 const newAccs = data.accounts.map(a => a.id == acc.id ? { ...a, balance: txForm.type === 'expense' ? a.balance - amt : a.balance + amt } : a);
-                let newExp = data.user.exp + 5; let newLv = data.user.level; if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
+                
+                let newExp = data.user.exp + 5; 
+                let newLv = data.user.level; 
+                let leveledUp = false;
+                if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; leveledUp = true; }
+
                 const currentCat = data.categories[txForm.category] || DEFAULT_CATEGORIES.other;
                 const newLogs = addLog(txForm.type==='expense'?'finance_out':'finance_in', `${txForm.type==='expense'?'Out':'In'} ${amt} (${currentCat.label}) ${txForm.note ? '- '+txForm.note : ''}`);
                 
@@ -705,6 +751,7 @@
                 saveData(newData);
                 checkUnlockables(newData);
                 setModalOpen(false);
+                if (leveledUp) setShowLevelUp({ show: true, level: newLv });
             };
             const saveAsset = () => {
                 if (!assetForm.name || assetForm.balance === '') return alert(t('missing_info'));
@@ -717,21 +764,23 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic
+            // Quests Logic (Fixed: Targets scale, Rewards are purely EXP)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
                 const totalExp = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
                 const txCount = data.transactions.length;
                 const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
+                
+                // Base values in TWD
                 const rawQuests = [
-                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, rewardBase: 100, progress: txCount > 0 ? 1 : 0, target: 1 },
-                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, rewardBase: 200, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(500) },
-                    { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, rewardBase: 50, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
-                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, rewardBase: 100, progress: data.transactions.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
-                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, rewardBase: 80, progress: dailyTxCount, target: 3 },
-                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, rewardBase: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000) },
-                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, rewardBase: 1000, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(50000) },
-                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, rewardBase: 600, progress: txCount, target: 100 }
+                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: txCount > 0 ? 1 : 0, target: 1 },
+                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(500) },
+                    { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
+                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, progress: data.transactions.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, progress: dailyTxCount, target: 3 },
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000) },
+                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(50000) },
+                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, progress: txCount, target: 100 }
                 ];
                 return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [data, subView, mainCurrency, rates]);
@@ -791,7 +840,7 @@
                         <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
-                    <button onClick={() => saveData({ user: { uid: 'guest', name: 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
                 </div> 
             );
@@ -857,7 +906,7 @@
                                 <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
                                 {activeQuests.map(q => (
                                     <div key={q.id} className={`glass p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isClaimed ? 'opacity-50 grayscale' : ''}`}>
-                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span><span className="text-xs text-yellow-500 font-bold">{mainCurrency} {convertMoney(q.rewardBase)}</span></div></div>
+                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span></div></div>
                                         <p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p>
                                         <div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress)}/{q.target}</span></div>
                                         {q.isCompleted && !q.isClaimed && <button onClick={()=>handleClaim(q)} className="w-full py-2 btn-claim rounded-xl font-bold text-xs">{t('claim')}</button>}
@@ -938,7 +987,7 @@
                                                 <div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div>
                                                 <div className="flex-1">
                                                     <div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div>
-                                                    <div className="text-sm font-bold text-theme-text">{l.msg}</div>
+                                                    <div className="text-sm font-bold text-theme-text">{formatLogMsg(l)}</div>
                                                 </div>
                                             </div>
                                         ))
@@ -959,6 +1008,7 @@
 
                     {keypadOpen && <Keypad value={tempValue} onChange={setTempValue} onConfirm={confirmKeypad} onClose={()=>setKeypadOpen(false)} label={t('calculator')} />}
                     {catManagerOpen && <CategoryManager categories={data.categories} onSave={updateCategories} onClose={()=>setCatManagerOpen(false)} />}
+                    {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={()=>setShowLevelUp({show:false, level:showLevelUp.level})}/>}
                     
                     {/* Selectors Modals */}
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
