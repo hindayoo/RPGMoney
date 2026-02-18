@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V20.2: Fixed</title>
+    <title>SakuraWallet V20.3: RPG Upgrade</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -25,12 +25,18 @@
               sakura: { light: '#fff0f5', base: '#fbcfe8', dark: '#be185d', accent: '#db2777' },
               ink: '#4a044e',
               wood: '#8B4513',
+              paper: '#fdf6e3',
               dark: { bg: '#0f172a', card: '#1e293b', text: '#f1f5f9', sub: '#94a3b8' }
             },
-            animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'glow': 'glow 3s infinite alternate' },
+            animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'glow': 'glow 3s infinite alternate', 'bounce-sm': 'bounce-sm 0.5s infinite' },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px rgba(219, 39, 119, 0.5)' }, '100%': { boxShadow: '0 0 20px rgba(219, 39, 119, 0.8), 0 0 10px rgba(255,255,255,0.5)' } }
+            },
+            boxShadow: {
+                'rpg': '0 6px 0 0 rgba(0,0,0,0.15)',
+                'rpg-active': '0 0 0 0 rgba(0,0,0,0)',
+                'inner-glow': 'inset 0 0 10px rgba(255,255,255,0.5)'
             }
           }
         }
@@ -38,22 +44,40 @@
     </script>
 
     <style>
-        /* Fix Mobile Scrolling & Tap Highlight */
+        /* Base Setup */
         html, body { height: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #fff0f5; color: #4a044e; transition: background-color 0.5s; overflow: hidden; }
+        
+        /* New Background Texture */
+        body { 
+            background-color: #fff0f5; 
+            background-image: 
+                radial-gradient(#db2777 0.5px, transparent 0.5px), 
+                radial-gradient(#db2777 0.5px, #fff0f5 0.5px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            color: #4a044e; 
+            transition: background-color 0.5s; 
+            overflow: hidden; 
+        }
         
         /* Glass Effect */
         .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 8px 32px rgba(255, 192, 203, 0.2); }
         
         /* Dark Mode */
-        .dark body { background-color: #0f172a; color: #f1f5f9; }
+        .dark body { 
+            background-color: #0f172a; 
+            background-image: 
+                radial-gradient(#4c1d95 0.5px, transparent 0.5px), 
+                radial-gradient(#4c1d95 0.5px, #0f172a 0.5px);
+            color: #f1f5f9; 
+        }
         .dark .glass { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); color: #f1f5f9; }
         .dark .bg-white { background-color: #1e293b; color: #fff; }
         
-        /* Effects */
+        /* Sakura Effects */
         .sakura-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .petal { position: absolute; background: #ffd7e6; border-radius: 150% 0 150% 0; animation: fall linear infinite; }
-        .dark .petal { background: #6366f1; opacity: 0.2; }
+        .petal { position: absolute; background: #ffd7e6; border-radius: 150% 0 150% 0; animation: fall linear infinite; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .dark .petal { background: #6366f1; opacity: 0.2; box-shadow: 0 0 5px #6366f1; }
         .avatar-glow { animation: glow 3s infinite alternate; }
         
         @keyframes fall { 0% { opacity: 0; top: -10%; transform: translateX(0) } 10% { opacity: 1; } 100% { opacity: 0; top: 110%; transform: translateX(20px) rotate(60deg); } }
@@ -62,13 +86,42 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* RPG Keypad specific */
-        .keypad-btn { 
-            @apply rounded-2xl text-2xl font-bold flex items-center justify-center h-16 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] active:shadow-none active:translate-y-1 active:scale-95 transition-all duration-100 select-none cursor-pointer;
+        /* RPG Keypad Redesign */
+        .rpg-keypad-container {
+            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,240,245,1) 100%);
         }
-        .btn-num { @apply bg-white text-ink dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600; }
-        .btn-op { @apply bg-sakura-light text-sakura-dark dark:bg-sakura-dark/20 dark:text-sakura-base border border-sakura-base; }
-        .btn-action { @apply bg-sakura-dark text-white shadow-[0_4px_0_0_#9d174d]; }
+        .dark .rpg-keypad-container {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        .rpg-btn { 
+            @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden;
+            box-shadow: 0 6px 0 0 rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            transform: translateY(0);
+        }
+        .rpg-btn:active {
+            box-shadow: 0 0 0 0 rgba(0,0,0,0);
+            transform: translateY(6px);
+        }
+        .dark .rpg-btn { box-shadow: 0 6px 0 0 rgba(0,0,0,0.5); }
+        
+        /* Button Types */
+        .btn-num { 
+            @apply bg-white text-ink font-pixel text-4xl font-bold border-2 border-slate-200;
+            color: #4a044e;
+        }
+        .dark .btn-num { @apply bg-slate-700 text-white border-slate-600; }
+        
+        .btn-op { 
+            @apply bg-sakura-light text-sakura-dark font-pixel text-2xl font-bold border-2 border-sakura-base; 
+        }
+        .dark .btn-op { @apply bg-pink-900/30 text-pink-300 border-pink-900; }
+        
+        .btn-action { 
+            @apply bg-sakura-dark text-white font-pixel text-2xl font-bold border-2 border-pink-700;
+            box-shadow: 0 6px 0 0 #831843;
+        }
         
         /* Guild Board */
         .guild-board { background-color: #F5E6D3; background-image: radial-gradient(#D2B48C 1px, transparent 1px); background-size: 20px 20px; border: 4px solid #8B4513; box-shadow: inset 0 0 20px rgba(139, 69, 19, 0.3); color: #5D4037; }
@@ -83,11 +136,11 @@
     <div id="sakura-container" class="sakura-bg"></div>
     
     <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-sakura-light z-50 transition-opacity duration-500 text-center p-6">
-        <div class="text-4xl animate-bounce mb-4">🐉</div>
-        <div class="text-sakura-dark font-bold animate-pulse font-pixel text-xl mb-2">Loading World...</div>
-        <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">初始化中...</div>
+        <div class="text-6xl animate-bounce mb-6">🐉</div>
+        <div class="text-sakura-dark font-bold animate-pulse font-pixel text-2xl mb-2">SAKURA WORLD</div>
+        <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">召喚中...</div>
         <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">
-            如果卡住請點此 (Force Start)
+            Force Start (如果卡住)
         </button>
     </div>
 
@@ -104,25 +157,22 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 🔥 請填入你的 Firebase Config
+        // 🔥 Firebase Config (Keep your original config)
         const firebaseConfig = {
-  apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
-  authDomain: "rpgmoney-73cfd.firebaseapp.com",
-  projectId: "rpgmoney-73cfd",
-  storageBucket: "rpgmoney-73cfd.firebasestorage.app",
-  messagingSenderId: "804479578382",
-  appId: "1:804479578382:web:0882920513d9377998a75f",
-  measurementId: "G-FKDCX3WG8T"
+            apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
+            authDomain: "rpgmoney-73cfd.firebaseapp.com",
+            projectId: "rpgmoney-73cfd",
+            storageBucket: "rpgmoney-73cfd.firebasestorage.app",
+            messagingSenderId: "804479578382",
+            appId: "1:804479578382:web:0882920513d9377998a75f",
+            measurementId: "G-FKDCX3WG8T"
         };
 
         try {
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const db = getFirestore(app);
-            window.firebase = { 
-                auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,
-                signOut, onAuthStateChanged, doc, setDoc, getDoc, onSnapshot 
-            };
+            window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, doc, setDoc, getDoc, onSnapshot };
             document.getElementById('loading-status').innerText = "Firebase 連接成功";
         } catch (e) {
             console.warn("Firebase Init Failed (Offline Mode)", e);
@@ -131,13 +181,10 @@
     </script>
 
     <script>
-        // Force Start Helper
         function forceStart() {
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('root').classList.remove('hidden');
         }
-        
-        // Global Error Handler
         window.onerror = function(msg, url, line, col, error) {
             const display = document.getElementById('error-display');
             const text = document.getElementById('error-text');
@@ -175,8 +222,8 @@
             Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8", EyeOff: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M1 1l22 22",
             Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z", Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
             UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z", Backspace: "M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM18 9l-6 6M12 9l6 6",
-            Minus: "M5 12h14", Plus: "M12 5v14 M5 12h14", Check: "M20 6L9 17l-5-5",
-            Divide: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M8 12h8 M12 16h0 M12 8h0", Multiply: "M18 6L6 18 M6 6l12 12"
+            Minus: "M5 12h14", Plus: "M12 5v14 M5 12h14", Check: "M20 6L9 17l-5-5", Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor" }) => {
@@ -184,11 +231,10 @@
             return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}><path d={d}/></svg>;
         };
 
-        const { format } = window.dateFns || {};
-
         // --- Data & Config ---
         const CURRENCIES = ['HKD', 'TWD', 'JPY', 'USD', 'CNY', 'KRW', 'EUR'];
-        const CATEGORIES = {
+        // Default Categories
+        const DEFAULT_CATEGORIES = {
             bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5' }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171' },
             dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444' }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd' },
             snack: { label: '零食', icon: 'Utensils', color: '#fdba74' },
@@ -210,12 +256,10 @@
         
         const TALENTS = [{icon:'Crown', name:'黃金律法', lv:1, color:'bg-yellow-100 text-yellow-600', desc:'增加收入經驗值'}, {icon:'Book', name:'森羅萬象', lv:1, color:'bg-blue-100 text-blue-600', desc:'解鎖更多圖表'}, {icon:'Shield', name:'絕對防禦', lv:0, color:'bg-gray-100 text-gray-400', desc:'減少衝動消費'}, {icon:'Zap', name:'疾風迅雷', lv:0, color:'bg-gray-100 text-gray-400', desc:'記帳速度提升'}, {icon:'Gem', name:'幸運女神', lv:0, color:'bg-gray-100 text-gray-400', desc:'隨機獲得金幣'}, {icon:'Hammer', name:'神工鬼斧', lv:0, color:'bg-gray-100 text-gray-400', desc:'資產上限提升'}];
         const TRANSLATIONS = { zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入雲端金庫', register_btn: '註冊', id_placeholder: '公會 ID (僅限英數)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '通行密碼', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤' }, en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator' }, ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん' } };
-        const QUESTS_DB = [{ id: 'q1', type: 'main', title: '冒險的開始', desc: '記下第一筆開支', exp: 50, target: 1 }, { id: 'q2', type: 'main', title: '財富積累 I', desc: '總資產 1,000', exp: 100, target: 1000 }, { id: 'd1', type: 'daily', title: '每日簽到', desc: '登入公會', exp: 10, target: 1 }, { id: 'd2', type: 'daily', title: '消費紀錄', desc: '新增 1 筆開支', exp: 20, target: 1 }, { id: 'c1', type: 'challenge', title: '克制慾望', desc: '單筆 < 500', exp: 150, target: 1 }];
-        const ACHIEVEMENTS_DB = [{ id: 'ach1', title: '初級冒險者', desc: '等級 5', target: 5, type: 'level', icon: 'UserPlus' }, { id: 'ach4', title: '第一桶金', desc: '資產 > 10,000', target: 10000, type: 'asset', icon: 'Wallet' }, { id: 'ach6', title: '記帳學徒', desc: '記帳 10 筆', target: 10, type: 'tx_count', icon: 'Scroll' }];
-
+        
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
 
-        // --- UseSakura Hook (Fixed & Restored) ---
+        // --- UseSakura Hook ---
         const useSakura = () => {
             useEffect(() => {
                 const container = document.getElementById('sakura-container');
@@ -234,7 +278,7 @@
             }, []);
         };
 
-        // --- Keypad Component (Japanese RPG Style) ---
+        // --- RPG Keypad Component (Redesigned) ---
         const Keypad = ({ value, onChange, onConfirm, onClose, label }) => {
             const handlePress = (key) => {
                 if (key === 'OK') onConfirm();
@@ -258,31 +302,115 @@
             const preview = useMemo(() => calculate(), [value]);
 
             return (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]">
-                    <div className="bg-sakura-light dark:bg-dark-card border-t-4 border-wood rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe">
-                        <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-lg text-wood dark:text-sakura-base font-pixel tracking-widest">{label}</h3>
-                            <button onClick={onClose} className="p-2 bg-white/50 dark:bg-gray-700 rounded-full active:scale-95"><Icon name="X" size={20}/></button>
+                <div className="fixed inset-0 z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="rpg-keypad-container border-t-8 border-wood rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 h-[65vh] flex flex-col">
+                        
+                        {/* Header & Display */}
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-bold text-xl text-wood dark:text-sakura-base font-pixel tracking-widest bg-white/50 dark:bg-black/20 px-4 py-1 rounded-full">{label}</h3>
+                            <button onClick={onClose} className="p-2 bg-white/50 dark:bg-gray-700 rounded-full active:scale-95 border-2 border-transparent hover:border-red-400"><Icon name="X" size={24}/></button>
                         </div>
-                        <div className="bg-[#e0e7da] dark:bg-black/40 p-4 rounded-3xl mb-4 text-right flex flex-col justify-center h-24 border-4 border-gray-300 dark:border-gray-600 shadow-inner">
-                            <div className="text-sm text-gray-500 dark:text-gray-400 mb-1 h-5 overflow-hidden font-mono">{value.match(/[+\-*/]/) ? value : ''}</div>
-                            <div className="text-4xl font-mono font-bold text-gray-800 dark:text-white truncate">{value || '0'}</div>
-                            {value !== preview && <div className="text-sm text-sakura-dark font-bold">= {preview}</div>}
+
+                        <div className="bg-[#e0e7da] dark:bg-black/40 p-5 rounded-xl mb-6 text-right flex flex-col justify-center h-28 border-4 border-gray-400 dark:border-gray-600 shadow-[inset_0_4px_10px_rgba(0,0,0,0.2)] font-pixel relative overflow-hidden">
+                             {/* Scanlines Effect */}
+                            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 bg-[length:100%_4px,6px_100%] pointer-events-none"></div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mb-1 h-6 font-mono z-10">{value.match(/[+\-*/]/) ? value : ''}</div>
+                            <div className="text-5xl font-bold text-gray-800 dark:text-white truncate z-10">{value || '0'}</div>
+                            {value !== preview && <div className="text-sm text-sakura-dark font-bold z-10 absolute bottom-2 left-4">= {preview}</div>}
                         </div>
-                        <div className="grid grid-cols-4 gap-3">
-                            <button onClick={()=>handlePress('AC')} className="keypad-btn btn-op text-red-500">AC</button>
-                            <button onClick={()=>handlePress('/')} className="keypad-btn btn-op text-xl">÷</button>
-                            <button onClick={()=>handlePress('*')} className="keypad-btn btn-op text-xl">×</button>
-                            <button onClick={()=>handlePress('DEL')} className="keypad-btn btn-op text-red-400"><Icon name="Backspace" size={24}/></button>
+
+                        {/* Grid Keys */}
+                        <div className="grid grid-cols-4 gap-4 flex-1">
+                            <button onClick={()=>handlePress('AC')} className="rpg-btn btn-op text-red-500">AC</button>
+                            <button onClick={()=>handlePress('/')} className="rpg-btn btn-op">÷</button>
+                            <button onClick={()=>handlePress('*')} className="rpg-btn btn-op">×</button>
+                            <button onClick={()=>handlePress('DEL')} className="rpg-btn btn-op text-red-400"><Icon name="Backspace" size={28}/></button>
                             
-                            {[7,8,9,'-', 4,5,6,'+', 1,2,3].map(k => (
-                                <button key={k} onClick={() => handlePress(k)} className={`keypad-btn ${typeof k === 'string' ? 'btn-op text-2xl' : 'btn-num'}`}>{k}</button>
-                            ))}
-                            <button key="OK" onClick={() => onChange(preview)} className="keypad-btn btn-action row-span-2 flex items-center justify-center"><Icon name="Check" size={32}/></button>
-                            <button onClick={() => handlePress(0)} className="keypad-btn btn-num col-span-2">0</button>
-                            <button onClick={() => handlePress('.')} className="keypad-btn btn-num">.</button>
+                            <button onClick={()=>handlePress(7)} className="rpg-btn btn-num">7</button>
+                            <button onClick={()=>handlePress(8)} className="rpg-btn btn-num">8</button>
+                            <button onClick={()=>handlePress(9)} className="rpg-btn btn-num">9</button>
+                            <button onClick={()=>handlePress('-')} className="rpg-btn btn-op">-</button>
+
+                            <button onClick={()=>handlePress(4)} className="rpg-btn btn-num">4</button>
+                            <button onClick={()=>handlePress(5)} className="rpg-btn btn-num">5</button>
+                            <button onClick={()=>handlePress(6)} className="rpg-btn btn-num">6</button>
+                            <button onClick={()=>handlePress('+')} className="rpg-btn btn-op">+</button>
+
+                            <button onClick={()=>handlePress(1)} className="rpg-btn btn-num">1</button>
+                            <button onClick={()=>handlePress(2)} className="rpg-btn btn-num">2</button>
+                            <button onClick={()=>handlePress(3)} className="rpg-btn btn-num">3</button>
+                            <button onClick={onConfirm} className="rpg-btn btn-action row-span-2 flex items-center justify-center"><Icon name="Check" size={40}/></button>
+
+                            <button onClick={()=>handlePress(0)} className="rpg-btn btn-num col-span-2">0</button>
+                            <button onClick={()=>handlePress('.')} className="rpg-btn btn-num">.</button>
                         </div>
-                        <button onClick={onConfirm} className="w-full py-4 mt-4 bg-wood text-white rounded-3xl font-bold shadow-[0_4px_0_0_#5D4037] active:shadow-none active:translate-y-1 font-pixel text-xl tracking-widest border-2 border-[#5D4037]">CONFIRM</button>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Category Manager Modal ---
+        const CategoryManager = ({ categories, onSave, onClose }) => {
+            const [localCats, setLocalCats] = useState(categories);
+            const [editId, setEditId] = useState(null);
+            const [editForm, setEditForm] = useState({ label: '', color: '#000000' });
+
+            const handleEdit = (key) => {
+                setEditId(key);
+                setEditForm({ label: localCats[key].label, color: localCats[key].color });
+            };
+
+            const saveEdit = () => {
+                if(!editForm.label) return;
+                const newCats = { ...localCats, [editId]: { ...localCats[editId], ...editForm } };
+                setLocalCats(newCats);
+                setEditId(null);
+            };
+
+            const addNew = () => {
+                const id = 'custom_' + Date.now();
+                const newCats = { ...localCats, [id]: { label: '新類別', icon: 'Star', color: '#888888' } };
+                setLocalCats(newCats);
+                setEditId(id);
+                setEditForm({ label: '新類別', color: '#888888' });
+            };
+            
+            const handleSaveAll = () => {
+                onSave(localCats);
+                onClose();
+            };
+
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex flex-col justify-center px-4">
+                    <div className="bg-white dark:bg-dark-card rounded-3xl p-6 shadow-2xl max-h-[80vh] flex flex-col">
+                        <div className="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 className="font-bold text-lg dark:text-white">類別管理</h3>
+                            <button onClick={onClose}><Icon name="X"/></button>
+                        </div>
+                        <div className="overflow-y-auto flex-1 space-y-2 pr-1">
+                            {Object.entries(localCats).map(([key, cat]) => (
+                                <div key={key} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-transparent hover:border-sakura-base transition-colors">
+                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0" style={{backgroundColor: cat.color}}>
+                                        <Icon name={cat.icon} size={14} color="white"/>
+                                    </div>
+                                    {editId === key ? (
+                                        <div className="flex items-center gap-2 flex-1">
+                                            <input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border dark:bg-black dark:text-white text-sm"/>
+                                            <input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/>
+                                            <button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex-1 font-bold text-sm dark:text-gray-200">{cat.label}</div>
+                                    )}
+                                    {editId !== key && <button onClick={()=>handleEdit(key)} className="text-gray-400 hover:text-sakura-dark"><Icon name="Edit" size={16}/></button>}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mt-4 flex gap-2">
+                            <button onClick={addNew} className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 rounded-xl font-bold text-sm">+ 新增</button>
+                            <button onClick={handleSaveAll} className="flex-1 py-3 bg-sakura-dark text-white rounded-xl font-bold text-sm shadow-md">儲存變更</button>
+                        </div>
                     </div>
                 </div>
             );
@@ -292,13 +420,23 @@
         const App = () => {
             useSakura();
             
-            const [data, setData] = useState({ user: null, accounts: [], transactions: [], quests: [], achievements: [], logs: [] });
+            // Initial State setup with Categories
+            const [data, setData] = useState({ 
+                user: null, 
+                accounts: [], 
+                transactions: [], 
+                quests: [], 
+                achievements: [], 
+                logs: [],
+                categories: DEFAULT_CATEGORIES // Add default categories to state
+            });
+            
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
             const [subView, setSubView] = useState('main');
             const [modalOpen, setModalOpen] = useState(false);
             const [assetModalOpen, setAssetModalOpen] = useState(false);
-            const [profileOpen, setProfileOpen] = useState(false);
+            const [catManagerOpen, setCatManagerOpen] = useState(false); // Category Manager State
             const [keypadOpen, setKeypadOpen] = useState(false);
             const [keypadTarget, setKeypadTarget] = useState(null); 
             const [tempValue, setTempValue] = useState('');
@@ -327,11 +465,32 @@
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
 
             const addLog = (type, msg) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...(data.logs || [])].slice(0, 50); };
-            const checkDailyReset = (currentData) => { /* Same V17 Logic */ setData(currentData); }; 
-            const loadLocalData = () => { const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); if (localData) setData(localData); else setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [] }); setLoading(false); };
-            const saveData = (newData) => { setData(newData); const fb = window.firebase; if (fb && fb.auth && fb.auth.currentUser) fb.setDoc(fb.doc(fb.db, "users", fb.auth.currentUser.uid), newData).catch(console.error); else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); };
+            
+            const loadLocalData = () => { 
+                const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); 
+                if (localData) {
+                    // Ensure categories exist in old data
+                    if (!localData.categories) localData.categories = DEFAULT_CATEGORIES;
+                    setData(localData); 
+                } else {
+                    setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }); 
+                }
+                setLoading(false); 
+            };
+            
+            const saveData = (newData) => { 
+                setData(newData); 
+                const fb = window.firebase; 
+                if (fb && fb.auth && fb.auth.currentUser) fb.setDoc(fb.doc(fb.db, "users", fb.auth.currentUser.uid), newData).catch(console.error); 
+                else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); 
+            };
 
-            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) setData(d.data()); else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [] }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            // Update categories logic
+            const updateCategories = (newCats) => {
+                saveData({ ...data, categories: newCats });
+            };
+
+            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
             
             useEffect(() => { if (view === 'exchange' || assetModalOpen) fetch('https://open.er-api.com/v6/latest/HKD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, [view, assetModalOpen]);
 
@@ -357,7 +516,8 @@
                 const newTx = { id: Date.now(), date: new Date().toISOString(), ...txForm, amount: amt, accountName: acc.name, currency: acc.currency };
                 const newAccs = data.accounts.map(a => a.id == acc.id ? { ...a, balance: txForm.type === 'expense' ? a.balance - amt : a.balance + amt } : a);
                 let newExp = data.user.exp + 5; let newLv = data.user.level; if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
-                const newLogs = addLog(txForm.type==='expense'?'finance_out':'finance_in', `${txForm.type==='expense'?'Out':'In'} ${amt} (${CATEGORIES[txForm.category].label})`);
+                const currentCat = data.categories[txForm.category] || DEFAULT_CATEGORIES.other;
+                const newLogs = addLog(txForm.type==='expense'?'finance_out':'finance_in', `${txForm.type==='expense'?'Out':'In'} ${amt} (${currentCat.label})`);
                 saveData({ ...data, user: {...data.user, exp: newExp, level: newLv}, accounts: newAccs, transactions: [newTx, ...data.transactions], logs: newLogs });
                 setModalOpen(false);
             };
@@ -413,6 +573,8 @@
                     </nav>
 
                     {keypadOpen && <Keypad value={tempValue} onChange={setTempValue} onConfirm={confirmKeypad} onClose={()=>setKeypadOpen(false)} label={t('calculator')} />}
+                    
+                    {catManagerOpen && <CategoryManager categories={data.categories} onSave={updateCategories} onClose={()=>setCatManagerOpen(false)} />}
 
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
@@ -446,12 +608,18 @@
                                 </div>
                                 <div onClick={()=>openKeypad('tx', txForm.amount)} className="w-full text-5xl font-mono font-bold text-center border-b py-4 mb-6 cursor-pointer dark:text-white border-gray-200 dark:border-gray-700">{txForm.amount || '0'}</div>
                                 {txForm.type === 'expense' && (
-                                    <div className="grid grid-cols-5 gap-2 mb-6">
-                                        {Object.entries(CATEGORIES).map(([k,c]) => (
-                                            <button key={k} onClick={()=>setTxForm({...txForm, category: k})} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${txForm.category === k ? 'bg-sakura-light dark:bg-white/20 scale-105' : 'opacity-50 dark:opacity-40'}`}>
-                                                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{backgroundColor: c.color}}><Icon name={c.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold dark:text-gray-300">{c.label}</span>
-                                            </button>
-                                        ))}
+                                    <div className="mb-6">
+                                        <div className="flex justify-between items-center mb-2 px-1">
+                                            <span className="text-xs font-bold text-gray-400">類別</span>
+                                            <button onClick={()=>{ setModalOpen(false); setCatManagerOpen(true); }} className="text-xs text-sakura-dark font-bold underline">管理類別</button>
+                                        </div>
+                                        <div className="grid grid-cols-5 gap-2 max-h-48 overflow-y-auto pr-1">
+                                            {Object.entries(data.categories || DEFAULT_CATEGORIES).map(([k,c]) => (
+                                                <button key={k} onClick={()=>setTxForm({...txForm, category: k})} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${txForm.category === k ? 'bg-sakura-light dark:bg-white/20 scale-105 shadow-inner' : 'opacity-50 dark:opacity-40'}`}>
+                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center transition-transform" style={{backgroundColor: c.color}}><Icon name={c.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold dark:text-gray-300 truncate w-full text-center">{c.label}</span>
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
                                 <select onChange={e=>setTxForm({...txForm, accountId: e.target.value})} className="w-full bg-gray-50 dark:bg-black/30 p-4 rounded-2xl mb-6 outline-none font-bold dark:text-white">
