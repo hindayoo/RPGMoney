@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.0: Titles & Quests</title>
+    <title>SakuraWallet V21.1: Mana Flow & Glory</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -140,8 +140,8 @@
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         
         /* Mobile Optimized Drag */
-        .draggable-item { touch-action: pan-y; } /* Allow vertical scroll on content, handle will override */
-        .drag-handle { touch-action: none; cursor: grab; } /* Disable scroll on handle */
+        .draggable-item { touch-action: pan-y; }
+        .drag-handle { touch-action: none; cursor: grab; }
         .drag-handle:active { cursor: grabbing; }
 
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
@@ -149,6 +149,10 @@
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
         
         .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300; }
+        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/50 shadow-md; }
+        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 opacity-60 grayscale; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -244,7 +248,10 @@
             Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
             Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
             Sort: "M3 6h18M6 12h12M9 18h6", Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
-            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3"
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
+            Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
+            Chart: "M18 20V10M12 20V4M6 20v-6",
+            ArrowUp: "M12 19V5M5 12l7-7 7 7", ArrowDown: "M12 5v14M19 12l-7 7-7-7"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -293,12 +300,14 @@
         ];
 
         const TITLES_LIST = [
-            { id: 'Novice', name: '初心冒險者', req: '無', check: () => true },
-            { id: 'Spender1', name: '消費新手', req: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
-            { id: 'Spender2', name: '揮金如土', req: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
-            { id: 'Saver1', name: '儲蓄見習', req: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
-            { id: 'Saver2', name: '守財奴', req: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
-            { id: 'Master', name: '記帳大師', req: '記錄 > 50 筆', check: (d) => d.txCount >= 50 }
+            { id: 'Novice', name: '初心冒險者', desc: '一切的起點', condition: '預設擁有', check: () => true },
+            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
+            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
+            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
+            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
+            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
+            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
+            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', condition: '等級達到 50', check: (d) => d.level >= 50 }
         ];
 
         const TRANSLATIONS = { 
@@ -454,7 +463,7 @@
             );
         };
 
-        const SelectorSheet = ({ title, options, onSelect, onClose, current }) => (
+        const SelectorSheet = ({ title, options, onSelect, onClose, current, onLockedClick }) => (
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
                 <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[70vh] flex flex-col">
@@ -462,13 +471,17 @@
                     <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3>
                     <div className="grid gap-3 overflow-y-auto">
                         {options.map(opt => (
-                            <button key={opt.value} onClick={() => { onSelect(opt.value); onClose(); }} 
-                                className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'}`}>
+                            <button key={opt.value} onClick={() => { 
+                                    if(opt.locked && onLockedClick) { onLockedClick(opt); } 
+                                    else if (!opt.locked) { onSelect(opt.value); onClose(); } 
+                                }} 
+                                className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}>
                                 <div className="flex items-center gap-3">
                                     {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
                                     <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{opt.label}</span>
                                 </div>
                                 {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
+                                {opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
                             </button>
                         ))}
                     </div>
@@ -487,7 +500,7 @@
             });
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
-            const [subView, setSubView] = useState('main');
+            const [subView, setSubView] = useState('fin'); // Default to Financial Log
             const [modalOpen, setModalOpen] = useState(false);
             const [assetModalOpen, setAssetModalOpen] = useState(false);
             const [catManagerOpen, setCatManagerOpen] = useState(false);
@@ -546,13 +559,14 @@
             useEffect(() => { fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, []);
             useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
 
-            // Unlock Check Logic
             const checkUnlockables = (currentData) => {
-                const rate = rates[mainCurrency] || 1; // Normalize check to TWD-ish if needed or just use current currency logic
+                const rate = rates[mainCurrency] || 1; 
                 const stats = {
                     totalExp: currentData.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + (c.amount * (c.currency===mainCurrency ? 1 : 1)), 0),
                     balance: currentData.accounts.reduce((a,c) => a + (c.balance * (c.currency===mainCurrency ? 1 : 1)), 0),
-                    txCount: currentData.transactions.length
+                    txCount: currentData.transactions.length,
+                    questCount: currentData.claimedQuests.length,
+                    level: currentData.user.level
                 };
                 
                 let newTitles = [...(currentData.user.unlockedTitles || ['Novice'])];
@@ -567,7 +581,7 @@
                 });
 
                 if (updated) {
-                    saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: addLog('system', 'New Titles Unlocked!') });
+                    saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: [...addLog('system', 'New Titles Unlocked!'), ...(currentData.logs||[])] });
                 }
             };
 
@@ -587,9 +601,6 @@
                 let newLv = data.user.level; 
                 if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
                 
-                // Add money if quest has money reward (simplified: add to first account or just visual)
-                // Here we just log it as the system doesn't have a specific "Pocket" for loose cash, usually goes to an account.
-                // Let's add to the first account for gameplay feel.
                 let newAccounts = [...data.accounts];
                 if (quest.rewardBase > 0 && newAccounts.length > 0) {
                     newAccounts[0].balance += convertMoney(quest.rewardBase);
@@ -598,13 +609,9 @@
                 const newClaimed = [...data.claimedQuests, quest.uniqueId];
                 const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
                 
-                saveData({ 
-                    ...data, 
-                    user: { ...data.user, exp: newExp, level: newLv }, 
-                    accounts: newAccounts,
-                    claimedQuests: newClaimed,
-                    logs: newLogs
-                });
+                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv }, accounts: newAccounts, claimedQuests: newClaimed, logs: newLogs };
+                saveData(newData);
+                checkUnlockables(newData);
             };
 
             const handleAuth = async () => { const fb = window.firebase; if (!fb) return; const email = loginAccount.trim() + "@sakurarpg.com"; try { if (isRegistering) { if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); await fb.updateProfile(cred.user, { displayName: regName }); window.location.reload(); } else await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); } catch (e) { alert(e.message); } };
@@ -647,42 +654,51 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic with Claim System
+            // Quests Logic
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
                 const totalExp = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
                 const txCount = data.transactions.length;
                 const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
-                
-                // Base values in TWD for logic consistency
                 const rawQuests = [
-                    // Main
                     { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, rewardBase: 100, progress: txCount > 0 ? 1 : 0, target: 1 },
                     { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, rewardBase: 200, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(500) },
-                    
-                    // Daily (ID includes date to reset)
                     { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, rewardBase: 50, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
                     { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, rewardBase: 100, progress: data.transactions.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
                     { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, rewardBase: 80, progress: dailyTxCount, target: 3 },
-
-                    // Challenge
                     { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, rewardBase: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000) },
                     { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, rewardBase: 1000, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(50000) },
                     { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, rewardBase: 600, progress: txCount, target: 100 }
                 ];
-
-                return rawQuests.filter(q => q.type === subView).map(q => ({
-                    ...q,
-                    uniqueId: q.id, // For claim tracking
-                    isClaimed: data.claimedQuests.includes(q.id),
-                    isCompleted: q.progress >= q.target
-                })).sort((a, b) => {
-                    if (a.isClaimed && !b.isClaimed) return 1;
-                    if (!a.isClaimed && b.isClaimed) return -1;
-                    if (a.isCompleted && !b.isCompleted) return -1;
-                    return 0;
-                });
+                return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [data, subView, mainCurrency, rates]);
+
+            // Financial Summary Logic
+            const financialStats = useMemo(() => {
+                const now = new Date();
+                const todayStr = now.toDateString();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                
+                // Assume all transactions stored are already in main currency OR we convert on fly. 
+                // For simplicity in this demo, we assume they matched or we rely on 'amount' directly (ignoring currency mismatch for prototype speed, ideally convertMoney is applied per tx).
+                // Let's do simple sum.
+                
+                const todayTxs = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr);
+                const monthTxs = data.transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear; });
+
+                const calc = (list) => {
+                    return {
+                        in: list.filter(t => t.type === 'income').reduce((a,c) => a + c.amount, 0),
+                        out: list.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0)
+                    };
+                };
+
+                const tStats = calc(todayTxs);
+                const mStats = calc(monthTxs);
+
+                return { tStats, mStats };
+            }, [data.transactions]);
 
             if (loading) return null;
             if (!data.user) return ( 
@@ -780,7 +796,29 @@
                             </div> 
                         )}
                         
-                        {view === 'achievements' && ( <div className="grid grid-cols-2 gap-3 animate-[fadeIn_0.5s]">{data.achievements.map(a => (<div key={a.id} className={`glass p-4 rounded-3xl flex flex-col items-center text-center border-2 transition-all active:scale-95 ${a.unlocked ? 'border-yellow-400 bg-yellow-50/10' : 'border-theme-border grayscale opacity-60'}`}><div className="w-14 h-14 bg-theme-card rounded-full flex items-center justify-center mb-2 shadow-sm text-theme-accent"><Icon name={a.unlocked ? a.icon : 'Key'} size={28}/></div><div className="font-bold text-sm text-theme-text">{a.title}</div><div className="text-[10px] opacity-60 mt-1 text-theme-sub">{a.desc}</div></div>))}</div> )}
+                        {view === 'achievements' && ( 
+                            <div className="grid gap-3 animate-[fadeIn_0.5s]">
+                                {data.achievements.map(a => (
+                                    <div key={a.id} className={`achievement-card ${a.unlocked ? 'unlocked' : 'locked'}`}>
+                                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm">
+                                            <Icon name={a.unlocked ? a.icon : 'Lock'} size={24}/>
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="font-bold text-sm text-theme-text">{a.title}</div>
+                                            <div className="text-[10px] opacity-70 text-theme-sub">{a.desc}</div>
+                                            {a.target && (
+                                                <div className="mt-2 flex items-center gap-2">
+                                                    <div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50">
+                                                        <div className="h-full bg-theme-accent" style={{width: `${Math.min(100, (a.progress/a.target)*100)}%`}}></div>
+                                                    </div>
+                                                    <span className="text-[8px] font-bold text-theme-sub">{a.progress}/{a.target}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div> 
+                        )}
                         
                         {view === 'exchange' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
@@ -800,7 +838,43 @@
                             </div> 
                         )}
                         
-                        {view === 'journal' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><div className="flex gap-2 mb-4"><button onClick={()=>setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='sys'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>系統事件</button><button onClick={()=>setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='fin'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>財務變動</button></div><div className="space-y-3">{data.logs.filter(l => subView==='sys' ? l.type==='system' : (l.type==='finance_out' || l.type==='finance_in')).map(l => (<div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform"><div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div><div className="flex-1"><div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div><div className="text-sm font-bold text-theme-text">{l.msg}</div></div></div>))}</div></div> )}
+                        {view === 'journal' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                {/* Mana Flow Dashboard */}
+                                <div className="glass p-4 rounded-3xl border border-theme-border">
+                                    <h3 className="font-bold text-sm text-theme-text mb-3 flex items-center gap-2"><Icon name="Chart" size={16}/> 瑪娜流動 (Mana Flow)</h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="bg-theme-bg p-3 rounded-2xl">
+                                            <div className="text-[10px] text-theme-sub font-bold mb-1">今日概況</div>
+                                            <div className="text-xs text-green-500 font-mono flex justify-between"><span>收</span> <span>+{financialStats.tStats.in}</span></div>
+                                            <div className="text-xs text-red-500 font-mono flex justify-between"><span>支</span> <span>-{financialStats.tStats.out}</span></div>
+                                        </div>
+                                        <div className="bg-theme-bg p-3 rounded-2xl">
+                                            <div className="text-[10px] text-theme-sub font-bold mb-1">本月概況</div>
+                                            <div className="text-xs text-green-500 font-mono flex justify-between"><span>收</span> <span>+{financialStats.mStats.in}</span></div>
+                                            <div className="text-xs text-red-500 font-mono flex justify-between"><span>支</span> <span>-{financialStats.mStats.out}</span></div>
+                                            <div className="border-t border-theme-border mt-1 pt-1 text-xs font-bold text-theme-text text-right font-mono">= {financialStats.mStats.in - financialStats.mStats.out}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 mb-2">
+                                    <button onClick={()=>setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='fin'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>財務變動</button>
+                                    <button onClick={()=>setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='sys'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>系統事件</button>
+                                </div>
+                                <div className="space-y-3 pb-20">
+                                    {data.logs.filter(l => subView==='sys' ? l.type==='system' : (l.type==='finance_out' || l.type==='finance_in')).map(l => (
+                                        <div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform">
+                                            <div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div>
+                                            <div className="flex-1">
+                                                <div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div>
+                                                <div className="text-sm font-bold text-theme-text">{l.msg}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div> 
+                        )}
                     </main>
 
                     <nav className="fixed bottom-0 w-full glass border-t border-theme-border pb-safe pt-2 px-2 flex justify-between items-center z-30 h-16 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
@@ -813,7 +887,14 @@
                     {/* Selectors Modals */}
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
-                    {showTitleSelect && <SelectorSheet title={t('change_title')} options={TITLES_LIST.map(t => ({ value: t.id, label: t.name + (data.user.unlockedTitles.includes(t.id) ? '' : ' 🔒') }))} current={data.user.title} onSelect={(val) => { if(data.user.unlockedTitles.includes(val)) saveData({...data, user: {...data.user, title: val}}); }} onClose={() => setShowTitleSelect(false)} />}
+                    {showTitleSelect && <SelectorSheet 
+                        title={t('change_title')} 
+                        options={TITLES_LIST.map(t => ({ value: t.id, label: t.name, locked: !data.user.unlockedTitles.includes(t.id), desc: t.desc, condition: t.condition }))} 
+                        current={data.user.title} 
+                        onSelect={(val) => { if(data.user.unlockedTitles.includes(val)) saveData({...data, user: {...data.user, title: val}}); }} 
+                        onLockedClick={(t) => alert(`🔒 [${t.name}]\n\n📜 描述: ${t.desc}\n🔑 解鎖條件: ${t.condition}`)}
+                        onClose={() => setShowTitleSelect(false)} 
+                    />}
                     
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
