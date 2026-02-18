@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V20.6: Theme & Drag Engine</title>
+    <title>SakuraWallet V20.9: Auto-Exchange RPG</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -22,7 +22,6 @@
           extend: {
             fontFamily: { sans: ['"Zen Maru Gothic"', 'sans-serif'], pixel: ['"DotGothic16"', 'sans-serif'] },
             colors: {
-              // Semantic colors mapping to CSS variables
               theme: {
                 bg: 'var(--bg-color)',
                 card: 'var(--card-bg)',
@@ -44,19 +43,29 @@
     </script>
 
     <style>
-        /* === Multi-Theme Engine === */
+        /* === Cute RPG Theme Engine === */
         :root {
-            --bg-color: #fff0f5;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
-            --text-main: #4a044e;
-            --text-sub: #9d8c9d;
-            --accent-color: #db2777;
-            --border-color: #fbcfe8;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px);
+            --text-main: #212529;
+            --text-sub: #868e96;
+            --accent-color: #343a40;
+            --border-color: #dee2e6;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
         }
 
-        /* 1. Sakura (Default) */
+        [data-theme="ink"] {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #212529;
+            --text-sub: #868e96;
+            --accent-color: #343a40;
+            --border-color: #dee2e6;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
+        }
+
         [data-theme="sakura"] {
             --bg-color: #fff0f5;
             --card-bg: #ffffff;
@@ -68,40 +77,26 @@
             --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px);
         }
 
-        /* 2. Forest */
-        [data-theme="forest"] {
-            --bg-color: #1a2e1a;
-            --card-bg: #2d4a2d;
-            --text-main: #e2f0e2;
-            --text-sub: #a7cca7;
-            --accent-color: #4ade80;
-            --border-color: #4ade80;
-            --glass-bg: rgba(45, 74, 45, 0.9);
-            --bg-pattern: repeating-linear-gradient(45deg, #2d4a2d 0, #2d4a2d 1px, transparent 0, transparent 50%);
+        [data-theme="sky"] {
+            --bg-color: #f0f9ff;
+            --card-bg: #ffffff;
+            --text-main: #0c4a6e;
+            --text-sub: #38bdf8;
+            --accent-color: #0ea5e9;
+            --border-color: #bae6fd;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px);
         }
 
-        /* 3. Ocean */
-        [data-theme="ocean"] {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #e0f2fe;
-            --text-sub: #94a3b8;
-            --accent-color: #38bdf8;
-            --border-color: #0ea5e9;
-            --glass-bg: rgba(30, 41, 59, 0.85);
-            --bg-pattern: radial-gradient(#0ea5e9 1px, transparent 1px);
-        }
-
-        /* 4. Abyss (High Contrast Dark) */
-        [data-theme="abyss"] {
-            --bg-color: #000000;
-            --card-bg: #18181b;
-            --text-main: #d8b4fe;
+        [data-theme="magic"] {
+            --bg-color: #faf5ff;
+            --card-bg: #ffffff;
+            --text-main: #581c87;
             --text-sub: #a855f7;
-            --accent-color: #d946ef;
-            --border-color: #d946ef;
-            --glass-bg: rgba(24, 24, 27, 0.95);
-            --bg-pattern: linear-gradient(0deg, transparent 24%, rgba(217, 70, 239, .3) 25%, rgba(217, 70, 239, .3) 26%, transparent 27%, transparent 74%);
+            --accent-color: #9333ea;
+            --border-color: #e9d5ff;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px);
         }
 
         /* Base Setup */
@@ -110,7 +105,7 @@
         body { 
             background-color: var(--bg-color);
             background-image: var(--bg-pattern);
-            background-size: 24px 24px;
+            background-size: 20px 20px;
             color: var(--text-main);
             transition: all 0.5s ease;
             overflow: hidden; 
@@ -118,16 +113,16 @@
 
         .glass { 
             background: var(--glass-bg); 
-            backdrop-filter: blur(16px); 
+            backdrop-filter: blur(12px); 
             border: 1px solid var(--border-color); 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
         }
 
-        /* Sakura Effects */
+        /* Particle Effects */
         .sakura-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .petal { position: absolute; background: var(--accent-color); border-radius: 150% 0 150% 0; animation: fall linear infinite; box-shadow: 0 2px 4px rgba(0,0,0,0.1); opacity: 0.3; }
         
-        @keyframes fall { 0% { opacity: 0; top: -10%; transform: translateX(0) } 10% { opacity: 0.5; } 100% { opacity: 0; top: 110%; transform: translateX(20px) rotate(60deg); } }
+        @keyframes fall { 0% { opacity: 0; top: -10%; transform: translateX(0) } 10% { opacity: 0.4; } 100% { opacity: 0; top: 110%; transform: translateX(20px) rotate(60deg); } }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -136,30 +131,32 @@
         
         .rpg-btn { 
             @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden;
-            box-shadow: 0 6px 0 0 rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.1); transform: translateY(0);
+            box-shadow: 0 4px 0 0 rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.05); transform: translateY(0);
         }
-        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(6px); }
+        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(4px); }
 
         .btn-num { background-color: var(--card-bg); color: var(--text-main); font-family: "DotGothic16", sans-serif; font-size: 1.5rem; font-weight: bold; border: 2px solid var(--border-color); }
         .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
-        .btn-action { background-color: var(--accent-color); color: var(--bg-color); border: 2px solid var(--text-main); }
+        .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         
-        /* Drag Element Style */
-        .draggable-item { cursor: grab; }
-        .draggable-item:active { cursor: grabbing; }
-        .drag-ghost { opacity: 0.5; transform: scale(0.95); background: var(--accent-color); }
+        /* Mobile Optimized Drag */
+        .draggable-item { touch-action: pan-y; } /* Allow vertical scroll on content, handle will override */
+        .drag-handle { touch-action: none; cursor: grab; } /* Disable scroll on handle */
+        .drag-handle:active { cursor: grabbing; }
+
+        .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
 
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
     </style>
 </head>
-<body class="font-sans" data-theme="sakura">
+<body class="font-sans" data-theme="ink">
     
     <div id="sakura-container" class="sakura-bg"></div>
     <div id="rpg-bg-layer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-10"></div>
     
     <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 transition-opacity duration-500 text-center p-6">
         <div class="text-6xl animate-bounce mb-6">🐉</div>
-        <div class="text-pink-500 font-bold animate-pulse font-pixel text-2xl mb-2">SAKURA WORLD</div>
+        <div class="text-gray-800 font-bold animate-pulse font-pixel text-2xl mb-2">LOADING WORLD</div>
         <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">召喚中...</div>
         <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">Force Start</button>
     </div>
@@ -216,7 +213,7 @@
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo, useRef, useCallback } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
         const { createRoot } = ReactDOM;
         
         // --- Icons ---
@@ -244,7 +241,8 @@
             Minus: "M5 12h14", Plus: "M12 5v14 M5 12h14", Check: "M20 6L9 17l-5-5", Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
             Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
             Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
-            Sort: "M3 6h18M6 12h12M9 18h6", Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+            Sort: "M3 6h18M6 12h12M9 18h6", Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -253,7 +251,15 @@
         };
 
         // --- Data & Config ---
-        const CURRENCIES = ['TWD', 'HKD', 'JPY', 'USD', 'CNY', 'KRW', 'EUR'];
+        const MAIN_CURRENCIES = ['HKD', 'TWD', 'JPY'];
+        const EXCHANGE_CURRENCIES = ['HKD', 'TWD', 'JPY', 'KRW', 'CNY'];
+        
+        const THEMES = [
+            { id: 'ink', name: '水墨卷軸', color: '#343a40' },
+            { id: 'sakura', name: '櫻花祝福', color: '#db2777' },
+            { id: 'sky', name: '天空之境', color: '#0ea5e9' },
+            { id: 'magic', name: '秘法迷霧', color: '#9333ea' }
+        ];
         
         const DEFAULT_CATEGORIES = {
             bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
@@ -275,8 +281,20 @@
             { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
         ];
         
-        const TALENTS = [{icon:'Crown', name:'黃金律法', lv:1, desc:'增加收入經驗值'}, {icon:'Book', name:'森羅萬象', lv:1, desc:'解鎖更多圖表'}, {icon:'Shield', name:'絕對防禦', lv:0, desc:'減少衝動消費'}, {icon:'Zap', name:'疾風迅雷', lv:0, desc:'記帳速度提升'}, {icon:'Gem', name:'幸運女神', lv:0, desc:'隨機獲得金幣'}, {icon:'Hammer', name:'神工鬼斧', lv:0, desc:'資產上限提升'}];
-        const TRANSLATIONS = { zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '公會 ID (僅限英數)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '通行密碼', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤' }, en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator' }, ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん' } };
+        const TALENTS = [
+            {id:'t1', icon:'Crown', name:'黃金律法', desc:'增加收入經驗值'}, 
+            {id:'t2', icon:'Book', name:'森羅萬象', desc:'解鎖更多圖表'}, 
+            {id:'t3', icon:'Shield', name:'絕對防禦', desc:'減少衝動消費'}, 
+            {id:'t4', icon:'Zap', name:'疾風迅雷', desc:'記帳速度提升'}, 
+            {id:'t5', icon:'Gem', name:'幸運女神', desc:'隨機獲得金幣'}, 
+            {id:'t6', icon:'Hammer', name:'神工鬼斧', desc:'資產上限提升'}
+        ];
+
+        const TRANSLATIONS = { 
+            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型' }, 
+            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type' }, 
+            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ' } 
+        };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
 
@@ -300,9 +318,8 @@
 
         const BackgroundIllustrations = ({ theme }) => {
             const getIcon = () => {
-                if (theme === 'forest') return 'Tree';
-                if (theme === 'abyss') return 'Ghost';
-                if (theme === 'ocean') return 'Moon';
+                if (theme === 'sky') return 'Cloud';
+                if (theme === 'magic') return 'Moon';
                 return 'Sun';
             };
             return (
@@ -360,127 +377,99 @@
             );
         };
 
-        // --- Drag and Drop Category Manager ---
         const CategoryManager = ({ categories, onSave, onClose }) => {
             const [localCats, setLocalCats] = useState([]);
             const [editId, setEditId] = useState(null);
             const [editForm, setEditForm] = useState({ label: '', color: '#000000', icon: 'Star' });
             const [iconPickerOpen, setIconPickerOpen] = useState(false);
-            const dragItem = useRef();
-            const dragOverItem = useRef();
+            const [draggingIndex, setDraggingIndex] = useState(null);
 
             useEffect(() => {
                 const sorted = Object.entries(categories).sort((a, b) => (a[1].order || 99) - (b[1].order || 99));
                 setLocalCats(sorted);
             }, [categories]);
 
-            const onDragStart = (e, position) => {
-                dragItem.current = position;
+            const handleTouchMove = (e, index) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (!target) return;
+                const row = target.closest('[data-index]');
+                if (!row) return;
+                const targetIndex = parseInt(row.dataset.index);
+                if (targetIndex !== index && targetIndex >= 0 && targetIndex < localCats.length) {
+                    const newList = [...localCats];
+                    const item = newList[index];
+                    newList.splice(index, 1);
+                    newList.splice(targetIndex, 0, item);
+                    setLocalCats(newList);
+                    setDraggingIndex(targetIndex);
+                }
             };
 
-            const onDragEnter = (e, position) => {
-                dragOverItem.current = position;
-                // Optional: Real-time reorder preview (can be jittery without throttling, so we do it on drop usually, but here for "RPG feel" immediate feedback)
-                const newList = [...localCats];
-                const dragItemContent = newList[dragItem.current];
-                newList.splice(dragItem.current, 1);
-                newList.splice(dragOverItem.current, 0, dragItemContent);
-                dragItem.current = position;
-                setLocalCats(newList);
-            };
-
-            const onDragEnd = () => {
-                dragItem.current = null;
-                dragOverItem.current = null;
-            };
-
-            const handleEdit = (key, cat) => {
-                setEditId(key);
-                setEditForm({ label: cat.label, color: cat.color, icon: cat.icon || 'Star' });
-                setIconPickerOpen(false);
-            };
-
-            const saveEdit = () => {
-                if(!editForm.label) return;
-                const newCats = localCats.map(([k, c]) => k === editId ? [k, { ...c, ...editForm }] : [k, c]);
-                setLocalCats(newCats);
-                setEditId(null);
-            };
-
-            const addNew = () => {
-                const id = 'custom_' + Date.now();
-                const newEntry = [id, { label: '新類別', icon: 'Star', color: '#888888' }];
-                setLocalCats([...localCats, newEntry]);
-                setEditId(id);
-                setEditForm({ label: '新類別', color: '#888888', icon: 'Star' });
-            };
-            
-            const handleSaveAll = () => {
-                const finalObj = {};
-                localCats.forEach(([key, val], index) => {
-                    finalObj[key] = { ...val, order: index + 1 };
-                });
-                onSave(finalObj);
-                onClose();
-            };
+            const handleEdit = (key, cat) => { setEditId(key); setEditForm({ label: cat.label, color: cat.color, icon: cat.icon || 'Star' }); setIconPickerOpen(false); };
+            const saveEdit = () => { if(!editForm.label) return; const newCats = localCats.map(([k, c]) => k === editId ? [k, { ...c, ...editForm }] : [k, c]); setLocalCats(newCats); setEditId(null); };
+            const addNew = () => { const id = 'custom_' + Date.now(); setLocalCats([...localCats, [id, { label: '新類別', icon: 'Star', color: '#888888' }]]); setEditId(id); setEditForm({ label: '新類別', color: '#888888', icon: 'Star' }); };
+            const handleSaveAll = () => { const finalObj = {}; localCats.forEach(([key, val], index) => { finalObj[key] = { ...val, order: index + 1 }; }); onSave(finalObj); onClose(); };
 
             return (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex flex-col justify-center px-4">
                     <div className="bg-theme-card rounded-3xl p-6 shadow-2xl max-h-[80vh] flex flex-col border border-theme-border">
-                        <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2">
-                            <h3 className="font-bold text-lg text-theme-text">類別管理 (拖曳排序)</h3>
-                            <button onClick={onClose} className="text-theme-text"><Icon name="X"/></button>
-                        </div>
+                        <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2"><h3 className="font-bold text-lg text-theme-text">類別管理</h3><button onClick={onClose} className="text-theme-text"><Icon name="X"/></button></div>
                         <div className="overflow-y-auto flex-1 space-y-2 pr-1">
                             {localCats.map(([key, cat], index) => (
-                                <div key={key} 
-                                     draggable 
-                                     onDragStart={(e) => onDragStart(e, index)}
-                                     onDragEnter={(e) => onDragEnter(e, index)}
-                                     onDragEnd={onDragEnd}
-                                     onDragOver={(e) => e.preventDefault()}
-                                     className="flex flex-col gap-2 p-3 rounded-xl bg-theme-bg border border-transparent hover:border-theme-accent transition-colors draggable-item">
+                                <div key={key} data-index={index}
+                                     className={`flex flex-col gap-2 p-3 rounded-xl bg-theme-bg border border-transparent transition-colors draggable-item ${draggingIndex === index ? 'bg-theme-accent/10 border-theme-accent z-10' : ''}`}>
                                     <div className="flex items-center gap-3">
-                                        <div className="text-theme-sub cursor-grab active:cursor-grabbing"><Icon name="Grip" size={18}/></div>
-                                        <div onClick={() => editId === key && setIconPickerOpen(!iconPickerOpen)} className={`w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 ${editId === key ? 'cursor-pointer ring-2 ring-theme-accent' : ''}`} style={{backgroundColor: editId === key ? editForm.color : cat.color}}>
-                                            <Icon name={editId === key ? editForm.icon : cat.icon} size={14} color="white"/>
+                                        <div 
+                                            className="text-theme-sub drag-handle p-2 -ml-2 touch-none" 
+                                            onTouchStart={() => setDraggingIndex(index)}
+                                            onTouchMove={(e) => handleTouchMove(e, draggingIndex)}
+                                            onTouchEnd={() => setDraggingIndex(null)}
+                                            onMouseDown={() => setDraggingIndex(index)}
+                                        >
+                                            <Icon name="Grip" size={24}/>
                                         </div>
-                                        {editId === key ? (
-                                            <div className="flex items-center gap-2 flex-1">
-                                                <input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border bg-theme-bg text-theme-text text-sm"/>
-                                                <input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/>
-                                                <button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button>
-                                            </div>
-                                        ) : (
-                                            <div className="flex-1 font-bold text-sm text-theme-text">{cat.label}</div>
-                                        )}
-                                        {editId !== key && <button onClick={()=>handleEdit(key, cat)} className="text-theme-sub hover:text-theme-accent"><Icon name="Edit" size={16}/></button>}
+                                        <div onClick={() => editId === key && setIconPickerOpen(!iconPickerOpen)} className={`w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 ${editId === key ? 'cursor-pointer ring-2 ring-theme-accent' : ''}`} style={{backgroundColor: editId === key ? editForm.color : cat.color}}><Icon name={editId === key ? editForm.icon : cat.icon} size={14} color="white"/></div>
+                                        {editId === key ? (<div className="flex items-center gap-2 flex-1"><input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border bg-theme-bg text-theme-text text-sm"/><input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/><button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button></div>) : (<div className="flex-1 font-bold text-sm text-theme-text">{cat.label}</div>)}{editId !== key && <button onClick={()=>handleEdit(key, cat)} className="text-theme-sub hover:text-theme-accent"><Icon name="Edit" size={16}/></button>}
                                     </div>
-                                    {editId === key && iconPickerOpen && (
-                                        <div className="grid grid-cols-6 gap-2 bg-theme-glass p-2 rounded-lg mt-2 max-h-32 overflow-y-auto">
-                                            {Object.keys(ICON_PATHS).map(iconName => (
-                                                <button key={iconName} onClick={() => { setEditForm({...editForm, icon: iconName}); setIconPickerOpen(false); }} className={`p-1 rounded hover:bg-theme-bg flex justify-center ${editForm.icon === iconName ? 'bg-theme-accent text-white' : 'text-theme-sub'}`}>
-                                                    <Icon name={iconName} size={16} />
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
+                                    {editId === key && iconPickerOpen && (<div className="grid grid-cols-6 gap-2 bg-theme-glass p-2 rounded-lg mt-2 max-h-32 overflow-y-auto">{Object.keys(ICON_PATHS).map(iconName => (<button key={iconName} onClick={() => { setEditForm({...editForm, icon: iconName}); setIconPickerOpen(false); }} className={`p-1 rounded hover:bg-theme-bg flex justify-center ${editForm.icon === iconName ? 'bg-theme-accent text-white' : 'text-theme-sub'}`}><Icon name={iconName} size={16} /></button>))}</div>)}
                                 </div>
                             ))}
                         </div>
-                        <div className="mt-4 flex gap-2">
-                            <button onClick={addNew} className="flex-1 py-3 bg-theme-bg text-theme-text rounded-xl font-bold text-sm border border-theme-border">+ 新增</button>
-                            <button onClick={handleSaveAll} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold text-sm shadow-md">儲存變更</button>
-                        </div>
+                        <div className="mt-4 flex gap-2"><button onClick={addNew} className="flex-1 py-3 bg-theme-bg text-theme-text rounded-xl font-bold text-sm border border-theme-border">+ 新增</button><button onClick={handleSaveAll} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold text-sm shadow-md">儲存變更</button></div>
                     </div>
                 </div>
             );
         };
 
+        const SelectorSheet = ({ title, options, onSelect, onClose, current }) => (
+            <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[70vh] flex flex-col">
+                    <div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div>
+                    <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3>
+                    <div className="grid gap-3 overflow-y-auto">
+                        {options.map(opt => (
+                            <button key={opt.value} onClick={() => { onSelect(opt.value); onClose(); }} 
+                                className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'}`}>
+                                <div className="flex items-center gap-3">
+                                    {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
+                                    <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{opt.label}</span>
+                                </div>
+                                {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
+                            </button>
+                        ))}
+                    </div>
+                    <button onClick={onClose} className="w-full mt-6 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button>
+                </div>
+            </div>
+        );
+
         // --- Main App ---
         const App = () => {
             useSakura();
-            const [data, setData] = useState({ user: null, accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES });
+            const [data, setData] = useState({ user: null, accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} });
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
             const [subView, setSubView] = useState('main');
@@ -491,22 +480,23 @@
             const [keypadTarget, setKeypadTarget] = useState(null); 
             const [tempValue, setTempValue] = useState('');
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
-            const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'TWD', balance: '', type: 'cash' });
+            const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
-            // Auth States
+            const [showThemeSelect, setShowThemeSelect] = useState(false);
+            const [showCurrencySelect, setShowCurrencySelect] = useState(false);
+            
             const [isRegistering, setIsRegistering] = useState(false);
             const [loginAccount, setLoginAccount] = useState('');
             const [loginPass, setLoginPass] = useState('');
             const [regName, setRegName] = useState('');
             const [showPass, setShowPass] = useState(false);
 
-            // Settings
-            const [theme, setTheme] = useState(localStorage.getItem('gw_theme') || 'sakura');
+            const [theme, setTheme] = useState(localStorage.getItem('gw_theme') || 'ink');
             const [lang, setLang] = useState(localStorage.getItem('gw_lang') || 'zh');
             const [rates, setRates] = useState({});
-            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'TWD');
+            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'HKD');
             const [baseAmount, setBaseAmount] = useState('100');
-            const [calcBase, setCalcBase] = useState('TWD');
+            const [calcBase, setCalcBase] = useState('HKD');
 
             const t = (key) => TRANSLATIONS[lang][key] || key;
 
@@ -520,12 +510,40 @@
 
             const addLog = (type, msg) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...(data.logs || [])].slice(0, 50); };
             const saveData = (newData) => { setData(newData); const fb = window.firebase; if (fb && fb.auth && fb.auth.currentUser) fb.setDoc(fb.doc(fb.db, "users", fb.auth.currentUser.uid), newData).catch(console.error); else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); };
-            const loadLocalData = () => { const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); if (localData) { if (!localData.categories) localData.categories = DEFAULT_CATEGORIES; setData(localData); } else { setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }); } setLoading(false); };
+            const loadLocalData = () => { 
+                const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); 
+                if (localData) { 
+                    if (!localData.categories) localData.categories = DEFAULT_CATEGORIES;
+                    if (!localData.talents) localData.talents = {};
+                    setData(localData); 
+                } else { 
+                    setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} }); 
+                } 
+                setLoading(false); 
+            };
             const updateCategories = (newCats) => { saveData({ ...data, categories: newCats }); };
 
-            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; if(!fd.talents) fd.talents = {}; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            
+            // Fetch Rates relative to TWD to serve as base, then we assume conversions. 
+            // Better: fetch TWD based rates and simple math.
             useEffect(() => { fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, []);
+            
             useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
+
+            const convertMoney = (amountInTWD) => {
+                // Rates are based on TWD = 1.
+                // To get Target Currency: AmountTWD * RateTarget
+                const rate = rates[mainCurrency] || 1;
+                return Math.floor(amountInTWD * rate);
+            };
+
+            const upgradeTalent = (tid) => {
+                const currentLv = data.talents[tid] || 0;
+                // Simple upgrade logic: increment level. In a real game, check gold/points here.
+                const newTalents = { ...data.talents, [tid]: currentLv + 1 };
+                saveData({ ...data, talents: newTalents });
+            };
 
             const handleAuth = async () => { const fb = window.firebase; if (!fb) return; const email = loginAccount.trim() + "@sakurarpg.com"; try { if (isRegistering) { if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); await fb.updateProfile(cred.user, { displayName: regName }); window.location.reload(); } else await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); } catch (e) { alert(e.message); } };
             const logout = () => { const fb = window.firebase; if(fb) fb.signOut(fb.auth); window.location.reload(); };
@@ -561,22 +579,42 @@
                 setAssetModalOpen(false);
             };
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
-            const toggleTheme = () => { const themes = ['sakura', 'forest', 'ocean', 'abyss']; const next = themes[(themes.indexOf(theme) + 1) % themes.length]; setTheme(next); };
-            const toggleCurrency = () => { const idx = CURRENCIES.indexOf(mainCurrency); setMainCurrency(CURRENCIES[(idx + 1) % CURRENCIES.length]); };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic (Mock data that adapts to currency)
             const activeQuests = useMemo(() => {
+                // Base values in TWD
                 const baseQuests = [
-                    { id: 1, type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, reward: 100, progress: data.transactions.length > 0 ? 1 : 0, target: 1 },
-                    { id: 2, type: 'daily', title: '節儉美德', desc: '今日消費不超過 500', exp: 20, reward: 50, progress: 0, target: 1 },
-                    { id: 3, type: 'challenge', title: '儲蓄大師', desc: '總資產達到 10,000', exp: 200, reward: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: 10000 }
+                    { id: 1, type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, rewardBase: 100, progress: data.transactions.length > 0 ? 1 : 0, target: 1, isMoney: false },
+                    { id: 2, type: 'daily', title: '節儉美德', desc: `今日消費不超過 ${convertMoney(500)}`, exp: 20, rewardBase: 50, progress: 0, target: 1, isMoney: false },
+                    { id: 3, type: 'challenge', title: '儲蓄大師', desc: `總資產達到 ${convertMoney(10000)}`, exp: 200, rewardBase: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000), isMoney: true }
                 ];
                 return baseQuests.filter(q => q.type === subView);
-            }, [data, subView, mainCurrency]);
+            }, [data, subView, mainCurrency, rates]);
 
             if (loading) return null;
-            if (!data.user) return ( <div className="h-[100dvh] flex flex-col items-center justify-center p-6 animate-[fadeIn_0.5s] overflow-y-auto"><div className="text-6xl mb-6 animate-float">🛡️</div><h1 className="text-2xl font-bold text-theme-text mb-8 font-pixel tracking-widest text-center">{t('login_title')}</h1><div className="w-full max-w-sm glass p-8 rounded-[2.5rem] shadow-2xl flex flex-col gap-5 border-4 border-theme-border"><div className="flex bg-theme-bg rounded-full p-1"><button onClick={()=>setIsRegistering(false)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${!isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('login_btn')}</button><button onClick={()=>setIsRegistering(true)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('register_btn')}</button></div>{isRegistering && <input type="text" placeholder="Nickname" value={regName} onChange={e=>setRegName(e.target.value)} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub"/>}<input type="text" placeholder="ID (A-Z, 0-9)" value={loginAccount} onChange={e=>setLoginAccount(e.target.value)} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub"/><div className="relative mt-1"><input type={showPass ? "text" : "password"} value={loginPass} onChange={e=>setLoginPass(e.target.value)} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold shadow-inner text-theme-text placeholder-theme-sub" placeholder="Password"/><button onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-4 opacity-50 text-theme-text"><Icon name={showPass?'EyeOff':'Eye'} size={20}/></button></div><button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button></div><button onClick={() => saveData({...data, user: {name:'Guest', level:1, exp:0, title:'Novice'}})} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button></div> );
+            if (!data.user) return ( 
+                <div className="h-[100dvh] flex flex-col items-center justify-center p-6 animate-[fadeIn_0.5s] overflow-y-auto relative">
+                    <button onClick={() => setShowThemeSelect(true)} className="absolute top-6 right-6 p-2 rounded-full bg-theme-glass text-theme-accent shadow-sm border border-theme-border z-50"><Icon name="Paint"/></button>
+                    <div className="text-6xl mb-6 animate-float">🛡️</div>
+                    <h1 className="text-2xl font-bold text-theme-text mb-8 font-pixel tracking-widest text-center">{t('login_title')}</h1>
+                    <div className="w-full max-w-sm glass p-8 rounded-[2.5rem] shadow-2xl flex flex-col gap-5 border-4 border-theme-border">
+                        <div className="flex bg-theme-bg rounded-full p-1">
+                            <button onClick={()=>setIsRegistering(false)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${!isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('login_btn')}</button>
+                            <button onClick={()=>setIsRegistering(true)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('register_btn')}</button>
+                        </div>
+                        {isRegistering && <input type="text" placeholder={t('nick_placeholder')} value={regName} onChange={e=>setRegName(e.target.value)} className="rpg-input"/>}
+                        <input type="text" placeholder={t('id_placeholder')} value={loginAccount} onChange={e=>setLoginAccount(e.target.value)} className="rpg-input"/>
+                        <div className="relative mt-1">
+                            <input type={showPass ? "text" : "password"} value={loginPass} onChange={e=>setLoginPass(e.target.value)} className="rpg-input" placeholder={t('pass_placeholder')}/>
+                            <button onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-4 opacity-50 text-theme-text"><Icon name={showPass?'EyeOff':'Eye'} size={20}/></button>
+                        </div>
+                        <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
+                        <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
+                    </div>
+                    <button onClick={() => saveData({...data, user: {name:'Guest', level:1, exp:0, title:'Novice'}})} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
+                </div> 
+            );
 
             return (
                 <div className="flex flex-col h-[100dvh] relative z-10 text-theme-text overflow-hidden">
@@ -588,13 +626,13 @@
                                 <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div className="text-[10px] text-theme-accent font-bold opacity-80">{data.user.title}</div></div>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={toggleCurrency} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
+                                <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
                                 <button onClick={()=>setLang(l=>l==='zh'?'en':l==='en'?'ja':'zh')} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[10px] font-bold active:scale-95 transition-transform">{lang.toUpperCase()}</button>
-                                <button onClick={toggleTheme} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform capitalize text-[9px]">{theme}</button>
+                                <button onClick={() => setShowThemeSelect(true)} className="w-9 h-9 bg-theme-bg text-theme-accent rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="Paint" size={16}/></button>
                                 <button onClick={logout} className="w-9 h-9 bg-red-100/50 text-red-500 rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="LogOut" size={16}/></button>
                             </div>
                         </div>
-                        <div className="w-full mt-1">
+                        <div className="w-full mt-1 relative">
                             <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 text-theme-sub"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div>
                             <div className="w-full h-2 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border"><div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div>
                         </div>
@@ -603,20 +641,43 @@
                     <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
                         {view === 'adventure' && (
                             <div className="animate-[fadeIn_0.5s] space-y-5">
-                                <div><h3 className="font-bold opacity-60 text-sm mb-2 flex items-center gap-1 text-theme-text"><Icon name="Star" size={14}/> {t('upgrade')}</h3><div className="grid grid-cols-3 gap-2">{TALENTS.map((t,i) => (<div key={i} className="glass p-2 rounded-2xl flex flex-col items-center justify-center h-20 bg-theme-glass active:scale-95 transition-transform"><div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-theme-bg text-theme-accent"><Icon name={t.icon} size={16}/></div><span className="text-[10px] font-bold opacity-80 text-theme-text">{t.name}</span></div>))}</div></div>
-                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${(data.user.exp % 100)}%`}}></div></div><span className="text-[8px] opacity-50 text-theme-sub">{data.user.exp % 100}%</span></div></div>
-                                <div><div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div><div className="space-y-2">{data.accounts.map(acc => (<div key={acc.id} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className="glass p-3 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer"><div className="flex items-center gap-3"><div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm bg-theme-accent/80`}><Icon name={acc.type==='card'?'CreditCard':acc.type==='bank'?'Landmark':'Wallet'} size={20}/></div><div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub">{acc.type}</div></div></div><div className="text-right"><div className="font-mono font-bold text-theme-text">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold bg-theme-bg px-1 rounded inline-block text-theme-sub">{acc.currency}</div></div></div>))}</div></div>
+                                <div><h3 className="font-bold opacity-60 text-sm mb-2 flex items-center gap-1 text-theme-text"><Icon name="Star" size={14}/> {t('upgrade')}</h3>
+                                    <div className="grid grid-cols-3 gap-2">{TALENTS.map((t,i) => {
+                                        const lv = data.talents[t.id] || 0;
+                                        return (
+                                            <div key={i} className="glass p-2 rounded-2xl flex flex-col items-center justify-center h-20 bg-theme-glass active:scale-95 transition-transform">
+                                                <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-theme-bg text-theme-accent relative">
+                                                    <Icon name={t.icon} size={16}/>
+                                                    {lv > 0 && <span className="absolute -top-1 -right-1 bg-theme-accent text-white text-[8px] rounded-full px-1 border border-white">Lv.{lv}</span>}
+                                                </div>
+                                                <span className="text-[10px] font-bold opacity-80 text-theme-text">{t.name}</span>
+                                            </div>
+                                        );
+                                    })}</div>
+                                </div>
+                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div></div>
+                                <div>
+                                    <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
+                                    <div className="space-y-2">
+                                        {data.accounts.map(acc => (
+                                            <div key={acc.id} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className="glass p-4 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-4 border-theme-accent">
+                                                <div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub">{acc.type}</div></div>
+                                                <div className="text-right"><div className="font-mono font-bold text-theme-text text-lg">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold text-theme-sub">{acc.currency}</div></div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         )}
 
-                        {view === 'upgrade' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><h2 className="text-xl font-bold flex items-center gap-2 mb-4 text-theme-text"><Icon name="Sword" size={20}/> 天賦強化</h2><div className="grid gap-3">{TALENTS.map((t,i) => (<div key={i} className="glass p-4 rounded-3xl flex items-center justify-between active:scale-95 transition-transform"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-theme-bg text-theme-accent"><Icon name={t.icon} size={24}/></div><div><h3 className="font-bold text-theme-text">{t.name}</h3><p className="text-xs opacity-60 text-theme-sub">{t.desc}</p></div></div><div className="font-bold text-theme-accent">Lv.{t.lv}</div></div>))}</div></div> )}
+                        {view === 'upgrade' && ( <div className="animate-[fadeIn_0.5s] space-y-4"><h2 className="text-xl font-bold flex items-center gap-2 mb-4 text-theme-text"><Icon name="Sword" size={20}/> 天賦強化</h2><div className="grid gap-3">{TALENTS.map((t,i) => (<div key={i} onClick={()=>upgradeTalent(t.id)} className="glass p-4 rounded-3xl flex items-center justify-between active:scale-95 transition-transform cursor-pointer"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-theme-bg text-theme-accent"><Icon name={t.icon} size={24}/></div><div><h3 className="font-bold text-theme-text">{t.name}</h3><p className="text-xs opacity-60 text-theme-sub">{t.desc}</p></div></div><div className="font-bold text-theme-accent">Lv.{data.talents[t.id]||0}</div></div>))}</div></div> )}
                         
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
                                 <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
                                 {activeQuests.map(q => (
                                     <div key={q.id} className="glass p-5 rounded-3xl relative active:scale-95 transition-transform">
-                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span><span className="text-xs text-yellow-500 font-bold">{mainCurrency} {q.reward}</span></div></div>
+                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span><span className="text-xs text-yellow-500 font-bold">{mainCurrency} {convertMoney(q.rewardBase)}</span></div></div>
                                         <p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p>
                                         <div className="flex items-center gap-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.min(q.progress,q.target)}/{q.target}</span></div>
                                     </div>
@@ -631,10 +692,18 @@
                                 <div className="glass p-5 rounded-3xl border-4 border-wood bg-[#F5E6D3] text-[#5D4037]">
                                     <div className="text-center font-bold mb-4 font-pixel tracking-widest border-b border-wood/30 pb-2 text-xl">公會佈告欄</div>
                                     <div className="flex items-center gap-2 mb-4 bg-white/50 p-2 rounded-xl">
-                                        <select value={calcBase} onChange={e=>setCalcBase(e.target.value)} className="bg-transparent font-bold text-sm outline-none w-16 text-[#5D4037]">{CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}</select>
+                                        <select value={calcBase} onChange={e=>setCalcBase(e.target.value)} className="bg-transparent font-bold text-sm outline-none w-16 text-[#5D4037]">{EXCHANGE_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}</select>
                                         <div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer">{baseAmount}</div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 pb-20">{CURRENCIES.filter(c=>c!==calcBase).map(c => (<div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{((parseFloat(baseAmount)/ (rates[calcBase]||1)) * (rates[c]||1)).toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>))}</div>
+                                    <div className="grid grid-cols-2 gap-3 pb-20">{EXCHANGE_CURRENCIES.filter(c=>c!==calcBase).map(c => {
+                                        // Simplified conversion for display using TWD base.
+                                        // Rate(Source) -> TWD -> Rate(Target)
+                                        // (Amt / Rate[Source]) * Rate[Target]
+                                        const val = (parseFloat(baseAmount) / (rates[calcBase] || 1)) * (rates[c] || 1);
+                                        return (
+                                            <div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{val.toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>
+                                        );
+                                    })}</div>
                                 </div>
                             </div> 
                         )}
@@ -649,16 +718,21 @@
                     {keypadOpen && <Keypad value={tempValue} onChange={setTempValue} onConfirm={confirmKeypad} onClose={()=>setKeypadOpen(false)} label={t('calculator')} />}
                     {catManagerOpen && <CategoryManager categories={data.categories} onSave={updateCategories} onClose={()=>setCatManagerOpen(false)} />}
                     
+                    {/* Selectors Modals */}
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
+                    {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
+                    
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
                             <div className="bg-theme-card rounded-3xl p-6 shadow-2xl animate-[slideUp_0.2s]">
-                                <div className="flex justify-between mb-4"><h3 className="font-bold text-lg text-theme-text">{assetForm.id ? 'Edit' : t('forge')}</h3><button onClick={()=>setAssetModalOpen(false)} className="text-theme-text"><Icon name="X"/></button></div>
+                                <div className="flex justify-between mb-4"><h3 className="font-bold text-lg text-theme-text">{assetForm.id ? 'Edit' : t('forge_intro')}</h3><button onClick={()=>setAssetModalOpen(false)} className="text-theme-text"><Icon name="X"/></button></div>
                                 <div className="space-y-4">
-                                    <input type="text" value={assetForm.name} onChange={e=>setAssetForm({...assetForm, name:e.target.value})} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold text-theme-text" placeholder="Name"/>
+                                    <input type="text" value={assetForm.name} onChange={e=>setAssetForm({...assetForm, name:e.target.value})} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold text-theme-text" placeholder={t('acc_name')}/>
                                     <div className="flex gap-2">
-                                        <select value={assetForm.currency} onChange={e=>setAssetForm({...assetForm, currency:e.target.value})} className="bg-theme-bg p-4 rounded-2xl font-bold w-1/3 text-theme-text">{CURRENCIES.map(c=><option key={c} value={c}>{c}</option>)}</select>
-                                        <div onClick={()=>openKeypad('asset', assetForm.balance)} className="bg-theme-bg p-4 rounded-2xl font-bold w-2/3 cursor-pointer text-theme-text">{assetForm.balance || 'Balance'}</div>
+                                        <select value={assetForm.currency} onChange={e=>setAssetForm({...assetForm, currency:e.target.value})} className="bg-theme-bg p-4 rounded-2xl font-bold w-1/3 text-theme-text">{MAIN_CURRENCIES.map(c=><option key={c} value={c}>{c}</option>)}</select>
+                                        <div onClick={()=>openKeypad('asset', assetForm.balance)} className="bg-theme-bg p-4 rounded-2xl font-bold w-2/3 cursor-pointer text-theme-text">{assetForm.balance || t('acc_bal')}</div>
                                     </div>
+                                    <div className="text-xs text-theme-sub font-bold">{t('acc_type')}</div>
                                     <div className="grid grid-cols-3 gap-2">{['cash','bank','card'].map(type => (<button key={type} onClick={()=>setAssetForm({...assetForm, type})} className={`p-3 rounded-2xl border-2 flex flex-col items-center active:scale-95 transition-transform ${assetForm.type===type ? 'border-theme-accent bg-theme-bg text-theme-accent' : 'border-transparent bg-theme-bg text-theme-sub'}`}><Icon name={type==='card'?'CreditCard':type==='bank'?'Landmark':'Wallet'} size={20}/><span className="text-[10px] uppercase mt-1">{type}</span></button>))}</div>
                                     <button onClick={saveAsset} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-md active:scale-95 transition-transform">{t('save')}</button>
                                     {assetForm.id && <button onClick={deleteAsset} className="w-full py-3 text-red-400 font-bold active:scale-95 transition-transform">{t('delete')}</button>}
