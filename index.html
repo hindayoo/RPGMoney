@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V21.9: Level Up FX</title>
+    <title>SakuraWallet V21.95: Strict & Sort</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -148,7 +148,7 @@
         
         /* Mobile Optimized Drag */
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
-        .draggable-item.dragging-active { transform: scale(1.05) rotate(2deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
+        .draggable-item.dragging-active { transform: scale(1.03) rotate(1deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
         .drag-handle { touch-action: none; cursor: grab; }
         .drag-handle:active { cursor: grabbing; }
 
@@ -193,6 +193,7 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Mock Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -547,6 +548,7 @@
             const [flowView, setFlowView] = useState('today'); 
             const [logFilter, setLogFilter] = useState('all'); 
             const [showLevelUp, setShowLevelUp] = useState({ show: false, level: 1 });
+            const [accountDragIndex, setAccountDragIndex] = useState(null);
 
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
@@ -680,7 +682,6 @@
                     leveledUp = true;
                 }
                 
-                // Pure EXP Reward - No Money Added Here
                 const newClaimed = [...data.claimedQuests, quest.uniqueId];
                 const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
                 
@@ -688,6 +689,24 @@
                 saveData(newData);
                 checkUnlockables(newData);
                 if (leveledUp) setShowLevelUp({ show: true, level: newLv });
+            };
+
+            const handleAccountTouchMove = (e, index) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (!target) return;
+                const row = target.closest('[data-acc-index]');
+                if (!row) return;
+                const targetIndex = parseInt(row.dataset.accIndex);
+                if (targetIndex !== index && targetIndex >= 0 && targetIndex < data.accounts.length) {
+                    const newAccs = [...data.accounts];
+                    const item = newAccs[index];
+                    newAccs.splice(index, 1);
+                    newAccs.splice(targetIndex, 0, item);
+                    saveData({ ...data, accounts: newAccs }); // Direct save for smooth feel
+                    setAccountDragIndex(targetIndex);
+                }
             };
 
             const handleAuth = async () => { 
@@ -764,23 +783,32 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic (Fixed: Targets scale, Rewards are purely EXP)
+            // Quests Logic (Fixed: Targets scale, Rewards are purely EXP, Strict Currency Filter)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
-                const totalExp = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
-                const txCount = data.transactions.length;
+                
+                // STRICT FILTERING: Only count transactions/assets that MATCH the current mainCurrency
+                const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
+                const relevantAccs = data.accounts.filter(a => a.currency === mainCurrency);
+                
+                const totalExp = relevantTxs.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
+                const txCount = relevantTxs.length; // Count only relevant currency tx? Or all? Usually "First Transaction" is generic. Let's make generic counts generic, but monetary specific.
+                const totalTxCount = data.transactions.length; 
                 const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
                 
-                // Base values in TWD
+                const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
+                const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
+
+                // Base values in TWD, converted to target currency for display
                 const rawQuests = [
-                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: txCount > 0 ? 1 : 0, target: 1 },
-                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(500) },
+                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
+                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: totalExpenseVal, target: convertMoney(500) },
                     { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
-                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, progress: data.transactions.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
+                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, progress: relevantTxs.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
                     { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, progress: dailyTxCount, target: 3 },
-                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000) },
-                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(50000) },
-                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, progress: txCount, target: 100 }
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, progress: totalAssetVal, target: convertMoney(10000) },
+                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, progress: totalExpenseVal, target: convertMoney(50000) },
+                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, progress: totalTxCount, target: 100 }
                 ];
                 return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [data, subView, mainCurrency, rates]);
@@ -888,9 +916,21 @@
                                 <div>
                                     <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
                                     <div className="space-y-2">
-                                        {data.accounts.map(acc => (
-                                            <div key={acc.id} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className="glass p-4 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-4 border-theme-accent">
-                                                <div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub">{acc.type}</div></div>
+                                        {data.accounts.map((acc, index) => (
+                                            <div key={acc.id} data-acc-index={index} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className={`glass p-4 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-4 border-theme-accent draggable-item ${accountDragIndex === index ? 'dragging-active' : ''}`}>
+                                                <div className="flex items-center gap-3">
+                                                    <div 
+                                                        className="text-theme-sub drag-handle p-2 -ml-2 touch-none" 
+                                                        onTouchStart={() => setAccountDragIndex(index)}
+                                                        onTouchMove={(e) => handleAccountTouchMove(e, accountDragIndex)}
+                                                        onTouchEnd={() => setAccountDragIndex(null)}
+                                                        onMouseDown={() => setAccountDragIndex(index)}
+                                                        onClick={(e)=>e.stopPropagation()}
+                                                    >
+                                                        <Icon name="Grip" size={20}/>
+                                                    </div>
+                                                    <div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub">{acc.type}</div></div>
+                                                </div>
                                                 <div className="text-right"><div className="font-mono font-bold text-theme-text text-lg">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold text-theme-sub">{acc.currency}</div></div>
                                             </div>
                                         ))}
