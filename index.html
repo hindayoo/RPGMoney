@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V23.10: Themes & Accessories</title>
+    <title>SakuraWallet V24.1: Quest Fixes & Rewards</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -37,22 +37,27 @@
                 'pulse-slow': 'pulse 3s infinite', 
                 'glow': 'glow 3s infinite alternate',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                'hero-breathe': 'heroBreathe 4s ease-in-out infinite',
                 'sparkle': 'sparkle 2s linear infinite',
-                'blink': 'blink 4s infinite',
-                'hair-bob': 'hairBob 3s ease-in-out infinite',
-                'cape-flutter': 'capeFlutter 3s ease-in-out infinite',
-                'accessory-float': 'float 3s ease-in-out infinite'
+                // Advanced Idle Animations
+                'idle-breathe': 'idleBreathe 4s ease-in-out infinite',
+                'head-bob': 'headBob 4s ease-in-out infinite',
+                'weapon-sway': 'weaponSway 4s ease-in-out infinite',
+                'cape-flow': 'capeFlow 3s ease-in-out infinite',
+                'blink': 'blink 5s infinite',
+                'float-accessory': 'floatAccessory 3s ease-in-out infinite'
             },
             keyframes: { 
-                float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-2px)' } },
+                float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
                 glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
                 popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-                heroBreathe: { '0%, 100%': { transform: 'scale(1) translateY(0)' }, '50%': { transform: 'scale(1.02) translateY(-2px)' } },
                 sparkle: { '0%': { opacity: '0', transform: 'scale(0)' }, '50%': { opacity: '1', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(0) rotate(90deg)' } },
-                blink: { '0%, 48%, 52%, 100%': { opacity: 1 }, '50%': { opacity: 0 } },
-                hairBob: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-0.5px)' } },
-                capeFlutter: { '0%, 100%': { transform: 'skewX(0deg) scaleX(1)' }, '50%': { transform: 'skewX(-2deg) scaleX(0.98)' } }
+                // Realistic Idle Keyframes
+                idleBreathe: { '0%, 100%': { transform: 'scaleY(1)' }, '50%': { transform: 'scaleY(1.02)' } },
+                headBob: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-1px)' } },
+                weaponSway: { '0%, 100%': { transform: 'rotate(0deg)' }, '50%': { transform: 'rotate(-2deg)' } },
+                capeFlow: { '0%, 100%': { transform: 'skewX(0deg)' }, '50%': { transform: 'skewX(-3deg)' } },
+                blink: { '0%, 48%, 52%, 100%': { opacity: '1' }, '50%': { opacity: '0.1' } }, 
+                floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } }
             }
           }
         }
@@ -60,55 +65,27 @@
     </script>
 
     <style>
-        /* === Cute RPG Theme Engine === */
-        :root {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #212529;
-            --text-sub: #868e96;
-            --accent-color: #343a40;
-            --border-color: #dee2e6;
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px);
-        }
-
-        /* Standard Themes */
+        /* === Theme Engine === */
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
         [data-theme="magic"] { --bg-color: #faf5ff; --card-bg: #ffffff; --text-main: #581c87; --text-sub: #a855f7; --accent-color: #9333ea; --border-color: #e9d5ff; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
-        
-        /* New Themes */
         [data-theme="matcha"] { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-main: #14532d; --text-sub: #166534; --accent-color: #15803d; --border-color: #bbf7d0; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#15803d 0.5px, transparent 0.5px); }
         [data-theme="latte"] { --bg-color: #fffbeb; --card-bg: #ffffff; --text-main: #78350f; --text-sub: #92400e; --accent-color: #b45309; --border-color: #fde68a; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#b45309 0.5px, transparent 0.5px); }
         [data-theme="peach"] { --bg-color: #fff1f2; --card-bg: #ffffff; --text-main: #9f1239; --text-sub: #e11d48; --accent-color: #f43f5e; --border-color: #fecdd3; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#f43f5e 0.5px, transparent 0.5px); }
         [data-theme="lavender"] { --bg-color: #fdf4ff; --card-bg: #ffffff; --text-main: #6b21a8; --text-sub: #86198f; --accent-color: #a855f7; --border-color: #f0abfc; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
         [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
 
-        /* Base Setup */
         html, body { height: 100%; width: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; position: fixed; overflow: hidden; }
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
         #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-
-        /* Slots */
-        .slot-empty { 
-            @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; 
-        }
-        .slot-empty::after { 
-            content: '+'; 
-            @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; 
-        }
-        .slot-filled { 
-            @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; 
-        }
-        .equip-label { 
-            @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; 
-        }
-        
-        /* Pixel Art Crispness */
+        .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
+        .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
+        .slot-filled { @apply w-14 h-14 rounded-xl border-2 border-theme-sub bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
+        .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         .pixel-art { image-rendering: pixelated; }
-
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
         .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
@@ -116,26 +93,23 @@
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/20 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 grayscale opacity-80; }
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
-
-        /* Character Stage */
         .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; }
         .magic-circle { position: absolute; bottom: 40px; width: 140px; height: 30px; background: radial-gradient(ellipse at center, var(--accent-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; animation: pulse 3s infinite; }
-        
-        /* Mobile Optimized Drag */
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
         .draggable-item.dragging-active { transform: scale(1.03) rotate(1deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
         .drag-handle { touch-action: none; cursor: grab; }
         .drag-handle:active { cursor: grabbing; }
-
         .rpg-keypad-container { background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg-color) 100%); }
         .rpg-btn { @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden; box-shadow: 0 4px 0 0 rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.05); transform: translateY(0); }
         .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(4px); }
         .btn-num { background-color: var(--card-bg); color: var(--text-main); font-family: "DotGothic16", sans-serif; font-size: 1.5rem; font-weight: bold; border: 2px solid var(--border-color); }
         .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
-        
-        /* Level Up Rays */
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
+        .badge-title { @apply bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-300 text-yellow-800 text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1; }
+        .quest-card-claimed { @apply opacity-60 grayscale bg-theme-bg border border-transparent; }
+        .quest-card-active { @apply glass border border-theme-border; }
+        .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -241,7 +215,8 @@
             Male: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
             Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
             Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
-            Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7"
+            Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7",
+            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -258,11 +233,11 @@
             { id: 'sakura', name: 'sakura', color: '#db2777' },
             { id: 'sky', name: 'sky', color: '#0ea5e9' },
             { id: 'magic', name: 'magic', color: '#9333ea' },
-            { id: 'matcha', name: 'matcha', color: '#15803d' }, // New
-            { id: 'latte', name: 'latte', color: '#b45309' }, // New
-            { id: 'peach', name: 'peach', color: '#f43f5e' }, // New
-            { id: 'lavender', name: 'lavender', color: '#a855f7' }, // New
-            { id: 'midnight', name: 'midnight', color: '#0f172a' } // New
+            { id: 'matcha', name: 'matcha', color: '#15803d' },
+            { id: 'latte', name: 'latte', color: '#b45309' },
+            { id: 'peach', name: 'peach', color: '#f43f5e' },
+            { id: 'lavender', name: 'lavender', color: '#a855f7' },
+            { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
         
         const DEFAULT_CATEGORIES = {
@@ -313,14 +288,17 @@
             { id: 'ach_lv_10', icon: 'Star', title: '冒險新星', desc: '等級達到 10', target: 10, type: 'level' }
         ];
 
+        // Extended Title System
         const TITLES_LIST = [
             { id: 'Novice', name: '初心冒險者', desc: '一切的起點', condition: '預設擁有', check: () => true },
             { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
             { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
             { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
             { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
+            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000 },
             { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
             { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
+            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', condition: '完成 50 個任務', check: (d) => d.questCount >= 50 },
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', condition: '等級達到 50', check: (d) => d.level >= 50 }
         ];
 
@@ -541,154 +519,148 @@
             );
         };
 
-        // --- NEW: Pixel Avatar Component (With Animations & Accessories) ---
+        // --- Enhanced Pixel Avatar (Breathing, Swaying, Blinking) ---
         const PixelAvatar = ({ gender, colors, className }) => {
-            // Colors fallback
-            const {
-                hair = '#8d6e63',
-                armor = '#0d47a1',
-                cape = '#c62828',
-                skin = '#ffccbc',
-                accessory = 'none'
-            } = colors || {};
+            const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc', accessory = 'none' } = colors || {};
 
             return (
                 <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
-                    {/* Cape - Animated */}
-                    <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flutter origin-top" />
-                    
-                    {/* Legs/Boots */}
-                    <path fill="#3e2723" d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+                    <g className="animate-idle-breathe origin-bottom">
+                        {/* Cape - Independent Sway */}
+                        <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
+                        
+                        {/* Legs */}
+                        <path fill="#3e2723" d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
 
-                    {/* Body Armor */}
-                    <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
-                    
-                    {/* Skirt for female */}
-                    {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
+                        {/* Body Armor */}
+                        <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
+                        {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
+                        <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
+                        <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
 
-                    {/* Gold Trim */}
-                    <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
+                        {/* Scarf Accessory */}
+                        {accessory === 'scarf' && (
+                            <g className="animate-cape-flow origin-center">
+                                <path fill="#e0e0e0" d="M10 16h12v3H10z" />
+                                <path fill="#f44336" d="M22 17h4v6h-4z" />
+                            </g>
+                        )}
 
-                    {/* Shoulders */}
-                    <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
+                        {/* HEAD GROUP - Bobs independently */}
+                        <g className="animate-head-bob">
+                            {/* Face */}
+                            <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
+                            
+                            {/* Eyes (Blinking) & Mouth */}
+                            <g className="animate-blink">
+                                <path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} />
+                            </g>
+                            {/* Simple Mouth */}
+                            <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
 
-                    {/* Scarf Accessory Layer */}
-                    {accessory === 'scarf' && (
-                        <g className="animate-cape-flutter origin-center">
-                            <path fill="#e0e0e0" d="M10 16h12v3H10z" />
-                            <path fill="#f44336" d="M22 17h4v6h-4z" />
+                            {/* Hair */}
+                            {gender === 'male' ? (
+                                <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                            ) : (
+                                <g fill={hair}>
+                                    <path d="M8 9h16v12H8z" opacity="0.8" />
+                                    <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
+                                </g>
+                            )}
+
+                            {/* Cat Ears */}
+                            {accessory === 'catEars' && (
+                                <g fill={hair} filter="brightness(1.2)">
+                                    <path d="M10 3h3v3h-3z M19 3h3v3h-3z" />
+                                    <path fill="#ffcdd2" d="M11 4h1v1h-1z M20 4h1v1h-1z" />
+                                </g>
+                            )}
+
+                            {/* Crown */}
+                            {accessory !== 'catEars' && (
+                                <>
+                                    <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
+                                    <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
+                                </>
+                            )}
                         </g>
-                    )}
 
-                    {/* Face */}
-                    <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
-
-                    {/* Eyes - Animated Blink */}
-                    <g className="animate-blink">
-                        <path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} />
-                    </g>
-
-                    {/* Hair - Animated Bob */}
-                    <g className="animate-hair-bob">
-                        {gender === 'male' ? (
-                            <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
-                        ) : (
-                            <g fill={hair}>
-                                <path d="M8 9h16v12H8z" opacity="0.8" /> {/* Back Hair */}
-                                <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" /> {/* Front Hair */}
-                            </g>
+                        {/* Halo Accessory (Floats independently) */}
+                        {accessory === 'halo' && (
+                            <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-float-accessory" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
                         )}
 
-                        {/* Cat Ears Accessory */}
-                        {accessory === 'catEars' && (
-                            <g fill={hair} filter="brightness(1.2)">
-                                <path d="M10 3h3v3h-3z M19 3h3v3h-3z" />
-                                <path fill="#ffcdd2" d="M11 4h1v1h-1z M20 4h1v1h-1z" />
-                            </g>
-                        )}
-
-                        {/* Crown */}
-                        {accessory !== 'catEars' && (
-                            <>
-                                <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
-                                <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
-                            </>
-                        )}
-                    </g>
-
-                    {/* Halo Accessory */}
-                    {accessory === 'halo' && (
-                        <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-accessory-float" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
-                    )}
-
-                    {/* Weapon */}
-                    <g transform={gender==='male'?"":"translate(0,1)"}>
-                        <path fill="#5d4037" d="M23 19h4v2h-4z" />
-                        <path fill="#ffb300" d="M24 18h2v4h-2z" />
-                        <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                        {/* Weapon - Sways with breath */}
+                        <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left">
+                            <path fill="#5d4037" d="M23 19h4v2h-4z" />
+                            <path fill="#ffb300" d="M24 18h2v4h-2z" />
+                            <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                        </g>
                     </g>
                 </svg>
             );
         };
 
-        // --- NEW: Avatar Editor Modal ---
+        // --- Avatar Editor Modal (With Explicit Save) ---
         const AvatarEditor = ({ currentColors, onSave, onClose }) => {
             const [colors, setColors] = useState(currentColors || { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' });
             
+            const handleSave = () => {
+                onSave(colors);
+            };
+
             return (
                 <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col">
-                        <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest">角色外觀</h3>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-[85vh]">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest shrink-0">角色外觀</h3>
                         
-                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border">
+                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border shrink-0">
                             <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
                             <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
                         </div>
 
-                        <div className="overflow-y-auto pr-1 flex-1 mb-4">
-                            <div className="space-y-4">
-                                <div className="p-3 rounded-xl bg-theme-glass border border-theme-border">
-                                    <span className="font-bold text-theme-text mb-2 block text-sm">飾品 (Accessory)</span>
-                                    <div className="grid grid-cols-4 gap-2">
-                                        {ACCESSORIES_LIST.map(acc => (
-                                            <button 
-                                                key={acc.id} 
-                                                onClick={() => setColors({...colors, accessory: acc.id})}
-                                                className={`flex flex-col items-center p-2 rounded-lg border-2 transition-all ${colors.accessory === acc.id ? 'border-theme-accent bg-theme-accent/10' : 'border-transparent bg-theme-bg'}`}
-                                            >
-                                                <div className="text-theme-text mb-1"><Icon name={acc.icon} size={16}/></div>
-                                                <span className="text-[9px] font-bold text-theme-sub">{acc.name}</span>
-                                            </button>
-                                        ))}
+                        <div className="overflow-y-auto pr-1 flex-1 mb-4 space-y-4">
+                            <div className="p-3 rounded-xl bg-theme-glass border border-theme-border">
+                                <span className="font-bold text-theme-text mb-2 block text-sm">飾品 (Accessory)</span>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {ACCESSORIES_LIST.map(acc => (
+                                        <button 
+                                            key={acc.id} 
+                                            onClick={() => setColors({...colors, accessory: acc.id})}
+                                            className={`flex flex-col items-center p-2 rounded-lg border-2 transition-all ${colors.accessory === acc.id ? 'border-theme-accent bg-theme-accent/10' : 'border-transparent bg-theme-bg'}`}
+                                        >
+                                            <div className="text-theme-text mb-1"><Icon name={acc.icon} size={16}/></div>
+                                            <span className="text-[9px] font-bold text-theme-sub">{acc.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {[
+                                { id: 'hair', label: '頭髮' },
+                                { id: 'armor', label: '盔甲' },
+                                { id: 'cape', label: '披風' },
+                                { id: 'skin', label: '膚色' }
+                            ].map(item => (
+                                <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-theme-glass border border-theme-border">
+                                    <span className="font-bold text-theme-text">{item.label}</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-mono text-theme-sub">{colors[item.id]}</span>
+                                        <input 
+                                            type="color" 
+                                            value={colors[item.id]} 
+                                            onChange={(e) => setColors({...colors, [item.id]: e.target.value})}
+                                            className="w-10 h-10 rounded-lg overflow-hidden border-none cursor-pointer"
+                                        />
                                     </div>
                                 </div>
-
-                                {[
-                                    { id: 'hair', label: '頭髮' },
-                                    { id: 'armor', label: '盔甲' },
-                                    { id: 'cape', label: '披風' },
-                                    { id: 'skin', label: '膚色' }
-                                ].map(item => (
-                                    <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-theme-glass border border-theme-border">
-                                        <span className="font-bold text-theme-text">{item.label}</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs font-mono text-theme-sub">{colors[item.id]}</span>
-                                            <input 
-                                                type="color" 
-                                                value={colors[item.id]} 
-                                                onChange={(e) => setColors({...colors, [item.id]: e.target.value})}
-                                                className="w-10 h-10 rounded-lg overflow-hidden border-none cursor-pointer"
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            ))}
                         </div>
 
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 shrink-0 pt-2 border-t border-theme-border">
                             <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
-                            <button onClick={() => onSave(colors)} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">
+                            <button onClick={handleSave} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md active:scale-95 transition-transform">
                                 <span className="flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 保存變更</span>
                             </button>
                         </div>
@@ -744,7 +716,7 @@
                              <PixelAvatar 
                                 gender={gender} 
                                 colors={appearance}
-                                className="w-64 h-64 object-contain animate-hero-breathe drop-shadow-xl"
+                                className="w-64 h-64 object-contain drop-shadow-xl"
                             />
                         </div>
 
@@ -753,7 +725,17 @@
                         </button>
                     </div>
 
-                    {isEditing && <AvatarEditor currentColors={appearance} onSave={(colors) => { onUpdateAppearance(colors); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
+                    {isEditing && (
+                        <AvatarEditor 
+                            currentColors={appearance} 
+                            onSave={(colors) => { 
+                                onUpdateAppearance(colors); 
+                                alert('外觀已保存！'); 
+                                setIsEditing(false); 
+                            }} 
+                            onClose={() => setIsEditing(false)} 
+                        />
+                    )}
                 </div>
             );
         };
@@ -837,7 +819,7 @@
                     if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
                     if (!localData.user.unlockedAchievements) localData.user.unlockedAchievements = [];
                     if (!localData.user.gender) localData.user.gender = 'female';
-                    // Default Appearance
+                    if (!localData.user.gold) localData.user.gold = 0;
                     if (!localData.user.appearance) localData.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' };
                     else if (!localData.user.appearance.accessory) localData.user.appearance.accessory = 'none';
                     setData(localData); 
@@ -864,11 +846,12 @@
                                 if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; 
                                 if(!fd.user.unlockedAchievements) fd.user.unlockedAchievements = [];
                                 if(!fd.user.gender) fd.user.gender = 'female';
+                                if (!fd.user.gold) fd.user.gold = 0;
                                 if (!fd.user.appearance) fd.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' };
                                 else if (!fd.user.appearance.accessory) fd.user.appearance.accessory = 'none';
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -902,14 +885,12 @@
                     }
                 });
 
-                // Check Achievements
                 let newAchievements = [...(currentData.user.unlockedAchievements || [])];
                 let achUpdated = false;
                 let logBuffer = [];
 
                 ACHIEVEMENTS_LIST.forEach(ach => {
                     if (newAchievements.includes(ach.id)) return;
-                    
                     let achieved = false;
                     if (ach.type === 'txCount' && stats.txCount >= ach.target) achieved = true;
                     if (ach.type === 'expenseTotal' && stats.totalExp >= ach.target) achieved = true;
@@ -931,7 +912,6 @@
                         const achLogs = logBuffer.map((msg, i) => ({ id: Date.now() + i, date: time, type: 'system', msg }));
                         newLogs = [...achLogs, ...newLogs].slice(0, 50);
                     }
-                    
                     saveData({ 
                         ...currentData, 
                         user: { 
@@ -966,6 +946,7 @@
 
             const handleClaim = (quest) => {
                 let newExp = data.user.exp + quest.exp; 
+                let newGold = (data.user.gold || 0) + (quest.coins || 0);
                 let newLv = data.user.level; 
                 let leveledUp = false;
 
@@ -978,7 +959,7 @@
                 const newClaimed = [...data.claimedQuests, quest.uniqueId];
                 const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
                 
-                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv }, claimedQuests: newClaimed, logs: newLogs };
+                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv, gold: newGold }, claimedQuests: newClaimed, logs: newLogs };
                 saveData(newData);
                 checkUnlockables(newData);
                 if (leveledUp) setShowLevelUp({ show: true, level: newLv });
@@ -1006,7 +987,7 @@
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
                     const fakeUid = 'local_' + Date.now();
-                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' };
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' };
                     const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] };
                     localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
                     window.location.reload();
@@ -1075,7 +1056,7 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
-            // Quests Logic
+            // Quests Logic (Fixed: Active Participation Required)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString();
                 const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
@@ -1083,21 +1064,23 @@
                 
                 const totalExp = relevantTxs.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
                 const totalTxCount = data.transactions.length; 
+                const dailyExpenseCount = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).length;
                 const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
                 
                 const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
                 const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
 
                 const rawQuests = [
-                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 50, progress: 1, target: 1 },
-                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
-                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, progress: totalExpenseVal, target: convertMoney(500) },
-                    { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
-                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, progress: relevantTxs.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
-                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, progress: dailyTxCount, target: 3 },
-                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, progress: totalAssetVal, target: convertMoney(10000) },
-                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, progress: totalExpenseVal, target: convertMoney(50000) },
-                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, progress: totalTxCount, target: 100 }
+                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 50, coins: 10, progress: 1, target: 1 },
+                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, coins: 20, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
+                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, coins: 50, progress: totalExpenseVal, target: convertMoney(500) },
+                    // REPLACED "THRIFTY" WITH ACTIVE QUEST to prevent "no spending claim" confusion
+                    { id: `d1_${todayStr}`, type: 'daily', title: '日常採購', desc: '今日記錄 1 筆支出', exp: 30, coins: 20, progress: dailyExpenseCount, target: 1 },
+                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, coins: 30, progress: relevantTxs.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, coins: 40, progress: dailyTxCount, target: 3 },
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, coins: 100, progress: totalAssetVal, target: convertMoney(10000) },
+                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, coins: 250, progress: totalExpenseVal, target: convertMoney(50000) },
+                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, coins: 150, progress: totalTxCount, target: 100 }
                 ];
                 return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [data, subView, mainCurrency, rates]);
@@ -1171,7 +1154,7 @@
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
                     <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
-                    {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                 </div> 
             );
 
@@ -1193,9 +1176,25 @@
                                     </div>
                                     <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/>
                                 </label>
-                                <div><div className="flex items-center gap-2"><h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div onClick={()=>setShowTitleSelect(true)} className="text-[10px] text-theme-accent font-bold opacity-80 cursor-pointer hover:underline">{data.user.title} <Icon name="Edit" size={10} className="inline"/></div></div>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
+                                        <span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span>
+                                    </div>
+                                    {/* TITLE SYSTEM DISPLAY */}
+                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-0.5 cursor-pointer hover:scale-105 transition-transform origin-left">
+                                        <div className="badge-title">
+                                            <Icon name="Crown" size={10} className="text-yellow-600"/>
+                                            <span>{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 items-center">
+                                <div className="flex items-center gap-1 bg-yellow-100/80 px-2 py-1 rounded-full border border-yellow-300 shadow-sm mr-1">
+                                    <Icon name="Coin" size={14} className="text-yellow-600"/>
+                                    <span className="text-[10px] font-bold text-yellow-800">{data.user.gold || 0}</span>
+                                </div>
                                 <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
                                 <button onClick={()=>setLang(l=>l==='zh'?'en':l==='en'?'ja':'zh')} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[10px] font-bold active:scale-95 transition-transform">{lang.toUpperCase()}</button>
                                 <button onClick={() => setShowThemeSelect(true)} className="w-9 h-9 bg-theme-bg text-theme-accent rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="Paint" size={16}/></button>
@@ -1248,8 +1247,13 @@
                                 </div>
                                 <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
                                 {activeQuests.map(q => (
-                                    <div key={q.id} className={`glass p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isClaimed ? 'opacity-50 grayscale' : ''}`}>
-                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span></div></div>
+                                    <div key={q.id} className={`p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isCompleted ? (q.isClaimed ? 'quest-card-claimed' : 'quest-card-complete') : 'quest-card-active'}`}>
+                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4>
+                                            <div className="flex gap-2 items-center">
+                                                <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 rounded font-bold">+{q.exp} EXP</span>
+                                                {q.coins && <span className="text-[10px] bg-yellow-100 text-yellow-700 px-1.5 rounded font-bold">+{q.coins} G</span>}
+                                            </div>
+                                        </div>
                                         <p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p>
                                         <div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress)}/{q.target}</span></div>
                                         {q.isCompleted && !q.isClaimed && <button onClick={()=>handleClaim(q)} className="w-full py-2 btn-claim rounded-xl font-bold text-xs">{t('claim')}</button>}
@@ -1403,7 +1407,7 @@
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={()=>setShowLevelUp({show:false, level:showLevelUp.level})}/>}
                     
                     {/* Selectors Modals */}
-                    {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showTitleSelect && <SelectorSheet 
                         title={t('change_title')} 
