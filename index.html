@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V20.9: Auto-Exchange RPG</title>
+    <title>SakuraWallet V21.0: Titles & Quests</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -147,6 +147,8 @@
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
 
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+        
+        .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -242,7 +244,7 @@
             Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
             Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
             Sort: "M3 6h18M6 12h12M9 18h6", Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
-            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -290,10 +292,19 @@
             {id:'t6', icon:'Hammer', name:'神工鬼斧', desc:'資產上限提升'}
         ];
 
+        const TITLES_LIST = [
+            { id: 'Novice', name: '初心冒險者', req: '無', check: () => true },
+            { id: 'Spender1', name: '消費新手', req: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
+            { id: 'Spender2', name: '揮金如土', req: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
+            { id: 'Saver1', name: '儲蓄見習', req: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
+            { id: 'Saver2', name: '守財奴', req: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
+            { id: 'Master', name: '記帳大師', req: '記錄 > 50 筆', check: (d) => d.txCount >= 50 }
+        ];
+
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型' }, 
-            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type' }, 
-            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ' } 
+            zh: { adventure: '冒險', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖' }, 
+            en: { adventure: 'Adventure', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions' }, 
+            ja: { adventure: '冒険', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除' } 
         };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
@@ -469,7 +480,11 @@
         // --- Main App ---
         const App = () => {
             useSakura();
-            const [data, setData] = useState({ user: null, accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} });
+            const [data, setData] = useState({ 
+                user: { uid: '', name: 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], photo: '' }, 
+                accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, 
+                claimedQuests: [] 
+            });
             const [loading, setLoading] = useState(true);
             const [view, setView] = useState('adventure');
             const [subView, setSubView] = useState('main');
@@ -484,6 +499,7 @@
             
             const [showThemeSelect, setShowThemeSelect] = useState(false);
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
+            const [showTitleSelect, setShowTitleSelect] = useState(false);
             
             const [isRegistering, setIsRegistering] = useState(false);
             const [loginAccount, setLoginAccount] = useState('');
@@ -515,34 +531,80 @@
                 if (localData) { 
                     if (!localData.categories) localData.categories = DEFAULT_CATEGORIES;
                     if (!localData.talents) localData.talents = {};
+                    if (!localData.claimedQuests) localData.claimedQuests = [];
+                    if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
                     setData(localData); 
                 } else { 
-                    setData({ user: null, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} }); 
+                    setData({ user: { name: 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: 1, name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }); 
                 } 
                 setLoading(false); 
             };
             const updateCategories = (newCats) => { saveData({ ...data, categories: newCats }); };
 
-            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; if(!fd.talents) fd.talents = {}; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice' }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {} }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
+            useEffect(() => { const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); const fb = window.firebase; if (!fb || !fb.auth) { loadLocalData(); return; } const unsub = fb.onAuthStateChanged(fb.auth, (u) => { clearTimeout(t); if (u) { fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { if (d.exists()) { let fd = d.data(); if(!fd.categories) fd.categories = DEFAULT_CATEGORIES; if(!fd.talents) fd.talents = {}; if(!fd.claimedQuests) fd.claimedQuests = []; if(!fd.user.unlockedTitles) fd.user.unlockedTitles = ['Novice']; setData(fd); } else { const init = { user: { uid: u.uid, name: u.displayName || 'Hero', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'] }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'HKD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] }; fb.setDoc(fb.doc(fb.db, "users", u.uid), init); setData(init); } setLoading(false); }, () => loadLocalData()); } else loadLocalData(); }); return () => { unsub(); clearTimeout(t); } }, []);
             
-            // Fetch Rates relative to TWD to serve as base, then we assume conversions. 
-            // Better: fetch TWD based rates and simple math.
             useEffect(() => { fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, []);
-            
             useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
 
+            // Unlock Check Logic
+            const checkUnlockables = (currentData) => {
+                const rate = rates[mainCurrency] || 1; // Normalize check to TWD-ish if needed or just use current currency logic
+                const stats = {
+                    totalExp: currentData.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + (c.amount * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    balance: currentData.accounts.reduce((a,c) => a + (c.balance * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    txCount: currentData.transactions.length
+                };
+                
+                let newTitles = [...(currentData.user.unlockedTitles || ['Novice'])];
+                let updated = false;
+
+                TITLES_LIST.forEach(t => {
+                    if (!newTitles.includes(t.id) && t.check(stats, 1)) {
+                        newTitles.push(t.id);
+                        updated = true;
+                        addLog('system', `Title Unlocked: ${t.name}`);
+                    }
+                });
+
+                if (updated) {
+                    saveData({ ...currentData, user: { ...currentData.user, unlockedTitles: newTitles }, logs: addLog('system', 'New Titles Unlocked!') });
+                }
+            };
+
             const convertMoney = (amountInTWD) => {
-                // Rates are based on TWD = 1.
-                // To get Target Currency: AmountTWD * RateTarget
                 const rate = rates[mainCurrency] || 1;
                 return Math.floor(amountInTWD * rate);
             };
 
             const upgradeTalent = (tid) => {
                 const currentLv = data.talents[tid] || 0;
-                // Simple upgrade logic: increment level. In a real game, check gold/points here.
                 const newTalents = { ...data.talents, [tid]: currentLv + 1 };
                 saveData({ ...data, talents: newTalents });
+            };
+
+            const handleClaim = (quest) => {
+                let newExp = data.user.exp + quest.exp; 
+                let newLv = data.user.level; 
+                if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
+                
+                // Add money if quest has money reward (simplified: add to first account or just visual)
+                // Here we just log it as the system doesn't have a specific "Pocket" for loose cash, usually goes to an account.
+                // Let's add to the first account for gameplay feel.
+                let newAccounts = [...data.accounts];
+                if (quest.rewardBase > 0 && newAccounts.length > 0) {
+                    newAccounts[0].balance += convertMoney(quest.rewardBase);
+                }
+
+                const newClaimed = [...data.claimedQuests, quest.uniqueId];
+                const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
+                
+                saveData({ 
+                    ...data, 
+                    user: { ...data.user, exp: newExp, level: newLv }, 
+                    accounts: newAccounts,
+                    claimedQuests: newClaimed,
+                    logs: newLogs
+                });
             };
 
             const handleAuth = async () => { const fb = window.firebase; if (!fb) return; const email = loginAccount.trim() + "@sakurarpg.com"; try { if (isRegistering) { if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); await fb.updateProfile(cred.user, { displayName: regName }); window.location.reload(); } else await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); } catch (e) { alert(e.message); } };
@@ -558,6 +620,7 @@
                 else if (keypadTarget === 'exchange') setBaseAmount(finalVal);
                 setKeypadOpen(false);
             };
+            
             const addTransaction = () => {
                 if(!txForm.amount || !txForm.accountId) return alert(t('missing_info'));
                 const amt = parseFloat(txForm.amount);
@@ -567,7 +630,10 @@
                 let newExp = data.user.exp + 5; let newLv = data.user.level; if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; }
                 const currentCat = data.categories[txForm.category] || DEFAULT_CATEGORIES.other;
                 const newLogs = addLog(txForm.type==='expense'?'finance_out':'finance_in', `${txForm.type==='expense'?'Out':'In'} ${amt} (${currentCat.label}) ${txForm.note ? '- '+txForm.note : ''}`);
-                saveData({ ...data, user: {...data.user, exp: newExp, level: newLv}, accounts: newAccs, transactions: [newTx, ...data.transactions], logs: newLogs });
+                
+                const newData = { ...data, user: {...data.user, exp: newExp, level: newLv}, accounts: newAccs, transactions: [newTx, ...data.transactions], logs: newLogs };
+                saveData(newData);
+                checkUnlockables(newData);
                 setModalOpen(false);
             };
             const saveAsset = () => {
@@ -581,14 +647,41 @@
             const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
             const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
 
+            // Quests Logic with Claim System
             const activeQuests = useMemo(() => {
-                // Base values in TWD
-                const baseQuests = [
-                    { id: 1, type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, rewardBase: 100, progress: data.transactions.length > 0 ? 1 : 0, target: 1, isMoney: false },
-                    { id: 2, type: 'daily', title: '節儉美德', desc: `今日消費不超過 ${convertMoney(500)}`, exp: 20, rewardBase: 50, progress: 0, target: 1, isMoney: false },
-                    { id: 3, type: 'challenge', title: '儲蓄大師', desc: `總資產達到 ${convertMoney(10000)}`, exp: 200, rewardBase: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000), isMoney: true }
+                const todayStr = new Date().toDateString();
+                const totalExp = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
+                const txCount = data.transactions.length;
+                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
+                
+                // Base values in TWD for logic consistency
+                const rawQuests = [
+                    // Main
+                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, rewardBase: 100, progress: txCount > 0 ? 1 : 0, target: 1 },
+                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, rewardBase: 200, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(500) },
+                    
+                    // Daily (ID includes date to reset)
+                    { id: `d1_${todayStr}`, type: 'daily', title: '節儉美德', desc: `今日消費 < ${convertMoney(500)}`, exp: 20, rewardBase: 50, progress: totalExp < convertMoney(500) ? 1 : 0, target: 1 },
+                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, rewardBase: 100, progress: data.transactions.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, rewardBase: 80, progress: dailyTxCount, target: 3 },
+
+                    // Challenge
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, rewardBase: 500, progress: data.accounts.reduce((a,c)=>a+c.balance,0), target: convertMoney(10000) },
+                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, rewardBase: 1000, progress: data.transactions.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount,0), target: convertMoney(50000) },
+                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, rewardBase: 600, progress: txCount, target: 100 }
                 ];
-                return baseQuests.filter(q => q.type === subView);
+
+                return rawQuests.filter(q => q.type === subView).map(q => ({
+                    ...q,
+                    uniqueId: q.id, // For claim tracking
+                    isClaimed: data.claimedQuests.includes(q.id),
+                    isCompleted: q.progress >= q.target
+                })).sort((a, b) => {
+                    if (a.isClaimed && !b.isClaimed) return 1;
+                    if (!a.isClaimed && b.isClaimed) return -1;
+                    if (a.isCompleted && !b.isCompleted) return -1;
+                    return 0;
+                });
             }, [data, subView, mainCurrency, rates]);
 
             if (loading) return null;
@@ -623,7 +716,7 @@
                         <div className="flex justify-between items-center w-full">
                             <div className="flex items-center gap-3">
                                 <label className="relative cursor-pointer avatar-glow"><div className="w-11 h-11 rounded-full bg-theme-card border-2 border-theme-accent overflow-hidden shadow-md flex items-center justify-center text-xl">{data.user.photo ? <img src={data.user.photo} className="w-full h-full object-cover"/> : "👤"}</div><input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/></label>
-                                <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div className="text-[10px] text-theme-accent font-bold opacity-80">{data.user.title}</div></div>
+                                <div><div className="flex items-center gap-2"><h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1><span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span></div><div onClick={()=>setShowTitleSelect(true)} className="text-[10px] text-theme-accent font-bold opacity-80 cursor-pointer hover:underline">{data.user.title} <Icon name="Edit" size={10} className="inline"/></div></div>
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
@@ -676,10 +769,12 @@
                             <div className="animate-[fadeIn_0.5s] space-y-4">
                                 <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
                                 {activeQuests.map(q => (
-                                    <div key={q.id} className="glass p-5 rounded-3xl relative active:scale-95 transition-transform">
+                                    <div key={q.id} className={`glass p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isClaimed ? 'opacity-50 grayscale' : ''}`}>
                                         <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2"><span className="text-xs text-theme-accent font-bold">EXP +{q.exp}</span><span className="text-xs text-yellow-500 font-bold">{mainCurrency} {convertMoney(q.rewardBase)}</span></div></div>
                                         <p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p>
-                                        <div className="flex items-center gap-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.min(q.progress,q.target)}/{q.target}</span></div>
+                                        <div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress)}/{q.target}</span></div>
+                                        {q.isCompleted && !q.isClaimed && <button onClick={()=>handleClaim(q)} className="w-full py-2 btn-claim rounded-xl font-bold text-xs">{t('claim')}</button>}
+                                        {q.isClaimed && <div className="text-center text-[10px] font-bold text-theme-sub border-t border-theme-border pt-2 mt-2">{t('claimed')}</div>}
                                     </div>
                                 ))}
                             </div> 
@@ -696,9 +791,6 @@
                                         <div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer">{baseAmount}</div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3 pb-20">{EXCHANGE_CURRENCIES.filter(c=>c!==calcBase).map(c => {
-                                        // Simplified conversion for display using TWD base.
-                                        // Rate(Source) -> TWD -> Rate(Target)
-                                        // (Amt / Rate[Source]) * Rate[Target]
                                         const val = (parseFloat(baseAmount) / (rates[calcBase] || 1)) * (rates[c] || 1);
                                         return (
                                             <div key={c} className="flex justify-between items-center text-sm border-b border-dashed border-black/10 pb-1"><span className="font-bold opacity-70">{c}</span><span className="font-mono">{val.toLocaleString(undefined,{maximumFractionDigits:2})}</span></div>
@@ -721,6 +813,7 @@
                     {/* Selectors Modals */}
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} />}
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
+                    {showTitleSelect && <SelectorSheet title={t('change_title')} options={TITLES_LIST.map(t => ({ value: t.id, label: t.name + (data.user.unlockedTitles.includes(t.id) ? '' : ' 🔒') }))} current={data.user.title} onSelect={(val) => { if(data.user.unlockedTitles.includes(val)) saveData({...data, user: {...data.user, title: val}}); }} onClose={() => setShowTitleSelect(false)} />}
                     
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
