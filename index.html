@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V28.1: Rarity & Fixes</title>
+    <title>SakuraWallet V29: Epic Visuals</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -31,7 +31,6 @@
                 border: 'var(--border-color)',
                 glass: 'var(--glass-bg)'
               },
-              // Defined rarity colors for utilities
               rarity: {
                   common: '#94a3b8',
                   rare: '#3b82f6',
@@ -95,9 +94,6 @@
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
         #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-        .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
-        .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
-        .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         
         /* Pixel Art Styling - Enhanced for RPG Feel */
@@ -115,7 +111,7 @@
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/20 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 grayscale opacity-80; }
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
-        .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; }
+        .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; overflow: visible; }
         .magic-circle { position: absolute; bottom: 40px; width: 140px; height: 30px; background: radial-gradient(ellipse at center, var(--accent-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; animation: pulse 3s infinite; }
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
         .draggable-item.dragging-active { transform: scale(1.03) rotate(1deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
@@ -144,61 +140,18 @@
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
-        /* --- ADVANCED RARITY VISUALS (NEW) --- */
-        /* Common: Clean, Basic */
-        .effect-common {
-            border-color: #cbd5e1;
-            background: linear-gradient(to bottom right, #ffffff, #f1f5f9);
-        }
+        /* --- ADVANCED RARITY VISUALS --- */
+        .effect-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
+        .effect-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .effect-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); animation: pulse-purple 3s infinite alternate; }
+        .effect-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); overflow: hidden; position: relative; }
+        .effect-legendary .sunburst { position: absolute; inset: -150%; background: conic-gradient(from 0deg, transparent 0deg, rgba(253, 224, 71, 0.2) 20deg, transparent 40deg, rgba(253, 224, 71, 0.2) 60deg, transparent 80deg, rgba(253, 224, 71, 0.2) 100deg, transparent 120deg); animation: raySpin 20s linear infinite; pointer-events: none; }
+        .effect-legendary .shine-bar { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-25deg); animation: shine-slide 3s infinite; pointer-events: none; }
 
-        /* Rare: Blue Glow, Particles */
-        .effect-rare {
-            border-color: #3b82f6;
-            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(to bottom right, #eff6ff, #dbeafe);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-            position: relative;
-        }
-        .effect-rare::before {
-            content: ''; absolute; inset: 0;
-            background-image: radial-gradient(#3b82f6 1px, transparent 1px);
-            background-size: 10px 10px; opacity: 0.1;
-        }
-
-        /* Epic: Purple Pulse, Mystical */
-        .effect-epic {
-            border-color: #a855f7;
-            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-            animation: pulse-purple 3s infinite alternate;
-        }
-        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 15px #a855f7, 0 0 5px white; } }
-
-        /* Legendary: Gold Burst, Rotating Rays, Shine */
-        .effect-legendary {
-            border-color: #eab308;
-            background: linear-gradient(135deg, #fffbeb, #fff7ed);
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
-            overflow: hidden;
-            position: relative;
-        }
-        .effect-legendary .sunburst {
-            position: absolute; inset: -150%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(253, 224, 71, 0.2) 20deg, transparent 40deg, rgba(253, 224, 71, 0.2) 60deg, transparent 80deg, rgba(253, 224, 71, 0.2) 100deg, transparent 120deg);
-            animation: raySpin 20s linear infinite;
-            pointer-events: none;
-        }
-        .effect-legendary .shine-bar {
-            position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-            transform: skewX(-25deg);
-            animation: shine-slide 3s infinite;
-            pointer-events: none;
-        }
-
-        /* Merchant Chat Bubble Tail */
         .chat-bubble::after { content: ''; position: absolute; bottom: -8px; left: 20px; border-width: 8px 8px 0; border-style: solid; border-color: white transparent transparent transparent; }
+
+        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 15px #a855f7, 0 0 5px white; } }
         
-        /* Utility for hiding scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -363,28 +316,19 @@
             {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
         ];
 
-        // NEW: Shop Item List with STATS
+        // NEW: Shop Item List with STATS & EMOJIS
         const SHOP_ITEMS = [
-            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword', stats: { str: 5, agi: 2 } },
-            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, icon: 'Crown', stats: { vit: 10 } },
-            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 } },
-            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword', stats: { agi: 15, int: 5 } },
-            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, icon: 'Shield', stats: { vit: 25, str: 5 } },
-            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, icon: 'Briefcase', stats: { int: 15, agi: 5 } },
-            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, icon: 'Gem', stats: { int: 30, vit: 10 } },
-            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, icon: 'Shield', stats: { vit: 40, str: 10 } },
-            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, icon: 'Sun', stats: { int: 50, vit: 20, agi: 20, str: 20 } },
-            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, icon: 'Sword', stats: { str: 60, vit: 20 } }
+            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, emoji: '🗡️', stats: { str: 5, agi: 2 } },
+            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, emoji: '🪖', stats: { vit: 10 } },
+            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, emoji: '🥾', stats: { agi: 5 } },
+            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, emoji: '🏹', stats: { agi: 15, int: 5 } },
+            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, emoji: '👕', stats: { vit: 25, str: 5 } },
+            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, emoji: '🧥', stats: { int: 15, agi: 5 } },
+            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, emoji: '🪄', stats: { int: 30, vit: 10 } },
+            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, emoji: '🛡️', stats: { vit: 40, str: 10 } },
+            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, emoji: '👼', stats: { int: 50, vit: 20, agi: 20, str: 20 } },
+            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, emoji: '⚔️', stats: { str: 60, vit: 20 } }
         ];
-
-        // Visual mapping for specific shop items (Paths for PixelAvatar)
-        const GEAR_VISUALS = {
-            's1': (g) => <path fill="#8d6e63" d="M23 19h4v2h-4z" />, // Wood Sword
-            's2': (g) => <path fill="#78909c" d="M10 5h12v7H10z" />, // Iron Helm
-            's9': (g) => <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />, // Halo
-            's10': (g) => <g><path fill="#ffb300" d="M23 18h4v8h-4z" /><path fill="#00bcd4" d="M24 20h2v4h-2z" /></g>, // Excalibur
-            // ... (Simple fallbacks for others)
-        };
         
         // Define default appearance colors
         const DEFAULT_APPEARANCE = {
@@ -423,29 +367,12 @@
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50 }
         ];
 
-        const ACCESSORIES_LIST = [
-            { id: 'none', name: '無', icon: 'X' },
-            { id: 'halo', name: '天使光環', icon: 'Sun' },
-            { id: 'scarf', name: '英雄圍巾', icon: 'Flag' },
-            { id: 'catEars', name: '貓耳', icon: 'Smile' }
-        ];
-
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '裝備', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
             log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
             theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
             theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
-            }, 
-            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Character', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
-            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
-            theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
-            theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
-            }, 
-            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: 'キャラ', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
-            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
-            theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
-            theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
-            } 
+            }
         };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
@@ -644,104 +571,192 @@
             );
         };
 
-        // --- Enhanced Pixel Avatar (Visual Equipment) ---
-        const PixelAvatar = ({ gender, colors, equipped, className }) => {
+        // --- NEW: EPIC Pixel Avatar (Visible Equipment Version) ---
+        const PixelAvatar = ({ gender, colors, equipped = {}, className }) => {
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = colors || {};
-            const headGear = equipped?.head;
-            const bodyGear = equipped?.body;
-            const mainHand = equipped?.mainHand;
-            const backGear = equipped?.back;
-            const feetGear = equipped?.feet;
+            
+            const headId = equipped.head?.id;
+            const bodyId = equipped.body?.id;
+            const mainId = equipped.mainHand?.id;
+            const backId = equipped.back?.id;
+            const offId = equipped.offHand?.id;
+            const feetId = equipped.feet?.id;
 
             return (
-                <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
+                // Overflow visible allows huge legendary weapons and halos to break out of the 32x32 box
+                <svg viewBox="0 0 32 32" overflow="visible" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
                     <g className="animate-idle-breathe origin-bottom">
                     
-                         {/* LAYER 0: Back Hair (Female specific - drawn first) */}
-                        {!headGear && gender === 'female' && (
+                        {/* 1. BACK GEAR / CAPE */}
+                        {backId === 's6' ? (
+                            <g className="animate-cape-flow origin-top">
+                                {/* Epic Magic Cape */}
+                                <path fill="#8e24aa" d="M 4 16 h 24 l 2 16 h -28 z" opacity="0.9" style={{filter:'drop-shadow(0 0 4px #ab47bc)'}}/>
+                                {/* Sparkles on Cape */}
+                                <rect x="8" y="20" width="1" height="1" fill="#fff" className="animate-ping"/>
+                                <rect x="22" y="26" width="1" height="1" fill="#fff" className="animate-pulse"/>
+                                <rect x="14" y="28" width="1" height="1" fill="#e1bee7" className="animate-pulse"/>
+                            </g>
+                        ) : (
+                            <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
+                        )}
+
+                        {/* Back Hair (Female default) - Hide if helm s2 */}
+                        {headId !== 's2' && gender === 'female' && (
                              <path fill={hair} d="M8 9h16v12H8z" opacity="0.8" />
                         )}
-
-                        {/* LAYER 1: Cape / Back - Independent Sway */}
-                        {!backGear ? (
-                             <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
-                        ) : (
-                             <path fill={backGear.rarity === 'legendary' ? '#eab308' : '#3b82f6'} d="M6 18h20v14H6z M8 18h16v12H8z" className="animate-cape-flow origin-top" />
-                        )}
                         
-                        {/* LAYER 2: Legs */}
-                        <path fill={feetGear ? '#546e7a' : '#3e2723'} d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+                        {/* 2. LEGS & FEET */}
+                        {feetId === 's3' ? (
+                            // Traveler Boots
+                            <g>
+                                <path fill="#5d4037" d="M10 24h4v8h-4z M18 24h4v8h-4z" />
+                                <path fill="#8d6e63" d="M9 28h5v4h-5z M18 28h5v4h-5z" />
+                            </g>
+                        ) : (
+                            <path fill="#3e2723" d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+                        )}
 
-                        {/* LAYER 3: Body Armor */}
-                        {!bodyGear ? (
-                            <>
+                        {/* 3. BODY ARMOR */}
+                        {bodyId === 's5' ? (
+                            // Epic Guardian Armor
+                            <g>
+                                {/* Base plate */}
+                                <path fill="#90a4ae" d="M9 16 h 14 v 10 h -14 z"/>
+                                {/* Chest highlight */}
+                                <path fill="#cfd8dc" d="M11 17 h 10 v 8 h -10 z"/>
+                                {/* Blue core */}
+                                <path fill="#1976d2" d="M14 19 h 4 v 4 h -4 z" className="animate-pulse"/>
+                                {/* Giant Pauldrons */}
+                                <path fill="#ffb300" d="M6 15 h 5 v 4 h -5 z M 21 15 h 5 v 4 h -5 z"/> 
+                            </g>
+                        ) : (
+                            // Default Armor
+                            <g>
                                 <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
                                 {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
                                 <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
                                 <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
-                            </>
-                        ) : (
-                            <>
-                                <path fill="#90a4ae" d="M10 17h12v9H10z" />
-                                <path fill="#cfd8dc" d="M12 18h8v6h-8z" />
-                                <path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" />
-                            </>
+                            </g>
                         )}
 
-                        {/* LAYER 4: HEAD GROUP - Bobs independently */}
+                        {/* 4. HEAD GROUP (Bobs) */}
                         <g className="animate-head-bob">
-                            {/* Face */}
+                            {/* Base Face */}
                             <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
-                            
-                            {/* Eyes (Blinking) & Mouth */}
                             <g className="animate-blink">
                                 <path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} />
                             </g>
-                            {/* Simple Mouth */}
                             <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
 
-                            {/* LAYER 5: Front Hair or Helm */}
-                            {!headGear ? (
-                                gender === 'male' ? (
-                                    <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
-                                ) : (
-                                    // Female Front Hair / Bangs - ensure this is drawn AFTER face
-                                    <path fill={hair} d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
-                                )
+                            {/* Head Gear Rendering */}
+                            {headId === 's2' ? (
+                                // Iron Helm - covers hair
+                                <g>
+                                    <path fill="#78909c" d="M8 4 h 16 v 9 h -16 z"/>
+                                    <path fill="#b0bec5" d="M12 4 h 8 v 3 h -8 z"/>
+                                    {/* Face guards */}
+                                    <path fill="#546e7a" d="M8 12 h 3 v 5 h -3 z M 21 12 h 3 v 5 h -3 z"/>
+                                </g>
                             ) : (
-                                // Render Equipped Helm
-                                <>
-                                    {headGear.id === 's9' ? ( // Halo
-                                         <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-float-accessory" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
-                                    ) : ( // Generic Helm
-                                         <path fill="#546e7a" d="M9 6h14v7H9z M11 7h2v2h-2z M19 7h2v2h-2z" />
+                                // Render Hair if no full helm
+                                <g>
+                                    {gender === 'male' ? (
+                                        <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                                    ) : (
+                                        <path fill={hair} d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
                                     )}
-                                </>
-                            )}
-                            
-                            {/* Crown/Headband (Only if no helm or halo) */}
-                            {!headGear && (
-                                <>
-                                    <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
-                                    <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
-                                </>
+                                    
+                                    {/* Holy Halo s9 */}
+                                    {headId === 's9' && (
+                                        <g className="animate-float-accessory">
+                                            {/* Glowing Ring */}
+                                            <ellipse cx="16" cy="1" rx="12" ry="4" fill="none" stroke="#ffeb3b" strokeWidth="3" style={{filter:'drop-shadow(0 0 6px #fff59d)'}}/>
+                                            {/* Orbiting particles */}
+                                            <circle cx="16" cy="1" r="15" fill="none" stroke="#ffffff" strokeWidth="1" className="animate-spin-slow" strokeDasharray="4 12" opacity="0.8"/>
+                                        </g>
+                                    )}
+
+                                    {/* Default Headband if no hat at all */}
+                                    {!headId && (
+                                        <>
+                                            <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
+                                            <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
+                                        </>
+                                    )}
+                                </g>
                             )}
                         </g>
 
-                        {/* LAYER 6: Weapon - Sways with breath */}
-                        <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left">
-                            {!mainHand ? (
-                                <>
+                        {/* 5. OFF-HAND (Shield) */}
+                        <g className="animate-weapon-sway origin-bottom-right" style={{transformOrigin: "8px 24px"}}>
+                            {offId === 's8' && (
+                                // Dragon Shield (Epic) - Positioned on left side
+                                <g transform="translate(-4, 0)">
+                                    <path fill="#d32f2f" d="M 4 14 h 10 v 10 l -5 6 l -5 -6 z" style={{filter:'drop-shadow(0 0 6px #f44336)'}}/>
+                                    <path fill="#ffb300" d="M 5 15 h 8 v 2 h -8 z M 8 18 h 2 v 6 h -2 z"/>
+                                </g>
+                            )}
+                        </g>
+
+                        {/* 6. MAIN HAND (Weapons) */}
+                        <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left" style={{transformOrigin: "24px 24px"}}>
+                            {/* Hand gripping the weapon */}
+                            <path fill={skin} d="M22 17 h 4 v 4 h -4 z" />
+
+                            {mainId === 's1' && (
+                                // Wood Sword
+                                <g>
+                                    <path fill="#a1887f" d="M 23 4 h 2 v 12 h -2 z"/> {/* Blade */}
+                                    <path fill="#5d4037" d="M 21 16 h 6 v 2 h -6 z"/> {/* Guard */}
+                                    <path fill="#4e342e" d="M 23 18 h 2 v 4 h -2 z"/> {/* Hilt */}
+                                </g>
+                            )}
+
+                            {mainId === 's4' && (
+                                // Elf Bow (Rare)
+                                <g>
+                                    {/* Bow string */}
+                                    <line x1="28" y1="4" x2="28" y2="28" stroke="#ffffff" strokeWidth="1" opacity="0.6"/>
+                                    {/* Bow body */}
+                                    <path fill="none" stroke="#66bb6a" strokeWidth="3" d="M 28 4 Q 36 16 28 28" style={{filter:'drop-shadow(0 0 4px #81c784)'}}/>
+                                    <path fill="#fbc02d" d="M 31 14 h 2 v 4 h -2 z"/> {/* Grip */}
+                                </g>
+                            )}
+
+                            {mainId === 's7' && (
+                                // Gold Staff (Epic)
+                                <g>
+                                    <rect x="23" y="6" width="2" height="24" fill="#fbc02d"/>
+                                    {/* Giant Glowing Gem */}
+                                    <circle cx="24" cy="4" r="5" fill="#ab47bc" className="animate-pulse" style={{filter:'drop-shadow(0 0 8px #ce93d8)'}}/>
+                                    <circle cx="24" cy="4" r="8" fill="none" stroke="#f3e5f5" strokeWidth="1" className="animate-ping"/>
+                                </g>
+                            )}
+
+                            {mainId === 's10' && (
+                                // Excalibur (Legendary) - Giant Sword
+                                <g>
+                                    {/* Huge Aura */}
+                                    <rect x="22" y="-4" width="8" height="22" fill="#81d4fa" className="animate-pulse" style={{filter:'drop-shadow(0 0 10px #00b0ff)', opacity:0.6}}/>
+                                    {/* Giant Blade */}
+                                    <path fill="#ffffff" d="M 24 -2 h 4 v 20 h -4 z"/>
+                                    <path fill="#00e5ff" d="M 25 0 h 2 v 16 h -2 z"/>
+                                    {/* Legendary Guard */}
+                                    <path fill="#ffca28" d="M 20 18 h 12 v 3 h -12 z M 25 21 h 2 v 5 h -2 z M 23 26 h 6 v 2 h -6 z" style={{filter:'drop-shadow(0 2px 2px #ff6f00)'}}/>
+                                </g>
+                            )}
+
+                            {/* Fallback if no weapon */}
+                            {!mainId && (
+                                <g>
                                     <path fill="#5d4037" d="M23 19h4v2h-4z" />
                                     <path fill="#ffb300" d="M24 18h2v4h-2z" />
                                     <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
-                                </>
-                            ) : (
-                                GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : (
-                                     <path fill="#cfd8dc" d="M23 18h4v10h-4z" /> // Default fallback weapon
-                                )
+                                </g>
                             )}
                         </g>
+
                     </g>
                 </svg>
             );
@@ -850,15 +865,26 @@
                 const item = equipped[slotData.slot]; 
                 if (!item) {
                     return (
-                        <div className="slot-empty cursor-pointer hover:bg-black/10" onClick={() => onEquipSlot(slotData.slot)}>
-                            <div className="equip-label">{slotData.name}</div>
+                        <div className="w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all cursor-pointer hover:bg-black/10" onClick={() => onEquipSlot(slotData.slot)}>
+                            <div className="text-theme-sub/30 mb-1"><Icon name={slotData.icon} size={20}/></div>
+                            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg px-1 rounded-sm shadow-sm">{slotData.name}</div>
                         </div>
                     );
                 }
                 return (
-                    <div className={`slot-filled cursor-pointer hover:scale-105 active:scale-95 border-2 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}>
-                        <Icon name={item.icon} size={24} className="text-theme-text pixel-icon"/>
-                        <div className="equip-label">{item.name.substring(0,4)}</div>
+                    <div className={`w-14 h-14 rounded-xl border-2 cursor-pointer hover:scale-110 active:scale-95 flex flex-col items-center justify-center shadow-lg relative transition-all`} onClick={() => onEquipSlot(slotData.slot)}>
+                        {/* Inner Container for Background Animation (prevents label clipping) */}
+                        <div className={`absolute inset-0 rounded-xl effect-${item.rarity} overflow-hidden pointer-events-none z-0`}>
+                            {item.rarity === 'legendary' && <div className="sunburst"></div>}
+                            {item.rarity === 'legendary' && <div className="shine-bar"></div>}
+                        </div>
+                        
+                        <div className="text-3xl drop-shadow-md relative z-10 filter hover:brightness-125 transition-all">{item.emoji || '📦'}</div>
+                        
+                        {/* Enhanced Label outside hidden overflow */}
+                        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[10px] font-bold text-white whitespace-nowrap bg-slate-800/90 px-1.5 py-0.5 rounded shadow-sm z-30 border border-white/20 backdrop-blur-sm">
+                            {item.name.substring(0,4)}
+                        </div>
                     </div>
                 );
             };
@@ -907,6 +933,7 @@
                             <button onClick={onToggleGender} className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto">
                                 <span className="text-xs font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</span>
                             </button>
+                             {/* BIG AVATAR RENDERING */}
                              <PixelAvatar gender={gender} colors={currentGenderColors} equipped={equipped} className="w-64 h-64 object-contain drop-shadow-xl"/>
                         </div>
                     </div>
@@ -947,18 +974,41 @@
             );
         };
 
-        // --- Shop & Inventory Components ---
+        // --- RPG Shop View (Remake) ---
         const ShopView = ({ gold, inventory, onBuy, user, currentEquipped }) => {
             const [selectedItem, setSelectedItem] = useState(null);
             const [filter, setFilter] = useState('all');
+            const [merchantMsg, setMerchantMsg] = useState("歡迎光臨！今天想找點什麼？");
+
+            // Merchant SVGs
+            const MerchantAvatar = () => (
+                <svg viewBox="0 0 32 32" className="w-16 h-16 drop-shadow-md pixel-art">
+                    <path fill="#e0e0e0" d="M4 16h24v16H4z" /> {/* Body */}
+                    <path fill="#ffb74d" d="M12 12h8v4h-8z" /> {/* Face Base */}
+                    <path fill="#ff9800" d="M10 8h4v4h-4z M18 8h4v4h-4z" /> {/* Ears */}
+                    <path fill="#5d4037" d="M13 14h2v1h-2z M17 14h2v1h-2z" /> {/* Eyes */}
+                    <path fill="#3e2723" d="M15 15h2v1h-2z" /> {/* Nose */}
+                    <path fill="#8d6e63" d="M4 16h8v16H4z M20 16h8v16H20z" /> {/* Robe Sides */}
+                    <path fill="#a1887f" d="M8 20h16v2H8z M10 24h12v2H10z" /> {/* Robe Details */}
+                </svg>
+            );
 
             const handleBuyClick = (item) => {
-                if (gold < item.cost) return alert("金幣不足！");
-                if (inventory.some(i => i.id === item.id)) return alert("已擁有此裝備！");
+                const currentGold = Number(gold) || 0;
+                if (currentGold < item.cost) {
+                    setMerchantMsg(`哎呀，你的金幣似乎不夠呢... 需要 ${item.cost} G。`);
+                    return;
+                }
+                if (inventory.some(i => i.id === item.id)) {
+                    setMerchantMsg("這個你已經有了喔，不需要買第二個吧？");
+                    return;
+                }
+                setMerchantMsg(`這把 ${item.name} 非常適合你！確定要買嗎？`);
                 setSelectedItem(item);
             };
 
             const confirmBuy = () => {
+                setMerchantMsg("多謝惠顧！還有其他需要的嗎？");
                 onBuy(selectedItem);
                 setSelectedItem(null);
             };
@@ -985,70 +1035,97 @@
             const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
 
             return (
-                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden relative">
-                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
-                            <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
-                                <Icon name="Coin" size={14} className="text-yellow-600"/>
-                                <span className="font-bold text-yellow-800">{gold}</span>
+                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden relative pb-24">
+                    
+                    {/* Merchant Area */}
+                    <div className="bg-slate-800 text-white p-4 rounded-b-3xl relative mb-4 shadow-lg flex items-center gap-4 border-b-4 border-slate-900">
+                        <div className="relative shrink-0">
+                            <MerchantAvatar />
+                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-[10px] font-bold px-2 rounded-full border border-white">喵太</div>
+                        </div>
+                        <div className="flex-1 relative">
+                            <div className="bg-white text-black p-3 rounded-2xl rounded-tl-none text-xs font-bold shadow-md chat-bubble relative z-10 font-pixel leading-relaxed">
+                                {merchantMsg}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Gold Display & Filters */}
+                    <div className="px-4 mb-4">
+                        <div className="flex justify-between items-center mb-3">
+                            <div className="flex items-center gap-1 bg-yellow-100 px-4 py-1.5 rounded-full border-2 border-yellow-300 shadow-sm">
+                                <Icon name="Coin" size={16} className="text-yellow-600"/>
+                                <span className="font-black text-yellow-800 font-mono text-sm">{gold} G</span>
+                            </div>
+                            <div className="text-[10px] text-theme-sub font-bold opacity-60">
+                                {displayedItems.length} 個商品
                             </div>
                         </div>
                         
-                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                             {filters.map(f => (
                                 <button 
                                     key={f.id} 
-                                    onClick={() => setFilter(f.id)}
-                                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}
+                                    onClick={() => { setFilter(f.id); setMerchantMsg(f.id==='all' ? "隨便看看！" : `想找${f.label}嗎？我有不少好貨。`); }}
+                                    className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap border-b-4 transition-all active:scale-95 active:border-b-0 active:translate-y-1 ${filter === f.id ? 'bg-theme-accent text-white border-black/30' : 'bg-white text-theme-sub border-theme-border'}`}
                                 >
-                                    <Icon name={f.icon} size={12} />
+                                    <Icon name={f.icon} size={14} />
                                     {f.label}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 pb-24">
+                    {/* Shelves Grid */}
+                    <div className="grid grid-cols-2 gap-3 px-4">
                         {displayedItems.length === 0 && <div className="col-span-2 text-center text-theme-sub py-10">此分類暫無商品</div>}
                         {displayedItems.map(item => {
                             const owned = inventory.some(i => i.id === item.id);
-                            const rarityClass = `effect-${item.rarity}`; // New dynamic class based on rarity
+                            const canAfford = gold >= item.cost;
+                            const rarityClass = `effect-${item.rarity}`; // Dynamic effect
 
                             return (
                                 <div key={item.id} 
-                                     className={`item-card ${rarityClass} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
+                                     className={`relative group bg-theme-card rounded-xl border-2 border-b-4 transition-all duration-200 overflow-hidden ${owned ? 'border-gray-200 grayscale opacity-70' : `${rarityClass} hover:-translate-y-1 hover:shadow-lg`}`}
+                                     style={{borderColor: !owned && item.rarity === 'common' ? '#cbd5e1' : ''}}
                                      onClick={() => !owned && handleBuyClick(item)}>
                                     
+                                    {/* Rarity Background Elements for Shop Cards */}
                                     {item.rarity === 'legendary' && <div className="sunburst"></div>}
                                     {item.rarity === 'legendary' && <div className="shine-bar"></div>}
                                     
-                                    <div className="p-3 w-full flex flex-col items-center relative z-10">
-                                        <div className="flex justify-between w-full mb-1">
-                                            <div className="text-xs opacity-70">{getTypeIcon(item.type)}</div>
-                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>
-                                                {item.rarity}
+                                    <div className="p-3 relative z-10 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div className="bg-black/10 rounded px-1.5 py-0.5 text-[10px] font-bold text-theme-sub">{getTypeIcon(item.type)}</div>
+                                            {!owned && (
+                                                <div className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${canAfford ? 'text-green-600 bg-green-100' : 'text-red-500 bg-red-100'}`}>
+                                                    {canAfford ? '可購買' : '缺金幣'}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="flex-1 flex justify-center items-center py-2">
+                                            {/* EMOJI ICON INSTEAD OF SVG */}
+                                            <div className={`w-16 h-16 rounded-lg bg-white/40 border-2 border-dashed border-theme-sub/30 flex items-center justify-center shadow-inner ${item.rarity === 'legendary' ? 'animate-pulse-slow' : ''}`}>
+                                                <span className="text-4xl drop-shadow-md">{item.emoji || '📦'}</span>
                                             </div>
                                         </div>
-                                        
-                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-white/20 backdrop-blur-sm border border-white/40 shadow-inner">
-                                            <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
-                                        </div>
-                                        
-                                        <div className="text-center w-full">
-                                            <div className="font-bold text-sm text-theme-text truncate">{item.name}</div>
-                                            <div className="text-[10px] font-mono opacity-80 mb-1">{item.cost} G</div>
-                                            
-                                            <div className="text-[8px] flex justify-center gap-1 opacity-70 bg-white/30 rounded px-1 py-0.5">
-                                                {Object.entries(item.stats || {}).map(([k,v]) => (
-                                                    <span key={k}>{k.toUpperCase()}+{v}</span>
-                                                ))}
+
+                                        <div className="mt-2">
+                                            <div className="font-bold text-sm text-theme-text leading-tight mb-1 truncate">{item.name}</div>
+                                            <div className="flex justify-between items-end">
+                                                <div className="text-[10px] text-theme-sub flex flex-col">
+                                                    {Object.entries(item.stats || {}).slice(0,1).map(([k,v]) => <span key={k}>{k.toUpperCase()} +{v}</span>)}
+                                                </div>
+                                                <div className={`font-mono font-bold ${canAfford ? 'text-yellow-600' : 'text-red-400'}`}>
+                                                    {item.cost} G
+                                                </div>
                                             </div>
                                         </div>
                                         
                                         <button 
                                             onClick={(e) => { e.stopPropagation(); !owned && handleBuyClick(item); }}
-                                            className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500 pointer-events-none' : 'bg-white/80 text-theme-text hover:bg-white pointer-events-auto'}`}>
+                                            className={`w-full mt-2 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 ${owned ? 'bg-gray-200 text-gray-500 cursor-default' : 'bg-theme-accent text-white hover:brightness-110'}`}>
                                             {owned ? '已擁有' : '購買'}
                                         </button>
                                     </div>
@@ -1057,33 +1134,46 @@
                         })}
                     </div>
 
-                    {/* Confirmation Modal - WITH PREVIEW */}
+                    {/* Confirmation Modal (Scroll Style) */}
                     {selectedItem && (
-                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
-                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double effect-${selectedItem.rarity} relative`}>
-                                <div className="absolute top-2 right-2 text-theme-sub"><Icon name="Shop" size={16}/></div>
-                                <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">試穿預覽</h3>
+                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/70 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
+                            <div className="bg-[#fffbf0] p-6 rounded-sm w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] relative border-8 border-[#5d4037]">
+                                {/* Screws/Nails visual */}
+                                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#3e2723] opacity-50"></div>
+                                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#3e2723] opacity-50"></div>
+                                <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#3e2723] opacity-50"></div>
+                                <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#3e2723] opacity-50"></div>
+
+                                <h3 className="font-bold text-xl text-[#3e2723] mb-4 text-center font-pixel border-b-2 border-[#d7ccc8] pb-2">交易確認書</h3>
                                 
-                                {/* PREVIEW AVATAR - FIXED: Using passed props */}
-                                <div className="flex justify-center mb-4 bg-theme-bg/50 rounded-2xl p-4 border-inner shadow-inner">
-                                     <PixelAvatar 
-                                        gender={user.gender}
-                                        colors={user.appearance}
-                                        equipped={{ ...currentEquipped, [selectedItem.type]: selectedItem }}
-                                        className="w-32 h-32 drop-shadow-lg"
-                                    />
+                                <div className="flex gap-4 mb-4">
+                                    <div className="w-20 h-20 bg-[#d7ccc8] rounded border-2 border-[#a1887f] flex items-center justify-center shrink-0 overflow-hidden relative">
+                                        <div className={`absolute inset-0 effect-${selectedItem.rarity} opacity-40`}></div>
+                                         <PixelAvatar 
+                                            gender={user.gender}
+                                            colors={user.appearance}
+                                            equipped={{ ...currentEquipped, [selectedItem.type]: selectedItem }}
+                                            className="w-full h-full drop-shadow-md relative z-10"
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="font-bold text-[#5d4037] text-lg leading-tight">{selectedItem.name}</div>
+                                        <div className="text-xs text-[#8d6e63] mt-1 mb-2">
+                                            {Object.entries(selectedItem.stats || {}).map(([k,v]) => `${k.toUpperCase()} +${v}`).join(' / ')}
+                                        </div>
+                                        <div className="inline-block bg-yellow-100 border border-yellow-300 text-yellow-800 px-2 py-0.5 rounded text-xs font-bold">
+                                            {selectedItem.cost} G
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
-                                <div className="text-xs text-theme-sub mb-4 font-mono space-y-1">
-                                    <p>價格: <span className="font-bold text-yellow-600 text-lg">{selectedItem.cost} G</span></p>
-                                    <p className="opacity-70">
-                                        {Object.entries(selectedItem.stats || {}).map(([k,v]) => `${k.toUpperCase()} +${v}`).join(' / ')}
-                                    </p>
+                                <div className="text-xs text-center text-[#8d6e63] mb-4 font-bold">
+                                    確定要花費金幣購買此裝備嗎？<br/>(貨物售出概不退換)
                                 </div>
+
                                 <div className="flex gap-3">
-                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold border-b-4 border-theme-border active:border-b-0 active:translate-y-1 transition-all">取消</button>
-                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md border-b-4 border-black/30 active:border-b-0 active:translate-y-1 transition-all">購買</button>
+                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-[#efebe9] text-[#5d4037] rounded font-bold border-b-4 border-[#d7ccc8] active:border-b-0 active:translate-y-1 transition-all">再想想</button>
+                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-[#ffb74d] text-[#e65100] rounded font-bold shadow-md border-b-4 border-[#f57c00] active:border-b-0 active:translate-y-1 transition-all">簽字購買</button>
                                 </div>
                             </div>
                         </div>
@@ -1092,7 +1182,7 @@
             );
         };
         
-        // ... (InventoryModal same as before) ...
+        // --- Inventory Modal ---
         const InventoryModal = ({ slot, inventory, onClose, onEquip }) => {
             const availableItems = inventory.filter(i => i.type === slot);
 
@@ -1102,21 +1192,24 @@
                     <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
                         <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">選擇裝備 ({slot})</h3>
                         <div className="grid gap-3 overflow-y-auto pb-4">
-                            <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg">
+                            <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg transition-colors active:scale-95">
                                 <div className="w-10 h-10 flex items-center justify-center"><Icon name="X"/></div>
                                 <span className="font-bold">卸下裝備</span>
                             </button>
                             {availableItems.length === 0 && <div className="text-center text-theme-sub py-4">沒有可用的裝備</div>}
                             {availableItems.map(item => (
-                                <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-white/50 shadow-sm flex items-center justify-center border border-white/30"><Icon name={item.icon} className="pixel-icon"/></div>
+                                <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 effect-${item.rarity} transition-transform active:scale-95`}>
+                                    <div className="flex items-center gap-3 relative z-10">
+                                        {/* EMOJI ICON IN INVENTORY */}
+                                        <div className="w-12 h-12 rounded-full bg-white/60 shadow-sm flex items-center justify-center border border-white/50 text-2xl drop-shadow-sm">
+                                            {item.emoji}
+                                        </div>
                                         <div className="text-left">
                                             <div className="font-bold text-theme-text">{item.name}</div>
-                                            <div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div>
+                                            <div className="text-[10px] text-theme-sub uppercase bg-white/60 px-1.5 py-0.5 rounded inline-block mt-1">{item.rarity}</div>
                                         </div>
                                     </div>
-                                    <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded">裝備</div>
+                                    <div className="bg-theme-accent text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm relative z-10">裝備</div>
                                 </button>
                             ))}
                         </div>
@@ -1349,7 +1442,10 @@
 
             // Shop Logic
             const handleBuyItem = (item) => {
-                const newGold = data.user.gold - item.cost;
+                const currentGold = Number(data.user.gold) || 0;
+                if (currentGold < item.cost) return alert("金幣不足！(交易失敗)"); 
+                
+                const newGold = currentGold - item.cost;
                 const newInventory = [...data.inventory, item];
                 const newLogs = addLog('system', `Bought: ${item.name}`);
                 saveData({
@@ -1358,7 +1454,6 @@
                     inventory: newInventory,
                     logs: newLogs
                 });
-                alert(`購買成功！ ${item.name} 已加入背包。`);
             };
 
             // Equip Logic
