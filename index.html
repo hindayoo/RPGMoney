@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V25.0: Shop & Equipment</title>
+    <title>SakuraWallet V26.5: Stats & Shop Update</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -44,6 +44,7 @@
                 'glow': 'glow 3s infinite alternate',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                 'sparkle': 'sparkle 2s linear infinite',
+                // Advanced Idle Animations
                 'idle-breathe': 'idleBreathe 4s ease-in-out infinite',
                 'head-bob': 'headBob 4s ease-in-out infinite',
                 'weapon-sway': 'weaponSway 4s ease-in-out infinite',
@@ -69,6 +70,7 @@
     </script>
 
     <style>
+        /* === Theme Engine === */
         :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
@@ -88,7 +90,16 @@
         .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
         .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
+        
+        /* Pixel Art Styling */
         .pixel-art { image-rendering: pixelated; }
+        /* Creating a pixel-art feel for icons using CSS filters */
+        .pixel-icon { 
+            image-rendering: pixelated; 
+            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.3)) contrast(1.2);
+            transform: scale(0.9);
+        } 
+
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
         #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
         .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
@@ -115,10 +126,10 @@
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
         /* Rarity Borders */
-        .rarity-common { border-color: var(--border-color); }
-        .rarity-rare { border-color: #3b82f6; box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); }
-        .rarity-epic { border-color: #a855f7; box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); }
-        .rarity-legendary { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); background: linear-gradient(135deg, var(--card-bg), #fffbeb); }
+        .rarity-common { border-color: var(--border-color); background-image: radial-gradient(circle at center, rgba(148, 163, 184, 0.1) 0%, transparent 70%); }
+        .rarity-rare { border-color: #3b82f6; box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%); }
+        .rarity-epic { border-color: #a855f7; box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); background-image: radial-gradient(circle at center, rgba(168, 85, 247, 0.1) 0%, transparent 70%); }
+        .rarity-legendary { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); background: linear-gradient(135deg, rgba(255,255,255,0.9), #fffbeb); }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -225,7 +236,9 @@
             Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
             Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
             Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7",
-            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"
+            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",
+            Fire: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.011.535-5.461a.02.02 0 0 1 .037-.003c.745 1.487 2.102 2.946 2.053 4.636 0 1.556.88 2.306 1.375 2.828.61.643.565 1.58-.2 2.183-.807.636-1.258 1.428-1.258 2.317 0 1.25.98 2.19 1.458 2.502.028.019.012.062-.014.058C8.006 17.5 7.152 14.5 8.5 14.5z",
+            Heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -279,19 +292,33 @@
             {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
         ];
 
-        // NEW: Shop Item List
+        // NEW: Shop Item List with STATS
         const SHOP_ITEMS = [
-            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword' },
-            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, icon: 'Crown' },
-            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap' },
-            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword' },
-            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, icon: 'Shield' },
-            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, icon: 'Briefcase' },
-            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, icon: 'Gem' },
-            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, icon: 'Shield' },
-            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, icon: 'Sun' },
-            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, icon: 'Sword' }
+            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword', stats: { str: 5, agi: 2 } },
+            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, icon: 'Crown', stats: { vit: 10 } },
+            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 } },
+            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword', stats: { agi: 15, int: 5 } },
+            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, icon: 'Shield', stats: { vit: 25, str: 5 } },
+            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, icon: 'Briefcase', stats: { int: 15, agi: 5 } },
+            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, icon: 'Gem', stats: { int: 30, vit: 10 } },
+            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, icon: 'Shield', stats: { vit: 40, str: 10 } },
+            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, icon: 'Sun', stats: { int: 50, vit: 20, agi: 20, str: 20 } },
+            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, icon: 'Sword', stats: { str: 60, vit: 20 } }
         ];
+
+        // Visual mapping for specific shop items (Paths for PixelAvatar)
+        const GEAR_VISUALS = {
+            's1': (g) => <path fill="#8d6e63" d="M23 19h4v2h-4z" />, // Wood Sword
+            's2': (g) => <path fill="#78909c" d="M10 5h12v7H10z" />, // Iron Helm
+            's9': (g) => <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />, // Halo
+            's10': (g) => <g><path fill="#ffb300" d="M23 18h4v8h-4z" /><path fill="#00bcd4" d="M24 20h2v4h-2z" /></g>, // Excalibur
+            // ... (Simple fallbacks for others)
+        };
+        
+        // Define default appearance colors
+        const DEFAULT_APPEARANCE = {
+             hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc'
+        };
 
         // Achievement System Data
         const ACHIEVEMENTS_LIST = [
@@ -333,17 +360,17 @@
         ];
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '強化', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
             log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
             theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
             theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
             }, 
-            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Upgrade', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
+            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Character', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
             log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
             theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
             theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
             }, 
-            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
+            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: 'キャラ', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
             log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
             theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
             theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
@@ -542,31 +569,42 @@
             );
         };
 
-        // --- Enhanced Pixel Avatar ---
-        const PixelAvatar = ({ gender, colors, className }) => {
-            const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc', accessory = 'none' } = colors || {};
+        // --- Enhanced Pixel Avatar (Visual Equipment) ---
+        const PixelAvatar = ({ gender, colors, equipped, className }) => {
+            const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = colors || {};
+            const headGear = equipped?.head;
+            const bodyGear = equipped?.body;
+            const mainHand = equipped?.mainHand;
+            const backGear = equipped?.back;
+            const feetGear = equipped?.feet;
 
             return (
                 <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
                     <g className="animate-idle-breathe origin-bottom">
-                        {/* Cape - Independent Sway */}
-                        <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
+                        {/* Cape / Back - Independent Sway */}
+                        {!backGear ? (
+                             <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
+                        ) : (
+                             <path fill={backGear.rarity === 'legendary' ? '#eab308' : '#3b82f6'} d="M6 18h20v14H6z M8 18h16v12H8z" className="animate-cape-flow origin-top" />
+                        )}
                         
                         {/* Legs */}
-                        <path fill="#3e2723" d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+                        <path fill={feetGear ? '#546e7a' : '#3e2723'} d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
 
                         {/* Body Armor */}
-                        <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
-                        {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
-                        <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
-                        <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
-
-                        {/* Scarf Accessory */}
-                        {accessory === 'scarf' && (
-                            <g className="animate-cape-flow origin-center">
-                                <path fill="#e0e0e0" d="M10 16h12v3H10z" />
-                                <path fill="#f44336" d="M22 17h4v6h-4z" />
-                            </g>
+                        {!bodyGear ? (
+                            <>
+                                <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
+                                {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
+                                <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
+                                <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
+                            </>
+                        ) : (
+                             <>
+                                <path fill="#90a4ae" d="M10 17h12v9H10z" />
+                                <path fill="#cfd8dc" d="M12 18h8v6h-8z" />
+                                <path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" />
+                            </>
                         )}
 
                         {/* HEAD GROUP - Bobs independently */}
@@ -581,26 +619,29 @@
                             {/* Simple Mouth */}
                             <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
 
-                            {/* Hair */}
-                            {gender === 'male' ? (
-                                <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                            {/* Hair or Helm */}
+                            {!headGear ? (
+                                gender === 'male' ? (
+                                    <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                                ) : (
+                                    <g fill={hair}>
+                                        <path d="M8 9h16v12H8z" opacity="0.8" />
+                                        <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
+                                    </g>
+                                )
                             ) : (
-                                <g fill={hair}>
-                                    <path d="M8 9h16v12H8z" opacity="0.8" />
-                                    <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
-                                </g>
+                                // Render Equipped Helm
+                                <>
+                                    {headGear.id === 's9' ? ( // Halo
+                                         <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-float-accessory" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
+                                    ) : ( // Generic Helm
+                                         <path fill="#546e7a" d="M9 6h14v7H9z M11 7h2v2h-2z M19 7h2v2h-2z" />
+                                    )}
+                                </>
                             )}
-
-                            {/* Cat Ears */}
-                            {accessory === 'catEars' && (
-                                <g fill={hair} filter="brightness(1.2)">
-                                    <path d="M10 3h3v3h-3z M19 3h3v3h-3z" />
-                                    <path fill="#ffcdd2" d="M11 4h1v1h-1z M20 4h1v1h-1z" />
-                                </g>
-                            )}
-
-                            {/* Crown */}
-                            {accessory !== 'catEars' && (
+                            
+                            {/* Crown/Headband (Only if no helm or halo) */}
+                            {!headGear && (
                                 <>
                                     <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
                                     <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
@@ -608,85 +649,89 @@
                             )}
                         </g>
 
-                        {/* Halo Accessory (Floats independently) */}
-                        {accessory === 'halo' && (
-                            <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-float-accessory" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
-                        )}
-
                         {/* Weapon - Sways with breath */}
                         <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left">
-                            <path fill="#5d4037" d="M23 19h4v2h-4z" />
-                            <path fill="#ffb300" d="M24 18h2v4h-2z" />
-                            <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                            {!mainHand ? (
+                                <>
+                                    <path fill="#5d4037" d="M23 19h4v2h-4z" />
+                                    <path fill="#ffb300" d="M24 18h2v4h-2z" />
+                                    <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                                </>
+                            ) : (
+                                GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : (
+                                     <path fill="#cfd8dc" d="M23 18h4v10h-4z" /> // Default fallback weapon
+                                )
+                            )}
                         </g>
                     </g>
                 </svg>
             );
         };
 
-        // --- Avatar Editor Modal ---
-        const AvatarEditor = ({ currentColors, onSave, onClose }) => {
-            const [colors, setColors] = useState(currentColors || { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' });
+        // --- Avatar Editor Modal (Redesigned Header) ---
+        const AvatarEditor = ({ appearanceData, onSave, onClose }) => {
+            const [editingGender, setEditingGender] = useState('male');
+            const [localAppearance, setLocalAppearance] = useState(appearanceData || {
+                male: { ...DEFAULT_APPEARANCE },
+                female: { ...DEFAULT_APPEARANCE }
+            });
+
+            const currentColors = localAppearance[editingGender];
+
+            const updateColor = (key, value) => {
+                setLocalAppearance(prev => ({
+                    ...prev,
+                    [editingGender]: {
+                        ...prev[editingGender],
+                        [key]: value
+                    }
+                }));
+            };
             
             const handleSave = () => {
-                onSave(colors);
+                onSave(localAppearance);
             };
 
             return (
                 <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-[85vh]">
-                        <h3 className="text-center font-bold text-xl text-theme-text mb-4 font-pixel tracking-widest shrink-0">更衣室</h3>
-                        
-                        <div className="flex justify-center mb-6 bg-theme-bg p-4 rounded-2xl border-2 border-theme-border shrink-0">
-                            <PixelAvatar gender="male" colors={colors} className="w-24 h-24 mr-4" />
-                            <PixelAvatar gender="female" colors={colors} className="w-24 h-24" />
-                        </div>
-
-                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4">
-                            <div className="p-3 rounded-xl bg-theme-glass border border-theme-border">
-                                <span className="font-bold text-theme-text mb-2 block text-sm">飾品 (Accessory)</span>
-                                <div className="grid grid-cols-4 gap-2">
-                                    {ACCESSORIES_LIST.map(acc => (
-                                        <button 
-                                            key={acc.id} 
-                                            onClick={() => setColors({...colors, accessory: acc.id})}
-                                            className={`flex flex-col items-center p-2 rounded-lg border-2 transition-all ${colors.accessory === acc.id ? 'border-theme-accent bg-theme-accent/10' : 'border-transparent bg-theme-bg'}`}
-                                        >
-                                            <div className="text-theme-text mb-1"><Icon name={acc.icon} size={16}/></div>
-                                            <span className="text-[9px] font-bold text-theme-sub">{acc.name}</span>
-                                        </button>
-                                    ))}
-                                </div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90dvh] flex flex-col min-h-0">
+                        {/* New Header Layout with Buttons */}
+                        <div className="p-6 pb-2 shrink-0 relative">
+                            <div className="flex justify-between items-center mb-4">
+                                <button onClick={onClose} className="p-2 bg-theme-bg rounded-full text-theme-sub hover:text-theme-text active:scale-95 transition-transform"><Icon name="X" size={24}/></button>
+                                <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">更衣室</h3>
+                                <button onClick={handleSave} className="p-2 bg-theme-accent text-white rounded-full shadow-md active:scale-95 transition-transform"><Icon name="Check" size={24}/></button>
+                            </div>
+                            
+                            <div className="flex bg-theme-bg p-1 rounded-xl mb-4">
+                                <button onClick={() => setEditingGender('male')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${editingGender === 'male' ? 'bg-theme-card shadow text-theme-text' : 'text-theme-sub'}`}>男角設定</button>
+                                <button onClick={() => setEditingGender('female')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${editingGender === 'female' ? 'bg-theme-card shadow text-theme-text' : 'text-theme-sub'}`}>女角設定</button>
                             </div>
 
-                            {[
-                                { id: 'hair', label: '頭髮' },
-                                { id: 'armor', label: '盔甲' },
-                                { id: 'cape', label: '披風' },
-                                { id: 'skin', label: '膚色' }
-                            ].map(item => (
-                                <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-theme-glass border border-theme-border">
-                                    <span className="font-bold text-theme-text">{item.label}</span>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xs font-mono text-theme-sub">{colors[item.id]}</span>
-                                        <input 
-                                            type="color" 
-                                            value={colors[item.id]} 
-                                            onChange={(e) => setColors({...colors, [item.id]: e.target.value})}
-                                            className="w-10 h-10 rounded-lg overflow-hidden border-none cursor-pointer"
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                            <div className="flex justify-center mb-2 bg-theme-bg p-6 rounded-2xl border-2 border-theme-border">
+                                <PixelAvatar gender={editingGender} colors={currentColors} className="w-32 h-32 drop-shadow-xl" />
+                            </div>
                         </div>
 
-                        <div className="p-6 pt-4 border-t border-theme-border shrink-0 bg-theme-card pb-safe rounded-b-[2.5rem] z-20">
-                            <div className="flex gap-3">
-                                <button onClick={onClose} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
-                                <button onClick={handleSave} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md active:scale-95 transition-transform">
-                                    <span className="flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 保存變更</span>
-                                </button>
+                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4 pb-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                {[
+                                    { id: 'hair', label: '頭髮顏色' },
+                                    { id: 'skin', label: '皮膚顏色' },
+                                    { id: 'armor', label: '盔甲內襯' },
+                                    { id: 'cape', label: '披風顏色' }
+                                ].map(item => (
+                                    <div key={item.id} className="flex flex-col gap-2 p-3 rounded-xl bg-theme-glass border border-theme-border items-center">
+                                        <span className="font-bold text-xs text-theme-text">{item.label}</span>
+                                        <input 
+                                            type="color" 
+                                            value={currentColors[item.id]} 
+                                            onChange={(e) => updateColor(item.id, e.target.value)}
+                                            className="w-12 h-8 rounded cursor-pointer border-2 border-white shadow-sm"
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -695,11 +740,24 @@
         };
 
         // --- Character Equipment Tab ---
-        const CharacterTab = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance }) => {
+        const CharacterTab = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level }) => {
             const [isEditing, setIsEditing] = useState(false);
-            
+            const currentGenderColors = appearance[gender] || appearance; 
+
+            // Calculate Total Stats
+            const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
+            const totalStats = { ...baseStats };
+            Object.values(equipped).forEach(item => {
+                if(item.stats) {
+                    if(item.stats.str) totalStats.str += item.stats.str;
+                    if(item.stats.int) totalStats.int += item.stats.int;
+                    if(item.stats.vit) totalStats.vit += item.stats.vit;
+                    if(item.stats.agi) totalStats.agi += item.stats.agi;
+                }
+            });
+
             const renderSlot = (slotData) => {
-                const item = equipped[slotData.slot]; // item object or null
+                const item = equipped[slotData.slot]; 
                 
                 if (!item) {
                     return (
@@ -711,7 +769,7 @@
 
                 return (
                     <div className={`slot-filled cursor-pointer hover:scale-105 active:scale-95 border-2 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}>
-                        <Icon name={item.icon} size={24} className="text-theme-text"/>
+                        <Icon name={item.icon} size={24} className="text-theme-text pixel-icon"/>
                         <div className="equip-label">{item.name.substring(0,4)}</div>
                     </div>
                 );
@@ -724,12 +782,22 @@
                             <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
                         </h3>
                         <button onClick={() => setIsEditing(true)} className="text-xs bg-theme-glass px-3 py-1 rounded-full border border-theme-border font-bold text-theme-accent flex items-center gap-1 active:scale-95">
-                            <Icon name="Paint" size={12} /> 自訂外觀
+                            <Icon name="Paint" size={12} /> 更衣室
                         </button>
                     </div>
                     
-                    <div className="char-stage rounded-3xl">
+                    <div className="char-stage rounded-3xl relative">
                         <div className="magic-circle"></div>
+                        
+                        {/* Stats Panel (Pixel Style) */}
+                        <div className="absolute top-4 left-4 z-20 bg-black/70 backdrop-blur-md p-2 rounded-lg border border-white/20 text-white text-[10px] font-pixel space-y-1 shadow-lg">
+                            <div className="text-yellow-300 mb-1 border-b border-white/20 pb-1">ABILITY</div>
+                            <div className="flex justify-between w-20"><span>STR</span><span className="text-red-300">{totalStats.str}</span></div>
+                            <div className="flex justify-between w-20"><span>INT</span><span className="text-blue-300">{totalStats.int}</span></div>
+                            <div className="flex justify-between w-20"><span>VIT</span><span className="text-green-300">{totalStats.vit}</span></div>
+                            <div className="flex justify-between w-20"><span>AGI</span><span className="text-purple-300">{totalStats.agi}</span></div>
+                        </div>
+
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                             <div className="flex flex-col gap-4 mr-32 pointer-events-auto">
                                 {renderSlot({id:'t1', slot: 'head', name:'頭部'})}
@@ -753,7 +821,8 @@
 
                              <PixelAvatar 
                                 gender={gender} 
-                                colors={appearance}
+                                colors={currentGenderColors}
+                                equipped={equipped}
                                 className="w-64 h-64 object-contain drop-shadow-xl"
                             />
                         </div>
@@ -761,9 +830,9 @@
 
                     {isEditing && (
                         <AvatarEditor 
-                            currentColors={appearance} 
-                            onSave={(colors) => { 
-                                onUpdateAppearance(colors); 
+                            appearanceData={appearance} 
+                            onSave={(newAppearanceData) => { 
+                                onUpdateAppearance(newAppearanceData); 
                                 alert('外觀已保存！'); 
                                 setIsEditing(false); 
                             }} 
@@ -777,6 +846,7 @@
         // --- Shop & Inventory Components ---
         const ShopView = ({ gold, inventory, onBuy }) => {
             const [selectedItem, setSelectedItem] = useState(null);
+            const [filter, setFilter] = useState('all');
 
             const handleBuyClick = (item) => {
                 if (gold < item.cost) return alert("金幣不足！");
@@ -788,34 +858,76 @@
                 onBuy(selectedItem);
                 setSelectedItem(null);
             };
+            
+            const getTypeIcon = (type) => {
+                if(type === 'mainHand') return '⚔️';
+                if(type === 'offHand') return '🛡️';
+                if(type === 'head') return '👑';
+                if(type === 'body') return '👕';
+                if(type === 'feet') return '👢';
+                if(type === 'back') return '🎒';
+                return '📦';
+            };
+
+            const filters = [
+                { id: 'all', label: '全部', icon: 'Star' },
+                { id: 'mainHand', label: '武器', icon: 'Sword' },
+                { id: 'head', label: '頭部', icon: 'Crown' },
+                { id: 'body', label: '身軀', icon: 'Shield' },
+                { id: 'feet', label: '足部', icon: 'Zap' },
+                { id: 'back', label: '背飾', icon: 'Briefcase' }
+            ];
+
+            const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
 
             return (
                 <div className="animate-[fadeIn_0.5s]">
-                    <div className="glass p-4 rounded-2xl mb-4 flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
-                        <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
-                        <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
-                            <Icon name="Coin" size={14} className="text-yellow-600"/>
-                            <span className="font-bold text-yellow-800">{gold}</span>
+                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
+                            <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
+                                <Icon name="Coin" size={14} className="text-yellow-600"/>
+                                <span className="font-bold text-yellow-800">{gold}</span>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                            {filters.map(f => (
+                                <button 
+                                    key={f.id} 
+                                    onClick={() => setFilter(f.id)}
+                                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}
+                                >
+                                    <Icon name={f.icon} size={12} />
+                                    {f.label}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 pb-24">
-                        {SHOP_ITEMS.map(item => {
+                        {displayedItems.length === 0 && <div className="col-span-2 text-center text-theme-sub py-10">此分類暫無商品</div>}
+                        {displayedItems.map(item => {
                             const owned = inventory.some(i => i.id === item.id);
                             return (
                                 <div key={item.id} className={`bg-theme-card p-4 rounded-xl border-2 flex flex-col items-center gap-2 relative overflow-hidden transition-all ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} rarity-${item.rarity}`} onClick={() => !owned && handleBuyClick(item)}>
+                                    <div className="absolute top-0 left-0 px-2 py-1 text-xs">{getTypeIcon(item.type)}</div>
                                     <div className={`absolute top-0 right-0 px-2 py-0.5 text-[9px] font-bold text-white rounded-bl-lg ${item.rarity === 'legendary' ? 'bg-yellow-500' : item.rarity === 'epic' ? 'bg-purple-500' : item.rarity === 'rare' ? 'bg-blue-500' : 'bg-gray-400'}`}>
                                         {item.rarity.toUpperCase()}
                                     </div>
-                                    <div className="w-12 h-12 flex items-center justify-center bg-theme-bg rounded-full mt-2">
-                                        <Icon name={item.icon} size={28} className="text-theme-text"/>
+                                    <div className="w-12 h-12 flex items-center justify-center bg-theme-bg rounded-full mt-2 border-2 border-theme-border/50">
+                                        <Icon name={item.icon} size={28} className="text-theme-text pixel-icon"/>
                                     </div>
                                     <div className="text-center">
                                         <div className="font-bold text-sm text-theme-text">{item.name}</div>
-                                        <div className="text-[10px] text-theme-sub font-mono">{item.type}</div>
+                                        <div className="text-[10px] text-theme-sub font-mono">{item.cost} G</div>
+                                        {/* Simple stat hint */}
+                                        <div className="text-[8px] text-theme-sub opacity-70 mt-0.5">
+                                            {Object.keys(item.stats || {}).map(k=>`${k.toUpperCase()}+${item.stats[k]}`).join(' ')}
+                                        </div>
                                     </div>
                                     <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-1 ${owned ? 'bg-gray-200 text-gray-500' : 'bg-yellow-400 text-yellow-900 shadow-sm'}`}>
-                                        {owned ? '已擁有' : `${item.cost} G`}
+                                        {owned ? '已擁有' : '購買'}
                                     </button>
                                 </div>
                             );
@@ -825,15 +937,21 @@
                     {/* Confirmation Modal */}
                     {selectedItem && (
                         <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
-                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-2 border-theme-border">
-                                <div className="w-16 h-16 bg-theme-bg rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent">
-                                    <Icon name={selectedItem.icon} size={32} />
+                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double border-theme-border">
+                                <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">確認交易</h3>
+                                <div className="w-20 h-20 bg-theme-bg rounded-xl flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent shadow-inner">
+                                    <Icon name={selectedItem.icon} size={40} className="pixel-icon" />
                                 </div>
                                 <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
-                                <p className="text-xs text-theme-sub mb-4">確定要花費 <span className="font-bold text-yellow-600">{selectedItem.cost} G</span> 購買嗎？</p>
+                                <div className="text-xs text-theme-sub mb-4 font-mono space-y-1">
+                                    <p>價格: <span className="font-bold text-yellow-600 text-lg">{selectedItem.cost} G</span></p>
+                                    <p className="opacity-70">
+                                        {Object.entries(selectedItem.stats || {}).map(([k,v]) => `${k.toUpperCase()} +${v}`).join(' / ')}
+                                    </p>
+                                </div>
                                 <div className="flex gap-3">
-                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
-                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">購買</button>
+                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold border-b-4 border-theme-border active:border-b-0 active:translate-y-1 transition-all">取消</button>
+                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md border-b-4 border-black/30 active:border-b-0 active:translate-y-1 transition-all">購買</button>
                                 </div>
                             </div>
                         </div>
@@ -841,7 +959,8 @@
                 </div>
             );
         };
-
+        
+        // ... (InventoryModal same as before) ...
         const InventoryModal = ({ slot, inventory, onClose, onEquip }) => {
             const availableItems = inventory.filter(i => i.type === slot);
 
@@ -859,7 +978,7 @@
                             {availableItems.map(item => (
                                 <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"><Icon name={item.icon}/></div>
+                                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"><Icon name={item.icon} className="pixel-icon"/></div>
                                         <div className="text-left">
                                             <div className="font-bold text-theme-text">{item.name}</div>
                                             <div className="text-[10px] text-theme-sub uppercase">{item.rarity}</div>
@@ -960,7 +1079,18 @@
                     if (!localData.user.unlockedAchievements) localData.user.unlockedAchievements = [];
                     if (!localData.user.gender) localData.user.gender = 'female';
                     if (!localData.user.gold) localData.user.gold = 0;
-                    if (!localData.user.appearance) localData.user.appearance = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' };
+                    
+                    // --- MIGRATION: Handle Gender-Split Appearance ---
+                    if (!localData.user.appearance) {
+                        localData.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
+                    } else if (!localData.user.appearance.male) {
+                        const oldApp = localData.user.appearance;
+                        localData.user.appearance = {
+                            male: { ...DEFAULT_APPEARANCE, ...oldApp }, 
+                            female: { ...DEFAULT_APPEARANCE, ...oldApp }
+                        };
+                    }
+
                     if (!localData.inventory) localData.inventory = [];
                     if (!localData.equipped) localData.equipped = {};
                     setData(localData); 
@@ -984,9 +1114,13 @@
                                 if(!fd.inventory) fd.inventory = [];
                                 if(!fd.equipped) fd.equipped = {};
                                 if (!fd.user.gold) fd.user.gold = 0;
+                                // --- MIGRATION on Cloud Data ---
+                                if (!fd.user.appearance || !fd.user.appearance.male) {
+                                     fd.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
+                                }
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -1075,8 +1209,8 @@
                 saveData({ ...data, user: { ...data.user, gender: newGender } });
             };
 
-            const updateAppearance = (newColors) => {
-                saveData({ ...data, user: { ...data.user, appearance: newColors } });
+            const updateAppearance = (newAppearanceData) => {
+                saveData({ ...data, user: { ...data.user, appearance: newAppearanceData } });
             };
 
             // Shop Logic
@@ -1148,7 +1282,7 @@
                 const fb = window.firebase; 
                 if (!fb || !fb.auth || !fb.app) {
                     const fakeUid = 'local_' + Date.now();
-                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' };
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' };
                     const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} };
                     localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
                     window.location.reload();
@@ -1314,7 +1448,7 @@
                         <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
                         <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
                     </div>
-                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc', accessory: 'none' }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [] })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
                     {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
                 </div> 
             );
@@ -1398,7 +1532,7 @@
                             </div>
                         )}
 
-                        {view === 'upgrade' && <CharacterTab equipped={data.equipped} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} />}
+                        {view === 'upgrade' && <CharacterTab equipped={data.equipped} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} level={data.user.level}/>}
                         
                         {view === 'shop' && <ShopView gold={data.user.gold || 0} inventory={data.inventory} onBuy={handleBuyItem} />}
 
