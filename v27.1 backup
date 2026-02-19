@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>SakuraWallet V27: Preview & Styles</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=DotGothic16&display=swap" rel="stylesheet">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.30.0/date_fns.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Zen Maru Gothic"', 'sans-serif'], pixel: ['"DotGothic16"', 'sans-serif'] },
+            colors: {
+              theme: {
+                bg: 'var(--bg-color)',
+                card: 'var(--card-bg)',
+                text: 'var(--text-main)',
+                sub: 'var(--text-sub)',
+                accent: 'var(--accent-color)',
+                border: 'var(--border-color)',
+                glass: 'var(--glass-bg)'
+              },
+              rarity: {
+                  common: '#94a3b8',
+                  rare: '#3b82f6',
+                  epic: '#a855f7',
+                  legendary: '#eab308'
+              }
+            },
+            animation: { 
+                'float': 'float 4s ease-in-out infinite', 
+                'pulse-slow': 'pulse 3s infinite', 
+                'glow': 'glow 3s infinite alternate',
+                'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                'sparkle': 'sparkle 2s linear infinite',
+                'idle-breathe': 'idleBreathe 4s ease-in-out infinite',
+                'head-bob': 'headBob 4s ease-in-out infinite',
+                'weapon-sway': 'weaponSway 4s ease-in-out infinite',
+                'cape-flow': 'capeFlow 3s ease-in-out infinite',
+                'blink': 'blink 5s infinite',
+                'float-accessory': 'floatAccessory 3s ease-in-out infinite',
+                'shimmer': 'shimmer 2s linear infinite',
+                'spin-slow': 'spin 10s linear infinite',
+                'shine-slide': 'shineSlide 3s infinite linear',
+            },
+            keyframes: { 
+                float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
+                glow: { '0%': { boxShadow: '0 0 5px var(--accent-color)' }, '100%': { boxShadow: '0 0 20px var(--accent-color), 0 0 10px rgba(255,255,255,0.5)' } },
+                popIn: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                sparkle: { '0%': { opacity: '0', transform: 'scale(0)' }, '50%': { opacity: '1', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(0) rotate(90deg)' } },
+                idleBreathe: { '0%, 100%': { transform: 'scaleY(1)' }, '50%': { transform: 'scaleY(1.02)' } },
+                headBob: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-1px)' } },
+                weaponSway: { '0%, 100%': { transform: 'rotate(0deg)' }, '50%': { transform: 'rotate(-2deg)' } },
+                capeFlow: { '0%, 100%': { transform: 'skewX(0deg)' }, '50%': { transform: 'skewX(-3deg)' } },
+                blink: { '0%, 48%, 52%, 100%': { opacity: '1' }, '50%': { opacity: '0.1' } }, 
+                floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
+                shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } },
+                shineSlide: { '0%': { left: '-100%' }, '20%': { left: '100%' }, '100%': { left: '100%' } }
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+        /* === Theme Engine === */
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
+        [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+        [data-theme="magic"] { --bg-color: #faf5ff; --card-bg: #ffffff; --text-main: #581c87; --text-sub: #a855f7; --accent-color: #9333ea; --border-color: #e9d5ff; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
+        [data-theme="matcha"] { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-main: #14532d; --text-sub: #166534; --accent-color: #15803d; --border-color: #bbf7d0; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#15803d 0.5px, transparent 0.5px); }
+        [data-theme="latte"] { --bg-color: #fffbeb; --card-bg: #ffffff; --text-main: #78350f; --text-sub: #92400e; --accent-color: #b45309; --border-color: #fde68a; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#b45309 0.5px, transparent 0.5px); }
+        [data-theme="peach"] { --bg-color: #fff1f2; --card-bg: #ffffff; --text-main: #9f1239; --text-sub: #e11d48; --accent-color: #f43f5e; --border-color: #fecdd3; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#f43f5e 0.5px, transparent 0.5px); }
+        [data-theme="lavender"] { --bg-color: #fdf4ff; --card-bg: #ffffff; --text-main: #6b21a8; --text-sub: #86198f; --accent-color: #a855f7; --border-color: #f0abfc; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#a855f7 0.5px, transparent 0.5px); }
+        [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; position: fixed; overflow: hidden; }
+        body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
+        #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
+        .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
+        .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
+        .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
+        .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
+        
+        /* Pixel Art Styling - Enhanced for RPG Feel */
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-icon { 
+            image-rendering: pixelated; 
+            /* Creates a crunchy, retro outline effect */
+            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1);
+            transform: scale(1.1);
+        } 
+
+        .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
+        #error-display { display: none; padding: 20px; background: #be185d; color: white; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+        .btn-claim { animation: bounce-sm 1s infinite; background: linear-gradient(45deg, var(--accent-color), var(--text-main)); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .achievement-card { @apply relative overflow-hidden p-4 rounded-2xl border-2 flex items-center gap-4 transition-all duration-300 bg-theme-card; }
+        .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/20 shadow-md; }
+        .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 grayscale opacity-80; }
+        .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+        .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; }
+        .magic-circle { position: absolute; bottom: 40px; width: 140px; height: 30px; background: radial-gradient(ellipse at center, var(--accent-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; animation: pulse 3s infinite; }
+        .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
+        .draggable-item.dragging-active { transform: scale(1.03) rotate(1deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
+        .drag-handle { touch-action: none; cursor: grab; }
+        .drag-handle:active { cursor: grabbing; }
+        .rpg-keypad-container { background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg-color) 100%); }
+        .rpg-btn { @apply rounded-2xl flex items-center justify-center transition-all duration-75 select-none cursor-pointer relative overflow-hidden; box-shadow: 0 4px 0 0 rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.05); transform: translateY(0); }
+        .rpg-btn:active { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: translateY(4px); }
+        .btn-num { background-color: var(--card-bg); color: var(--text-main); font-family: "DotGothic16", sans-serif; font-size: 1.5rem; font-weight: bold; border: 2px solid var(--border-color); }
+        .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
+        .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
+        .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
+        
+        /* New Title Styling - Smaller, Elegant */
+        .badge-title { 
+            @apply relative overflow-hidden text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1 transition-all border;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+        .title-common { @apply bg-gray-100 text-gray-600 border-gray-300; }
+        .title-rare { @apply bg-blue-50 text-blue-600 border-blue-200; }
+        .title-epic { @apply bg-purple-50 text-purple-600 border-purple-200; }
+        .title-legendary { @apply bg-gradient-to-r from-yellow-50 via-white to-yellow-50 text-yellow-800 border-yellow-300; box-shadow: 0 0 5px rgba(234, 179, 8, 0.4); }
+        
+        .quest-card-claimed { @apply opacity-60 grayscale bg-theme-bg border border-transparent; }
+        .quest-card-active { @apply glass border border-theme-border; }
+        .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
+        
+        /* --- ADVANCED RARITY VISUALS --- */
+        .item-card { @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .item-card:active { transform: scale(0.95); }
+        .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
+        .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .rarity-rare::before { content: ''; absolute; inset: 0; background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 20px 20px; opacity: 0.05; }
+        .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); animation: pulse-purple 3s infinite alternate; }
+        .rarity-epic::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%); animation: pulse-slow 4s infinite; }
+        .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); animation: glow-gold 2s infinite alternate; }
+        .legendary-shine { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-25deg); animation: shine-slide 3s infinite; pointer-events: none; }
+        .sunburst { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.1) 20deg, transparent 40deg, rgba(234, 179, 8, 0.1) 60deg, transparent 80deg, rgba(234, 179, 8, 0.1) 100deg, transparent 120deg); animation: spin-slow 20s linear infinite; pointer-events: none; }
+
+        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
+        @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
+        
+        /* Utility for hiding scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans" data-theme="ink">
+    
+    <div id="sakura-container" class="sakura-bg"></div>
+    <div id="rpg-bg-layer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-10"></div>
+    
+    <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 transition-opacity duration-500 text-center p-6">
+        <div class="text-6xl animate-pulse mb-6">🐉</div>
+        <div class="text-gray-800 font-bold animate-pulse font-pixel text-2xl mb-2">LOADING WORLD</div>
+        <div id="loading-status" class="text-xs text-gray-400 font-mono mb-8">召喚中...</div>
+        <button onclick="forceStart()" class="text-xs text-gray-400 underline mt-4 opacity-50 hover:opacity-100">Force Start</button>
+    </div>
+
+    <div id="error-display">
+        <h2 class="text-2xl font-bold mb-4">系統錯誤</h2>
+        <pre id="error-text" class="text-xs whitespace-pre-wrap font-mono"></pre>
+        <button onclick="localStorage.clear(); location.reload()" class="mt-6 bg-white text-red-600 px-4 py-2 rounded font-bold">重置</button>
+    </div>
+
+    <div id="root" class="h-full w-full relative z-10 hidden"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Mock Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
+            authDomain: "rpgmoney-73cfd.firebaseapp.com",
+            projectId: "rpgmoney-73cfd",
+            storageBucket: "rpgmoney-73cfd.firebasestorage.app",
+            messagingSenderId: "804479578382",
+            appId: "1:804479578382:web:0882920513d9377998a75f",
+            measurementId: "G-FKDCX3WG8T"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            window.firebase = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, doc, setDoc, getDoc, onSnapshot, app };
+            document.getElementById('loading-status').innerText = "系統連接成功";
+        } catch (e) {
+            console.warn("Offline Mode Active");
+            document.getElementById('loading-status').innerText = "進入單機模式";
+            window.firebase = null; 
+        }
+    </script>
+
+    <script>
+        function forceStart() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('root').classList.remove('hidden');
+        }
+        window.onerror = function(msg, url, line, col, error) {
+            const display = document.getElementById('error-display');
+            const text = document.getElementById('error-text');
+            if(display && text) {
+                display.style.display = 'block';
+                text.textContent = `${msg}\nLine: ${line}`;
+            }
+            return false;
+        };
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+        const { createRoot } = ReactDOM;
+        
+        // --- Icons ---
+        const ICON_PATHS = {
+            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10", Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
+            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4", Globe: "M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",
+            Plus: "M12 5v14 M5 12h14", X: "M18 6L6 18 M6 6l12 12", Cloud: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",
+            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", Crown: "M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
+            Star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+            CreditCard: "M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",
+            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8", Utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",
+            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2", ShoppingBag: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
+            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", Pill: "M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",
+            GraduationCap: "M22 10v6M2 10l10-5 10 5", Briefcase: "M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",
+            Plane: "M2 12h20 M13 2l9 10-9 10", LogOut: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
+            Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
+            Key: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",
+            Trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
+            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5", Book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
+            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", Hammer: "M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
+            Gem: "M6 3h12l4 6-10 13L2 9z", Sun: "M12 1v2 M12 21v2", Moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8", EyeOff: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M1 1l22 22",
+            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z", Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
+            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z", Backspace: "M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM18 9l-6 6M12 9l6 6",
+            Minus: "M5 12h14", Plus: "M12 5v14 M5 12h14", Check: "M20 6L9 17l-5-5", Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+            Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
+            Sort: "M3 6h18M6 12h12M9 18h6", Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
+            Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
+            Chart: "M18 20V10M12 20V4M6 20v-6",
+            ArrowUp: "M12 19V5M5 12l7-7 7 7", ArrowDown: "M12 5v14M19 12l-7 7-7-7",
+            Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
+            Male: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
+            Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
+            Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
+            Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7",
+            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",
+            Fire: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.011.535-5.461a.02.02 0 0 1 .037-.003c.745 1.487 2.102 2.946 2.053 4.636 0 1.556.88 2.306 1.375 2.828.61.643.565 1.58-.2 2.183-.807.636-1.258 1.428-1.258 2.317 0 1.25.98 2.19 1.458 2.502.028.019.012.062-.014.058C8.006 17.5 7.152 14.5 8.5 14.5z",
+            Heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        };
+
+        const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
+            const d = ICON_PATHS[name] || ICON_PATHS['Star'];
+            return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={d}/></svg>;
+        };
+
+        // --- Data & Config ---
+        const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
+        const EXCHANGE_CURRENCIES = ['HKD', 'TWD', 'JPY', 'KRW', 'CNY'];
+        
+        const THEMES = [
+            { id: 'ink', name: 'ink', color: '#343a40' },
+            { id: 'sakura', name: 'sakura', color: '#db2777' },
+            { id: 'sky', name: 'sky', color: '#0ea5e9' },
+            { id: 'magic', name: 'magic', color: '#9333ea' },
+            { id: 'matcha', name: 'matcha', color: '#15803d' },
+            { id: 'latte', name: 'latte', color: '#b45309' },
+            { id: 'peach', name: 'peach', color: '#f43f5e' },
+            { id: 'lavender', name: 'lavender', color: '#a855f7' },
+            { id: 'midnight', name: 'midnight', color: '#0f172a' }
+        ];
+        
+        const DEFAULT_CATEGORIES = {
+            bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
+            dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
+            snack: { label: '零食', icon: 'Utensils', color: '#fdba74', order: 5 },
+            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 }, mtr: { label: '捷運/地鐵', icon: 'Bus', color: '#3b82f6', order: 7 },
+            taxi: { label: '計程車', icon: 'Bus', color: '#2563eb', order: 8 },
+            shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 },
+            bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 },
+            health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 },
+            invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 },
+            salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 },
+            other: { label: '其他', icon: 'Scroll', color: '#94a3b8', order: 99 }
+        };
+
+        const GUARDIAN_STAGES = [
+            { level: 1, name: '初生靈蛋', emoji: '🥚', desc: '潛力無限的存在' }, { level: 5, name: '幼年靈鳥', emoji: '🐥', desc: '開始探索世界' },
+            { level: 10, name: '櫻花狐', emoji: '🦊', desc: '靈力覺醒' }, { level: 20, name: '疾風狼', emoji: '🐺', desc: '財富戰士' },
+            { level: 30, name: '神聖獨角獸', emoji: '🦄', desc: '夢幻守護' }, { level: 50, name: '櫻龍', emoji: '🐉', desc: '傳說之神' },
+        ];
+        
+        // Equipment Slots
+        const EQUIPMENT_SLOTS = [
+            {id:'t1', slot: 'head', icon:'Crown', name:'頭部'}, 
+            {id:'t2', slot: 'body', icon:'Shield', name:'身軀'}, 
+            {id:'t3', slot: 'mainHand', icon:'Sword', name:'主手'}, 
+            {id:'t4', slot: 'back', icon:'Briefcase', name:'背飾'}, 
+            {id:'t5', slot: 'offHand', icon:'Gem', name:'副手'}, 
+            {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
+        ];
+
+        // NEW: Shop Item List with STATS
+        const SHOP_ITEMS = [
+            { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword', stats: { str: 5, agi: 2 } },
+            { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, icon: 'Crown', stats: { vit: 10 } },
+            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 } },
+            { id: 's4', name: '精靈之弓', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword', stats: { agi: 15, int: 5 } },
+            { id: 's5', name: '守護者鎧甲', type: 'body', rarity: 'rare', cost: 450, icon: 'Shield', stats: { vit: 25, str: 5 } },
+            { id: 's6', name: '魔法披風', type: 'back', rarity: 'rare', cost: 350, icon: 'Briefcase', stats: { int: 15, agi: 5 } },
+            { id: 's7', name: '黃金權杖', type: 'mainHand', rarity: 'epic', cost: 1000, icon: 'Gem', stats: { int: 30, vit: 10 } },
+            { id: 's8', name: '龍麟盾', type: 'offHand', rarity: 'epic', cost: 1200, icon: 'Shield', stats: { vit: 40, str: 10 } },
+            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 5000, icon: 'Sun', stats: { int: 50, vit: 20, agi: 20, str: 20 } },
+            { id: 's10', name: '王者之劍', type: 'mainHand', rarity: 'legendary', cost: 8888, icon: 'Sword', stats: { str: 60, vit: 20 } }
+        ];
+
+        // Visual mapping for specific shop items (Paths for PixelAvatar)
+        const GEAR_VISUALS = {
+            's1': (g) => <path fill="#8d6e63" d="M23 19h4v2h-4z" />, // Wood Sword
+            's2': (g) => <path fill="#78909c" d="M10 5h12v7H10z" />, // Iron Helm
+            's9': (g) => <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />, // Halo
+            's10': (g) => <g><path fill="#ffb300" d="M23 18h4v8h-4z" /><path fill="#00bcd4" d="M24 20h2v4h-2z" /></g>, // Excalibur
+            // ... (Simple fallbacks for others)
+        };
+        
+        // Define default appearance colors
+        const DEFAULT_APPEARANCE = {
+              hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc'
+        };
+
+        // Achievement System Data
+        const ACHIEVEMENTS_LIST = [
+            { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
+            { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
+            { id: 'ach_tx_100', icon: 'Library', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
+            
+            { id: 'ach_exp_1k', icon: 'ShoppingBag', title: '初級消費者', desc: '累積消費突破 1,000', target: 1000, type: 'expenseTotal' },
+            { id: 'ach_exp_10k', icon: 'Gem', title: '揮金如土', desc: '累積消費突破 10,000', target: 10000, type: 'expenseTotal' },
+            
+            { id: 'ach_bal_5k', icon: 'Wallet', title: '儲蓄見習', desc: '總資產突破 5,000', target: 5000, type: 'balance' },
+            { id: 'ach_bal_50k', icon: 'Landmark', title: '理財專家', desc: '總資產突破 50,000', target: 50000, type: 'balance' },
+            
+            { id: 'ach_qst_5', icon: 'Trophy', title: '賞金獵人', desc: '完成 5 個任務', target: 5, type: 'questCount' },
+            { id: 'ach_qst_20', icon: 'Crown', title: '傳奇傭兵', desc: '完成 20 個任務', target: 20, type: 'questCount' },
+            
+            { id: 'ach_lv_10', icon: 'Star', title: '冒險新星', desc: '等級達到 10', target: 10, type: 'level' }
+        ];
+
+        // Extended Title System with Rarity
+        const TITLES_LIST = [
+            { id: 'Novice', name: '初心冒險者', desc: '一切的起點', rarity: 'common', condition: '預設擁有', check: () => true },
+            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', rarity: 'common', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
+            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', rarity: 'rare', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
+            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', rarity: 'common', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
+            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', rarity: 'rare', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
+            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', rarity: 'legendary', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000 },
+            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', rarity: 'epic', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
+            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', rarity: 'rare', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
+            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50 },
+            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50 }
+        ];
+
+        const ACCESSORIES_LIST = [
+            { id: 'none', name: '無', icon: 'X' },
+            { id: 'halo', name: '天使光環', icon: 'Sun' },
+            { id: 'scarf', name: '英雄圍巾', icon: 'Flag' },
+            { id: 'catEars', name: '貓耳', icon: 'Smile' }
+        ];
+
+        const TRANSLATIONS = { 
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '匯率', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此資產嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '守護獸', settings: '系統設定', login_title: '公會雲端同步系統', register_title: '註冊成為勇者', login_btn: '登入金庫', register_btn: '註冊', id_placeholder: '冒險者執照編號 (ID)', nick_placeholder: '冒險者代號 (暱稱)', pass_placeholder: '魔法印記 (密碼)', have_acc: '已有帳號？登入金庫', new_user: '第一次來？註冊成為勇者', guest: '單機試玩 (不備份)', name_alert: '第一次登入需建立名稱', acc_alert: '帳號限英數字', missing_info: '請輸入完整資訊', calculator: '魔法算盤', forge_intro: '打造你的財富容器', acc_name: '聖器名稱 (如: 錢包)', acc_bal: '魔力存量 (餘額)', acc_type: '容器類型', claim: '領取', claimed: '已領取', change_title: '更換稱號', unlock_hint: '達成條件解鎖',
+            log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
+            theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
+            theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
+            }, 
+            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Character', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
+            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
+            theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
+            theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
+            }, 
+            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: 'キャラ', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
+            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
+            theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
+            theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
+            } 
+        };
+        
+        const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
+
+        const useSakura = () => {
+            useEffect(() => {
+                const container = document.getElementById('sakura-container');
+                if(!container) return;
+                const interval = setInterval(() => {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    const size = Math.random() * 10 + 5 + 'px';
+                    petal.style.width = size; petal.style.height = size;
+                    petal.style.left = Math.random() * 100 + '%';
+                    petal.style.animationDuration = Math.random() * 3 + 5 + 's';
+                    container.appendChild(petal);
+                    setTimeout(() => petal.remove(), 8000);
+                }, 400);
+                return () => clearInterval(interval);
+            }, []);
+        };
+
+        const BackgroundIllustrations = ({ theme }) => {
+            const getIcon = () => {
+                if (theme === 'sky') return 'Cloud';
+                if (theme === 'magic') return 'Moon';
+                if (theme === 'midnight') return 'Moon';
+                return 'Sun';
+            };
+            return (
+                <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+                    <div className="absolute top-1/4 -left-10 opacity-5 transform rotate-12 scale-[10] text-theme-text"><Icon name="Sword" /></div>
+                    <div className="absolute bottom-1/4 -right-20 opacity-5 transform -rotate-12 scale-[15] text-theme-text"><Icon name="Shield" /></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 scale-[20] text-theme-accent"><Icon name={getIcon()} /></div>
+                </div>
+            );
+        };
+
+        const Keypad = ({ value, onChange, onConfirm, onClose, label }) => {
+            const handlePress = (key) => {
+                if (key === 'OK') onConfirm();
+                else if (key === 'AC') onChange('');
+                else if (key === 'DEL') onChange(value.toString().slice(0, -1));
+                else {
+                    const lastChar = value.toString().slice(-1);
+                    if (['+','-','*','/'].includes(key) && ['+','-','*','/'].includes(lastChar)) return;
+                    onChange(value + key);
+                }
+            };
+            const calculate = () => {
+                try {
+                    if (!/^[0-9+\-*/.]+$/.test(value)) return value;
+                    return eval(value).toString();
+                } catch { return value; }
+            };
+            const preview = useMemo(() => calculate(), [value]);
+            return (
+                <div className="fixed inset-0 z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="rpg-keypad-container border-t-8 border-theme-accent/50 rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 h-[65vh] flex flex-col">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest bg-theme-glass px-4 py-1 rounded-full">{label}</h3>
+                            <button onClick={onClose} className="p-2 bg-theme-glass rounded-full active:scale-95 text-theme-text"><Icon name="X" size={24}/></button>
+                        </div>
+                        <div className="bg-theme-glass p-5 rounded-xl mb-6 text-right flex flex-col justify-center h-28 border-4 border-theme-sub/20 shadow-inner font-pixel relative overflow-hidden">
+                            <div className="text-sm text-theme-sub mb-1 h-6 font-mono z-10">{value.match(/[+\-*/]/) ? value : ''}</div>
+                            <div className="text-5xl font-bold text-theme-text truncate z-10">{value || '0'}</div>
+                            {value !== preview && <div className="text-sm text-theme-accent font-bold z-10 absolute bottom-2 left-4">= {preview}</div>}
+                        </div>
+                        <div className="grid grid-cols-4 gap-4 flex-1">
+                            <button onClick={()=>handlePress('AC')} className="rpg-btn btn-op">AC</button>
+                            <button onClick={()=>handlePress('/')} className="rpg-btn btn-op">÷</button>
+                            <button onClick={()=>handlePress('*')} className="rpg-btn btn-op">×</button>
+                            <button onClick={()=>handlePress('DEL')} className="rpg-btn btn-op"><Icon name="Backspace" size={28}/></button>
+                            {[7,8,9,'-',4,5,6,'+',1,2,3].map(k => <button key={k} onClick={()=>handlePress(k)} className={`rpg-btn ${typeof k==='number'?'btn-num':'btn-op'}`}>{k}</button>)}
+                            <button onClick={onConfirm} className="rpg-btn btn-action row-span-2 flex items-center justify-center"><Icon name="Check" size={40}/></button>
+                            <button onClick={()=>handlePress(0)} className="rpg-btn btn-num col-span-2">0</button>
+                            <button onClick={()=>handlePress('.')} className="rpg-btn btn-num">.</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CategoryManager = ({ categories, onSave, onClose }) => {
+            const [localCats, setLocalCats] = useState([]);
+            const [editId, setEditId] = useState(null);
+            const [editForm, setEditForm] = useState({ label: '', color: '#000000', icon: 'Star' });
+            const [iconPickerOpen, setIconPickerOpen] = useState(false);
+            const [draggingIndex, setDraggingIndex] = useState(null);
+
+            useEffect(() => {
+                const sorted = Object.entries(categories).sort((a, b) => (a[1].order || 99) - (b[1].order || 99));
+                setLocalCats(sorted);
+            }, [categories]);
+
+            const handleTouchMove = (e, index) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (!target) return;
+                const row = target.closest('[data-index]');
+                if (!row) return;
+                const targetIndex = parseInt(row.dataset.index);
+                if (targetIndex !== index && targetIndex >= 0 && targetIndex < localCats.length) {
+                    const newList = [...localCats];
+                    const item = newList[index];
+                    newList.splice(index, 1);
+                    newList.splice(targetIndex, 0, item);
+                    setLocalCats(newList);
+                    setDraggingIndex(targetIndex);
+                }
+            };
+
+            const handleEdit = (key, cat) => { setEditId(key); setEditForm({ label: cat.label, color: cat.color, icon: cat.icon || 'Star' }); setIconPickerOpen(false); };
+            const saveEdit = () => { if(!editForm.label) return; const newCats = localCats.map(([k, c]) => k === editId ? [k, { ...c, ...editForm }] : [k, c]); setLocalCats(newCats); setEditId(null); };
+            const addNew = () => { const id = 'custom_' + Date.now(); setLocalCats([...localCats, [id, { label: '新類別', icon: 'Star', color: '#888888' }]]); setEditId(id); setEditForm({ label: '新類別', color: '#888888', icon: 'Star' }); };
+            const handleSaveAll = () => { const finalObj = {}; localCats.forEach(([key, val], index) => { finalObj[key] = { ...val, order: index + 1 }; }); onSave(finalObj); onClose(); };
+
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex flex-col justify-center px-4">
+                    <div className="bg-theme-card rounded-3xl p-6 shadow-2xl max-h-[80vh] flex flex-col border border-theme-border">
+                        <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2"><h3 className="font-bold text-lg text-theme-text">類別管理</h3><button onClick={onClose} className="text-theme-text"><Icon name="X"/></button></div>
+                        <div className="overflow-y-auto flex-1 space-y-2 pr-1">
+                            {localCats.map(([key, cat], index) => (
+                                <div key={key} data-index={index}
+                                     className={`flex flex-col gap-2 p-3 rounded-xl bg-theme-bg border border-transparent transition-all draggable-item ${draggingIndex === index ? 'dragging-active' : ''}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div 
+                                            className="text-theme-sub drag-handle p-2 -ml-2 touch-none" 
+                                            onTouchStart={() => setDraggingIndex(index)}
+                                            onTouchMove={(e) => handleTouchMove(e, draggingIndex)}
+                                            onTouchEnd={() => setDraggingIndex(null)}
+                                            onMouseDown={() => setDraggingIndex(index)}
+                                        >
+                                            <Icon name="Grip" size={24}/>
+                                        </div>
+                                        <div onClick={() => editId === key && setIconPickerOpen(!iconPickerOpen)} className={`w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 ${editId === key ? 'cursor-pointer ring-2 ring-theme-accent' : ''}`} style={{backgroundColor: editId === key ? editForm.color : cat.color}}><Icon name={editId === key ? editForm.icon : cat.icon} size={14} color="white"/></div>
+                                        {editId === key ? (<div className="flex items-center gap-2 flex-1"><input type="text" value={editForm.label} onChange={e=>setEditForm({...editForm, label:e.target.value})} className="flex-1 p-1 rounded border bg-theme-bg text-theme-text text-sm"/><input type="color" value={editForm.color} onChange={e=>setEditForm({...editForm, color:e.target.value})} className="w-8 h-8 rounded overflow-hidden cursor-pointer"/><button onClick={saveEdit} className="text-green-500"><Icon name="Check" size={18}/></button></div>) : (<div className="flex-1 font-bold text-sm text-theme-text">{cat.label}</div>)}{editId !== key && <button onClick={()=>handleEdit(key, cat)} className="text-theme-sub hover:text-theme-accent"><Icon name="Edit" size={16}/></button>}
+                                    </div>
+                                    {editId === key && iconPickerOpen && (<div className="grid grid-cols-6 gap-2 bg-theme-glass p-2 rounded-lg mt-2 max-h-32 overflow-y-auto">{Object.keys(ICON_PATHS).map(iconName => (<button key={iconName} onClick={() => { setEditForm({...editForm, icon: iconName}); setIconPickerOpen(false); }} className={`p-1 rounded hover:bg-theme-bg flex justify-center ${editForm.icon === iconName ? 'bg-theme-accent text-white' : 'text-theme-sub'}`}><Icon name={iconName} size={16} /></button>))}</div>)}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mt-4 flex gap-2"><button onClick={addNew} className="flex-1 py-3 bg-theme-bg text-theme-text rounded-xl font-bold text-sm border border-theme-border">+ 新增</button><button onClick={handleSaveAll} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold text-sm shadow-md">儲存變更</button></div>
+                    </div>
+                </div>
+            );
+        };
+
+        const SelectorSheet = ({ title, options, onSelect, onClose, current, onLockedClick, getLabel }) => (
+            <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[70vh] flex flex-col">
+                    <div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div>
+                    <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3>
+                    <div className="grid gap-3 overflow-y-auto">
+                        {options.map(opt => (
+                            <button key={opt.value} onClick={() => { 
+                                    if(opt.locked && onLockedClick) { onLockedClick(opt); } 
+                                    else if (!opt.locked) { onSelect(opt.value); onClose(); } 
+                                }} 
+                                className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}>
+                                <div className="flex items-center gap-3">
+                                    {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
+                                    <div className="flex flex-col items-start">
+                                        <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
+                                        {opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}
+                                        {opt.locked && opt.condition && <span className="text-[9px] text-red-400">🔒 {opt.condition}</span>}
+                                    </div>
+                                </div>
+                                {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
+                                {opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
+                            </button>
+                        ))}
+                    </div>
+                    <button onClick={onClose} className="w-full mt-6 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button>
+                </div>
+            </div>
+        );
+
+        // --- Level Up Modal ---
+        const LevelUpOverlay = ({ level, onClose }) => {
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-[fadeIn_0.3s]">
+                    <div className="relative text-center w-full max-w-sm">
+                        <div className="rays w-96 h-96 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="relative z-10 animate-pop-in">
+                            <div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]">🎉</div>
+                            <h2 className="text-5xl font-pixel text-yellow-300 font-bold tracking-widest drop-shadow-md mb-2 animate-bounce">LEVEL UP!</h2>
+                            <div className="text-9xl font-black text-white drop-shadow-xl my-4">{level}</div>
+                            <button onClick={onClose} className="mt-8 px-8 py-3 bg-white text-ink font-bold rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] active:scale-95 transition-transform">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Enhanced Pixel Avatar (Visual Equipment) ---
+        const PixelAvatar = ({ gender, colors, equipped, className }) => {
+            const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = colors || {};
+            const headGear = equipped?.head;
+            const bodyGear = equipped?.body;
+            const mainHand = equipped?.mainHand;
+            const backGear = equipped?.back;
+            const feetGear = equipped?.feet;
+
+            return (
+                <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
+                    <g className="animate-idle-breathe origin-bottom">
+                    
+                         {/* LAYER 0: Back Hair (Female specific - drawn first) */}
+                        {!headGear && gender === 'female' && (
+                             <path fill={hair} d="M8 9h16v12H8z" opacity="0.8" />
+                        )}
+
+                        {/* LAYER 1: Cape / Back - Independent Sway */}
+                        {!backGear ? (
+                             <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
+                        ) : (
+                             <path fill={backGear.rarity === 'legendary' ? '#eab308' : '#3b82f6'} d="M6 18h20v14H6z M8 18h16v12H8z" className="animate-cape-flow origin-top" />
+                        )}
+                        
+                        {/* LAYER 2: Legs */}
+                        <path fill={feetGear ? '#546e7a' : '#3e2723'} d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+
+                        {/* LAYER 3: Body Armor */}
+                        {!bodyGear ? (
+                            <>
+                                <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
+                                {gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}
+                                <path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} />
+                                <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
+                            </>
+                        ) : (
+                            <>
+                                <path fill="#90a4ae" d="M10 17h12v9H10z" />
+                                <path fill="#cfd8dc" d="M12 18h8v6h-8z" />
+                                <path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" />
+                            </>
+                        )}
+
+                        {/* LAYER 4: HEAD GROUP - Bobs independently */}
+                        <g className="animate-head-bob">
+                            {/* Face */}
+                            <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
+                            
+                            {/* Eyes (Blinking) & Mouth */}
+                            <g className="animate-blink">
+                                <path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} />
+                            </g>
+                            {/* Simple Mouth */}
+                            <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
+
+                            {/* LAYER 5: Front Hair or Helm */}
+                            {!headGear ? (
+                                gender === 'male' ? (
+                                    <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
+                                ) : (
+                                    // Female Front Hair / Bangs - ensure this is drawn AFTER face
+                                    <path fill={hair} d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
+                                )
+                            ) : (
+                                // Render Equipped Helm
+                                <>
+                                    {headGear.id === 's9' ? ( // Halo
+                                         <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" className="animate-float-accessory" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />
+                                    ) : ( // Generic Helm
+                                         <path fill="#546e7a" d="M9 6h14v7H9z M11 7h2v2h-2z M19 7h2v2h-2z" />
+                                    )}
+                                </>
+                            )}
+                            
+                            {/* Crown/Headband (Only if no helm or halo) */}
+                            {!headGear && (
+                                <>
+                                    <path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} />
+                                    <path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} />
+                                </>
+                            )}
+                        </g>
+
+                        {/* LAYER 6: Weapon - Sways with breath */}
+                        <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left">
+                            {!mainHand ? (
+                                <>
+                                    <path fill="#5d4037" d="M23 19h4v2h-4z" />
+                                    <path fill="#ffb300" d="M24 18h2v4h-2z" />
+                                    <path fill="#e0e0e0" d="M26 19h6v2h-6z" />
+                                </>
+                            ) : (
+                                GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : (
+                                     <path fill="#cfd8dc" d="M23 18h4v10h-4z" /> // Default fallback weapon
+                                )
+                            )}
+                        </g>
+                    </g>
+                </svg>
+            );
+        };
+
+        // --- Avatar Editor Modal ---
+        const AvatarEditor = ({ appearanceData, onSave, onClose }) => {
+            const [editingGender, setEditingGender] = useState('male');
+            const [localAppearance, setLocalAppearance] = useState(appearanceData || {
+                male: { ...DEFAULT_APPEARANCE },
+                female: { ...DEFAULT_APPEARANCE }
+            });
+
+            const currentColors = localAppearance[editingGender];
+
+            const updateColor = (key, value) => {
+                setLocalAppearance(prev => ({
+                    ...prev,
+                    [editingGender]: {
+                        ...prev[editingGender],
+                        [key]: value
+                    }
+                }));
+            };
+            
+            const handleSave = () => {
+                onSave(localAppearance);
+            };
+
+            return (
+                <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90dvh] flex flex-col min-h-0">
+                        {/* New Header Layout with Buttons */}
+                        <div className="p-6 pb-2 shrink-0 relative">
+                            <div className="flex justify-between items-center mb-4">
+                                <button onClick={onClose} className="p-2 bg-theme-bg rounded-full text-theme-sub hover:text-theme-text active:scale-95 transition-transform"><Icon name="X" size={24}/></button>
+                                <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">更衣室</h3>
+                                <button onClick={handleSave} className="p-2 bg-theme-accent text-white rounded-full shadow-md active:scale-95 transition-transform"><Icon name="Check" size={24}/></button>
+                            </div>
+                            
+                            <div className="flex bg-theme-bg p-1 rounded-xl mb-4">
+                                <button onClick={() => setEditingGender('male')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${editingGender === 'male' ? 'bg-theme-card shadow text-theme-text' : 'text-theme-sub'}`}>男角設定</button>
+                                <button onClick={() => setEditingGender('female')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${editingGender === 'female' ? 'bg-theme-card shadow text-theme-text' : 'text-theme-sub'}`}>女角設定</button>
+                            </div>
+
+                            <div className="flex justify-center mb-2 bg-theme-bg p-6 rounded-2xl border-2 border-theme-border">
+                                <PixelAvatar gender={editingGender} colors={currentColors} className="w-32 h-32 drop-shadow-xl" />
+                            </div>
+                        </div>
+
+                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4 pb-24">
+                            <div className="grid grid-cols-2 gap-4">
+                                {[
+                                    { id: 'hair', label: '頭髮顏色' },
+                                    { id: 'skin', label: '皮膚顏色' },
+                                    { id: 'armor', label: '盔甲內襯' },
+                                    { id: 'cape', label: '披風顏色' }
+                                ].map(item => (
+                                    <div key={item.id} className="flex flex-col gap-2 p-3 rounded-xl bg-theme-glass border border-theme-border items-center">
+                                        <span className="font-bold text-xs text-theme-text">{item.label}</span>
+                                        <input 
+                                            type="color" 
+                                            value={currentColors[item.id]} 
+                                            onChange={(e) => updateColor(item.id, e.target.value)}
+                                            className="w-12 h-8 rounded cursor-pointer border-2 border-white shadow-sm"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Character Equipment Tab ---
+        const CharacterTab = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level }) => {
+            const [isEditing, setIsEditing] = useState(false);
+            const currentGenderColors = appearance[gender] || appearance; 
+
+            // Calculate Base Stats
+            const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
+            const totalStats = { ...baseStats };
+            Object.values(equipped).forEach(item => {
+                if(item.stats) {
+                    if(item.stats.str) totalStats.str += item.stats.str;
+                    if(item.stats.int) totalStats.int += item.stats.int;
+                    if(item.stats.vit) totalStats.vit += item.stats.vit;
+                    if(item.stats.agi) totalStats.agi += item.stats.agi;
+                }
+            });
+
+            // Calculate Derived RPG Stats
+            const derivedStats = {
+                hp: totalStats.vit * 20,
+                mp: totalStats.int * 10,
+                atk: totalStats.str * 5,
+                def: totalStats.vit * 2,
+                spd: totalStats.agi * 2,
+                cri: Math.floor(totalStats.agi * 0.2)
+            };
+            const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
+
+            const renderSlot = (slotData) => {
+                const item = equipped[slotData.slot]; 
+                if (!item) {
+                    return (
+                        <div className="slot-empty cursor-pointer hover:bg-black/10" onClick={() => onEquipSlot(slotData.slot)}>
+                            <div className="equip-label">{slotData.name}</div>
+                        </div>
+                    );
+                }
+                return (
+                    <div className={`slot-filled cursor-pointer hover:scale-105 active:scale-95 border-2 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}>
+                        <Icon name={item.icon} size={24} className="text-theme-text pixel-icon"/>
+                        <div className="equip-label">{item.name.substring(0,4)}</div>
+                    </div>
+                );
+            };
+
+            const StatRow = ({ label, val, color }) => (
+                <div className="flex justify-between items-center w-full text-xs mb-1">
+                    <span className="font-bold opacity-70 w-8">{label}</span>
+                    <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full mx-2 overflow-hidden">
+                        <div className={`h-full ${color}`} style={{width: '100%'}}></div>
+                    </div>
+                    <span className="font-mono font-bold w-10 text-right">{val}</span>
+                </div>
+            );
+
+            return (
+                <div className="animate-[fadeIn_0.5s] space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text">
+                            <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
+                        </h3>
+                        <div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full border border-yellow-300">
+                            CP: {cp}
+                        </div>
+                        <button onClick={() => setIsEditing(true)} className="text-xs bg-theme-glass px-3 py-1 rounded-full border border-theme-border font-bold text-theme-accent flex items-center gap-1 active:scale-95">
+                            <Icon name="Paint" size={12} /> 更衣室
+                        </button>
+                    </div>
+                    
+                    <div className="char-stage rounded-3xl relative">
+                        <div className="magic-circle"></div>
+                        
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                            <div className="flex flex-col gap-4 mr-32 pointer-events-auto">
+                                {renderSlot({id:'t1', slot: 'head', name:'頭部'})}
+                                {renderSlot({id:'t2', slot: 'body', name:'身軀'})}
+                                {renderSlot({id:'t3', slot: 'mainHand', name:'主手'})}
+                            </div>
+                            <div className="flex flex-col gap-4 ml-32 pointer-events-auto">
+                                {renderSlot({id:'t4', slot: 'back', name:'背飾'})}
+                                {renderSlot({id:'t5', slot: 'offHand', name:'副手'})}
+                                {renderSlot({id:'t6', slot: 'feet', name:'足部'})}
+                            </div>
+                        </div>
+
+                        <div className="hero-container relative z-10">
+                            <button onClick={onToggleGender} className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto">
+                                <span className="text-xs font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</span>
+                            </button>
+                             <PixelAvatar gender={gender} colors={currentGenderColors} equipped={equipped} className="w-64 h-64 object-contain drop-shadow-xl"/>
+                        </div>
+                    </div>
+
+                    {/* Enhanced Stats Panel */}
+                    <div className="glass p-4 rounded-xl border-theme-border flex flex-col gap-3 mt-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <StatRow label="HP" val={derivedStats.hp} color="bg-green-500" />
+                                <StatRow label="MP" val={derivedStats.mp} color="bg-blue-500" />
+                            </div>
+                            <div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-red-500 font-bold">ATK</span> <span className="font-mono">{derivedStats.atk}</span></div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-blue-500 font-bold">DEF</span> <span className="font-mono">{derivedStats.def}</span></div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-yellow-500 font-bold">CRI</span> <span className="font-mono">{derivedStats.cri}%</span></div>
+                            </div>
+                        </div>
+                        <div className="border-t border-dashed border-gray-300 pt-2 flex justify-between text-[10px] text-theme-sub">
+                            <span>STR: {totalStats.str}</span>
+                            <span>INT: {totalStats.int}</span>
+                            <span>VIT: {totalStats.vit}</span>
+                            <span>AGI: {totalStats.agi}</span>
+                        </div>
+                    </div>
+
+                    {isEditing && (
+                        <AvatarEditor 
+                            appearanceData={appearance} 
+                            onSave={(newAppearanceData) => { 
+                                onUpdateAppearance(newAppearanceData); 
+                                alert('外觀已保存！'); 
+                                setIsEditing(false); 
+                            }} 
+                            onClose={() => setIsEditing(false)} 
+                        />
+                    )}
+                </div>
+            );
+        };
+
+        // --- Shop & Inventory Components ---
+        const ShopView = ({ gold, inventory, onBuy }) => {
+            const [selectedItem, setSelectedItem] = useState(null);
+            const [filter, setFilter] = useState('all');
+
+            const handleBuyClick = (item) => {
+                if (gold < item.cost) return alert("金幣不足！");
+                if (inventory.some(i => i.id === item.id)) return alert("已擁有此裝備！");
+                setSelectedItem(item);
+            };
+
+            const confirmBuy = () => {
+                onBuy(selectedItem);
+                setSelectedItem(null);
+            };
+            
+            const getTypeIcon = (type) => {
+                if(type === 'mainHand') return '⚔️';
+                if(type === 'offHand') return '🛡️';
+                if(type === 'head') return '👑';
+                if(type === 'body') return '👕';
+                if(type === 'feet') return '👢';
+                if(type === 'back') return '🎒';
+                return '📦';
+            };
+
+            const filters = [
+                { id: 'all', label: '全部', icon: 'Star' },
+                { id: 'mainHand', label: '武器', icon: 'Sword' },
+                { id: 'head', label: '頭部', icon: 'Crown' },
+                { id: 'body', label: '身軀', icon: 'Shield' },
+                { id: 'feet', label: '足部', icon: 'Zap' },
+                { id: 'back', label: '背飾', icon: 'Briefcase' }
+            ];
+
+            const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
+
+            return (
+                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden">
+                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
+                            <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
+                                <Icon name="Coin" size={14} className="text-yellow-600"/>
+                                <span className="font-bold text-yellow-800">{gold}</span>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                            {filters.map(f => (
+                                <button 
+                                    key={f.id} 
+                                    onClick={() => setFilter(f.id)}
+                                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}
+                                >
+                                    <Icon name={f.icon} size={12} />
+                                    {f.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 pb-24">
+                        {displayedItems.length === 0 && <div className="col-span-2 text-center text-theme-sub py-10">此分類暫無商品</div>}
+                        {displayedItems.map(item => {
+                            const owned = inventory.some(i => i.id === item.id);
+                            return (
+                                <div key={item.id} 
+                                     className={`item-card rarity-${item.rarity} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
+                                     onClick={() => !owned && handleBuyClick(item)}>
+                                    
+                                    {item.rarity === 'legendary' && <div className="sunburst"></div>}
+                                    {item.rarity === 'legendary' && <div className="legendary-shine"></div>}
+                                    
+                                    <div className="p-3 w-full flex flex-col items-center relative z-10">
+                                        <div className="flex justify-between w-full mb-1">
+                                            <div className="text-xs opacity-70">{getTypeIcon(item.type)}</div>
+                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>
+                                                {item.rarity}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
+                                            <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
+                                        </div>
+                                        
+                                        <div className="text-center w-full">
+                                            <div className="font-bold text-sm text-theme-text truncate">{item.name}</div>
+                                            <div className="text-[10px] font-mono opacity-80 mb-1">{item.cost} G</div>
+                                            
+                                            <div className="text-[8px] flex justify-center gap-1 opacity-70 bg-white/30 rounded px-1 py-0.5">
+                                                {Object.entries(item.stats || {}).map(([k,v]) => (
+                                                    <span key={k}>{k.toUpperCase()}+{v}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        
+                                        <button 
+                                            onClick={(e) => { e.stopPropagation(); !owned && handleBuyClick(item); }}
+                                            className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500 pointer-events-none' : 'bg-white/80 text-theme-text hover:bg-white pointer-events-auto'}`}>
+                                            {owned ? '已擁有' : '購買'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Confirmation Modal - WITH PREVIEW */}
+                    {selectedItem && (
+                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
+                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double rarity-${selectedItem.rarity} relative`}>
+                                <div className="absolute top-2 right-2 text-theme-sub"><Icon name="Shop" size={16}/></div>
+                                <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">試穿預覽</h3>
+                                
+                                {/* PREVIEW AVATAR */}
+                                <div className="flex justify-center mb-4 bg-theme-bg/50 rounded-2xl p-4 border-inner shadow-inner">
+                                     <PixelAvatar 
+                                        gender={data.user.gender}
+                                        colors={data.user.appearance}
+                                        equipped={{ ...data.equipped, [selectedItem.type]: selectedItem }}
+                                        className="w-32 h-32 drop-shadow-lg"
+                                    />
+                                </div>
+
+                                <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
+                                <div className="text-xs text-theme-sub mb-4 font-mono space-y-1">
+                                    <p>價格: <span className="font-bold text-yellow-600 text-lg">{selectedItem.cost} G</span></p>
+                                    <p className="opacity-70">
+                                        {Object.entries(selectedItem.stats || {}).map(([k,v]) => `${k.toUpperCase()} +${v}`).join(' / ')}
+                                    </p>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button onClick={() => setSelectedItem(null)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold border-b-4 border-theme-border active:border-b-0 active:translate-y-1 transition-all">取消</button>
+                                    <button onClick={confirmBuy} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md border-b-4 border-black/30 active:border-b-0 active:translate-y-1 transition-all">購買</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        
+        // ... (InventoryModal same as before) ...
+        const InventoryModal = ({ slot, inventory, onClose, onEquip }) => {
+            const availableItems = inventory.filter(i => i.type === slot);
+
+            return (
+                <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">選擇裝備 ({slot})</h3>
+                        <div className="grid gap-3 overflow-y-auto pb-4">
+                            <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg">
+                                <div className="w-10 h-10 flex items-center justify-center"><Icon name="X"/></div>
+                                <span className="font-bold">卸下裝備</span>
+                            </button>
+                            {availableItems.length === 0 && <div className="text-center text-theme-sub py-4">沒有可用的裝備</div>}
+                            {availableItems.map(item => (
+                                <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-white/50 shadow-sm flex items-center justify-center border border-white/30"><Icon name={item.icon} className="pixel-icon"/></div>
+                                        <div className="text-left">
+                                            <div className="font-bold text-theme-text">{item.name}</div>
+                                            <div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded">裝備</div>
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={onClose} className="w-full mt-2 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App ---
+        const App = () => {
+            useSakura();
+            const [data, setData] = useState({ 
+                user: null, 
+                accounts: [], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, 
+                claimedQuests: [], inventory: [], equipped: {} 
+            });
+            const [loading, setLoading] = useState(true);
+            const [view, setView] = useState('adventure');
+            const [subView, setSubView] = useState('fin');
+            const [modalOpen, setModalOpen] = useState(false);
+            const [assetModalOpen, setAssetModalOpen] = useState(false);
+            const [catManagerOpen, setCatManagerOpen] = useState(false);
+            const [keypadOpen, setKeypadOpen] = useState(false);
+            const [keypadTarget, setKeypadTarget] = useState(null); 
+            const [tempValue, setTempValue] = useState('');
+            const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
+            const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
+            
+            const [equipModalOpen, setEquipModalOpen] = useState(false);
+            const [selectedSlot, setSelectedSlot] = useState(null);
+
+            const [flowView, setFlowView] = useState('today'); 
+            const [logFilter, setLogFilter] = useState('all'); 
+            const [showLevelUp, setShowLevelUp] = useState({ show: false, level: 1 });
+            const [accountDragIndex, setAccountDragIndex] = useState(null);
+
+            const [showThemeSelect, setShowThemeSelect] = useState(false);
+            const [showCurrencySelect, setShowCurrencySelect] = useState(false);
+            const [showTitleSelect, setShowTitleSelect] = useState(false);
+            
+            const [showNameEdit, setShowNameEdit] = useState(false);
+            const [tempName, setTempName] = useState('');
+
+            // Auth
+            const [isRegistering, setIsRegistering] = useState(false);
+            const [loginAccount, setLoginAccount] = useState('');
+            const [loginPass, setLoginPass] = useState('');
+            const [regName, setRegName] = useState('');
+            const [showPass, setShowPass] = useState(false);
+
+            const [theme, setTheme] = useState(localStorage.getItem('gw_theme') || 'ink');
+            const [lang, setLang] = useState(localStorage.getItem('gw_lang') || 'zh');
+            const [rates, setRates] = useState({});
+            const [mainCurrency, setMainCurrency] = useState(localStorage.getItem('gw_currency') || 'TWD');
+            const [baseAmount, setBaseAmount] = useState('100');
+            const [calcBase, setCalcBase] = useState('TWD');
+
+            const t = (key) => TRANSLATIONS[lang][key] || key;
+            
+            const getLevelBadgeStyle = (lv) => {
+                if(lv >= 50) return "bg-gradient-to-r from-red-500 to-yellow-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.6)] border border-yellow-300";
+                if(lv >= 30) return "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md";
+                if(lv >= 10) return "bg-gradient-to-r from-blue-400 to-cyan-400 text-white shadow-sm";
+                return "bg-gray-200 text-gray-600";
+            };
+
+            const getTitleStyle = (titleId) => {
+                const title = TITLES_LIST.find(t => t.id === titleId);
+                const rarity = title ? title.rarity : 'common';
+                return `title-${rarity}`;
+            };
+
+            useEffect(() => {
+                document.body.setAttribute('data-theme', theme);
+                localStorage.setItem('gw_theme', theme);
+            }, [theme]);
+            
+            useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
+            useEffect(() => { localStorage.setItem('gw_currency', mainCurrency); }, [mainCurrency]);
+
+            const formatLogMsg = (log) => {
+                const parts = log.msg.split(' ');
+                if (parts[0] === 'Out' || parts[0] === 'In') {
+                    const type = parts[0] === 'Out' ? 'log_expense' : 'log_income';
+                    return `${t(type)} ${log.msg.substring(log.msg.indexOf(' ') + 1)}`;
+                }
+                if (log.msg.includes('Quest Claimed')) return `${t('log_sys_quest')}: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Title Unlocked')) return `${t('log_sys_title')}: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Achievement Unlocked')) return `🏆 成就解鎖: ${log.msg.split(': ')[1]}`;
+                if (log.msg.includes('Bought')) return `🛒 購買: ${log.msg.split(': ')[1]}`;
+                return log.msg;
+            };
+
+            const addLog = (type, msg) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...(data.logs || [])].slice(0, 50); };
+            const saveData = (newData) => { setData(newData); const fb = window.firebase; if (fb && fb.auth && fb.auth.currentUser) fb.setDoc(fb.doc(fb.db, "users", fb.auth.currentUser.uid), newData).catch(console.error); else localStorage.setItem('gw_v20_2_data', JSON.stringify(newData)); };
+            const loadLocalData = () => { 
+                const localData = JSON.parse(localStorage.getItem('gw_v20_2_data')); 
+                if (localData) { 
+                    if (!localData.categories) localData.categories = DEFAULT_CATEGORIES;
+                    if (!localData.talents) localData.talents = {};
+                    if (!localData.claimedQuests) localData.claimedQuests = [];
+                    if (!localData.user.unlockedTitles) localData.user.unlockedTitles = ['Novice'];
+                    if (!localData.user.unlockedAchievements) localData.user.unlockedAchievements = [];
+                    if (!localData.user.gender) localData.user.gender = 'female';
+                    if (!localData.user.gold) localData.user.gold = 0;
+                    if (!localData.user.appearance) {
+                        localData.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
+                    } else if (!localData.user.appearance.male) {
+                        const oldApp = localData.user.appearance;
+                        localData.user.appearance = {
+                            male: { ...DEFAULT_APPEARANCE, ...oldApp }, 
+                            female: { ...DEFAULT_APPEARANCE, ...oldApp }
+                        };
+                    }
+                    if (!localData.inventory) localData.inventory = [];
+                    if (!localData.equipped) localData.equipped = {};
+                    setData(localData); 
+                } else {
+                    setData(prev => ({ ...prev, user: null }));
+                } 
+                setLoading(false); 
+            };
+            const updateCategories = (newCats) => { saveData({ ...data, categories: newCats }); };
+
+            useEffect(() => { 
+                const t = setTimeout(() => { if (loading) loadLocalData(); }, 4000); 
+                const fb = window.firebase; 
+                if (!fb || !fb.auth) { loadLocalData(); return; } 
+                const unsub = fb.onAuthStateChanged(fb.auth, (u) => { 
+                    clearTimeout(t); 
+                    if (u) { 
+                        fb.onSnapshot(fb.doc(fb.db, "users", u.uid), (d) => { 
+                            if (d.exists()) { 
+                                let fd = d.data(); 
+                                if(!fd.inventory) fd.inventory = [];
+                                if(!fd.equipped) fd.equipped = {};
+                                if (!fd.user.gold) fd.user.gold = 0;
+                                if (!fd.user.appearance || !fd.user.appearance.male) {
+                                     fd.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
+                                }
+                                setData(fd); 
+                            } else { 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
+                                fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
+                                setData(init); 
+                            } 
+                            setLoading(false); 
+                        }, () => loadLocalData()); 
+                    } else { loadLocalData(); } 
+                }); 
+                return () => { unsub(); clearTimeout(t); } 
+            }, []);
+            
+            useEffect(() => { fetch('https://open.er-api.com/v6/latest/TWD').then(r=>r.json()).then(d=>setRates(d.rates)).catch(console.error); }, []);
+            useEffect(() => { if (!loading) document.getElementById('loading-screen').style.display = 'none'; document.getElementById('root').classList.remove('hidden'); }, [loading]);
+
+            const checkUnlockables = (currentData) => {
+                const rate = rates[mainCurrency] || 1; 
+                const stats = {
+                    totalExp: currentData.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + (c.amount * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    balance: currentData.accounts.reduce((a,c) => a + (c.balance * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    txCount: currentData.transactions.length,
+                    questCount: currentData.claimedQuests.length,
+                    level: currentData.user.level
+                };
+                
+                let newTitles = [...(currentData.user.unlockedTitles || ['Novice'])];
+                let titleUpdated = false;
+                TITLES_LIST.forEach(t => {
+                    if (!newTitles.includes(t.id) && t.check(stats, 1)) {
+                        newTitles.push(t.id);
+                        titleUpdated = true;
+                        addLog('system', `Title Unlocked: ${t.name}`);
+                    }
+                });
+
+                let newAchievements = [...(currentData.user.unlockedAchievements || [])];
+                let achUpdated = false;
+                let logBuffer = [];
+
+                ACHIEVEMENTS_LIST.forEach(ach => {
+                    if (newAchievements.includes(ach.id)) return;
+                    let achieved = false;
+                    if (ach.type === 'txCount' && stats.txCount >= ach.target) achieved = true;
+                    if (ach.type === 'expenseTotal' && stats.totalExp >= ach.target) achieved = true;
+                    if (ach.type === 'balance' && stats.balance >= ach.target) achieved = true;
+                    if (ach.type === 'questCount' && stats.questCount >= ach.target) achieved = true;
+                    if (ach.type === 'level' && stats.level >= ach.target) achieved = true;
+
+                    if (achieved) {
+                        newAchievements.push(ach.id);
+                        achUpdated = true;
+                        logBuffer.push(`Achievement Unlocked: ${ach.title}`);
+                    }
+                });
+
+                if (titleUpdated || achUpdated) {
+                    let newLogs = currentData.logs || [];
+                    if (achUpdated) {
+                        const time = new Date().toISOString();
+                        const achLogs = logBuffer.map((msg, i) => ({ id: Date.now() + i, date: time, type: 'system', msg }));
+                        newLogs = [...achLogs, ...newLogs].slice(0, 50);
+                    }
+                    saveData({ 
+                        ...currentData, 
+                        user: { 
+                            ...currentData.user, 
+                            unlockedTitles: newTitles,
+                            unlockedAchievements: newAchievements 
+                        }, 
+                        logs: newLogs
+                    });
+                }
+            };
+
+            const convertMoney = (amountInTWD) => {
+                const rate = rates[mainCurrency] || 1;
+                return Math.floor(amountInTWD * rate);
+            };
+
+            const toggleGender = () => {
+                const newGender = data.user.gender === 'female' ? 'male' : 'female';
+                saveData({ ...data, user: { ...data.user, gender: newGender } });
+            };
+
+            const updateAppearance = (newAppearanceData) => {
+                saveData({ ...data, user: { ...data.user, appearance: newAppearanceData } });
+            };
+
+            // Shop Logic
+            const handleBuyItem = (item) => {
+                const newGold = data.user.gold - item.cost;
+                const newInventory = [...data.inventory, item];
+                const newLogs = addLog('system', `Bought: ${item.name}`);
+                saveData({
+                    ...data,
+                    user: { ...data.user, gold: newGold },
+                    inventory: newInventory,
+                    logs: newLogs
+                });
+                alert(`購買成功！ ${item.name} 已加入背包。`);
+            };
+
+            // Equip Logic
+            const handleEquipItem = (slot, item) => {
+                const newEquipped = { ...data.equipped };
+                if (item) {
+                    newEquipped[slot] = item;
+                } else {
+                    delete newEquipped[slot]; // Unequip
+                }
+                saveData({ ...data, equipped: newEquipped });
+                setEquipModalOpen(false);
+            };
+
+            const handleClaim = (quest) => {
+                let newExp = data.user.exp + quest.exp; 
+                let newGold = (data.user.gold || 0) + (quest.coins || 0);
+                let newLv = data.user.level; 
+                let leveledUp = false;
+
+                if (newExp >= newLv * 100) { 
+                    newLv++; 
+                    newExp -= (newLv-1)*100; 
+                    leveledUp = true;
+                }
+                
+                const newClaimed = [...data.claimedQuests, quest.uniqueId];
+                const newLogs = addLog('system', `Quest Claimed: ${quest.title}`);
+                
+                const newData = { ...data, user: { ...data.user, exp: newExp, level: newLv, gold: newGold }, claimedQuests: newClaimed, logs: newLogs };
+                saveData(newData);
+                checkUnlockables(newData);
+                if (leveledUp) setShowLevelUp({ show: true, level: newLv });
+            };
+
+            const handleAccountTouchMove = (e, index) => {
+                if(e.cancelable) e.preventDefault();
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (!target) return;
+                const row = target.closest('[data-acc-index]');
+                if (!row) return;
+                const targetIndex = parseInt(row.dataset.accIndex);
+                if (targetIndex !== index && targetIndex >= 0 && targetIndex < data.accounts.length) {
+                    const newAccs = [...data.accounts];
+                    const item = newAccs[index];
+                    newAccs.splice(index, 1);
+                    newAccs.splice(targetIndex, 0, item);
+                    saveData({ ...data, accounts: newAccs }); 
+                    setAccountDragIndex(targetIndex);
+                }
+            };
+
+            const handleAuth = async () => { 
+                const fb = window.firebase; 
+                if (!fb || !fb.auth || !fb.app) {
+                    const fakeUid = 'local_' + Date.now();
+                    const newUser = { uid: fakeUid, name: regName || 'Adventurer', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' };
+                    const initData = { user: newUser, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} };
+                    localStorage.setItem('gw_v20_2_data', JSON.stringify(initData));
+                    window.location.reload();
+                    return;
+                }
+                const email = loginAccount.trim() + "@sakurarpg.com"; 
+                try { 
+                    if (isRegistering) { 
+                        if (!/^[a-zA-Z0-9]+$/.test(loginAccount)) return alert(t('acc_alert')); 
+                        const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, loginPass); 
+                        await fb.updateProfile(cred.user, { displayName: regName }); 
+                        window.location.reload(); 
+                    } else {
+                        await fb.signInWithEmailAndPassword(fb.auth, email, loginPass); 
+                    }
+                } catch (e) { alert(e.message); } 
+            };
+            const logout = () => { const fb = window.firebase; if(fb && fb.auth) fb.signOut(fb.auth); localStorage.clear(); window.location.reload(); };
+            const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if(file){ const b64 = await resizeImage(file); saveData({...data, user: {...data.user, photo: b64}}); } };
+            const openKeypad = (target, initVal) => { setKeypadTarget(target); setTempValue(initVal ? initVal.toString() : ''); setKeypadOpen(true); };
+            const confirmKeypad = () => {
+                const val = tempValue || '0';
+                let finalVal = val;
+                try { if (/^[0-9+\-*/.]+$/.test(val)) finalVal = eval(val).toString(); } catch {}
+                if (keypadTarget === 'tx') setTxForm(prev => ({ ...prev, amount: finalVal }));
+                else if (keypadTarget === 'asset') setAssetForm(prev => ({ ...prev, balance: finalVal }));
+                else if (keypadTarget === 'exchange') setBaseAmount(finalVal);
+                setKeypadOpen(false);
+            };
+            
+            const handleRename = () => {
+                if(!tempName.trim()) return;
+                saveData({...data, user: {...data.user, name: tempName}});
+                setShowNameEdit(false);
+            };
+
+            const addTransaction = () => {
+                if(!txForm.amount || !txForm.accountId) return alert(t('missing_info'));
+                const amt = parseFloat(txForm.amount);
+                const acc = data.accounts.find(a => a.id == txForm.accountId);
+                const newTx = { id: Date.now(), date: new Date().toISOString(), ...txForm, amount: amt, accountName: acc.name, currency: acc.currency };
+                const newAccs = data.accounts.map(a => a.id == acc.id ? { ...a, balance: txForm.type === 'expense' ? a.balance - amt : a.balance + amt } : a);
+                
+                let newExp = data.user.exp + 5; 
+                let newLv = data.user.level; 
+                let leveledUp = false;
+                if (newExp >= newLv * 100) { newLv++; newExp -= (newLv-1)*100; leveledUp = true; }
+
+                const currentCat = data.categories[txForm.category] || DEFAULT_CATEGORIES.other;
+                const newLogs = addLog(txForm.type==='expense'?'finance_out':'finance_in', `${txForm.type==='expense'?'Out':'In'} ${amt} (${currentCat.label}) ${txForm.note ? '- '+txForm.note : ''}`);
+                
+                const newData = { ...data, user: {...data.user, exp: newExp, level: newLv}, accounts: newAccs, transactions: [newTx, ...data.transactions], logs: newLogs };
+                saveData(newData);
+                checkUnlockables(newData);
+                setModalOpen(false);
+                if (leveledUp) setShowLevelUp({ show: true, level: newLv });
+            };
+            const saveAsset = () => {
+                if (!assetForm.name || assetForm.balance === '') return alert(t('missing_info'));
+                let newAccs = [...data.accounts];
+                if (assetForm.id) newAccs = newAccs.map(a => a.id === assetForm.id ? { ...assetForm, balance: parseFloat(assetForm.balance) } : a);
+                else newAccs.push({ ...assetForm, id: Date.now(), balance: parseFloat(assetForm.balance) });
+                saveData({ ...data, accounts: newAccs });
+                setAssetModalOpen(false);
+            };
+            const deleteAsset = () => { if (confirm(t('confirmDelete'))) { const newAccs = data.accounts.filter(a => a.id !== assetForm.id); saveData({ ...data, accounts: newAccs }); setAssetModalOpen(false); } };
+            const guardian = useMemo(() => { if (!data.user) return GUARDIAN_STAGES[0]; return GUARDIAN_STAGES.findLast(s => data.user.level >= s.level) || GUARDIAN_STAGES[0]; }, [data.user]);
+
+            // Quests Logic (Fixed: Active Participation Required)
+            const activeQuests = useMemo(() => {
+                const todayStr = new Date().toDateString();
+                const relevantTxs = data.transactions.filter(t => t.currency === mainCurrency);
+                const relevantAccs = data.accounts.filter(a => a.currency === mainCurrency);
+                
+                const totalExp = relevantTxs.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).reduce((a,c)=>a+c.amount, 0);
+                const totalTxCount = data.transactions.length; 
+                const dailyExpenseCount = data.transactions.filter(t => t.type === 'expense' && new Date(t.date).toDateString() === todayStr).length;
+                const dailyTxCount = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length;
+                
+                const totalAssetVal = relevantAccs.reduce((a,c)=>a+c.balance, 0);
+                const totalExpenseVal = relevantTxs.filter(t=>t.type==='expense').reduce((a,c)=>a+c.amount, 0);
+
+                const rawQuests = [
+                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 50, coins: 10, progress: 1, target: 1 },
+                    { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, coins: 20, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
+                    { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, coins: 50, progress: totalExpenseVal, target: convertMoney(500) },
+                    { id: `d1_${todayStr}`, type: 'daily', title: '日常採購', desc: '今日記錄 1 筆支出', exp: 30, coins: 20, progress: dailyExpenseCount, target: 1 },
+                    { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, coins: 30, progress: relevantTxs.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, coins: 40, progress: dailyTxCount, target: 3 },
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${convertMoney(10000)}`, exp: 200, coins: 100, progress: totalAssetVal, target: convertMoney(10000) },
+                    { id: 'c2', type: 'challenge', title: '消費狂人', desc: `累積消費 ${convertMoney(50000)}`, exp: 500, coins: 250, progress: totalExpenseVal, target: convertMoney(50000) },
+                    { id: 'c3', type: 'challenge', title: '交易大師', desc: '累積 100 筆交易', exp: 300, coins: 150, progress: totalTxCount, target: 100 }
+                ];
+                return rawQuests.filter(q => q.type === subView).map(q => ({...q, uniqueId: q.id, isClaimed: data.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target})).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
+            }, [data, subView, mainCurrency, rates]);
+
+            const pendingClaims = useMemo(() => activeQuests.filter(q => q.isCompleted && !q.isClaimed).length, [activeQuests]);
+
+            // Financial Summary Logic
+            const financialStats = useMemo(() => {
+                const now = new Date();
+                const todayStr = now.toDateString();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                
+                const todayTxs = data.transactions.filter(t => new Date(t.date).toDateString() === todayStr);
+                const monthTxs = data.transactions.filter(t => { const d = new Date(t.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear; });
+
+                const calc = (list) => {
+                    return {
+                        in: list.filter(t => t.type === 'income').reduce((a,c) => a + c.amount, 0),
+                        out: list.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0)
+                    };
+                };
+
+                return { tStats: calc(todayTxs), mStats: calc(monthTxs) };
+            }, [data.transactions]);
+
+            const filteredLogs = useMemo(() => {
+                return data.logs.filter(l => {
+                    if (subView === 'sys') return l.type === 'system';
+                    if (subView === 'fin') {
+                        if (l.type === 'system') return false; 
+                        const logDate = new Date(l.date);
+                        const now = new Date();
+                        if (logFilter === 'today') return logDate.toDateString() === now.toDateString();
+                        if (logFilter === 'month') return logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear();
+                        return true; 
+                    }
+                    return false;
+                });
+            }, [data.logs, subView, logFilter]);
+
+            // Stats for Achievement View
+            const currentStats = useMemo(() => {
+                return {
+                    txCount: data.transactions.length,
+                    expenseTotal: data.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + (c.amount * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    balance: data.accounts.reduce((a,c) => a + (c.balance * (c.currency===mainCurrency ? 1 : 1)), 0),
+                    questCount: data.claimedQuests.length,
+                    level: data.user ? data.user.level : 1
+                };
+            }, [data]);
+
+            if (loading) return null;
+            if (!data.user) return ( 
+                <div className="h-[100dvh] flex flex-col items-center justify-center p-6 animate-[fadeIn_0.5s] overflow-y-auto relative">
+                    <button onClick={() => setShowThemeSelect(true)} className="absolute top-6 right-6 p-2 rounded-full bg-theme-glass text-theme-accent shadow-sm border border-theme-border z-50"><Icon name="Paint"/></button>
+                    <div className="text-6xl mb-6 animate-pulse">🛡️</div>
+                    <h1 className="text-2xl font-bold text-theme-text mb-8 font-pixel tracking-widest text-center">{t('login_title')}</h1>
+                    <div className="w-full max-w-sm glass p-8 rounded-[2.5rem] shadow-2xl flex flex-col gap-5 border-4 border-theme-border">
+                        <div className="flex bg-theme-bg rounded-full p-1">
+                            <button onClick={()=>setIsRegistering(false)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${!isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('login_btn')}</button>
+                            <button onClick={()=>setIsRegistering(true)} className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${isRegistering ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>{t('register_btn')}</button>
+                        </div>
+                        {isRegistering && <input type="text" placeholder={t('nick_placeholder')} value={regName} onChange={e=>setRegName(e.target.value)} className="rpg-input"/>}
+                        <input type="text" placeholder={t('id_placeholder')} value={loginAccount} onChange={e=>setLoginAccount(e.target.value)} className="rpg-input"/>
+                        <div className="relative mt-1">
+                            <input type={showPass ? "text" : "password"} value={loginPass} onChange={e=>setLoginPass(e.target.value)} className="rpg-input" placeholder={t('pass_placeholder')}/>
+                            <button onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-4 opacity-50 text-theme-text"><Icon name={showPass?'EyeOff':'Eye'} size={20}/></button>
+                        </div>
+                        <button onClick={handleAuth} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-transform text-lg mt-2">{isRegistering ? t('register_title') : t('login_btn')}</button>
+                        <div className="text-center mt-2"><p className="text-xs text-gray-400 cursor-pointer hover:text-sakura-dark" onClick={()=>setIsRegistering(!isRegistering)}>{isRegistering ? t('have_acc') : t('new_user')}</p>{isRegistering && <p className="text-[10px] text-red-300 mt-1">*{t('name_alert')}</p>}</div>
+                    </div>
+                    <button onClick={() => saveData({ user: { uid: 'guest', name: regName || 'Guest', level: 1, exp: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} })} className="mt-8 text-xs text-theme-sub underline">{t('guest')}</button>
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
+                </div> 
+            );
+
+            return (
+                <div className="flex flex-col h-[100dvh] relative z-10 text-theme-text overflow-hidden">
+                    <BackgroundIllustrations theme={theme} />
+                    <header className="px-4 pt-12 pb-2 flex flex-col gap-2 bg-theme-glass sticky top-0 z-20 backdrop-blur-md border-b border-theme-border shrink-0">
+                        <div className="flex justify-between items-center w-full">
+                            <div className="flex items-center gap-3">
+                                <label className="relative cursor-pointer avatar-glow">
+                                    <div className="w-11 h-11 rounded-full bg-theme-card border-2 border-theme-accent overflow-hidden shadow-md flex items-center justify-center text-xl overflow-hidden">
+                                        {data.user.photo ? (
+                                            <img src={data.user.photo} alt="avatar" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-theme-bg text-theme-sub opacity-50">
+                                                <Icon name="UserPlus" size={24}/>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/>
+                                </label>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-lg text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
+                                        {/* Dynamic Level Badge Style */}
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
+                                    </div>
+                                    {/* BEAUTIFIED TITLE DISPLAY */}
+                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-1.5 cursor-pointer hover:scale-105 transition-transform origin-left inline-block">
+                                        <div className={`badge-title ${getTitleStyle(data.user.title)}`}>
+                                            <Icon name="Crown" size={10} className="drop-shadow-sm"/>
+                                            <span className="tracking-wide text-shadow-sm">{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <div className="flex items-center gap-1 bg-yellow-100/80 px-2 py-1 rounded-full border border-yellow-300 shadow-sm mr-1">
+                                    <Icon name="Coin" size={14} className="text-yellow-600"/>
+                                    <span className="text-[10px] font-bold text-yellow-800">{data.user.gold || 0}</span>
+                                </div>
+                                <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
+                                <button onClick={()=>setLang(l=>l==='zh'?'en':l==='en'?'ja':'zh')} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[10px] font-bold active:scale-95 transition-transform">{lang.toUpperCase()}</button>
+                                <button onClick={() => setShowThemeSelect(true)} className="w-9 h-9 bg-theme-bg text-theme-accent rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="Paint" size={16}/></button>
+                                <button onClick={logout} className="w-9 h-9 bg-red-100/50 text-red-500 rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="LogOut" size={16}/></button>
+                            </div>
+                        </div>
+                        <div className="w-full mt-1 relative">
+                            <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 text-theme-sub"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div>
+                            <div className="w-full h-2 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border"><div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div>
+                        </div>
+                    </header>
+
+                    <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
+                        {view === 'adventure' && (
+                            <div className="animate-[fadeIn_0.5s] space-y-5">
+                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div></div>
+                                <div>
+                                    <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
+                                    <div className="space-y-2">
+                                        {data.accounts.map((acc, index) => (
+                                            <div key={acc.id} data-acc-index={index} onClick={()=>{setAssetForm(acc); setAssetModalOpen(true)}} className={`glass p-4 rounded-xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-4 border-theme-accent draggable-item ${accountDragIndex === index ? 'dragging-active' : ''}`}>
+                                                <div className="flex items-center gap-3">
+                                                    <div 
+                                                        className="text-theme-sub drag-handle p-2 -ml-2 touch-none" 
+                                                        onTouchStart={() => setAccountDragIndex(index)}
+                                                        onTouchMove={(e) => handleAccountTouchMove(e, accountDragIndex)}
+                                                        onTouchEnd={() => setAccountDragIndex(null)}
+                                                        onMouseDown={() => setAccountDragIndex(index)}
+                                                        onClick={(e)=>e.stopPropagation()}
+                                                    >
+                                                        <Icon name="Grip" size={20}/>
+                                                    </div>
+                                                    <div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub">{acc.type}</div></div>
+                                                </div>
+                                                <div className="text-right"><div className="font-mono font-bold text-theme-text text-lg">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold text-theme-sub">{acc.currency}</div></div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {view === 'upgrade' && <CharacterTab equipped={data.equipped} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} level={data.user.level}/>}
+                        
+                        {view === 'shop' && <ShopView gold={data.user.gold || 0} inventory={data.inventory} onBuy={handleBuyItem} />}
+
+                        {view === 'quests' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                <div className="flex justify-between items-center px-2">
+                                    <div className="text-[10px] text-theme-sub font-bold opacity-70 flex items-center gap-1"><Icon name="Cloud" size={12}/> 每日任務將於 00:00 自動重置</div>
+                                    <div className="text-[10px] font-mono font-bold text-theme-accent">{new Date().toLocaleDateString()}</div>
+                                </div>
+                                <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(t => (<button key={t} onClick={()=>setSubView(t)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${subView===t ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{TRANSLATIONS[lang][t] || t}</button>))}</div>
+                                {activeQuests.map(q => (
+                                    <div key={q.id} className={`p-5 rounded-3xl relative active:scale-95 transition-transform ${q.isCompleted ? (q.isClaimed ? 'quest-card-claimed' : 'quest-card-complete') : 'quest-card-active'}`}>
+                                        <div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4>
+                                            <div className="flex gap-2 items-center">
+                                                <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 rounded font-bold">+{q.exp} EXP</span>
+                                                {q.coins && <span className="text-[10px] bg-yellow-100 text-yellow-700 px-1.5 rounded font-bold">+{q.coins} G</span>}
+                                            </div>
+                                        </div>
+                                        <p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p>
+                                        <div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress)}/{q.target}</span></div>
+                                        {q.isCompleted && !q.isClaimed && <button onClick={()=>handleClaim(q)} className="w-full py-2 btn-claim rounded-xl font-bold text-xs">{t('claim')}</button>}
+                                        {q.isClaimed && <div className="text-center text-[10px] font-bold text-theme-sub border-t border-theme-border pt-2 mt-2">{t('claimed')}</div>}
+                                    </div>
+                                ))}
+                            </div> 
+                        )}
+                        
+                        {view === 'achievements' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                <h3 className="font-bold text-lg text-theme-text px-2">成就系統</h3>
+                                <div className="grid gap-3">
+                                    {ACHIEVEMENTS_LIST.map(a => {
+                                        const unlocked = data.user.unlockedAchievements.includes(a.id);
+                                        let currentVal = 0;
+                                        if (a.type === 'txCount') currentVal = currentStats.txCount;
+                                        if (a.type === 'expenseTotal') currentVal = currentStats.expenseTotal;
+                                        if (a.type === 'balance') currentVal = currentStats.balance;
+                                        if (a.type === 'questCount') currentVal = currentStats.questCount;
+                                        if (a.type === 'level') currentVal = currentStats.level;
+                                        
+                                        const progress = Math.min(100, (currentVal / a.target) * 100);
+
+                                        return (
+                                            <div key={a.id} className={`achievement-card ${unlocked ? 'unlocked' : 'locked'}`}>
+                                                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-theme-bg text-theme-accent shrink-0 border border-theme-border shadow-sm">
+                                                    <Icon name={unlocked ? a.icon : 'Lock'} size={24}/>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="font-bold text-sm text-theme-text">{a.title}</div>
+                                                        {unlocked && <Icon name="CheckCircle" size={16} className="text-green-500"/>}
+                                                    </div>
+                                                    <div className="text-[10px] opacity-70 text-theme-sub mb-2">{a.desc}</div>
+                                                    
+                                                    {/* Progress Bar */}
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50">
+                                                            <div className={`h-full transition-all duration-500 ${unlocked ? 'bg-green-500' : 'bg-theme-accent'}`} style={{width: `${progress}%`}}></div>
+                                                        </div>
+                                                        <span className="text-[8px] font-bold text-theme-sub whitespace-nowrap">
+                                                            {unlocked ? "已完成" : `${Math.floor(currentVal).toLocaleString()}/${a.target.toLocaleString()}`}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                        
+                        {view === 'exchange' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                <div className="glass p-5 rounded-3xl border-4 border-wood bg-[#F5E6D3] text-[#5D4037]">
+                                    <div className="text-center font-bold mb-4 font-pixel tracking-widest border-b border-wood/30 pb-2 text-xl">公會佈告欄</div>
+                                    <div className="flex items-center gap-2 mb-4 bg-white/50 p-2 rounded-xl">
+                                        <select value={calcBase} onChange={e=>setCalcBase(e.target.value)} className="bg-transparent font-bold text-sm outline-none w-16 text-[#5D4037]">{EXCHANGE_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}</select>
+                                        <div onClick={()=>openKeypad('exchange', baseAmount)} className="flex-1 text-right font-mono font-bold text-xl mr-2 cursor-pointer">{baseAmount}</div>
+                                    </div>
+                                    <div className="flex flex-col gap-3 pb-20">
+                                        {EXCHANGE_CURRENCIES.filter(c=>c!==calcBase).map(c => {
+                                            const val = (parseFloat(baseAmount) / (rates[calcBase] || 1)) * (rates[c] || 1);
+                                            return (
+                                                <div key={c} className="glass p-4 rounded-xl flex justify-between items-center text-sm bg-white/40 shadow-sm">
+                                                    <span className="font-bold opacity-70 text-lg">{c}</span>
+                                                    <span className="font-mono text-xl font-bold">{val.toLocaleString(undefined,{maximumFractionDigits:2})}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div> 
+                        )}
+                        
+                        {view === 'journal' && ( 
+                            <div className="animate-[fadeIn_0.5s] space-y-4">
+                                {/* Mana Flow Dashboard (Switchable) */}
+                                <div className="glass p-4 rounded-3xl border border-theme-border">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Chart" size={16}/> 瑪娜流動</h3>
+                                        <div className="flex bg-theme-bg rounded-lg p-0.5">
+                                            <button onClick={()=>setFlowView('today')} className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all ${flowView==='today'?'bg-theme-accent text-white shadow':'text-theme-sub'}`}>今日</button>
+                                            <button onClick={()=>setFlowView('month')} className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all ${flowView==='month'?'bg-theme-accent text-white shadow':'text-theme-sub'}`}>本月</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex gap-4">
+                                        <div className="flex-1 bg-green-50/50 dark:bg-green-900/20 p-3 rounded-2xl border border-green-100 dark:border-green-800/30 flex flex-col items-center">
+                                            <span className="text-[10px] text-green-600 font-bold mb-1">IN</span>
+                                            <span className="text-xl font-mono font-bold text-green-500">+{flowView==='today' ? financialStats.tStats.in : financialStats.mStats.in}</span>
+                                        </div>
+                                        <div className="flex-1 bg-red-50/50 dark:bg-red-900/20 p-3 rounded-2xl border border-red-100 dark:border-red-800/30 flex flex-col items-center">
+                                            <span className="text-[10px] text-red-600 font-bold mb-1">OUT</span>
+                                            <span className="text-xl font-mono font-bold text-red-500">-{flowView==='today' ? financialStats.tStats.out : financialStats.mStats.out}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2 mb-2">
+                                    <button onClick={()=>setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='fin'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>財務變動</button>
+                                    <button onClick={()=>setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold active:scale-95 transition-transform ${subView==='sys'?'bg-theme-accent text-white':'bg-theme-bg text-theme-sub'}`}>系統事件</button>
+                                </div>
+
+                                {subView === 'fin' && (
+                                    <div className="flex gap-2 mb-2 overflow-x-auto no-scrollbar pb-1">
+                                        {['all', 'month', 'today'].map(f => (
+                                            <button key={f} onClick={()=>setLogFilter(f)} className={`px-4 py-1.5 rounded-full text-[10px] font-bold border transition-colors whitespace-nowrap ${logFilter===f ? 'bg-theme-accent text-white border-theme-accent' : 'bg-transparent text-theme-sub border-theme-border'}`}>
+                                                {f==='all'?'全部':f==='month'?'本月':'今日'}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className="space-y-3 pb-20 min-h-[200px]">
+                                    {filteredLogs.length > 0 ? (
+                                        filteredLogs.map(l => (
+                                            <div key={l.id} className="glass p-4 rounded-3xl flex gap-3 items-center active:scale-95 transition-transform">
+                                                <div className={`w-2 h-10 rounded-full ${l.type==='system'?'bg-blue-400':l.type.includes('in')?'bg-green-400':'bg-red-400'}`}></div>
+                                                <div className="flex-1">
+                                                    <div className="text-[10px] opacity-60 text-theme-sub">{new Date(l.date).toLocaleString()}</div>
+                                                    <div className="text-sm font-bold text-theme-text">{formatLogMsg(l)}</div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center py-10 opacity-50">
+                                            <Icon name="Ghost" size={48} className="text-theme-sub mb-2"/>
+                                            <span className="text-xs text-theme-sub font-bold">尚無相關紀錄</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div> 
+                        )}
+                    </main>
+
+                    <nav className="fixed bottom-0 w-full glass border-t border-theme-border nav-safe px-2 flex justify-between items-center z-30 h-24 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0">
+                        {[ {id:'adventure', icon:'Home', l:t('adventure')}, {id:'quests', icon:'Scroll', l:t('quests')}, {id:'shop', icon:'Shop', l:t('shop')}, {id:'upgrade', icon:'Sword', l:t('upgrade')}, {id:'achievements', icon:'Trophy', l:t('achievements')}, {id:'journal', icon:'Book', l:t('journal')} ].map(b => (
+                            <button key={b.id} onClick={()=>setView(b.id)} className={`flex flex-col items-center gap-1 w-full transition-all active:scale-95 relative ${view===b.id ? 'text-theme-accent -translate-y-2' : 'opacity-40 text-theme-sub'}`}>
+                                <Icon name={b.icon} size={22} strokeWidth={view===b.id?2.5:2}/>
+                                <span className="text-[9px] font-bold">{b.l}</span>
+                                {b.id === 'quests' && pendingClaims > 0 && <span className="absolute top-0 right-3 w-2.5 h-2.5 bg-red-500 rounded-full animate-bounce border border-white shadow-sm"></span>}
+                            </button>
+                        ))}
+                    </nav>
+
+                    {keypadOpen && <Keypad value={tempValue} onChange={setTempValue} onConfirm={confirmKeypad} onClose={()=>setKeypadOpen(false)} label={t('calculator')} />}
+                    {catManagerOpen && <CategoryManager categories={data.categories} onSave={updateCategories} onClose={()=>setCatManagerOpen(false)} />}
+                    {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={()=>setShowLevelUp({show:false, level:showLevelUp.level})}/>}
+                    
+                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={data.inventory} onClose={()=>setEquipModalOpen(false)} onEquip={handleEquipItem}/>}
+
+                    {/* Selectors Modals */}
+                    {showThemeSelect && <SelectorSheet title="選擇外觀風格" options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => t(`theme_${opt.label}`)} />}
+                    {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
+                    {showTitleSelect && <SelectorSheet 
+                        title={t('change_title')} 
+                        options={TITLES_LIST.map(t => ({ value: t.id, label: t.name, locked: !data.user.unlockedTitles.includes(t.id), desc: t.desc, condition: t.condition, color: t.rarity==='legendary'?'#fbbf24':t.rarity==='epic'?'#a855f7':t.rarity==='rare'?'#3b82f6':'#9ca3af' }))} 
+                        current={data.user.title} 
+                        onSelect={(val) => { if(data.user.unlockedTitles.includes(val)) saveData({...data, user: {...data.user, title: val}}); }} 
+                        onLockedClick={(t) => alert(`🔒 [${t.name}]\n\n📜 描述: ${t.desc}\n🔑 解鎖條件: ${t.condition}`)}
+                        onClose={() => setShowTitleSelect(false)} 
+                    />}
+                    
+                    {/* Rename Modal */}
+                    {showNameEdit && (
+                        <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
+                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-sm shadow-2xl animate-[slideUp_0.2s]">
+                                <h3 className="font-bold text-lg text-theme-text mb-4 text-center">更換冒險者代號</h3>
+                                <input type="text" value={tempName} onChange={e=>setTempName(e.target.value)} className="rpg-input mb-4" placeholder="輸入新名稱" autoFocus />
+                                <div className="flex gap-3">
+                                    <button onClick={() => setShowNameEdit(false)} className="flex-1 py-3 bg-theme-bg text-theme-sub rounded-xl font-bold">取消</button>
+                                    <button onClick={handleRename} className="flex-1 py-3 bg-theme-accent text-white rounded-xl font-bold shadow-md">確認</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {assetModalOpen && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
+                            <div className="bg-theme-card rounded-3xl p-6 shadow-2xl animate-[slideUp_0.2s]">
+                                <div className="flex justify-between mb-4"><h3 className="font-bold text-lg text-theme-text">{assetForm.id ? 'Edit' : t('forge_intro')}</h3><button onClick={()=>setAssetModalOpen(false)} className="text-theme-text"><Icon name="X"/></button></div>
+                                <div className="space-y-4">
+                                    <input type="text" value={assetForm.name} onChange={e=>setAssetForm({...assetForm, name:e.target.value})} className="w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold text-theme-text" placeholder={t('acc_name')}/>
+                                    <div className="flex gap-2">
+                                        <select value={assetForm.currency} onChange={e=>setAssetForm({...assetForm, currency:e.target.value})} className="bg-theme-bg p-4 rounded-2xl font-bold w-1/3 text-theme-text">{MAIN_CURRENCIES.map(c=><option key={c} value={c}>{c}</option>)}</select>
+                                        <div onClick={()=>openKeypad('asset', assetForm.balance)} className="bg-theme-bg p-4 rounded-2xl font-bold w-2/3 cursor-pointer text-theme-text">{assetForm.balance || t('acc_bal')}</div>
+                                    </div>
+                                    <div className="text-xs text-theme-sub font-bold">{t('acc_type')}</div>
+                                    <div className="grid grid-cols-3 gap-2">{['cash','bank','card'].map(type => (<button key={type} onClick={()=>setAssetForm({...assetForm, type})} className={`p-3 rounded-2xl border-2 flex flex-col items-center active:scale-95 transition-transform ${assetForm.type===type ? 'border-theme-accent bg-theme-bg text-theme-accent' : 'border-transparent bg-theme-bg text-theme-sub'}`}><Icon name={type==='card'?'CreditCard':type==='bank'?'Landmark':'Wallet'} size={20}/><span className="text-[10px] uppercase mt-1">{type}</span></button>))}</div>
+                                    <button onClick={saveAsset} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-md active:scale-95 transition-transform">{t('save')}</button>
+                                    {assetForm.id && <button onClick={deleteAsset} className="w-full py-3 text-red-400 font-bold active:scale-95 transition-transform">{t('delete')}</button>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {view === 'adventure' && (
+                        <button onClick={()=>{setTxForm({...txForm, note: ''}); setModalOpen(true)}} className="fixed bottom-24 right-4 w-16 h-16 bg-theme-accent text-white rounded-full shadow-2xl flex items-center justify-center z-40 active:scale-95 transition-transform border-4 border-theme-bg"><Icon name="Plus" size={32}/></button>
+                    )}
+
+                    {modalOpen && (
+                        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex flex-col justify-end">
+                            <div className="bg-theme-card rounded-t-[2.5rem] p-6 animate-[slideUp_0.3s]">
+                                <div className="flex justify-between items-center mb-6"><h3 className="font-bold text-lg text-theme-text">紀錄行動</h3><button onClick={()=>setModalOpen(false)} className="text-theme-text"><Icon name="X" size={20}/></button></div>
+                                <div className="flex bg-theme-bg rounded-2xl p-1.5 mb-6">
+                                    <button onClick={()=>setTxForm({...txForm, type:'expense'})} className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${txForm.type==='expense'?'bg-theme-card shadow text-theme-text':'text-theme-sub'}`}>支出</button>
+                                    <button onClick={()=>setTxForm({...txForm, type:'income'})} className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${txForm.type==='income'?'bg-theme-card shadow text-theme-text':'text-theme-sub'}`}>收入</button>
+                                </div>
+                                <div onClick={()=>openKeypad('tx', txForm.amount)} className="w-full text-5xl font-mono font-bold text-center border-b border-theme-border py-4 mb-6 cursor-pointer text-theme-text">{txForm.amount || '0'}</div>
+                                {txForm.type === 'expense' && (
+                                    <div className="mb-6">
+                                        <div className="flex justify-between items-center mb-2 px-1">
+                                            <span className="text-xs font-bold text-theme-sub">類別</span>
+                                            <button onClick={()=>{ setModalOpen(false); setCatManagerOpen(true); }} className="text-xs text-theme-accent font-bold underline">管理類別</button>
+                                        </div>
+                                        <div className="grid grid-cols-5 gap-2 max-h-48 overflow-y-auto pr-1">
+                                            {Object.entries(data.categories || DEFAULT_CATEGORIES).sort((a,b) => (a[1].order || 99) - (b[1].order || 99)).map(([k,c]) => (
+                                                <button key={k} onClick={()=>setTxForm({...txForm, category: k})} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${txForm.category === k ? 'bg-theme-glass scale-105 shadow-inner' : 'opacity-50'}`}>
+                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center transition-transform" style={{backgroundColor: c.color}}><Icon name={c.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold text-theme-text truncate w-full text-center">{c.label}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                <input type="text" value={txForm.note} onChange={e=>setTxForm({...txForm, note: e.target.value})} className="w-full bg-theme-bg p-4 rounded-2xl mb-4 outline-none font-bold text-theme-text placeholder-theme-sub" placeholder="備註 (選填)"/>
+                                <select onChange={e=>setTxForm({...txForm, accountId: e.target.value})} className="w-full bg-theme-bg p-4 rounded-2xl mb-6 outline-none font-bold text-theme-text">
+                                    <option value="">選擇帳戶</option>{data.accounts.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}
+                                </select>
+                                <button onClick={addTransaction} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-lg text-lg active:scale-95 transition-transform">確認</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
