@@ -51,6 +51,8 @@
                 'blink': 'blink 5s infinite',
                 'float-accessory': 'floatAccessory 3s ease-in-out infinite',
                 'shimmer': 'shimmer 2s linear infinite',
+                'spin-slow': 'spin 10s linear infinite',
+                'shine-slide': 'shineSlide 3s infinite linear',
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
@@ -63,7 +65,8 @@
                 capeFlow: { '0%, 100%': { transform: 'skewX(0deg)' }, '50%': { transform: 'skewX(-3deg)' } },
                 blink: { '0%, 48%, 52%, 100%': { opacity: '1' }, '50%': { opacity: '0.1' } }, 
                 floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
-                shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } }
+                shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } },
+                shineSlide: { '0%': { left: '-100%' }, '20%': { left: '100%' }, '100%': { left: '100%' } }
             }
           }
         }
@@ -96,8 +99,9 @@
         .pixel-art { image-rendering: pixelated; }
         .pixel-icon { 
             image-rendering: pixelated; 
-            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.3)) contrast(1.2);
-            transform: scale(0.9);
+            /* Enhanced Pixel Art Look */
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2)) contrast(1.3) saturate(1.2);
+            transform: scale(1.1);
         } 
 
         .rpg-input { @apply w-full bg-theme-bg p-4 rounded-2xl outline-none font-bold mt-1 shadow-inner text-theme-text placeholder-theme-sub border-2 border-transparent focus:border-theme-accent transition-colors; }
@@ -132,11 +136,75 @@
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
-        /* Rarity Borders */
-        .rarity-common { border-color: var(--border-color); background-image: radial-gradient(circle at center, rgba(148, 163, 184, 0.1) 0%, transparent 70%); }
-        .rarity-rare { border-color: #3b82f6; box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%); }
-        .rarity-epic { border-color: #a855f7; box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); background-image: radial-gradient(circle at center, rgba(168, 85, 247, 0.1) 0%, transparent 70%); }
-        .rarity-legendary { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); background: linear-gradient(135deg, rgba(255,255,255,0.9), #fffbeb); }
+        /* --- ADVANCED RARITY VISUALS --- */
+        
+        /* Base Card */
+        .item-card {
+            @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .item-card:active { transform: scale(0.95); }
+
+        /* Common */
+        .rarity-common { 
+            border-color: #cbd5e1; 
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        /* Rare (Blue Glow + Grid) */
+        .rarity-rare { 
+            border-color: #3b82f6; 
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+        .rarity-rare::before {
+            content: ''; absolute; inset: 0; 
+            background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.05;
+        }
+
+        /* Epic (Purple Pulse + Mist) */
+        .rarity-epic { 
+            border-color: #a855f7; 
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff); 
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            animation: pulse-purple 3s infinite alternate;
+        }
+        .rarity-epic::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+            animation: pulse-slow 4s infinite;
+        }
+
+        /* Legendary (Golden Shine + Particles) */
+        .rarity-legendary { 
+            border-color: #eab308; 
+            background: linear-gradient(135deg, #fffbeb, #fff7ed); 
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
+            animation: glow-gold 2s infinite alternate;
+        }
+        
+        /* Legendary Shine Effect */
+        .legendary-shine {
+            position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg);
+            animation: shine-slide 3s infinite;
+            pointer-events: none;
+        }
+        
+        /* Sunburst for Legendary */
+        .sunburst {
+            position: absolute; inset: -50%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.1) 20deg, transparent 40deg, rgba(234, 179, 8, 0.1) 60deg, transparent 80deg, rgba(234, 179, 8, 0.1) 100deg, transparent 120deg);
+            animation: spin-slow 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
+        @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
+
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -932,25 +1000,40 @@
                         {displayedItems.map(item => {
                             const owned = inventory.some(i => i.id === item.id);
                             return (
-                                <div key={item.id} className={`bg-theme-card p-4 rounded-xl border-2 flex flex-col items-center gap-2 relative overflow-hidden transition-all ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} rarity-${item.rarity}`} onClick={() => !owned && handleBuyClick(item)}>
-                                    <div className="absolute top-0 left-0 px-2 py-1 text-xs">{getTypeIcon(item.type)}</div>
-                                    <div className={`absolute top-0 right-0 px-2 py-0.5 text-[9px] font-bold text-white rounded-bl-lg ${item.rarity === 'legendary' ? 'bg-yellow-500' : item.rarity === 'epic' ? 'bg-purple-500' : item.rarity === 'rare' ? 'bg-blue-500' : 'bg-gray-400'}`}>
-                                        {item.rarity.toUpperCase()}
-                                    </div>
-                                    <div className="w-12 h-12 flex items-center justify-center bg-theme-bg rounded-full mt-2 border-2 border-theme-border/50">
-                                        <Icon name={item.icon} size={28} className="text-theme-text pixel-icon"/>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="font-bold text-sm text-theme-text">{item.name}</div>
-                                        <div className="text-[10px] text-theme-sub font-mono">{item.cost} G</div>
-                                        {/* Simple stat hint */}
-                                        <div className="text-[8px] text-theme-sub opacity-70 mt-0.5">
-                                            {Object.keys(item.stats || {}).map(k=>`${k.toUpperCase()}+${item.stats[k]}`).join(' ')}
+                                <div key={item.id} 
+                                     className={`item-card rarity-${item.rarity} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
+                                     onClick={() => !owned && handleBuyClick(item)}>
+                                    
+                                    {item.rarity === 'legendary' && <div className="sunburst"></div>}
+                                    {item.rarity === 'legendary' && <div className="legendary-shine"></div>}
+                                    
+                                    <div className="p-3 w-full flex flex-col items-center relative z-10">
+                                        <div className="flex justify-between w-full mb-1">
+                                            <div className="text-xs opacity-70">{getTypeIcon(item.type)}</div>
+                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>
+                                                {item.rarity}
+                                            </div>
                                         </div>
+                                        
+                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
+                                            <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
+                                        </div>
+                                        
+                                        <div className="text-center w-full">
+                                            <div className="font-bold text-sm text-theme-text truncate">{item.name}</div>
+                                            <div className="text-[10px] font-mono opacity-80 mb-1">{item.cost} G</div>
+                                            
+                                            <div className="text-[8px] flex justify-center gap-1 opacity-70 bg-white/30 rounded px-1 py-0.5">
+                                                {Object.entries(item.stats || {}).map(([k,v]) => (
+                                                    <span key={k}>{k.toUpperCase()}+{v}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        
+                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>
+                                            {owned ? '已擁有' : '購買'}
+                                        </button>
                                     </div>
-                                    <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-1 ${owned ? 'bg-gray-200 text-gray-500' : 'bg-yellow-400 text-yellow-900 shadow-sm'}`}>
-                                        {owned ? '已擁有' : '購買'}
-                                    </button>
                                 </div>
                             );
                         })}
@@ -959,10 +1042,11 @@
                     {/* Confirmation Modal */}
                     {selectedItem && (
                         <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
-                            <div className="bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double border-theme-border">
+                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double rarity-${selectedItem.rarity}`}>
                                 <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">確認交易</h3>
-                                <div className="w-20 h-20 bg-theme-bg rounded-xl flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent shadow-inner">
-                                    <Icon name={selectedItem.icon} size={40} className="pixel-icon" />
+                                <div className="w-24 h-24 bg-theme-bg rounded-xl flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent shadow-inner relative overflow-hidden">
+                                    <div className="absolute inset-0 opacity-20 bg-grid-pattern"></div>
+                                    <Icon name={selectedItem.icon} size={48} className="pixel-icon relative z-10" />
                                 </div>
                                 <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
                                 <div className="text-xs text-theme-sub mb-4 font-mono space-y-1">
@@ -1000,10 +1084,10 @@
                             {availableItems.map(item => (
                                 <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"><Icon name={item.icon} className="pixel-icon"/></div>
+                                        <div className="w-10 h-10 rounded-full bg-white/50 shadow-sm flex items-center justify-center border border-white/30"><Icon name={item.icon} className="pixel-icon"/></div>
                                         <div className="text-left">
                                             <div className="font-bold text-theme-text">{item.name}</div>
-                                            <div className="text-[10px] text-theme-sub uppercase">{item.rarity}</div>
+                                            <div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div>
                                         </div>
                                     </div>
                                     <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded">裝備</div>
