@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V27.4: Shop Fixed</title>
+    <title>SakuraWallet V28.1: Rarity & Fixes</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -31,6 +31,7 @@
                 border: 'var(--border-color)',
                 glass: 'var(--glass-bg)'
               },
+              // Defined rarity colors for utilities
               rarity: {
                   common: '#94a3b8',
                   rare: '#3b82f6',
@@ -53,6 +54,8 @@
                 'shimmer': 'shimmer 2s linear infinite',
                 'spin-slow': 'spin 10s linear infinite',
                 'shine-slide': 'shineSlide 3s infinite linear',
+                'bounce-sm': 'bounceSm 1s infinite',
+                'ray-spin': 'raySpin 8s linear infinite',
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
@@ -66,7 +69,9 @@
                 blink: { '0%, 48%, 52%, 100%': { opacity: '1' }, '50%': { opacity: '0.1' } }, 
                 floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
                 shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } },
-                shineSlide: { '0%': { left: '-100%' }, '20%': { left: '100%' }, '100%': { left: '100%' } }
+                shineSlide: { '0%': { left: '-100%' }, '20%': { left: '100%' }, '100%': { left: '100%' } },
+                bounceSm: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-2px)' } },
+                raySpin: { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } }
             }
           }
         }
@@ -99,7 +104,6 @@
         .pixel-art { image-rendering: pixelated; }
         .pixel-icon { 
             image-rendering: pixelated; 
-            /* Creates a crunchy, retro outline effect */
             filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1);
             transform: scale(1.1);
         } 
@@ -125,7 +129,7 @@
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
         
-        /* New Title Styling - Smaller, Elegant */
+        /* New Title Styling */
         .badge-title { 
             @apply relative overflow-hidden text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1 transition-all border;
             background-size: 200% auto;
@@ -140,20 +144,59 @@
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
-        /* --- ADVANCED RARITY VISUALS --- */
-        .item-card { @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .item-card:active { transform: scale(0.95); }
-        .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
-        .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
-        .rarity-rare::before { content: ''; absolute; inset: 0; background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 20px 20px; opacity: 0.05; }
-        .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); animation: pulse-purple 3s infinite alternate; }
-        .rarity-epic::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%); animation: pulse-slow 4s infinite; }
-        .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); animation: glow-gold 2s infinite alternate; }
-        .legendary-shine { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-25deg); animation: shine-slide 3s infinite; pointer-events: none; }
-        .sunburst { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.1) 20deg, transparent 40deg, rgba(234, 179, 8, 0.1) 60deg, transparent 80deg, rgba(234, 179, 8, 0.1) 100deg, transparent 120deg); animation: spin-slow 20s linear infinite; pointer-events: none; }
+        /* --- ADVANCED RARITY VISUALS (NEW) --- */
+        /* Common: Clean, Basic */
+        .effect-common {
+            border-color: #cbd5e1;
+            background: linear-gradient(to bottom right, #ffffff, #f1f5f9);
+        }
 
-        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
-        @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
+        /* Rare: Blue Glow, Particles */
+        .effect-rare {
+            border-color: #3b82f6;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(to bottom right, #eff6ff, #dbeafe);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+            position: relative;
+        }
+        .effect-rare::before {
+            content: ''; absolute; inset: 0;
+            background-image: radial-gradient(#3b82f6 1px, transparent 1px);
+            background-size: 10px 10px; opacity: 0.1;
+        }
+
+        /* Epic: Purple Pulse, Mystical */
+        .effect-epic {
+            border-color: #a855f7;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+            animation: pulse-purple 3s infinite alternate;
+        }
+        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 15px #a855f7, 0 0 5px white; } }
+
+        /* Legendary: Gold Burst, Rotating Rays, Shine */
+        .effect-legendary {
+            border-color: #eab308;
+            background: linear-gradient(135deg, #fffbeb, #fff7ed);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
+            overflow: hidden;
+            position: relative;
+        }
+        .effect-legendary .sunburst {
+            position: absolute; inset: -150%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(253, 224, 71, 0.2) 20deg, transparent 40deg, rgba(253, 224, 71, 0.2) 60deg, transparent 80deg, rgba(253, 224, 71, 0.2) 100deg, transparent 120deg);
+            animation: raySpin 20s linear infinite;
+            pointer-events: none;
+        }
+        .effect-legendary .shine-bar {
+            position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg);
+            animation: shine-slide 3s infinite;
+            pointer-events: none;
+        }
+
+        /* Merchant Chat Bubble Tail */
+        .chat-bubble::after { content: ''; position: absolute; bottom: -8px; left: 20px; border-width: 8px 8px 0; border-style: solid; border-color: white transparent transparent transparent; }
         
         /* Utility for hiding scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -905,18 +948,12 @@
         };
 
         // --- Shop & Inventory Components ---
-        const ShopView = ({ gold, inventory, onBuy }) => {
+        const ShopView = ({ gold, inventory, onBuy, user, currentEquipped }) => {
             const [selectedItem, setSelectedItem] = useState(null);
             const [filter, setFilter] = useState('all');
 
             const handleBuyClick = (item) => {
-                // FORCE NUMBER CONVERSION
-                const currentGold = Number(gold) || 0;
-                
-                if (currentGold < item.cost) {
-                    alert(`金幣不足！需要 ${item.cost} G，目前只有 ${currentGold} G`);
-                    return;
-                }
+                if (gold < item.cost) return alert("金幣不足！");
                 if (inventory.some(i => i.id === item.id)) return alert("已擁有此裝備！");
                 setSelectedItem(item);
             };
@@ -976,13 +1013,15 @@
                         {displayedItems.length === 0 && <div className="col-span-2 text-center text-theme-sub py-10">此分類暫無商品</div>}
                         {displayedItems.map(item => {
                             const owned = inventory.some(i => i.id === item.id);
+                            const rarityClass = `effect-${item.rarity}`; // New dynamic class based on rarity
+
                             return (
                                 <div key={item.id} 
-                                     className={`item-card rarity-${item.rarity} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
+                                     className={`item-card ${rarityClass} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
                                      onClick={() => !owned && handleBuyClick(item)}>
                                     
-                                    {item.rarity === 'legendary' && <div className="sunburst pointer-events-none"></div>}
-                                    {item.rarity === 'legendary' && <div className="legendary-shine pointer-events-none"></div>}
+                                    {item.rarity === 'legendary' && <div className="sunburst"></div>}
+                                    {item.rarity === 'legendary' && <div className="shine-bar"></div>}
                                     
                                     <div className="p-3 w-full flex flex-col items-center relative z-10">
                                         <div className="flex justify-between w-full mb-1">
@@ -992,7 +1031,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
+                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-white/20 backdrop-blur-sm border border-white/40 shadow-inner">
                                             <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
                                         </div>
                                         
@@ -1021,16 +1060,16 @@
                     {/* Confirmation Modal - WITH PREVIEW */}
                     {selectedItem && (
                         <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
-                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double rarity-${selectedItem.rarity} relative`}>
+                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double effect-${selectedItem.rarity} relative`}>
                                 <div className="absolute top-2 right-2 text-theme-sub"><Icon name="Shop" size={16}/></div>
                                 <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">試穿預覽</h3>
                                 
-                                {/* PREVIEW AVATAR */}
+                                {/* PREVIEW AVATAR - FIXED: Using passed props */}
                                 <div className="flex justify-center mb-4 bg-theme-bg/50 rounded-2xl p-4 border-inner shadow-inner">
                                      <PixelAvatar 
-                                        gender={data.user.gender}
-                                        colors={data.user.appearance}
-                                        equipped={{ ...data.equipped, [selectedItem.type]: selectedItem }}
+                                        gender={user.gender}
+                                        colors={user.appearance}
+                                        equipped={{ ...currentEquipped, [selectedItem.type]: selectedItem }}
                                         className="w-32 h-32 drop-shadow-lg"
                                     />
                                 </div>
@@ -1310,8 +1349,6 @@
 
             // Shop Logic
             const handleBuyItem = (item) => {
-                if (data.user.gold < item.cost) return alert("金幣不足！(交易失敗)"); // Double check
-                
                 const newGold = data.user.gold - item.cost;
                 const newInventory = [...data.inventory, item];
                 const newLogs = addLog('system', `Bought: ${item.name}`);
@@ -1629,7 +1666,7 @@
 
                         {view === 'upgrade' && <CharacterTab equipped={data.equipped} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} gender={data.user.gender || 'female'} onToggleGender={toggleGender} appearance={data.user.appearance} onUpdateAppearance={updateAppearance} level={data.user.level}/>}
                         
-                        {view === 'shop' && <ShopView gold={data.user.gold || 0} inventory={data.inventory} onBuy={handleBuyItem} />}
+                        {view === 'shop' && <ShopView gold={data.user.gold || 0} inventory={data.inventory} onBuy={handleBuyItem} user={data.user} currentEquipped={data.equipped}/>}
 
                         {view === 'quests' && ( 
                             <div className="animate-[fadeIn_0.5s] space-y-4">
