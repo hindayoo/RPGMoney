@@ -95,12 +95,12 @@
         .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         
-        /* Pixel Art Styling */
+        /* Pixel Art Styling - Enhanced for RPG Feel */
         .pixel-art { image-rendering: pixelated; }
         .pixel-icon { 
             image-rendering: pixelated; 
-            /* Enhanced Pixel Art Look */
-            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2)) contrast(1.3) saturate(1.2);
+            /* Creates a crunchy, retro outline effect */
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3)) contrast(1.2) saturate(1.1);
             transform: scale(1.1);
         } 
 
@@ -127,84 +127,33 @@
         
         /* New Title Styling */
         .badge-title { 
-            @apply relative overflow-hidden bg-gradient-to-r from-yellow-50 via-white to-yellow-50 border border-yellow-300 text-yellow-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1;
+            @apply relative overflow-hidden text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1 transition-all border;
             background-size: 200% auto;
             animation: shimmer 3s linear infinite;
         }
+        .title-common { @apply bg-gray-100 text-gray-600 border-gray-300; }
+        .title-rare { @apply bg-blue-50 text-blue-600 border-blue-200; }
+        .title-epic { @apply bg-purple-50 text-purple-600 border-purple-200; }
+        .title-legendary { @apply bg-gradient-to-r from-yellow-50 via-white to-yellow-50 text-yellow-800 border-yellow-300; box-shadow: 0 0 5px rgba(234, 179, 8, 0.4); }
         
         .quest-card-claimed { @apply opacity-60 grayscale bg-theme-bg border border-transparent; }
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
         /* --- ADVANCED RARITY VISUALS --- */
-        
-        /* Base Card */
-        .item-card {
-            @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+        .item-card { @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .item-card:active { transform: scale(0.95); }
-
-        /* Common */
-        .rarity-common { 
-            border-color: #cbd5e1; 
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        }
-
-        /* Rare (Blue Glow + Grid) */
-        .rarity-rare { 
-            border-color: #3b82f6; 
-            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
-        }
-        .rarity-rare::before {
-            content: ''; absolute; inset: 0; 
-            background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.05;
-        }
-
-        /* Epic (Purple Pulse + Mist) */
-        .rarity-epic { 
-            border-color: #a855f7; 
-            background: linear-gradient(135deg, #faf5ff, #f3e8ff); 
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-            animation: pulse-purple 3s infinite alternate;
-        }
-        .rarity-epic::after {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
-            animation: pulse-slow 4s infinite;
-        }
-
-        /* Legendary (Golden Shine + Particles) */
-        .rarity-legendary { 
-            border-color: #eab308; 
-            background: linear-gradient(135deg, #fffbeb, #fff7ed); 
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
-            animation: glow-gold 2s infinite alternate;
-        }
-        
-        /* Legendary Shine Effect */
-        .legendary-shine {
-            position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-            transform: skewX(-25deg);
-            animation: shine-slide 3s infinite;
-            pointer-events: none;
-        }
-        
-        /* Sunburst for Legendary */
-        .sunburst {
-            position: absolute; inset: -50%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.1) 20deg, transparent 40deg, rgba(234, 179, 8, 0.1) 60deg, transparent 80deg, rgba(234, 179, 8, 0.1) 100deg, transparent 120deg);
-            animation: spin-slow 20s linear infinite;
-            pointer-events: none;
-        }
+        .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
+        .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .rarity-rare::before { content: ''; absolute; inset: 0; background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px); background-size: 20px 20px; opacity: 0.05; }
+        .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); animation: pulse-purple 3s infinite alternate; }
+        .rarity-epic::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%); animation: pulse-slow 4s infinite; }
+        .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); animation: glow-gold 2s infinite alternate; }
+        .legendary-shine { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-25deg); animation: shine-slide 3s infinite; pointer-events: none; }
+        .sunburst { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.1) 20deg, transparent 40deg, rgba(234, 179, 8, 0.1) 60deg, transparent 80deg, rgba(234, 179, 8, 0.1) 100deg, transparent 120deg); animation: spin-slow 20s linear infinite; pointer-events: none; }
 
         @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
-
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -413,18 +362,18 @@
             { id: 'ach_lv_10', icon: 'Star', title: '冒險新星', desc: '等級達到 10', target: 10, type: 'level' }
         ];
 
-        // Extended Title System
+        // Extended Title System with Rarity
         const TITLES_LIST = [
-            { id: 'Novice', name: '初心冒險者', desc: '一切的起點', condition: '預設擁有', check: () => true },
-            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
-            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
-            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
-            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
-            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000 },
-            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
-            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
-            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', condition: '完成 50 個任務', check: (d) => d.questCount >= 50 },
-            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', condition: '等級達到 50', check: (d) => d.level >= 50 }
+            { id: 'Novice', name: '初心冒險者', desc: '一切的起點', rarity: 'common', condition: '預設擁有', check: () => true },
+            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', rarity: 'common', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
+            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', rarity: 'rare', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
+            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', rarity: 'common', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
+            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', rarity: 'rare', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
+            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', rarity: 'legendary', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000 },
+            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', rarity: 'epic', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
+            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', rarity: 'rare', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
+            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50 },
+            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50 }
         ];
 
         const ACCESSORIES_LIST = [
@@ -615,7 +564,11 @@
                                 className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}>
                                 <div className="flex items-center gap-3">
                                     {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
-                                    <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
+                                    <div className="flex flex-col items-start">
+                                        <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
+                                        {opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}
+                                        {opt.locked && opt.condition && <span className="text-[9px] text-red-400">🔒 {opt.condition}</span>}
+                                    </div>
                                 </div>
                                 {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
                                 {opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
@@ -747,7 +700,7 @@
             );
         };
 
-        // --- Avatar Editor Modal (Redesigned Header) ---
+        // --- Avatar Editor Modal ---
         const AvatarEditor = ({ appearanceData, onSave, onClose }) => {
             const [editingGender, setEditingGender] = useState('male');
             const [localAppearance, setLocalAppearance] = useState(appearanceData || {
@@ -823,7 +776,7 @@
             const [isEditing, setIsEditing] = useState(false);
             const currentGenderColors = appearance[gender] || appearance; 
 
-            // Calculate Total Stats
+            // Calculate Base Stats
             const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
             const totalStats = { ...baseStats };
             Object.values(equipped).forEach(item => {
@@ -835,9 +788,19 @@
                 }
             });
 
+            // Calculate Derived RPG Stats
+            const derivedStats = {
+                hp: totalStats.vit * 20,
+                mp: totalStats.int * 10,
+                atk: totalStats.str * 5,
+                def: totalStats.vit * 2,
+                spd: totalStats.agi * 2,
+                cri: Math.floor(totalStats.agi * 0.2)
+            };
+            const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
+
             const renderSlot = (slotData) => {
                 const item = equipped[slotData.slot]; 
-                
                 if (!item) {
                     return (
                         <div className="slot-empty cursor-pointer hover:bg-black/10" onClick={() => onEquipSlot(slotData.slot)}>
@@ -845,7 +808,6 @@
                         </div>
                     );
                 }
-
                 return (
                     <div className={`slot-filled cursor-pointer hover:scale-105 active:scale-95 border-2 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}>
                         <Icon name={item.icon} size={24} className="text-theme-text pixel-icon"/>
@@ -854,12 +816,25 @@
                 );
             };
 
+            const StatRow = ({ label, val, color }) => (
+                <div className="flex justify-between items-center w-full text-xs mb-1">
+                    <span className="font-bold opacity-70 w-8">{label}</span>
+                    <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full mx-2 overflow-hidden">
+                        <div className={`h-full ${color}`} style={{width: '100%'}}></div>
+                    </div>
+                    <span className="font-mono font-bold w-10 text-right">{val}</span>
+                </div>
+            );
+
             return (
                 <div className="animate-[fadeIn_0.5s] space-y-6">
                     <div className="flex justify-between items-center">
                         <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text">
                             <Icon name="Sword" size={14}/> {TRANSLATIONS['zh'].character}
                         </h3>
+                        <div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full border border-yellow-300">
+                            CP: {cp}
+                        </div>
                         <button onClick={() => setIsEditing(true)} className="text-xs bg-theme-glass px-3 py-1 rounded-full border border-theme-border font-bold text-theme-accent flex items-center gap-1 active:scale-95">
                             <Icon name="Paint" size={12} /> 更衣室
                         </button>
@@ -882,39 +857,31 @@
                         </div>
 
                         <div className="hero-container relative z-10">
-                            <button 
-                                onClick={onToggleGender}
-                                className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto"
-                            >
+                            <button onClick={onToggleGender} className="absolute -top-10 right-0 bg-white/30 w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm shadow-sm border border-white/50 z-50 hover:bg-white/50 transition-colors pointer-events-auto">
                                 <span className="text-xs font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</span>
                             </button>
-
-                             <PixelAvatar 
-                                gender={gender} 
-                                colors={currentGenderColors}
-                                equipped={equipped}
-                                className="w-64 h-64 object-contain drop-shadow-xl"
-                            />
+                             <PixelAvatar gender={gender} colors={currentGenderColors} equipped={equipped} className="w-64 h-64 object-contain drop-shadow-xl"/>
                         </div>
                     </div>
 
-                    {/* Stats Panel moved BELOW character */}
-                    <div className="glass p-4 rounded-xl border-theme-border flex justify-between items-center mt-4">
-                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
-                             <span className="text-[10px] text-theme-sub font-bold mb-1">STR</span>
-                             <span className="font-pixel text-lg text-red-500 font-bold">{totalStats.str}</span>
+                    {/* Enhanced Stats Panel */}
+                    <div className="glass p-4 rounded-xl border-theme-border flex flex-col gap-3 mt-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <StatRow label="HP" val={derivedStats.hp} color="bg-green-500" />
+                                <StatRow label="MP" val={derivedStats.mp} color="bg-blue-500" />
+                            </div>
+                            <div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-red-500 font-bold">ATK</span> <span className="font-mono">{derivedStats.atk}</span></div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-blue-500 font-bold">DEF</span> <span className="font-mono">{derivedStats.def}</span></div>
+                                <div className="flex justify-between text-xs mb-1"><span className="text-yellow-500 font-bold">CRI</span> <span className="font-mono">{derivedStats.cri}%</span></div>
+                            </div>
                         </div>
-                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
-                             <span className="text-[10px] text-theme-sub font-bold mb-1">INT</span>
-                             <span className="font-pixel text-lg text-blue-500 font-bold">{totalStats.int}</span>
-                        </div>
-                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
-                             <span className="text-[10px] text-theme-sub font-bold mb-1">VIT</span>
-                             <span className="font-pixel text-lg text-green-500 font-bold">{totalStats.vit}</span>
-                        </div>
-                        <div className="flex flex-col items-center flex-1">
-                             <span className="text-[10px] text-theme-sub font-bold mb-1">AGI</span>
-                             <span className="font-pixel text-lg text-purple-500 font-bold">{totalStats.agi}</span>
+                        <div className="border-t border-dashed border-gray-300 pt-2 flex justify-between text-[10px] text-theme-sub">
+                            <span>STR: {totalStats.str}</span>
+                            <span>INT: {totalStats.int}</span>
+                            <span>VIT: {totalStats.vit}</span>
+                            <span>AGI: {totalStats.agi}</span>
                         </div>
                     </div>
 
@@ -980,17 +947,9 @@
                                 <span className="font-bold text-yellow-800">{gold}</span>
                             </div>
                         </div>
-                        
                         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                             {filters.map(f => (
-                                <button 
-                                    key={f.id} 
-                                    onClick={() => setFilter(f.id)}
-                                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}
-                                >
-                                    <Icon name={f.icon} size={12} />
-                                    {f.label}
-                                </button>
+                                <button key={f.id} onClick={() => setFilter(f.id)} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}><Icon name={f.icon} size={12} />{f.label}</button>
                             ))}
                         </div>
                     </div>
@@ -1010,9 +969,7 @@
                                     <div className="p-3 w-full flex flex-col items-center relative z-10">
                                         <div className="flex justify-between w-full mb-1">
                                             <div className="text-xs opacity-70">{getTypeIcon(item.type)}</div>
-                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>
-                                                {item.rarity}
-                                            </div>
+                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>{item.rarity}</div>
                                         </div>
                                         
                                         <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
@@ -1030,9 +987,7 @@
                                             </div>
                                         </div>
                                         
-                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>
-                                            {owned ? '已擁有' : '購買'}
-                                        </button>
+                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>{owned ? '已擁有' : '購買'}</button>
                                     </div>
                                 </div>
                             );
@@ -1120,7 +1075,6 @@
             const [txForm, setTxForm] = useState({ amount: '', note: '', type: 'expense', category: 'bf', accountId: '' });
             const [assetForm, setAssetForm] = useState({ id: null, name: '', currency: 'HKD', balance: '', type: 'cash' });
             
-            // New State for Inventory
             const [equipModalOpen, setEquipModalOpen] = useState(false);
             const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -1152,12 +1106,17 @@
 
             const t = (key) => TRANSLATIONS[lang][key] || key;
             
-            // NEW: Level Badge Style Logic
             const getLevelBadgeStyle = (lv) => {
                 if(lv >= 50) return "bg-gradient-to-r from-red-500 to-yellow-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.6)] border border-yellow-300";
                 if(lv >= 30) return "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md";
                 if(lv >= 10) return "bg-gradient-to-r from-blue-400 to-cyan-400 text-white shadow-sm";
                 return "bg-gray-200 text-gray-600";
+            };
+
+            const getTitleStyle = (titleId) => {
+                const title = TITLES_LIST.find(t => t.id === titleId);
+                const rarity = title ? title.rarity : 'common';
+                return `title-${rarity}`;
             };
 
             useEffect(() => {
@@ -1193,8 +1152,6 @@
                     if (!localData.user.unlockedAchievements) localData.user.unlockedAchievements = [];
                     if (!localData.user.gender) localData.user.gender = 'female';
                     if (!localData.user.gold) localData.user.gold = 0;
-                    
-                    // --- MIGRATION: Handle Gender-Split Appearance ---
                     if (!localData.user.appearance) {
                         localData.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
                     } else if (!localData.user.appearance.male) {
@@ -1204,7 +1161,6 @@
                             female: { ...DEFAULT_APPEARANCE, ...oldApp }
                         };
                     }
-
                     if (!localData.inventory) localData.inventory = [];
                     if (!localData.equipped) localData.equipped = {};
                     setData(localData); 
@@ -1228,7 +1184,6 @@
                                 if(!fd.inventory) fd.inventory = [];
                                 if(!fd.equipped) fd.equipped = {};
                                 if (!fd.user.gold) fd.user.gold = 0;
-                                // --- MIGRATION on Cloud Data ---
                                 if (!fd.user.appearance || !fd.user.appearance.male) {
                                      fd.user.appearance = { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} };
                                 }
@@ -1310,12 +1265,6 @@
             const convertMoney = (amountInTWD) => {
                 const rate = rates[mainCurrency] || 1;
                 return Math.floor(amountInTWD * rate);
-            };
-
-            const upgradeTalent = (tid) => {
-                const currentLv = data.talents[tid] || 0;
-                const newTalents = { ...data.talents, [tid]: currentLv + 1 };
-                saveData({ ...data, talents: newTalents });
             };
 
             const toggleGender = () => {
@@ -1483,7 +1432,6 @@
                     { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 50, coins: 10, progress: 1, target: 1 },
                     { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 50, coins: 20, progress: totalTxCount > 0 ? 1 : 0, target: 1 },
                     { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${convertMoney(500)}`, exp: 100, coins: 50, progress: totalExpenseVal, target: convertMoney(500) },
-                    // REPLACED "THRIFTY" WITH ACTIVE QUEST to prevent "no spending claim" confusion
                     { id: `d1_${todayStr}`, type: 'daily', title: '日常採購', desc: '今日記錄 1 筆支出', exp: 30, coins: 20, progress: dailyExpenseCount, target: 1 },
                     { id: `d2_${todayStr}`, type: 'daily', title: '大額消費', desc: `單筆消費 > ${convertMoney(1000)}`, exp: 30, coins: 30, progress: relevantTxs.some(t => t.type === 'expense' && t.amount > convertMoney(1000) && new Date(t.date).toDateString() === todayStr) ? 1 : 0, target: 1 },
                     { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 40, coins: 40, progress: dailyTxCount, target: 3 },
@@ -1593,8 +1541,8 @@
                                     </div>
                                     {/* BEAUTIFIED TITLE DISPLAY */}
                                     <div onClick={()=>setShowTitleSelect(true)} className="mt-1.5 cursor-pointer hover:scale-105 transition-transform origin-left inline-block">
-                                        <div className="badge-title">
-                                            <Icon name="Crown" size={10} className="text-yellow-600 drop-shadow-sm"/>
+                                        <div className={`badge-title ${getTitleStyle(data.user.title)}`}>
+                                            <Icon name="Crown" size={10} className="drop-shadow-sm"/>
                                             <span className="tracking-wide text-shadow-sm">{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
                                         </div>
                                     </div>
@@ -1824,7 +1772,7 @@
                     {showCurrencySelect && <SelectorSheet title="選擇主要貨幣" options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showTitleSelect && <SelectorSheet 
                         title={t('change_title')} 
-                        options={TITLES_LIST.map(t => ({ value: t.id, label: t.name, locked: !data.user.unlockedTitles.includes(t.id), desc: t.desc, condition: t.condition }))} 
+                        options={TITLES_LIST.map(t => ({ value: t.id, label: t.name, locked: !data.user.unlockedTitles.includes(t.id), desc: t.desc, condition: t.condition, color: t.rarity==='legendary'?'#fbbf24':t.rarity==='epic'?'#a855f7':t.rarity==='rare'?'#3b82f6':'#9ca3af' }))} 
                         current={data.user.title} 
                         onSelect={(val) => { if(data.user.unlockedTitles.includes(val)) saveData({...data, user: {...data.user, title: val}}); }} 
                         onLockedClick={(t) => alert(`🔒 [${t.name}]\n\n📜 描述: ${t.desc}\n🔑 解鎖條件: ${t.condition}`)}
