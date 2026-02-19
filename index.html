@@ -94,9 +94,12 @@
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
         #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
+        .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
+        .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         
-        /* Pixel Art Styling */
+        /* Pixel Art Styling - Enhanced for RPG Feel */
         .pixel-art { image-rendering: pixelated; }
         .pixel-icon { 
             image-rendering: pixelated; 
@@ -111,9 +114,7 @@
         .achievement-card.unlocked { @apply border-yellow-400 bg-yellow-50/20 shadow-md; }
         .achievement-card.locked { @apply border-theme-border bg-theme-bg/50 grayscale opacity-80; }
         .nav-safe { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
-        
-        /* FIXED CHAR STAGE FOR BIG WEAPONS */
-        .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; }
+        .char-stage { position: relative; width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; overflow: visible; }
         .magic-circle { position: absolute; bottom: 40px; width: 140px; height: 30px; background: radial-gradient(ellipse at center, var(--accent-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; animation: pulse 3s infinite; }
         .draggable-item { touch-action: pan-y; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s; }
         .draggable-item.dragging-active { transform: scale(1.03) rotate(1deg); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); background-color: var(--card-bg); border-color: var(--accent-color); z-index: 50; opacity: 0.95; }
@@ -318,7 +319,7 @@
             {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
         ];
 
-        // NEW: Shop Item List with STATS & EMOJIS
+        // NEW: Shop Item List with STATS & EMOJIS (Instead of SVGs)
         const SHOP_ITEMS = [
             { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, emoji: '🗡️', stats: { str: 5, agi: 2 } },
             { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, emoji: '🪖', stats: { vit: 10 } },
@@ -374,17 +375,7 @@
             log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵',
             theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
             theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)'
-            }, 
-            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Trophies', upgrade: 'Character', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Guardian', settings: 'Settings', login_title: 'Guild Cloud Sync', register_title: 'Hero Registration', login_btn: 'Access Vault', register_btn: 'Register', id_placeholder: 'Guild ID (Alphanumeric)', nick_placeholder: 'Hero Name', pass_placeholder: 'Password', have_acc: 'Have Account? Login', new_user: 'New here? Register as Hero', guest: 'Offline Mode', name_alert: 'Name required for first login', acc_alert: 'ID alphanumeric only', missing_info: 'Missing info', calculator: 'Calculator', forge_intro: 'Craft Wealth Container', acc_name: 'Item Name', acc_bal: 'Mana (Balance)', acc_type: 'Type', claim: 'Claim', claimed: 'Claimed', change_title: 'Change Title', unlock_hint: 'Unlock by actions',
-            log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward',
-            theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
-            theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight'
-            }, 
-            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: 'キャラ', exchange: '為替', journal: '日誌', shop: '商店', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: '経験値', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: '削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: '守護獣', settings: '設定', login_title: 'ギルドクラウド同期', register_title: '勇者登録', login_btn: '金庫にアクセス', register_btn: '登録', id_placeholder: 'ギルドID (英数字)', nick_placeholder: '勇者名', pass_placeholder: 'パスワード', have_acc: 'アカウントをお持ちですか？', new_user: '初めてですか？勇者登録', guest: 'オフラインモード', name_alert: '初回ログインには名前が必要です', acc_alert: 'IDは英数字のみ', missing_info: '情報が不足しています', calculator: '魔法のそろばん', forge_intro: '富の器を作る', acc_name: '聖器の名前', acc_bal: '魔力量 (残高)', acc_type: 'タイプ', claim: '受け取る', claimed: '受取済', change_title: '称号変更', unlock_hint: '条件達成で解除',
-            log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬',
-            theme_ink: '水墨画', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘術の霧', 
-            theme_matcha: '抹茶パワー', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー畑', theme_midnight: '真夜中'
-            } 
+            }
         };
         
         const resizeImage = (file) => new Promise(resolve => { const img = document.createElement('img'); const reader = new FileReader(); reader.onload = (e) => { img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_SIZE = 300; let w = img.width, h = img.height; if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } } else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } } canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; }; reader.readAsDataURL(file); });
@@ -1745,6 +1736,7 @@
                                 <div className="flex flex-col items-start">
                                     <div className="flex items-center gap-2">
                                         <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
                                     </div>
                                     <div onClick={()=>setShowTitleSelect(true)} className="mt-0.5 cursor-pointer hover:scale-105 transition-transform origin-left block">
                                         <div className={`badge-title scale-90 origin-left ${getTitleStyle(data.user.title)}`}>
@@ -1765,56 +1757,34 @@
                                 <button onClick={logout} className="w-9 h-9 bg-red-100/50 text-red-500 rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95 transition-transform"><Icon name="LogOut" size={16}/></button>
                             </div>
                         </div>
+                        <div className="w-full mt-1 relative">
+                            <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 text-theme-sub"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div>
+                            <div className="w-full h-2 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border"><div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div>
+                        </div>
                     </header>
 
                     <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
                         {view === 'adventure' && (
                             <div className="animate-[fadeIn_0.5s] space-y-5">
-                                
-                                {/* ADVENTURE TAB: SPLIT HERO & GUARDIAN */}
-                                <div className="grid grid-cols-2 gap-3">
-                                    {/* Hero Card */}
-                                    <div className="glass p-3 rounded-3xl flex flex-col items-center relative border-b-4 border-theme-accent shadow-md bg-gradient-to-b from-transparent to-theme-accent/5">
-                                        <div className="w-full flex justify-between items-center mb-1">
-                                            <span className="text-[10px] font-bold text-theme-sub">勇者</span>
-                                            <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
-                                        </div>
-                                        
-                                        <div className="h-28 w-full flex items-center justify-center overflow-visible">
-                                            <PixelAvatar 
-                                                gender={data.user.gender} 
-                                                colors={data.user.appearance} 
-                                                equipped={data.equipped} 
-                                                className="w-24 h-24 drop-shadow-xl animate-idle-breathe relative z-10" 
-                                            />
-                                        </div>
-                                        
-                                        <div className="w-full flex items-center gap-1.5 mt-2 bg-theme-bg/50 p-1.5 rounded-full border border-theme-border">
-                                            <span className="text-[8px] font-bold text-theme-accent px-1">EXP</span>
-                                            <div className="flex-1 h-1.5 bg-theme-bg rounded-full overflow-hidden relative border border-black/10">
-                                                <div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp % 100)}%`}}></div>
-                                            </div>
-                                        </div>
+                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50 overflow-hidden">
+                                    <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-48 h-8 bg-black/10 rounded-full blur-md"></div>
+                                    
+                                    {/* ADVENTURE TAB: AVATAR & GUARDIAN */}
+                                    <div className="flex justify-center items-end gap-4 h-32 mb-6 relative z-10">
+                                        <PixelAvatar 
+                                            gender={data.user.gender} 
+                                            colors={data.user.appearance} 
+                                            equipped={data.equipped} 
+                                            className="w-28 h-28 drop-shadow-xl animate-idle-breathe" 
+                                        />
+                                        <div className="text-6xl animate-float filter drop-shadow-xl pb-2 font-pixel origin-bottom">{guardian.emoji}</div>
                                     </div>
-
-                                    {/* Guardian Card */}
-                                    <div className="glass p-3 rounded-3xl flex flex-col items-center relative border-b-4 border-yellow-400 shadow-md bg-gradient-to-b from-transparent to-yellow-500/5">
-                                        <div className="w-full flex justify-between items-center mb-1">
-                                            <span className="text-[10px] font-bold text-theme-sub">守護獸</span>
-                                            <span className="text-[9px] bg-yellow-500 text-white px-1.5 py-0.5 rounded-full shadow-sm font-bold">{guardian.name}</span>
-                                        </div>
-                                        
-                                        <div className="h-28 w-full flex items-center justify-center relative">
-                                            <div className="absolute w-20 h-6 bg-black/10 rounded-full blur-md bottom-4"></div>
-                                            <div className="text-6xl animate-float filter drop-shadow-lg pb-4 font-pixel origin-bottom relative z-10">{guardian.emoji}</div>
-                                        </div>
-                                        
-                                        <div className="w-full mt-2 bg-theme-bg/50 p-1.5 rounded-xl border border-theme-border text-center">
-                                            <span className="text-[8px] opacity-80 text-theme-sub leading-tight inline-block">{guardian.desc}</span>
-                                        </div>
+                                    
+                                    <div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3 relative z-10">
+                                        <div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p>
                                     </div>
+                                    <div className="flex items-center gap-2 relative z-10"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div>
                                 </div>
-
                                 <div>
                                     <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
                                     <div className="space-y-2">
