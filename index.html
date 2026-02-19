@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V26.5: Stats & Shop Update</title>
+    <title>SakuraWallet V27: Preview & Styles</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -100,7 +100,7 @@
         .pixel-icon { 
             image-rendering: pixelated; 
             /* Creates a crunchy, retro outline effect */
-            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3)) contrast(1.2) saturate(1.1);
+            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1);
             transform: scale(1.1);
         } 
 
@@ -125,9 +125,9 @@
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
         
-        /* New Title Styling */
+        /* Optimized Title System - Smaller Text Size */
         .badge-title { 
-            @apply relative overflow-hidden text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1 transition-all border;
+            @apply relative overflow-hidden text-[0.55rem] px-1.5 py-0.5 rounded font-bold shadow-sm inline-flex items-center gap-1 transition-all border leading-none;
             background-size: 200% auto;
             animation: shimmer 3s linear infinite;
         }
@@ -141,7 +141,7 @@
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
         /* --- ADVANCED RARITY VISUALS --- */
-        .item-card { @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .item-card { @apply w-full relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .item-card:active { transform: scale(0.95); }
         .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
         .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
@@ -938,8 +938,9 @@
             const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
 
             return (
-                <div className="animate-[fadeIn_0.5s]">
-                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
+                // Added overflow-x-hidden to prevent page sway
+                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden">
+                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-30 backdrop-blur-md">
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
                             <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
@@ -947,9 +948,17 @@
                                 <span className="font-bold text-yellow-800">{gold}</span>
                             </div>
                         </div>
-                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                        
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 max-w-[100vw]">
                             {filters.map(f => (
-                                <button key={f.id} onClick={() => setFilter(f.id)} className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}><Icon name={f.icon} size={12} />{f.label}</button>
+                                <button 
+                                    key={f.id} 
+                                    onClick={() => setFilter(f.id)}
+                                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all ${filter === f.id ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border'}`}
+                                >
+                                    <Icon name={f.icon} size={12} />
+                                    {f.label}
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -969,10 +978,13 @@
                                     <div className="p-3 w-full flex flex-col items-center relative z-10">
                                         <div className="flex justify-between w-full mb-1">
                                             <div className="text-xs opacity-70">{getTypeIcon(item.type)}</div>
-                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>{item.rarity}</div>
+                                            <div className={`px-1.5 py-0.5 text-[8px] font-bold text-white rounded uppercase tracking-wider bg-black/20 backdrop-blur-sm`}>
+                                                {item.rarity}
+                                            </div>
                                         </div>
                                         
-                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
+                                        {/* RPG Style Icon Container */}
+                                        <div className="w-14 h-14 flex items-center justify-center rounded-md mt-1 mb-2 bg-black/20 backdrop-blur-sm border-4 border-double border-theme-sub/50 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
                                             <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
                                         </div>
                                         
@@ -987,22 +999,33 @@
                                             </div>
                                         </div>
                                         
-                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>{owned ? '已擁有' : '購買'}</button>
+                                        {/* Added pointer-events-none to prevent button from blocking the card click */}
+                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm pointer-events-none ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>
+                                            {owned ? '已擁有' : '購買'}
+                                        </button>
                                     </div>
                                 </div>
                             );
                         })}
                     </div>
 
-                    {/* Confirmation Modal */}
+                    {/* Confirmation Modal - WITH PREVIEW */}
                     {selectedItem && (
                         <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/60 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
-                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double rarity-${selectedItem.rarity}`}>
-                                <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">確認交易</h3>
-                                <div className="w-24 h-24 bg-theme-bg rounded-xl flex items-center justify-center mx-auto mb-4 border-2 border-theme-accent shadow-inner relative overflow-hidden">
-                                    <div className="absolute inset-0 opacity-20 bg-grid-pattern"></div>
-                                    <Icon name={selectedItem.icon} size={48} className="pixel-icon relative z-10" />
+                            <div className={`bg-theme-card p-6 rounded-3xl w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] text-center border-4 border-double rarity-${selectedItem.rarity} relative`}>
+                                <div className="absolute top-2 right-2 text-theme-sub"><Icon name="Shop" size={16}/></div>
+                                <h3 className="font-bold text-lg text-theme-text mb-4 font-pixel tracking-widest bg-theme-bg py-1 px-4 rounded-full inline-block border border-theme-border">試穿預覽</h3>
+                                
+                                {/* PREVIEW AVATAR */}
+                                <div className="flex justify-center mb-4 bg-theme-bg/50 rounded-2xl p-4 border-inner shadow-inner">
+                                     <PixelAvatar 
+                                        gender={data.user.gender}
+                                        colors={data.user.appearance}
+                                        equipped={{ ...data.equipped, [selectedItem.type]: selectedItem }}
+                                        className="w-32 h-32 drop-shadow-lg"
+                                    />
                                 </div>
+
                                 <h3 className="font-bold text-xl text-theme-text mb-1">{selectedItem.name}</h3>
                                 <div className="text-xs text-theme-sub mb-4 font-mono space-y-1">
                                     <p>價格: <span className="font-bold text-yellow-600 text-lg">{selectedItem.cost} G</span></p>
@@ -1664,7 +1687,7 @@
                                         );
                                     })}
                                 </div>
-                            </div>
+                            </div> 
                         )}
                         
                         {view === 'exchange' && ( 
