@@ -125,9 +125,9 @@
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
         
-        /* Optimized Title System - Smaller Text Size */
+        /* New Title Styling - Smaller, Elegant */
         .badge-title { 
-            @apply relative overflow-hidden text-[0.55rem] px-1.5 py-0.5 rounded font-bold shadow-sm inline-flex items-center gap-1 transition-all border leading-none;
+            @apply relative overflow-hidden text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1 transition-all border;
             background-size: 200% auto;
             animation: shimmer 3s linear infinite;
         }
@@ -141,7 +141,7 @@
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
         
         /* --- ADVANCED RARITY VISUALS --- */
-        .item-card { @apply w-full relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .item-card { @apply relative overflow-hidden rounded-xl border-2 transition-all duration-300 bg-theme-card flex flex-col items-center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .item-card:active { transform: scale(0.95); }
         .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
         .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
@@ -154,6 +154,10 @@
 
         @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
+        
+        /* Utility for hiding scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="font-sans" data-theme="ink">
@@ -938,9 +942,8 @@
             const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
 
             return (
-                // Added overflow-x-hidden to prevent page sway
                 <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden">
-                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-30 backdrop-blur-md">
+                    <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
                             <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
@@ -949,7 +952,7 @@
                             </div>
                         </div>
                         
-                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 max-w-[100vw]">
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                             {filters.map(f => (
                                 <button 
                                     key={f.id} 
@@ -983,8 +986,7 @@
                                             </div>
                                         </div>
                                         
-                                        {/* RPG Style Icon Container */}
-                                        <div className="w-14 h-14 flex items-center justify-center rounded-md mt-1 mb-2 bg-black/20 backdrop-blur-sm border-4 border-double border-theme-sub/50 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
+                                        <div className="w-14 h-14 flex items-center justify-center rounded-lg mt-1 mb-2 bg-black/10 backdrop-blur-sm border border-white/20 shadow-inner">
                                             <Icon name={item.icon} size={32} className="text-theme-text pixel-icon drop-shadow-md"/>
                                         </div>
                                         
@@ -999,8 +1001,9 @@
                                             </div>
                                         </div>
                                         
-                                        {/* Added pointer-events-none to prevent button from blocking the card click */}
-                                        <button className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm pointer-events-none ${owned ? 'bg-gray-200 text-gray-500' : 'bg-white/80 text-theme-text hover:bg-white'}`}>
+                                        <button 
+                                            onClick={(e) => { e.stopPropagation(); !owned && handleBuyClick(item); }}
+                                            className={`w-full py-1.5 rounded-lg text-xs font-bold mt-2 shadow-sm ${owned ? 'bg-gray-200 text-gray-500 pointer-events-none' : 'bg-white/80 text-theme-text hover:bg-white pointer-events-auto'}`}>
                                             {owned ? '已擁有' : '購買'}
                                         </button>
                                     </div>
@@ -1558,7 +1561,7 @@
                                 </label>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
+                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-lg text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
                                         {/* Dynamic Level Badge Style */}
                                         <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
                                     </div>
@@ -1687,7 +1690,7 @@
                                         );
                                     })}
                                 </div>
-                            </div> 
+                            </div>
                         )}
                         
                         {view === 'exchange' && ( 
