@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V29: Epic Visuals</title>
+    <title>SakuraWallet V30: Epic RPG Upgrade</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -94,6 +94,9 @@
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; }
         #root { position: fixed; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        .slot-empty { @apply w-14 h-14 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all; }
+        .slot-empty::after { content: '+'; @apply text-xl text-theme-sub/30 font-mono absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; }
+        .slot-filled { @apply w-14 h-14 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all; }
         .equip-label { @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/80 px-1 rounded-sm shadow-sm; }
         
         /* Pixel Art Styling - Enhanced for RPG Feel */
@@ -316,7 +319,7 @@
             {id:'t6', slot: 'feet', icon:'Zap', name:'足部'}
         ];
 
-        // NEW: Shop Item List with STATS & EMOJIS
+        // NEW: Shop Item List with STATS & EMOJIS (Instead of SVGs)
         const SHOP_ITEMS = [
             { id: 's1', name: '新手木劍', type: 'mainHand', rarity: 'common', cost: 50, emoji: '🗡️', stats: { str: 5, agi: 2 } },
             { id: 's2', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 100, emoji: '🪖', stats: { vit: 10 } },
@@ -978,7 +981,13 @@
         const ShopView = ({ gold, inventory, onBuy, user, currentEquipped }) => {
             const [selectedItem, setSelectedItem] = useState(null);
             const [filter, setFilter] = useState('all');
-            const [merchantMsg, setMerchantMsg] = useState("歡迎光臨！今天想找點什麼？");
+            const [merchantMsg, setMerchantMsg] = useState("歡迎光臨！點擊商品可以試穿喔。");
+            const [previewEquipped, setPreviewEquipped] = useState(currentEquipped);
+
+            // Sync preview when current equipment changes externally
+            useEffect(() => {
+                setPreviewEquipped(currentEquipped);
+            }, [currentEquipped]);
 
             // Merchant SVGs
             const MerchantAvatar = () => (
@@ -993,7 +1002,18 @@
                 </svg>
             );
 
-            const handleBuyClick = (item) => {
+            const handleTryOn = (item) => {
+                setPreviewEquipped(prev => ({ ...prev, [item.type]: item }));
+                setMerchantMsg(`這件 ${item.name} 穿起來挺適合你的！`);
+            };
+
+            const resetPreview = () => {
+                setPreviewEquipped(currentEquipped);
+                setMerchantMsg("換回原來的裝備了。還要看點什麼嗎？");
+            };
+
+            const handleBuyClick = (item, e) => {
+                e.stopPropagation();
                 const currentGold = Number(gold) || 0;
                 if (currentGold < item.cost) {
                     setMerchantMsg(`哎呀，你的金幣似乎不夠呢... 需要 ${item.cost} G。`);
@@ -1008,7 +1028,7 @@
             };
 
             const confirmBuy = () => {
-                setMerchantMsg("多謝惠顧！還有其他需要的嗎？");
+                setMerchantMsg("多謝惠顧！裝備已放入背包。");
                 onBuy(selectedItem);
                 setSelectedItem(null);
             };
@@ -1050,24 +1070,36 @@
                         </div>
                     </div>
 
-                    {/* Gold Display & Filters */}
-                    <div className="px-4 mb-4">
-                        <div className="flex justify-between items-center mb-3">
-                            <div className="flex items-center gap-1 bg-yellow-100 px-4 py-1.5 rounded-full border-2 border-yellow-300 shadow-sm">
-                                <Icon name="Coin" size={16} className="text-yellow-600"/>
+                    {/* FITTING ROOM (Top Sticky Preview) */}
+                    <div className="mx-4 mb-4 glass rounded-2xl p-3 flex items-center justify-between border-2 border-dashed border-theme-accent/50 relative overflow-hidden shadow-sm">
+                        <div className="absolute right-0 top-0 w-32 h-32 bg-theme-accent opacity-10 rounded-full blur-2xl"></div>
+                        
+                        <div className="z-10 flex flex-col items-start gap-3">
+                            <div className="text-xs font-bold text-theme-text bg-theme-bg px-2 py-1 rounded shadow-sm border border-theme-border flex items-center gap-1">
+                                👗 試穿預覽
+                            </div>
+                            <div className="flex items-center gap-1 bg-yellow-100 px-3 py-1.5 rounded-full border-2 border-yellow-300 shadow-sm">
+                                <Icon name="Coin" size={14} className="text-yellow-600"/>
                                 <span className="font-black text-yellow-800 font-mono text-sm">{gold} G</span>
                             </div>
-                            <div className="text-[10px] text-theme-sub font-bold opacity-60">
-                                {displayedItems.length} 個商品
-                            </div>
+                            <button onClick={resetPreview} className="text-[10px] bg-theme-card text-theme-sub px-3 py-1.5 rounded-lg shadow-sm border border-theme-border active:scale-95 transition-transform font-bold flex items-center gap-1 hover:text-theme-accent hover:border-theme-accent">
+                                <Icon name="X" size={10}/> 重置外觀
+                            </button>
                         </div>
                         
+                        <div className="relative z-10 w-24 h-24 bg-theme-bg/50 rounded-xl border border-theme-border flex items-center justify-center shadow-inner overflow-visible">
+                            <PixelAvatar gender={user.gender} colors={user.appearance} equipped={previewEquipped} className="w-28 h-28 drop-shadow-xl" />
+                        </div>
+                    </div>
+
+                    {/* Filters */}
+                    <div className="px-4 mb-4">
                         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                             {filters.map(f => (
                                 <button 
                                     key={f.id} 
-                                    onClick={() => { setFilter(f.id); setMerchantMsg(f.id==='all' ? "隨便看看！" : `想找${f.label}嗎？我有不少好貨。`); }}
-                                    className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap border-b-4 transition-all active:scale-95 active:border-b-0 active:translate-y-1 ${filter === f.id ? 'bg-theme-accent text-white border-black/30' : 'bg-white text-theme-sub border-theme-border'}`}
+                                    onClick={() => { setFilter(f.id); setMerchantMsg(f.id==='all' ? "隨便點擊商品試穿看看！" : `想找${f.label}嗎？我有不少好貨。`); }}
+                                    className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap border-b-4 transition-all active:scale-95 active:border-b-0 active:translate-y-1 ${filter === f.id ? 'bg-theme-accent text-white border-black/30' : 'bg-white text-theme-sub border-theme-border hover:bg-gray-50'}`}
                                 >
                                     <Icon name={f.icon} size={14} />
                                     {f.label}
@@ -1082,19 +1114,20 @@
                         {displayedItems.map(item => {
                             const owned = inventory.some(i => i.id === item.id);
                             const canAfford = gold >= item.cost;
-                            const rarityClass = `effect-${item.rarity}`; // Dynamic effect
+                            const isPreviewing = previewEquipped[item.type]?.id === item.id;
+                            const rarityClass = `effect-${item.rarity}`; 
 
                             return (
                                 <div key={item.id} 
-                                     className={`relative group bg-theme-card rounded-xl border-2 border-b-4 transition-all duration-200 overflow-hidden ${owned ? 'border-gray-200 grayscale opacity-70' : `${rarityClass} hover:-translate-y-1 hover:shadow-lg`}`}
+                                     className={`relative group bg-theme-card rounded-xl border-2 border-b-4 transition-all duration-200 overflow-hidden ${owned ? 'border-gray-200 grayscale opacity-70' : `${rarityClass} hover:-translate-y-1 hover:shadow-lg cursor-pointer`} ${isPreviewing && !owned ? 'ring-2 ring-theme-accent ring-offset-2' : ''}`}
                                      style={{borderColor: !owned && item.rarity === 'common' ? '#cbd5e1' : ''}}
-                                     onClick={() => !owned && handleBuyClick(item)}>
+                                     onClick={() => handleTryOn(item)}>
                                     
                                     {/* Rarity Background Elements for Shop Cards */}
-                                    {item.rarity === 'legendary' && <div className="sunburst"></div>}
-                                    {item.rarity === 'legendary' && <div className="shine-bar"></div>}
+                                    {item.rarity === 'legendary' && <div className="sunburst pointer-events-none"></div>}
+                                    {item.rarity === 'legendary' && <div className="shine-bar pointer-events-none"></div>}
                                     
-                                    <div className="p-3 relative z-10 flex flex-col h-full">
+                                    <div className="p-3 relative z-10 flex flex-col h-full pointer-events-none">
                                         <div className="flex justify-between items-start mb-2">
                                             <div className="bg-black/10 rounded px-1.5 py-0.5 text-[10px] font-bold text-theme-sub">{getTypeIcon(item.type)}</div>
                                             {!owned && (
@@ -1105,7 +1138,7 @@
                                         </div>
 
                                         <div className="flex-1 flex justify-center items-center py-2">
-                                            {/* EMOJI ICON INSTEAD OF SVG */}
+                                            {/* EMOJI ICON */}
                                             <div className={`w-16 h-16 rounded-lg bg-white/40 border-2 border-dashed border-theme-sub/30 flex items-center justify-center shadow-inner ${item.rarity === 'legendary' ? 'animate-pulse-slow' : ''}`}>
                                                 <span className="text-4xl drop-shadow-md">{item.emoji || '📦'}</span>
                                             </div>
@@ -1124,9 +1157,9 @@
                                         </div>
                                         
                                         <button 
-                                            onClick={(e) => { e.stopPropagation(); !owned && handleBuyClick(item); }}
-                                            className={`w-full mt-2 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95 ${owned ? 'bg-gray-200 text-gray-500 cursor-default' : 'bg-theme-accent text-white hover:brightness-110'}`}>
-                                            {owned ? '已擁有' : '購買'}
+                                            onClick={(e) => handleBuyClick(item, e)}
+                                            className={`w-full mt-2 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all pointer-events-auto active:scale-95 ${owned ? 'bg-gray-200 text-gray-500 cursor-default' : 'bg-theme-accent text-white hover:brightness-110'}`}>
+                                            {owned ? '已擁有' : '🛒 購買'}
                                         </button>
                                     </div>
                                 </div>
@@ -1134,7 +1167,7 @@
                         })}
                     </div>
 
-                    {/* Confirmation Modal (Scroll Style) */}
+                    {/* Confirmation Modal */}
                     {selectedItem && (
                         <div className="fixed inset-0 z-[90] flex flex-col justify-center items-center bg-black/70 backdrop-blur-sm px-6 animate-[fadeIn_0.2s]">
                             <div className="bg-[#fffbf0] p-6 rounded-sm w-full max-w-xs shadow-2xl animate-[slideUp_0.2s] relative border-8 border-[#5d4037]">
@@ -1147,13 +1180,14 @@
                                 <h3 className="font-bold text-xl text-[#3e2723] mb-4 text-center font-pixel border-b-2 border-[#d7ccc8] pb-2">交易確認書</h3>
                                 
                                 <div className="flex gap-4 mb-4">
-                                    <div className="w-20 h-20 bg-[#d7ccc8] rounded border-2 border-[#a1887f] flex items-center justify-center shrink-0 overflow-hidden relative">
-                                        <div className={`absolute inset-0 effect-${selectedItem.rarity} opacity-40`}></div>
+                                    <div className="w-20 h-20 bg-[#d7ccc8] rounded border-2 border-[#a1887f] flex items-center justify-center shrink-0 overflow-visible relative">
+                                        <div className={`absolute inset-0 effect-${selectedItem.rarity} opacity-40 rounded pointer-events-none`}></div>
+                                         {/* PREVIEW IN CONFIRM MODAL */}
                                          <PixelAvatar 
                                             gender={user.gender}
                                             colors={user.appearance}
-                                            equipped={{ ...currentEquipped, [selectedItem.type]: selectedItem }}
-                                            className="w-full h-full drop-shadow-md relative z-10"
+                                            equipped={{ ...previewEquipped, [selectedItem.type]: selectedItem }}
+                                            className="w-24 h-24 drop-shadow-md relative z-10"
                                         />
                                     </div>
                                     <div className="flex-1">
@@ -1732,7 +1766,25 @@
                     <main className="flex-1 overflow-y-auto no-scrollbar pb-24 p-4 space-y-5 relative z-10">
                         {view === 'adventure' && (
                             <div className="animate-[fadeIn_0.5s] space-y-5">
-                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50"><div className="text-8xl animate-float filter drop-shadow-xl mb-4 font-pixel">{guardian.emoji}</div><div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3"><div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p></div><div className="flex items-center gap-2"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div></div>
+                                <div className="glass p-6 rounded-[2.5rem] relative text-center border-theme-accent/50 overflow-hidden">
+                                    <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-48 h-8 bg-black/10 rounded-full blur-md"></div>
+                                    
+                                    {/* ADVENTURE TAB: AVATAR & GUARDIAN */}
+                                    <div className="flex justify-center items-end gap-4 h-32 mb-6 relative z-10">
+                                        <PixelAvatar 
+                                            gender={data.user.gender} 
+                                            colors={data.user.appearance} 
+                                            equipped={data.equipped} 
+                                            className="w-28 h-28 drop-shadow-xl animate-idle-breathe" 
+                                        />
+                                        <div className="text-6xl animate-float filter drop-shadow-xl pb-2 font-pixel origin-bottom">{guardian.emoji}</div>
+                                    </div>
+                                    
+                                    <div className="bg-theme-bg rounded-xl p-3 border border-theme-border text-left mb-3 relative z-10">
+                                        <div className="flex justify-between items-center mb-1"><h2 className="text-sm font-bold font-pixel text-theme-text">{guardian.name}</h2><span className="text-[9px] bg-theme-accent text-white px-1 rounded font-pixel">Lv.{data.user.level}</span></div><p className="text-[10px] opacity-70 font-pixel leading-tight text-theme-sub">{guardian.desc}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 relative z-10"><span className="text-[8px] font-bold text-theme-accent">EXP</span><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden relative"><div className="absolute inset-0 flex items-center justify-center text-[8px] text-theme-text font-bold z-10">{data.user.exp % 100} / 100</div><div className="h-full bg-theme-accent transition-all opacity-50" style={{width: `${(data.user.exp % 100)}%`}}></div></div></div>
+                                </div>
                                 <div>
                                     <div className="flex justify-between items-center mb-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={()=>{setAssetForm({id:null, name:'', currency:mainCurrency, balance:'', type:'cash'}); setAssetModalOpen(true)}} className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><Icon name="Plus" size={10}/> {t('forge')}</button></div>
                                     <div className="space-y-2">
