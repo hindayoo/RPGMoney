@@ -44,13 +44,13 @@
                 'glow': 'glow 3s infinite alternate',
                 'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                 'sparkle': 'sparkle 2s linear infinite',
-                // Advanced Idle Animations
                 'idle-breathe': 'idleBreathe 4s ease-in-out infinite',
                 'head-bob': 'headBob 4s ease-in-out infinite',
                 'weapon-sway': 'weaponSway 4s ease-in-out infinite',
                 'cape-flow': 'capeFlow 3s ease-in-out infinite',
                 'blink': 'blink 5s infinite',
-                'float-accessory': 'floatAccessory 3s ease-in-out infinite'
+                'float-accessory': 'floatAccessory 3s ease-in-out infinite',
+                'shimmer': 'shimmer 2s linear infinite',
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
@@ -62,7 +62,8 @@
                 weaponSway: { '0%, 100%': { transform: 'rotate(0deg)' }, '50%': { transform: 'rotate(-2deg)' } },
                 capeFlow: { '0%, 100%': { transform: 'skewX(0deg)' }, '50%': { transform: 'skewX(-3deg)' } },
                 blink: { '0%, 48%, 52%, 100%': { opacity: '1' }, '50%': { opacity: '0.1' } }, 
-                floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } }
+                floatAccessory: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
+                shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } }
             }
           }
         }
@@ -93,7 +94,6 @@
         
         /* Pixel Art Styling */
         .pixel-art { image-rendering: pixelated; }
-        /* Creating a pixel-art feel for icons using CSS filters */
         .pixel-icon { 
             image-rendering: pixelated; 
             filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.3)) contrast(1.2);
@@ -120,7 +120,14 @@
         .btn-op { background-color: var(--bg-color); color: var(--accent-color); font-family: "DotGothic16", sans-serif; font-size: 1.25rem; border: 2px solid var(--accent-color); }
         .btn-action { background-color: var(--accent-color); color: white; border: 2px solid var(--text-main); }
         .rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, var(--accent-color) 20deg, transparent 40deg, var(--accent-color) 60deg, transparent 80deg, var(--accent-color) 100deg, transparent 120deg); opacity: 0.2; animation: spin-slow 10s linear infinite; pointer-events: none; }
-        .badge-title { @apply bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-300 text-yellow-800 text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1; }
+        
+        /* New Title Styling */
+        .badge-title { 
+            @apply relative overflow-hidden bg-gradient-to-r from-yellow-50 via-white to-yellow-50 border border-yellow-300 text-yellow-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm inline-flex items-center gap-1;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+        
         .quest-card-claimed { @apply opacity-60 grayscale bg-theme-bg border border-transparent; }
         .quest-card-active { @apply glass border border-theme-border; }
         .quest-card-complete { @apply bg-gradient-to-r from-yellow-50 to-white border border-yellow-300 shadow-lg; }
@@ -317,7 +324,7 @@
         
         // Define default appearance colors
         const DEFAULT_APPEARANCE = {
-             hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc'
+              hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc'
         };
 
         // Achievement System Data
@@ -581,17 +588,23 @@
             return (
                 <svg viewBox="0 0 32 32" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
                     <g className="animate-idle-breathe origin-bottom">
-                        {/* Cape / Back - Independent Sway */}
+                    
+                         {/* LAYER 0: Back Hair (Female specific - drawn first) */}
+                        {!headGear && gender === 'female' && (
+                             <path fill={hair} d="M8 9h16v12H8z" opacity="0.8" />
+                        )}
+
+                        {/* LAYER 1: Cape / Back - Independent Sway */}
                         {!backGear ? (
                              <path fill={cape} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.9" className="animate-cape-flow origin-top" />
                         ) : (
                              <path fill={backGear.rarity === 'legendary' ? '#eab308' : '#3b82f6'} d="M6 18h20v14H6z M8 18h16v12H8z" className="animate-cape-flow origin-top" />
                         )}
                         
-                        {/* Legs */}
+                        {/* LAYER 2: Legs */}
                         <path fill={feetGear ? '#546e7a' : '#3e2723'} d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
 
-                        {/* Body Armor */}
+                        {/* LAYER 3: Body Armor */}
                         {!bodyGear ? (
                             <>
                                 <path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />
@@ -600,14 +613,14 @@
                                 <path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} />
                             </>
                         ) : (
-                             <>
+                            <>
                                 <path fill="#90a4ae" d="M10 17h12v9H10z" />
                                 <path fill="#cfd8dc" d="M12 18h8v6h-8z" />
                                 <path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" />
                             </>
                         )}
 
-                        {/* HEAD GROUP - Bobs independently */}
+                        {/* LAYER 4: HEAD GROUP - Bobs independently */}
                         <g className="animate-head-bob">
                             {/* Face */}
                             <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
@@ -619,15 +632,13 @@
                             {/* Simple Mouth */}
                             <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
 
-                            {/* Hair or Helm */}
+                            {/* LAYER 5: Front Hair or Helm */}
                             {!headGear ? (
                                 gender === 'male' ? (
                                     <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" />
                                 ) : (
-                                    <g fill={hair}>
-                                        <path d="M8 9h16v12H8z" opacity="0.8" />
-                                        <path d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
-                                    </g>
+                                    // Female Front Hair / Bangs - ensure this is drawn AFTER face
+                                    <path fill={hair} d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />
                                 )
                             ) : (
                                 // Render Equipped Helm
@@ -649,7 +660,7 @@
                             )}
                         </g>
 
-                        {/* Weapon - Sways with breath */}
+                        {/* LAYER 6: Weapon - Sways with breath */}
                         <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left">
                             {!mainHand ? (
                                 <>
@@ -693,7 +704,7 @@
             };
 
             return (
-                <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
                     <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90dvh] flex flex-col min-h-0">
                         {/* New Header Layout with Buttons */}
@@ -714,7 +725,7 @@
                             </div>
                         </div>
 
-                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4 pb-8">
+                        <div className="overflow-y-auto px-6 py-2 flex-1 space-y-4 pb-24">
                             <div className="grid grid-cols-2 gap-4">
                                 {[
                                     { id: 'hair', label: '頭髮顏色' },
@@ -789,15 +800,6 @@
                     <div className="char-stage rounded-3xl relative">
                         <div className="magic-circle"></div>
                         
-                        {/* Stats Panel (Pixel Style) */}
-                        <div className="absolute top-4 left-4 z-20 bg-black/70 backdrop-blur-md p-2 rounded-lg border border-white/20 text-white text-[10px] font-pixel space-y-1 shadow-lg">
-                            <div className="text-yellow-300 mb-1 border-b border-white/20 pb-1">ABILITY</div>
-                            <div className="flex justify-between w-20"><span>STR</span><span className="text-red-300">{totalStats.str}</span></div>
-                            <div className="flex justify-between w-20"><span>INT</span><span className="text-blue-300">{totalStats.int}</span></div>
-                            <div className="flex justify-between w-20"><span>VIT</span><span className="text-green-300">{totalStats.vit}</span></div>
-                            <div className="flex justify-between w-20"><span>AGI</span><span className="text-purple-300">{totalStats.agi}</span></div>
-                        </div>
-
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                             <div className="flex flex-col gap-4 mr-32 pointer-events-auto">
                                 {renderSlot({id:'t1', slot: 'head', name:'頭部'})}
@@ -825,6 +827,26 @@
                                 equipped={equipped}
                                 className="w-64 h-64 object-contain drop-shadow-xl"
                             />
+                        </div>
+                    </div>
+
+                    {/* Stats Panel moved BELOW character */}
+                    <div className="glass p-4 rounded-xl border-theme-border flex justify-between items-center mt-4">
+                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
+                             <span className="text-[10px] text-theme-sub font-bold mb-1">STR</span>
+                             <span className="font-pixel text-lg text-red-500 font-bold">{totalStats.str}</span>
+                        </div>
+                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
+                             <span className="text-[10px] text-theme-sub font-bold mb-1">INT</span>
+                             <span className="font-pixel text-lg text-blue-500 font-bold">{totalStats.int}</span>
+                        </div>
+                        <div className="flex flex-col items-center flex-1 border-r border-gray-200 dark:border-gray-700 last:border-0">
+                             <span className="text-[10px] text-theme-sub font-bold mb-1">VIT</span>
+                             <span className="font-pixel text-lg text-green-500 font-bold">{totalStats.vit}</span>
+                        </div>
+                        <div className="flex flex-col items-center flex-1">
+                             <span className="text-[10px] text-theme-sub font-bold mb-1">AGI</span>
+                             <span className="font-pixel text-lg text-purple-500 font-bold">{totalStats.agi}</span>
                         </div>
                     </div>
 
@@ -1045,6 +1067,14 @@
             const [calcBase, setCalcBase] = useState('TWD');
 
             const t = (key) => TRANSLATIONS[lang][key] || key;
+            
+            // NEW: Level Badge Style Logic
+            const getLevelBadgeStyle = (lv) => {
+                if(lv >= 50) return "bg-gradient-to-r from-red-500 to-yellow-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.6)] border border-yellow-300";
+                if(lv >= 30) return "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md";
+                if(lv >= 10) return "bg-gradient-to-r from-blue-400 to-cyan-400 text-white shadow-sm";
+                return "bg-gray-200 text-gray-600";
+            };
 
             useEffect(() => {
                 document.body.setAttribute('data-theme', theme);
@@ -1120,7 +1150,7 @@
                                 }
                                 setData(fd); 
                             } else { 
-                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} } }, accounts: [{ id: Date.now(), name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
+                                const init = { user: { uid: u.uid, name: u.displayName || 'Hero', gender: 'female', level: 1, exp: 0, gold: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '' }, accounts: [{ id: 1, name: 'Wallet', currency: 'TWD', balance: 0, type: 'cash' }], transactions: [], quests: [], achievements: [], logs: [], categories: DEFAULT_CATEGORIES, talents: {}, claimedQuests: [], inventory: [], equipped: {} }; 
                                 fb.setDoc(fb.doc(fb.db, "users", u.uid), init); 
                                 setData(init); 
                             } 
@@ -1474,13 +1504,14 @@
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
-                                        <span className="text-[9px] bg-theme-accent text-white px-1.5 rounded-full">Lv.{data.user.level}</span>
+                                        {/* Dynamic Level Badge Style */}
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
                                     </div>
-                                    {/* TITLE SYSTEM DISPLAY */}
-                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-0.5 cursor-pointer hover:scale-105 transition-transform origin-left">
+                                    {/* BEAUTIFIED TITLE DISPLAY */}
+                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-1.5 cursor-pointer hover:scale-105 transition-transform origin-left inline-block">
                                         <div className="badge-title">
-                                            <Icon name="Crown" size={10} className="text-yellow-600"/>
-                                            <span>{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
+                                            <Icon name="Crown" size={10} className="text-yellow-600 drop-shadow-sm"/>
+                                            <span className="tracking-wide text-shadow-sm">{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
                                         </div>
                                     </div>
                                 </div>
