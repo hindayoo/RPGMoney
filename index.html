@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V27: Preview & Styles</title>
+    <title>SakuraWallet V27.4: Shop Fixed</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -910,7 +910,13 @@
             const [filter, setFilter] = useState('all');
 
             const handleBuyClick = (item) => {
-                if (gold < item.cost) return alert("金幣不足！");
+                // FORCE NUMBER CONVERSION
+                const currentGold = Number(gold) || 0;
+                
+                if (currentGold < item.cost) {
+                    alert(`金幣不足！需要 ${item.cost} G，目前只有 ${currentGold} G`);
+                    return;
+                }
                 if (inventory.some(i => i.id === item.id)) return alert("已擁有此裝備！");
                 setSelectedItem(item);
             };
@@ -942,7 +948,7 @@
             const displayedItems = filter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i => i.type === filter);
 
             return (
-                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden">
+                <div className="animate-[fadeIn_0.5s] w-full overflow-x-hidden relative">
                     <div className="glass p-4 rounded-2xl mb-4 sticky top-0 z-10 backdrop-blur-md">
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-lg text-theme-text flex items-center gap-2"><Icon name="Shop" /> 裝備商店</h3>
@@ -975,8 +981,8 @@
                                      className={`item-card rarity-${item.rarity} ${owned ? 'opacity-60 grayscale' : 'active:scale-95'} cursor-pointer`} 
                                      onClick={() => !owned && handleBuyClick(item)}>
                                     
-                                    {item.rarity === 'legendary' && <div className="sunburst"></div>}
-                                    {item.rarity === 'legendary' && <div className="legendary-shine"></div>}
+                                    {item.rarity === 'legendary' && <div className="sunburst pointer-events-none"></div>}
+                                    {item.rarity === 'legendary' && <div className="legendary-shine pointer-events-none"></div>}
                                     
                                     <div className="p-3 w-full flex flex-col items-center relative z-10">
                                         <div className="flex justify-between w-full mb-1">
@@ -1304,6 +1310,8 @@
 
             // Shop Logic
             const handleBuyItem = (item) => {
+                if (data.user.gold < item.cost) return alert("金幣不足！(交易失敗)"); // Double check
+                
                 const newGold = data.user.gold - item.cost;
                 const newInventory = [...data.inventory, item];
                 const newLogs = addLog('system', `Bought: ${item.name}`);
@@ -1559,15 +1567,13 @@
                                     </div>
                                     <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden"/>
                                 </label>
-                                <div>
+                                <div className="flex flex-col items-start">
                                     <div className="flex items-center gap-2">
-                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-lg text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
-                                        {/* Dynamic Level Badge Style */}
+                                        <h1 onClick={()=>{setTempName(data.user.name); setShowNameEdit(true);}} className="font-bold text-sm text-theme-text cursor-pointer hover:underline flex items-center gap-1">{data.user.name} <Icon name="Edit" size={12}/></h1>
                                         <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm border border-transparent ${getLevelBadgeStyle(data.user.level)}`}>Lv.{data.user.level}</span>
                                     </div>
-                                    {/* BEAUTIFIED TITLE DISPLAY */}
-                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-1.5 cursor-pointer hover:scale-105 transition-transform origin-left inline-block">
-                                        <div className={`badge-title ${getTitleStyle(data.user.title)}`}>
+                                    <div onClick={()=>setShowTitleSelect(true)} className="mt-0.5 cursor-pointer hover:scale-105 transition-transform origin-left block">
+                                        <div className={`badge-title scale-90 origin-left ${getTitleStyle(data.user.title)}`}>
                                             <Icon name="Crown" size={10} className="drop-shadow-sm"/>
                                             <span className="tracking-wide text-shadow-sm">{TITLES_LIST.find(t=>t.id===data.user.title)?.name || data.user.title}</span>
                                         </div>
