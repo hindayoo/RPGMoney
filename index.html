@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V28 (Magic RPG & Friends)</title>
+    <title>SakuraWallet V28 (RPG Magic & Ultimate Sync)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -19,29 +19,17 @@
         darkMode: 'class',
         theme: {
           extend: {
-            fontFamily: { 
-                sans: ['"Zen Maru Gothic"', 'sans-serif'], 
-                pixel: ['"DotGothic16"', 'sans-serif'] 
-            },
+            fontFamily: { sans: ['"Zen Maru Gothic"', 'sans-serif'], pixel: ['"DotGothic16"', 'sans-serif'] },
             colors: {
               theme: {
-                bg: 'var(--bg-color)',
-                card: 'var(--card-bg)',
-                text: 'var(--text-main)',
-                sub: 'var(--text-sub)',
-                accent: 'var(--accent-color)',
-                border: 'var(--border-color)',
-                glass: 'var(--glass-bg)'
+                bg: 'var(--bg-color)', card: 'var(--card-bg)', text: 'var(--text-main)', sub: 'var(--text-sub)', accent: 'var(--accent-color)', border: 'var(--border-color)', glass: 'var(--glass-bg)'
               }
             },
             animation: { 
-                'float': 'float 4s ease-in-out infinite', 
-                'pulse-slow': 'pulse 3s infinite',
+                'float': 'float 4s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite',
                 'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                'shimmer': 'shimmer 2s linear infinite',
-                'glow': 'glow 2s ease-in-out infinite alternate',
-                'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
-                'spin-slow': 'spin 8s linear infinite',
+                'shimmer': 'shimmer 2s linear infinite', 'glow': 'glow 2s ease-in-out infinite alternate',
+                'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both', 'spin-slow': 'spin 8s linear infinite',
                 'bounce-gentle': 'bounceGentle 2s infinite',
             },
             keyframes: { 
@@ -57,37 +45,22 @@
       }
     </script>
     <style>
-        :root { 
-            --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; 
-            --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); 
-            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); 
-        }
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
         [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
-
-        body { 
-            background-color: var(--bg-color); 
-            background-image: var(--bg-pattern); 
-            background-size: 20px 20px; 
-            color: var(--text-main); 
-            transition: all 0.5s ease; 
-            overscroll-behavior: none; 
-        }
+        body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; overscroll-behavior: none; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
         .pixel-icon { image-rendering: pixelated; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1); transform: scale(1.1); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
         .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); }
         .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); animation: pulse-purple 3s infinite alternate; }
         .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); animation: glow-gold 2s infinite alternate; }
-        
         @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
-        
         .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); }
         .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; }
         .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
@@ -99,7 +72,7 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- FIREBASE 初始化設定 (請務必替換為您自己的金鑰) ---
+        // --- FIREBASE 初始化設定 (請替換為您的設定) ---
         const firebaseConfig = {
 apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
 authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -109,145 +82,21 @@ messagingSenderId: "804479578382",
 appId: "1:804479578382:web:0882920513d9377998a75f",
 measurementId: "G-FKDCX3WG8T"
         };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // --- ICONS 完整定義 ---
-        const ICON_PATHS = {
-            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
-            Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
-            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",
-            Globe: "M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",
-            Plus: "M12 5v14 M5 12h14",
-            X: "M18 6L6 18 M6 6l12 12",
-            Cloud: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",
-            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
-            Crown: "M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
-            Star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
-            CreditCard: "M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",
-            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",
-            Utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",
-            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",
-            ShoppingBag: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
-            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-            Pill: "M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",
-            GraduationCap: "M22 10v6M2 10l10-5 10 5",
-            Briefcase: "M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",
-            Plane: "M2 12h20 M13 2l9 10-9 10",
-            LogOut: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
-            Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
-            Key: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",
-            Trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
-            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",
-            Book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
-            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
-            Hammer: "M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
-            Gem: "M6 3h12l4 6-10 13L2 9z",
-            Sun: "M12 1v2 M12 21v2",
-            Moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
-            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8",
-            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
-            Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
-            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
-            Check: "M20 6L9 17l-5-5",
-            Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
-            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
-            Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
-            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",
-            CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
-            Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
-            Chart: "M18 20V10M12 20V4M6 20v-6",
-            ArrowUp: "M12 19V5M5 12l7-7 7 7",
-            ArrowDown: "M12 5v14M19 12l-7 7-7-7",
-            Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
-            Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
-            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",
-            Heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
-            Users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
-            Copy: "M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",
-            Egg: "M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",
-            Calculator: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",
-            Settings: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-        };
+        // 核心圖示資料
+        const ICON_PATHS={Home:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",Scroll:"M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",Wallet:"M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",Globe:"M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",Plus:"M12 5v14 M5 12h14",X:"M18 6L6 18 M6 6l12 12",Cloud:"M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",LogIn:"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",Crown:"M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",Star:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",CreditCard:"M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",Landmark:"M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",Utensils:"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",Bus:"M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",ShoppingBag:"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",Zap:"M13 2L3 14h9l-1 8 10-12h-9l1-8z",Pill:"M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",GraduationCap:"M22 10v6M2 10l10-5 10 5",Briefcase:"M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",Plane:"M2 12h20 M13 2l9 10-9 10",LogOut:"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",Camera:"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",Key:"M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",Trophy:"M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",Sword:"M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",Book:"M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",Shield:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",Hammer:"M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",Gem:"M6 3h12l4 6-10 13L2 9z",Sun:"M12 1v2 M12 21v2",Moon:"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",Eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8",Coffee:"M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",Gamepad:"M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",UserPlus:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",Check:"M20 6L9 17l-5-5",Edit:"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",Trash:"M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",Ghost:"M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",Paint:"M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",CheckCircle:"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",Lock:"M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",Chart:"M18 20V10M12 20V4M6 20v-6",ArrowUp:"M12 19V5M5 12l7-7 7 7",ArrowDown:"M12 5v14M19 12l-7 7-7-7",Shop:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",Male:"M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",Female:"M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",Smile:"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",Coin:"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",Heart:"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",Calendar:"M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",Users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",Copy:"M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",Egg:"M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",Calculator:"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",Settings:"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"};
+        const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
 
-        const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
-            const d = ICON_PATHS[name] || ICON_PATHS['Star'];
-            return (
-                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
-                    <path d={d}/>
-                </svg>
-            );
-        };
-
-        // --- CONSTANTS ---
         const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
-        const EXCHANGE_RATES = {
-            'TWD': 1, 'HKD': 0.24, 'JPY': 4.6
-        };
-
-        const GEAR_VISUALS = {
-            's1': () => <g transform="rotate(45, 24, 16) translate(-8,-8)"><path fill="#cfd8dc" d="M14 6 H18 V20 H14 Z" /><path fill="#5d4037" d="M12 20 H20 V22 H12 Z" /></g>, 
-            's2': () => <g><path fill="#8d1d1d" d="M9 5 h14 v10 h-14 z" /><path fill="#eab308" d="M11 5 h10 v2 h-10 z" /></g>, 
-            's3': () => <g><path fill="#5d4037" d="M11 29h4v3h-4zM17 29h4v3h-4z" /></g>,
-            's4': () => <path fill="none" stroke="#558b2f" strokeWidth="2" d="M22 14 C 16 20, 16 20, 22 26" />, 
-            's5': () => <g><path fill="#94a3b8" d="M10 17h12v9H10z" /><rect x="12" y="19" width="2" height="2" fill="#475569"/><rect x="16" y="19" width="2" height="2" fill="#475569"/><rect x="20" y="19" width="2" height="2" fill="#475569"/></g>,
-            's6': () => <g><path fill="#b71c1c" d="M7 17h18v15H7z" opacity="0.9"/></g>,
-            's7': () => <g transform="rotate(15, 24, 16)"><path fill="#5d4037" d="M22 12 h2 v14 h-2 z" /><circle cx="23" cy="11" r="3" fill="#d32f2f" /></g>, 
-            's8': () => <g><circle cx="6" cy="22" r="6" fill="#3e2723" stroke="#271c19" /></g>,
-            's9': () => <path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3 a5 1 0 1 1 10 0 a5 1 0 1 1 -10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}} />, 
-            's12': () => <circle cx="6" cy="22" r="2" fill="transparent" stroke="#ffb300" strokeWidth="1.5" />,
-            's13': () => <g><path fill="#1a1a1a" d="M10 17h12v9H10z" /><path fill="#e5e5e5" d="M10 17h4v2h-4z M18 17h4v2h-4z"/></g>, 
-            's14': () => <g transform="rotate(-15, 24, 16)"><path fill="#5d4037" d="M22 16 h2 v10 h-2 z" /><path fill="#43a047" d="M22 16 l4 -2 l2 4 l-6 2 z" /></g>,
-            's15': () => <g><path fill="#e0f2f1" d="M22 18 l4 -4 l2 2 l-4 4 z" /><path fill="#5d4037" d="M20 20 l2 -2" stroke="#5d4037" strokeWidth="2"/></g>,
-            's17': () => null,
-            's99': () => <g transform="rotate(45, 24, 16) translate(-8,-8)"><path fill="#fef08a" d="M14 6 H18 V20 H14 Z" /><path fill="#eab308" d="M16 6 V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,
-            's100': () => <g className="animate-pulse"><path fill="#4a044e" d="M6 18 Q2 12 10 10 L16 18" opacity="0.8"/><path fill="#4a044e" d="M26 18 Q30 12 22 10 L16 18" opacity="0.8"/></g>,
-            's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6"/></g>,
-        };
-
-        const SHOP_ITEMS = [
-            { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'common', cost: 150, icon: 'Crown', stats: { vit: 5, int: 5 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。" },
-            { id: 's13', name: '暗影輕甲', type: 'body', rarity: 'rare', cost: 800, icon: 'Shield', stats: { agi: 15, vit: 10 }, desc: "適合潛行的輕型鎧甲，能融入夜色。" },
-            { id: 's5', name: '鱗片護甲', type: 'body', rarity: 'rare', cost: 1000, icon: 'Shield', stats: { vit: 25, str: 5 }, desc: "堅固的鱗片製成，防禦力優異。" },
-            { id: 's8', name: '圓木盾', type: 'offHand', rarity: 'common', cost: 300, icon: 'Shield', stats: { vit: 15 }, desc: "基本的防禦裝備，輕便好用。" },
-            { id: 's4', name: '精靈長弓', type: 'mainHand', rarity: 'rare', cost: 1200, icon: 'Sword', stats: { agi: 25, int: 5 }, desc: "精靈製作的弓，精準無比。" },
-            { id: 's15', name: '雙子匕首', type: 'mainHand', rarity: 'rare', cost: 900, icon: 'Sword', stats: { agi: 20, str: 10 }, desc: "輕巧鋒利的雙刀，適合快速連擊。" },
-            { id: 's1', name: '鐵製長劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的冒險者長劍。" },
-            { id: 's14', name: '戰斧', type: 'mainHand', rarity: 'epic', cost: 1500, icon: 'Hammer', stats: { str: 40 }, desc: "沉重而鋒利的戰斧，破壞力驚人。" },
-            { id: 's6', name: '神秘法袍', type: 'back', rarity: 'epic', cost: 1800, icon: 'Briefcase', stats: { int: 35, vit: 10 }, desc: "散發著微弱魔力的紅色法袍。" },
-            { id: 's17', name: '藍寶石護符', type: 'offHand', rarity: 'epic', cost: 2000, icon: 'Gem', stats: { int: 30, vit: 15 }, desc: "蘊含海洋之力的護符。" },
-            { id: 's7', name: '紅寶石法杖', type: 'mainHand', rarity: 'legendary', cost: 5000, icon: 'Gem', stats: { int: 50, vit: 10 }, desc: "頂端鑲嵌著巨大紅寶石的法杖。" },
-            { id: 's12', name: '力量指環', type: 'offHand', rarity: 'legendary', cost: 4500, icon: 'Heart', stats: { str: 30, agi: 10 }, desc: "賦予佩戴者強大力量的魔法指環。" },
-            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 }, desc: "輕便耐穿，適合長途跋涉。" },
-            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 8888, icon: 'Sun', stats: { int: 60, vit: 30 }, desc: "神聖的守護光輝。", effects: ['glow', 'float'] },
-            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] },
-            { id: 's100', name: '惡魔之翼', type: 'back', rarity: 'epic', cost: 9500, icon: 'Briefcase', stats: { str: 30, vit: -10 }, desc: "來自深淵的翅膀。", effects: ['pulse'] },
-            { id: 's101', name: '天使光翼', type: 'back', rarity: 'legendary', cost: 15000, icon: 'Briefcase', stats: { int: 40, vit: 40 }, desc: "純潔的光之翼。", effects: ['float', 'glow'] },
-        ];
-
-        const ITEM_ICONS = {
-            's2': () => <g><path fill="#8d1d1d" d="M10 6 H22 V18 H20 V20 H12 V18 H10 Z" /><path fill="#eab308" d="M14 6 H18 V8 H14 Z M16 4 V6 H16 Z" /><path fill="#b91c1c" d="M11 7 H21 V17 H11 Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18 H12 V20 H10 Z M20 18 H22 V20 H20 Z" /></g>,
-            's13': () => <g><path fill="#1a1a1a" d="M8 12 H24 V24 H8 Z" /><path fill="#404040" d="M10 12 H22 V14 H10 Z M12 14 V24 H14 V14 Z" /><path fill="#e5e5e5" d="M8 12 H12 V14 H8 Z M20 12 H24 V14 H20 Z" /><path fill="#ffffff" d="M12 12 H14 V24 H12 Z M18 12 H20 V24 H18 Z" opacity="0.3"/></g>,
-            's5': () => <g><path fill="#94a3b8" d="M8 12 H24 V22 H22 V24 H10 V22 H8 Z" /><path fill="#e2e8f0" d="M8 12 H10 V14 H8 Z M22 12 H24 V14 H22 Z" /><rect x="11" y="14" width="2" height="2" fill="#475569" /><rect x="15" y="14" width="2" height="2" fill="#475569" /><rect x="19" y="14" width="2" height="2" fill="#475569" /><rect x="13" y="17" width="2" height="2" fill="#475569" /><rect x="17" y="17" width="2" height="2" fill="#475569" /><rect x="11" y="20" width="2" height="2" fill="#475569" /><rect x="15" y="20" width="2" height="2" fill="#475569" /><rect x="19" y="20" width="2" height="2" fill="#475569" /></g>,
-            's8': () => <g><circle cx="16" cy="16" r="10" fill="#3e2723" stroke="#271c19" strokeWidth="2" /><circle cx="16" cy="16" r="3" fill="#9e9e9e" /><path fill="#5d4037" d="M16 6 V26 M6 16 H26" opacity="0.5" stroke="#271c19" strokeWidth="1" /></g>,
-            's4': () => <g transform="rotate(45, 16, 16)"><path fill="none" stroke="#558b2f" strokeWidth="3" d="M8 4 C 0 16, 0 16, 8 28" /><path fill="none" stroke="#dcedc8" strokeWidth="1" d="M8 4 L 8 28" /><rect x="6" y="14" width="4" height="4" fill="#33691e" /></g>,
-            's15': () => <g><g transform="translate(-4, 2)"><path fill="#e0f2f1" d="M12 12 L16 8 L18 10 L14 14 Z" /><path fill="#4db6ac" d="M14 14 L16 16 L14 18 L12 16 Z" /><path fill="#5d4037" d="M10 18 L12 16 L10 14 L8 16 Z" /></g><g transform="translate(6, 2) scale(-1, 1) translate(-32, 0)"><path fill="#e0f2f1" d="M12 12 L16 8 L18 10 L14 14 Z" /><path fill="#4db6ac" d="M14 14 L16 16 L14 18 L12 16 Z" /><path fill="#5d4037" d="M10 18 L12 16 L10 14 L8 16 Z" /></g></g>,
-            's1': () => <g transform="rotate(45, 16, 16)"><path fill="#cfd8dc" d="M14 6 H18 V20 H14 Z" /><path fill="#90a4ae" d="M14 6 L16 4 L18 6" /><path fill="#5d4037" d="M12 20 H20 V22 H12 Z" /><path fill="#3e2723" d="M15 22 H17 V26 H15 Z" /><circle cx="16" cy="27" r="1.5" fill="#ffd700" /></g>,
-            's14': () => <g transform="rotate(-15, 16, 16)"><path fill="#5d4037" d="M14 26 L18 26 L18 6 L14 6 Z" /><path fill="#43a047" d="M18 8 L24 6 L26 10 L18 12 Z" /><path fill="#2e7d32" d="M18 12 L26 14 L24 18 L18 16 Z" /><rect x="14" y="20" width="4" height="4" fill="#8d6e63" /></g>,
-            's6': () => <g><path fill="#b71c1c" d="M8 10 H24 V28 H8 Z" /><path fill="#ef5350" d="M10 10 H14 V28 H10 Z M18 10 H22 V28 H18 Z" /><path fill="#ffca28" d="M14 10 H18 V28 H14 Z" opacity="0.8" /><path fill="#7f0000" d="M8 10 H24 V12 H8 Z" /></g>,
-            's17': () => <g><path fill="none" stroke="#ffb300" strokeWidth="2" d="M10 8 Q16 20 22 8" /><circle cx="16" cy="20" r="5" fill="#ffb300" /><circle cx="16" cy="20" r="3" fill="#00bcd4" /></g>,
-            's7': () => <g transform="rotate(15, 16, 16)"><path fill="#5d4037" d="M14 8 H18 V28 H14 Z" /><circle cx="16" cy="6" r="5" fill="#8d6e63" /><circle cx="16" cy="6" r="3" fill="#d32f2f" /></g>,
-            's12': () => <g><circle cx="16" cy="16" r="7" fill="transparent" stroke="#ffb300" strokeWidth="3" /><rect x="14" y="7" width="4" height="4" fill="#d32f2f" transform="rotate(45, 16, 9)" /></g>,
-            's99': () => <g><path fill="#fef08a" d="M14 6 L18 20 L14 26 L10 20 Z" /><path fill="#eab308" d="M12 20 L16 26" stroke="#eab308" strokeWidth="2"/><animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite" /></g>,
-            's100': () => <g><path fill="#4a044e" d="M4 10 Q10 2 16 12 Q22 2 28 10 Q22 16 16 22 Q10 16 4 10" /></g>,
-            's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6"/></g>,
-        };
-
+        const EXCHANGE_RATES = { 'TWD':1, 'HKD':0.24, 'JPY':4.6 };
+        
+        const GEAR_VISUALS={'s1':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#5d4037" d="M12 20H20V22H12Z"/></g>,'s2':()=><g><path fill="#8d1d1d" d="M9 5h14v10h-14z"/><path fill="#eab308" d="M11 5h10v2h-10z"/></g>,'s3':()=><g><path fill="#5d4037" d="M11 29h4v3h-4zM17 29h4v3h-4z"/></g>,'s4':()=><path fill="none" stroke="#558b2f" strokeWidth="2" d="M22 14C16 20,16 20,22 26"/>,'s5':()=><g><path fill="#94a3b8" d="M10 17h12v9H10z"/><rect x="12" y="19" width="2" height="2" fill="#475569"/><rect x="16" y="19" width="2" height="2" fill="#475569"/><rect x="20" y="19" width="2" height="2" fill="#475569"/></g>,'s6':()=><g><path fill="#b71c1c" d="M7 17h18v15H7z" opacity="0.9"/></g>,'s7':()=><g transform="rotate(15,24,16)"><path fill="#5d4037" d="M22 12h2v14h-2z"/><circle cx="23" cy="11" r="3" fill="#d32f2f"/></g>,'s8':()=><g><circle cx="6" cy="22" r="6" fill="#3e2723" stroke="#271c19"/></g>,'s9':()=><path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3a5 1 0 1 1 10 0a5 1 0 1 1-10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}}/>,'s12':()=><circle cx="6" cy="22" r="2" fill="transparent" stroke="#ffb300" strokeWidth="1.5"/>,'s13':()=><g><path fill="#1a1a1a" d="M10 17h12v9H10z"/><path fill="#e5e5e5" d="M10 17h4v2h-4z M18 17h4v2h-4z"/></g>,'s14':()=><g transform="rotate(-15,24,16)"><path fill="#5d4037" d="M22 16h2v10h-2z"/><path fill="#43a047" d="M22 16l4-2l2 4l-6 2z"/></g>,'s15':()=><g><path fill="#e0f2f1" d="M22 18l4-4l2 2l-4 4z"/><path fill="#5d4037" d="M20 20l2-2" stroke="#5d4037" strokeWidth="2"/></g>,'s17':()=>null,'s99':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M14 6H18V20H14Z"/><path fill="#eab308" d="M16 6V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,'s100':()=><g className="animate-pulse"><path fill="#4a044e" d="M6 18Q2 12 10 10L16 18" opacity="0.8"/><path fill="#4a044e" d="M26 18Q30 12 22 10L16 18" opacity="0.8"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
+        const SHOP_ITEMS=[{id:'s2',name:'紅蓮兜帽',type:'head',rarity:'common',cost:150,icon:'Crown',stats:{vit:5,int:5},desc:"鮮紅色的兜帽，帶有金色的裝飾。"},{id:'s13',name:'暗影輕甲',type:'body',rarity:'rare',cost:800,icon:'Shield',stats:{agi:15,vit:10},desc:"適合潛行的輕型鎧甲，能融入夜色。"},{id:'s5',name:'鱗片護甲',type:'body',rarity:'rare',cost:1000,icon:'Shield',stats:{vit:25,str:5},desc:"堅固的鱗片製成，防禦力優異。"},{id:'s8',name:'圓木盾',type:'offHand',rarity:'common',cost:300,icon:'Shield',stats:{vit:15},desc:"基本的防禦裝備，輕便好用。"},{id:'s4',name:'精靈長弓',type:'mainHand',rarity:'rare',cost:1200,icon:'Sword',stats:{agi:25,int:5},desc:"精靈製作的弓，精準無比。"},{id:'s15',name:'雙子匕首',type:'mainHand',rarity:'rare',cost:900,icon:'Sword',stats:{agi:20,str:10},desc:"輕巧鋒利的雙刀，適合快速連擊。"},{id:'s1',name:'鐵製長劍',type:'mainHand',rarity:'common',cost:200,icon:'Sword',stats:{str:10},desc:"標準的冒險者長劍。"},{id:'s14',name:'戰斧',type:'mainHand',rarity:'epic',cost:1500,icon:'Hammer',stats:{str:40},desc:"沉重而鋒利的戰斧，破壞力驚人。"},{id:'s6',name:'神秘法袍',type:'back',rarity:'epic',cost:1800,icon:'Briefcase',stats:{int:35,vit:10},desc:"散發著微弱魔力的紅色法袍。"},{id:'s17',name:'藍寶石護符',type:'offHand',rarity:'epic',cost:2000,icon:'Gem',stats:{int:30,vit:15},desc:"蘊含海洋之力的護符。"},{id:'s7',name:'紅寶石法杖',type:'mainHand',rarity:'legendary',cost:5000,icon:'Gem',stats:{int:50,vit:10},desc:"頂端鑲嵌著巨大紅寶石的法杖。"},{id:'s12',name:'力量指環',type:'offHand',rarity:'legendary',cost:4500,icon:'Heart',stats:{str:30,agi:10},desc:"賦予佩戴者強大力量的魔法指環。"},{id:'s3',name:'旅行者之靴',type:'feet',rarity:'common',cost:80,icon:'Zap',stats:{agi:5},desc:"輕便耐穿，適合長途跋涉。"},{id:'s9',name:'聖靈光環',type:'head',rarity:'legendary',cost:8888,icon:'Sun',stats:{int:60,vit:30},desc:"神聖的守護光輝。",effects:['glow','float']},{id:'s99',name:'雷霆之劍',type:'mainHand',rarity:'legendary',cost:12000,icon:'Zap',stats:{str:60,agi:20},desc:"纏繞著閃電的傳說之劍。",effects:['sparkle']},{id:'s100',name:'惡魔之翼',type:'back',rarity:'epic',cost:9500,icon:'Briefcase',stats:{str:30,vit:-10},desc:"來自深淵的翅膀。",effects:['pulse']},{id:'s101',name:'天使光翼',type:'back',rarity:'legendary',cost:15000,icon:'Briefcase',stats:{int:40,vit:40},desc:"純潔的光之翼。",effects:['float','glow']}];
+        const ITEM_ICONS={'s2':()=><g><path fill="#8d1d1d" d="M10 6H22V18H20V20H12V18H10Z"/><path fill="#eab308" d="M14 6H18V8H14ZM16 4V6H16Z"/><path fill="#b91c1c" d="M11 7H21V17H11Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18H12V20H10ZM20 18H22V20H20Z"/></g>,'s13':()=><g><path fill="#1a1a1a" d="M8 12H24V24H8Z"/><path fill="#404040" d="M10 12H22V14H10ZM12 14V24H14V14Z"/><path fill="#e5e5e5" d="M8 12H12V14H8ZM20 12H24V14H20Z"/><path fill="#ffffff" d="M12 12H14V24H12ZM18 12H20V24H18Z" opacity="0.3"/></g>,'s5':()=><g><path fill="#94a3b8" d="M8 12H24V22H22V24H10V22H8Z"/><path fill="#e2e8f0" d="M8 12H10V14H8ZM22 12H24V14H22Z"/><rect x="11" y="14" width="2" height="2" fill="#475569"/><rect x="15" y="14" width="2" height="2" fill="#475569"/><rect x="19" y="14" width="2" height="2" fill="#475569"/><rect x="13" y="17" width="2" height="2" fill="#475569"/><rect x="17" y="17" width="2" height="2" fill="#475569"/><rect x="11" y="20" width="2" height="2" fill="#475569"/><rect x="15" y="20" width="2" height="2" fill="#475569"/><rect x="19" y="20" width="2" height="2" fill="#475569"/></g>,'s8':()=><g><circle cx="16" cy="16" r="10" fill="#3e2723" stroke="#271c19" strokeWidth="2"/><circle cx="16" cy="16" r="3" fill="#9e9e9e"/><path fill="#5d4037" d="M16 6V26M6 16H26" opacity="0.5" stroke="#271c19" strokeWidth="1"/></g>,'s4':()=><g transform="rotate(45,16,16)"><path fill="none" stroke="#558b2f" strokeWidth="3" d="M8 4C0 16,0 16,8 28"/><path fill="none" stroke="#dcedc8" strokeWidth="1" d="M8 4L8 28"/><rect x="6" y="14" width="4" height="4" fill="#33691e"/></g>,'s15':()=><g><g transform="translate(-4,2)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g><g transform="translate(6,2) scale(-1,1) translate(-32,0)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g></g>,'s1':()=><g transform="rotate(45,16,16)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#90a4ae" d="M14 6L16 4L18 6"/><path fill="#5d4037" d="M12 20H20V22H12Z"/><path fill="#3e2723" d="M15 22H17V26H15Z"/><circle cx="16" cy="27" r="1.5" fill="#ffd700"/></g>,'s14':()=><g transform="rotate(-15,16,16)"><path fill="#5d4037" d="M14 26L18 26L18 6L14 6Z"/><path fill="#43a047" d="M18 8L24 6L26 10L18 12Z"/><path fill="#2e7d32" d="M18 12L26 14L24 18L18 16Z"/><rect x="14" y="20" width="4" height="4" fill="#8d6e63"/></g>,'s6':()=><g><path fill="#b71c1c" d="M8 10H24V28H8Z"/><path fill="#ef5350" d="M10 10H14V28H10ZM18 10H22V28H18Z"/><path fill="#ffca28" d="M14 10H18V28H14Z" opacity="0.8"/><path fill="#7f0000" d="M8 10H24V12H8Z"/></g>,'s17':()=><g><path fill="none" stroke="#ffb300" strokeWidth="2" d="M10 8Q16 20 22 8"/><circle cx="16" cy="20" r="5" fill="#ffb300"/><circle cx="16" cy="20" r="3" fill="#00bcd4"/></g>,'s7':()=><g transform="rotate(15,16,16)"><path fill="#5d4037" d="M14 8H18V28H14Z"/><circle cx="16" cy="6" r="5" fill="#8d6e63"/><circle cx="16" cy="6" r="3" fill="#d32f2f"/></g>,'s12':()=><g><circle cx="16" cy="16" r="7" fill="transparent" stroke="#ffb300" strokeWidth="3"/><rect x="14" y="7" width="4" height="4" fill="#d32f2f" transform="rotate(45,16,9)"/></g>,'s99':()=><g><path fill="#fef08a" d="M14 6L18 20L14 26L10 20Z"/><path fill="#eab308" d="M12 20L16 26" stroke="#eab308" strokeWidth="2"/><animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite"/></g>,'s100':()=><g><path fill="#4a044e" d="M4 10Q10 2 16 12Q22 2 28 10Q22 16 16 22Q10 16 4 10"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
 
         const DEFAULT_CATEGORIES = {
@@ -307,18 +156,18 @@ measurementId: "G-FKDCX3WG8T"
 
         const TITLES_LIST = [
             { id: 'Novice', name: '初心冒險者', desc: '一切的起點', rarity: 'common', condition: '預設擁有', check: () => true },
-            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', rarity: 'common', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000 },
-            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', rarity: 'rare', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000 },
-            { id: 'BigSpender', name: '大富豪', desc: '財富如流水', rarity: 'epic', condition: '累積消費 > 50,000', check: (d, r) => d.totalExp * r >= 50000 },
-            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', rarity: 'common', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000 },
-            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', rarity: 'rare', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000 },
-            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', rarity: 'legendary', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000 },
-            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', rarity: 'epic', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50 },
-            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', rarity: 'rare', condition: '完成 10 個任務', check: (d) => d.questCount >= 10 },
-            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50 },
-            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50 },
-            { id: 'Fashionista', name: '時尚達人', desc: '擁有 10 件裝備', rarity: 'rare', condition: '擁有 > 10 件裝備', check: (d) => d.itemCount >= 10 },
-            { id: 'Social', name: '社交名流', desc: '擁有 5 位好友', rarity: 'rare', condition: '擁有 > 5 位好友', check: (d) => d.friendCount >= 5 },
+            { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', rarity: 'common', condition: '累積消費 > 1,000', check: (d, r) => d.totalExp * r >= 1000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 1000` },
+            { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', rarity: 'rare', condition: '累積消費 > 10,000', check: (d, r) => d.totalExp * r >= 10000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 10000` },
+            { id: 'BigSpender', name: '大富豪', desc: '財富如流水', rarity: 'epic', condition: '累積消費 > 50,000', check: (d, r) => d.totalExp * r >= 50000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 50000` },
+            { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', rarity: 'common', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 5000` },
+            { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', rarity: 'rare', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 50000` },
+            { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', rarity: 'legendary', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 100000` },
+            { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', rarity: 'epic', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50, getProgress: (s) => `${s.txCount} / 50` },
+            { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', rarity: 'rare', condition: '完成 10 個任務', check: (d) => d.questCount >= 10, getProgress: (s) => `${s.questCount} / 10` },
+            { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50, getProgress: (s) => `${s.questCount} / 50` },
+            { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
+            { id: 'Fashionista', name: '時尚達人', desc: '擁有 10 件裝備', rarity: 'rare', condition: '擁有 > 10 件裝備', check: (d) => d.itemCount >= 10, getProgress: (s) => `${s.itemCount} / 10` },
+            { id: 'Social', name: '社交名流', desc: '擁有 5 位好友', rarity: 'rare', condition: '擁有 > 5 位好友', check: (d) => d.friendCount >= 5, getProgress: (s) => `${s.friendCount} / 5` },
         ];
 
         const TRANSLATIONS = { 
@@ -469,14 +318,23 @@ const PixelPet = ({ id, className, animate = true }) => {
         const SelectorSheet = ({ title, options, onSelect, onClose, current, onLockedClick, getLabel }) => (
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[70vh] flex flex-col">
+                <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[70vh] flex flex-col border-t-4 border-theme-accent/20">
                     <div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div>
                     <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3>
                     <div className="grid gap-3 overflow-y-auto">
                         {options.map(opt => (
                             <button key={opt.value} onClick={() => { if(opt.locked && onLockedClick) { onLockedClick(opt); } else if (!opt.locked) { onSelect(opt.value); onClose(); } }} className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}>
-                                <div className="flex items-center gap-3">{opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}<div className="flex flex-col items-start"><span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>{opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}{opt.locked && opt.condition && <span className="text-[9px] text-red-400">🔒 {opt.condition}</span>}</div></div>
-                                {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}{opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
+                                <div className="flex items-center gap-3">
+                                    {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
+                                    <div className="flex flex-col items-start">
+                                        <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
+                                        {opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}
+                                        {/* 這裡顯示稱號進度 */}
+                                        {opt.locked && opt.condition && <span className="text-[9px] text-red-400 mt-1 font-mono bg-red-50 px-1 rounded border border-red-100">🔒 {opt.condition}</span>}
+                                    </div>
+                                </div>
+                                {current === opt.value && <Icon name="Check" className="text-theme-accent"/>}
+                                {opt.locked && <Icon name="Lock" className="text-theme-sub"/>}
                             </button>
                         ))}
                     </div>
@@ -610,7 +468,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                             <button onClick={addNew} className="w-full py-4 border-2 border-dashed border-theme-sub/50 rounded-2xl text-theme-sub font-bold hover:bg-theme-bg hover:text-theme-accent transition-colors flex justify-center items-center gap-2 mt-4"><Icon name="Plus"/> 新增類別</button>
                         </div>
 
-                        {/* 編輯面板 (內嵌) */}
+                        {/* 編輯面板 */}
                         {editingId && (
                             <div className="absolute bottom-0 left-0 right-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] border-t border-theme-border animate-[slideUp_0.2s] z-20">
                                 <div className="flex justify-between items-center mb-4">
@@ -656,8 +514,8 @@ const PixelPet = ({ id, className, animate = true }) => {
             const [accountId, setAccountId] = useState(initialData?.accountId || accounts[0]?.id || '');
             const [note, setNote] = useState(initialData?.note || '');
             
-            // 日期編輯欄位
-            const [txDate, setTxDate] = useState(initialData?.date || new Date().toISOString().split('T')[0]);
+            // 日期編輯欄位 (確保不會存成含時間的字串影響群組)
+            const [txDate, setTxDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
             const [showCalc, setShowCalc] = useState(false);
             
             const handleSubmit = (e) => {
@@ -681,7 +539,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
                     <div className="relative bg-theme-card w-full rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] overflow-hidden flex flex-col max-h-[90vh]">
                         <div className="p-4 border-b border-theme-border flex justify-between items-center bg-theme-bg shrink-0"><button onClick={onClose} className="text-theme-sub hover:text-theme-text"><Icon name="X" /></button><div className="font-bold text-theme-text">{initialData ? '編輯行動紀錄' : '紀錄行動'}</div><div className="w-6"></div></div>
-                        <div className="p-6 flex flex-col gap-6 overflow-y-auto">
+                        <div className="p-6 flex flex-col gap-6 overflow-y-auto pb-safe">
                             <div className="flex bg-theme-bg p-1 rounded-xl border border-theme-border"><button type="button" onClick={() => setType('expense')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${type === 'expense' ? 'bg-red-500 text-white shadow-md' : 'text-theme-sub'}`}>支出</button><button type="button" onClick={() => setType('income')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${type === 'income' ? 'bg-green-500 text-white shadow-md' : 'text-theme-sub'}`}>收入</button></div>
                             <div>
                                 <div onClick={() => setShowCalc(true)} className="relative text-center border-b border-theme-border pb-2 flex items-center justify-between cursor-pointer group">
@@ -887,15 +745,15 @@ const PixelPet = ({ id, className, animate = true }) => {
                             {categories.map(cat => ( <button key={cat.id} onClick={() => setFilter(cat.id)} className={`group relative flex flex-col items-center justify-center min-w-[60px] h-12 pb-1 rounded-t-lg border-t-2 border-x-2 transition-all duration-200 ${filter === cat.id ? 'bg-[#2d1b1e] border-[#5d4037] text-[#ffca28] translate-y-[4px] z-10' : 'bg-[#4e342e] border-[#3e2723] text-[#a1887f] hover:bg-[#5d4037] hover:text-[#efebe9] mb-[4px]'}`}><Icon name={cat.icon} size={14} className={filter === cat.id ? 'drop-shadow-glow' : ''}/><span className="text-[9px] font-bold mt-0.5">{cat.label}</span></button> ))}
                         </div>
                     )}
-                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#2d1b1e] relative">
+                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#2d1b1e] relative pb-28">
                         {showHistory ? (
                             <div className="p-4 space-y-3 bg-[#efebe9] min-h-full">
                                 <h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>
                                 {safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}
-                                {safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}
+                                {safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-50 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}
                             </div>
                         ) : (
-                            <div className="p-4 pb-24 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                            <div className="p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
                                 {displayedItems.map(item => {
                                     const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id];
                                     return (
@@ -909,9 +767,9 @@ const PixelPet = ({ id, className, animate = true }) => {
                         )}
                     </div>
                     
-                    {/* 避免被底部列遮擋，加入 bottom-24 */}
+                    {/* 確保不被底部按鈕遮擋，提高 bottom 數值 */}
                     {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
-                        <div className="absolute bottom-24 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
+                        <div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
                             <div className="bg-[#3e2723] border-2 border-[#5d4037] p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-50"></div>
                                 <div className="flex-1 relative z-10"><div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div><div className="text-lg font-bold text-[#efebe9] font-pixel">{previewItem.name}</div><div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div></div>
@@ -981,7 +839,7 @@ const PixelPet = ({ id, className, animate = true }) => {
             );
         };
 
-        const JournalView = ({ logs, transactions, categories, lang, translations, onEditTx }) => {
+        const JournalView = ({ logs, transactions, categories, lang, translations, onEditTx, onDeleteTx }) => {
             const [subView, setSubView] = useState('fin');
             const [timeFilter, setTimeFilter] = useState('month');
             const [calDate, setCalDate] = useState(new Date());
@@ -1009,6 +867,19 @@ const PixelPet = ({ id, className, animate = true }) => {
             };
             
             const filteredLogs = useMemo(() => logs.filter(l => l.type === 'system'), [logs]);
+
+            // 將交易紀錄依日期分群 (用於「財務變動」列表)
+            const groupedTxs = useMemo(() => {
+                const groups = {};
+                financialStats.txs.forEach(tx => {
+                    const dateStr = new Date(tx.date).toLocaleDateString();
+                    if (!groups[dateStr]) groups[dateStr] = { txs: [], exp: 0, inc: 0 };
+                    groups[dateStr].txs.push(tx);
+                    if(tx.type === 'expense') groups[dateStr].exp += tx.amount;
+                    if(tx.type === 'income') groups[dateStr].inc += tx.amount;
+                });
+                return Object.entries(groups).sort((a, b) => new Date(b[0]) - new Date(a[0]));
+            }, [financialStats.txs]);
 
             const renderCalendar = () => {
                 const year = calDate.getFullYear(); const month = calDate.getMonth(); const daysInMonth = new Date(year, month + 1, 0).getDate(); const firstDay = new Date(year, month, 1).getDay();
@@ -1086,13 +957,32 @@ const PixelPet = ({ id, className, animate = true }) => {
                     )}
 
                     {subView === 'fin' && (
-                        <div className="space-y-3 pb-20 min-h-[200px] animate-[fadeIn_0.3s]">
-                            {financialStats.txs.length > 0 ? financialStats.txs.map(tx => (
-                                <div key={tx.id} className="bg-theme-card p-4 rounded-2xl flex gap-3 items-center active:scale-[0.99] transition-transform border border-theme-border shadow-sm">
-                                    <div className={`w-1.5 h-12 rounded-full shrink-0 ${tx.type === 'income' ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex justify-between items-center mb-1"><span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-theme-bg border border-theme-border/50 text-theme-sub">{new Date(tx.date).toLocaleDateString()}</span><span className="text-[10px] opacity-40 font-mono">{new Date(tx.timestamp || tx.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>
-                                        <div className="flex justify-between items-center"><div className="text-sm font-bold text-theme-text truncate">{categories[tx.category]?.label || '其他'} <span className="text-[10px] font-normal text-theme-sub ml-1">{tx.note ? `(${tx.note})` : ''}</span></div><div className="flex items-center gap-3"><div className={`font-mono font-bold ${tx.type === 'income' ? 'text-green-500' : 'text-red-500'}`}>{tx.type === 'income' ? '+' : '-'}{tx.amount}</div><button onClick={() => onEditTx(tx)} className="p-1.5 bg-theme-bg rounded-lg text-theme-sub hover:text-theme-accent active:scale-95 border border-theme-border/50"><Icon name="Edit" size={14}/></button></div></div>
+                        <div className="space-y-4 pb-20 min-h-[200px] animate-[fadeIn_0.3s]">
+                            {groupedTxs.length > 0 ? groupedTxs.map(([date, group]) => (
+                                <div key={date} className="bg-theme-card p-4 rounded-2xl border border-theme-border shadow-sm">
+                                    <div className="flex justify-between items-center mb-3 pb-2 border-b border-theme-border/50">
+                                        <span className="text-xs font-bold text-theme-sub flex items-center gap-1"><Icon name="Calendar" size={12}/> {date}</span>
+                                        <div className="flex items-center gap-2 text-[10px] font-mono">
+                                            {group.inc > 0 && <span className="text-green-500">+{group.inc}</span>}
+                                            {group.exp > 0 && <span className="text-red-500">-{group.exp}</span>}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {group.txs.map(tx => (
+                                            <div key={tx.id} className="flex justify-between items-center py-1.5 active:scale-[0.99] transition-transform">
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-inner ${tx.type === 'income' ? 'bg-green-400' : 'bg-red-400'}`}><Icon name={categories[tx.category]?.icon || 'ShoppingBag'} size={14}/></div>
+                                                    <div><div className="text-sm font-bold text-theme-text">{categories[tx.category]?.label || '其他'} <span className="text-[10px] font-normal text-theme-sub ml-1">{tx.note ? `(${tx.note})` : ''}</span></div><div className="text-[10px] opacity-40 font-mono text-theme-sub">{new Date(tx.timestamp || tx.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div></div>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`font-mono font-bold ${tx.type === 'income' ? 'text-green-500' : 'text-red-500'}`}>{tx.type === 'income' ? '+' : '-'}{tx.amount}</div>
+                                                    <div className="flex flex-col gap-1 ml-1">
+                                                        <button onClick={() => onEditTx(tx)} className="p-1 bg-theme-bg rounded text-theme-sub hover:text-theme-accent active:scale-95 border border-theme-border/50"><Icon name="Edit" size={12}/></button>
+                                                        <button onClick={() => onDeleteTx(tx)} className="p-1 bg-red-50 text-red-400 rounded active:scale-95 border border-red-100 hover:bg-red-100"><Icon name="Trash" size={12}/></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             )) : <div className="flex flex-col items-center justify-center py-10 opacity-50"><Icon name="Ghost" size={48} className="text-theme-sub mb-2"/><span className="text-xs text-theme-sub font-bold">尚無相關紀錄</span></div>}
@@ -1258,7 +1148,8 @@ const PixelPet = ({ id, className, animate = true }) => {
                                      <div className="transform scale-[2.5] translate-y-6 z-10"><PixelAvatar gender={selectedFriend.gender} colors={selectedFriend.appearance} equipped={selectedFriend.equipped} className="w-32 h-32 drop-shadow-xl"/></div>
                                      <div className="absolute bottom-4 right-6 bg-white/80 backdrop-blur px-3 py-1 rounded-full shadow-sm flex items-center gap-1 text-pink-500 font-bold text-sm border border-pink-100"><Icon name="Heart" size={14} className="fill-pink-500"/> {selectedFriend.likes}</div>
                                 </div>
-                                <div className="p-6 overflow-y-auto bg-theme-card">
+                                {/* 修復：增加 pb-12 確保內容不會被擋住 */}
+                                <div className="p-6 pb-12 overflow-y-auto bg-theme-card">
                                     <div className="text-center mb-6"><h2 className="text-2xl font-bold text-theme-text font-pixel">{selectedFriend.name}</h2><div className="flex justify-center gap-2 mt-2"><span className="text-xs bg-theme-accent text-white px-2 py-1 rounded font-bold shadow-sm">Lv.{selectedFriend.level}</span><span className="text-xs bg-theme-bg text-theme-sub px-2 py-1 rounded font-bold border border-theme-border">{TITLES_LIST.find(t => t.id === selectedFriend.title)?.name || selectedFriend.title}</span></div></div>
                                     <div className="grid grid-cols-2 gap-3 mb-6">
                                         <button onClick={() => onLikeFriend(selectedFriend.uid)} disabled={isLikedToday(selectedFriend)} className={`py-3 rounded-2xl font-bold shadow-md flex items-center justify-center gap-2 transition-all active:scale-95 ${isLikedToday(selectedFriend) ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-pink-500 text-white hover:brightness-110'}`}><Icon name="Heart" className={isLikedToday(selectedFriend) ? '' : 'fill-white'}/> {isLikedToday(selectedFriend) ? t('like_success') : t('send_like')}</button>
@@ -1305,7 +1196,6 @@ const PixelPet = ({ id, className, animate = true }) => {
             const [tempAccountType, setTempAccountType] = useState('cash');
             const [showAssetCalc, setShowAssetCalc] = useState(false);
             
-            // 類別管理專用 State
             const [showCategoryManager, setShowCategoryManager] = useState(false);
 
             const [equipModalOpen, setEquipModalOpen] = useState(false);
@@ -1362,10 +1252,30 @@ const PixelPet = ({ id, className, animate = true }) => {
             
             useEffect(() => { 
                 if (authUser && data && !authLoading) {
-                    const timer = setTimeout(() => {
+                    const timer = setTimeout(async () => {
                         setCloudSyncing(true);
-                        db.collection('users').doc(authUser.uid).set(data).then(() => setCloudSyncing(false)).catch(e => { console.error(e); setCloudSyncing(false); });
-                        localStorage.setItem(`gw_v28_data_${authUser.uid}`, JSON.stringify(data)); 
+                        try {
+                            // 好友雙向同步檢查 (對方加我時，我也會自動更新名單)
+                            const doc = await db.collection('users').doc(authUser.uid).get();
+                            let latestFriends = data.friends || [];
+                            if (doc.exists) {
+                                const cloudData = doc.data();
+                                const mergedMap = new Map();
+                                (data.friends || []).forEach(f => mergedMap.set(f.uid, f));
+                                (cloudData.friends || []).forEach(f => mergedMap.set(f.uid, f));
+                                latestFriends = Array.from(mergedMap.values());
+                                if (latestFriends.length > (data.friends || []).length) {
+                                    setData(prev => ({ ...prev, friends: latestFriends }));
+                                }
+                            }
+                            const dataToSave = { ...data, friends: latestFriends };
+                            await db.collection('users').doc(authUser.uid).set(dataToSave);
+                            localStorage.setItem(`gw_v28_data_${authUser.uid}`, JSON.stringify(dataToSave)); 
+                        } catch (e) {
+                            console.error("Sync error", e);
+                        } finally {
+                            setCloudSyncing(false);
+                        }
                     }, 2000);
                     return () => clearTimeout(timer);
                 }
@@ -1377,6 +1287,18 @@ const PixelPet = ({ id, className, animate = true }) => {
 
             const t = (key) => TRANSLATIONS[lang]?.[key] || key;
             const addLog = (type, msg, currentLogs) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...currentLogs].slice(0, 50); };
+            
+            // 用於稱號進度計算
+            const currentStats = useMemo(() => ({ 
+                txCount: data.transactions.length, 
+                expenseTotal: data.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), 
+                balance: data.accounts.reduce((a,c) => a + c.balance, 0), 
+                questCount: data.claimedQuests.length, 
+                level: data.user ? data.user.level : 1, 
+                itemCount: data.inventory.length, 
+                friendCount: data.friends.length 
+            }), [data]);
+
             const checkUnlockables = (currentData) => {
                 const stats = { txCount: currentData.transactions.length, expenseTotal: currentData.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), balance: currentData.accounts.reduce((a,c) => a + c.balance, 0), questCount: currentData.claimedQuests.length, level: currentData.user ? currentData.user.level : 1, itemCount: currentData.inventory.length, friendCount: currentData.friends.length };
                 let newUser = { ...currentData.user }; let logs = [...currentData.logs]; let updated = false;
@@ -1426,6 +1348,22 @@ const PixelPet = ({ id, className, animate = true }) => {
                 setEditingTx(null); setShowAddModal(false);
             };
 
+            const handleDeleteTransaction = (tx) => {
+                if(!window.confirm('確定要銷毀這筆紀錄嗎？')) return;
+                let newData = { ...data };
+                let newAccounts = [...data.accounts];
+                const accIdx = newAccounts.findIndex(a => a.id == tx.accountId);
+                if (accIdx > -1) {
+                    newAccounts[accIdx] = { ...newAccounts[accIdx] };
+                    newAccounts[accIdx].balance += (tx.type === 'expense' ? tx.amount : -tx.amount);
+                }
+                newData.transactions = newData.transactions.filter(t => t.id !== tx.id);
+                newData.accounts = newAccounts;
+                newData.logs = addLog('system', `銷毀紀錄: ${data.categories[tx.category]?.label || '其他'}`, newData.logs);
+                setData(newData);
+                checkUnlockables(newData);
+            };
+
             const handleClaimQuest = (quest) => { if (!data.user) return; let newUser = { ...data.user }; newUser.gold += quest.coins; newUser.exp += quest.exp; let leveledUp = false; const expReq = newUser.level * 100; if (newUser.exp >= expReq) { newUser.level += 1; newUser.exp -= expReq; leveledUp = true; } const newClaimed = [...data.claimedQuests, quest.uniqueId || quest.id]; const newLogs = addLog('system', `任務完成: ${quest.title}`, data.logs); const newData = { ...data, user: newUser, claimedQuests: newClaimed, logs: newLogs }; setData(newData); checkUnlockables(newData); if (leveledUp) setShowLevelUp({ show: true, level: newUser.level }); };
             
             const handleSaveAccount = () => { 
@@ -1450,6 +1388,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                 else { setTempAccountBalance(prev => { if (prev === '' || prev === '0') { if (['+','*','/'].includes(val)) return prev; return val; } return prev + val; }); }
             };
 
+            // 雙向新增好友
             const handleAddFriend = async (id) => { 
                 if (!id || !id.trim() || data.friends.some(f => f.uid === id)) return;
                 if (id === data.user.uid) { alert(t('cannot_add_self')); return; }
@@ -1463,8 +1402,11 @@ const PixelPet = ({ id, className, animate = true }) => {
 
                     const newFriend = { uid: targetData.user.uid, name: targetData.user.name, level: targetData.user.level, title: targetData.user.title, gender: targetData.user.gender, appearance: targetData.user.appearance, equipped: targetData.equipped || {}, lastLogin: 'Online', likes: 0 };
                     const newLogs = addLog('system', `結交好友: ${newFriend.name}`, data.logs);
+                    
+                    // 將對方加入我的清單
                     setData(prev => ({ ...prev, friends: [...(prev.friends || []), newFriend], logs: newLogs }));
 
+                    // 將我加入對方的清單
                     const myProfile = { uid: data.user.uid, name: data.user.name, level: data.user.level, title: data.user.title, gender: data.user.gender, appearance: data.user.appearance, equipped: data.equipped || {}, lastLogin: 'Online', likes: 0 };
                     let targetFriends = targetData.friends || [];
                     targetFriends = targetFriends.filter(f => f.uid !== myProfile.uid);
@@ -1586,9 +1528,9 @@ const PixelPet = ({ id, className, animate = true }) => {
                         {view === 'home' && <HomeView user={data.user} equipped={data.equipped} accounts={data.accounts} onOpenAdd={() => setShowAddModal(true)} onOpenAsset={(acc) => { setEditingAccount(acc || null); setTempAccountName(acc?.name || ''); setTempAccountBalance(acc?.balance?.toString() || ''); setTempAccountCurrency(acc?.currency || mainCurrency); setTempAccountType(acc?.type || 'cash'); setAssetModalOpen(true); }} lang={lang} translations={TRANSLATIONS} onRenamePet={handleRenamePet} />}
                         {view === 'shop' && <ShopView gold={data.user.gold} inventory={data.inventory} equipped={data.equipped} user={data.user} onBuy={handleBuyItem} lang={lang} translations={TRANSLATIONS} purchaseHistory={data.purchaseHistory} />}
                         {view === 'character' && <CharacterView level={data.user.level} equipped={data.equipped} gender={data.user.gender} appearance={data.user.appearance} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} lang={lang} translations={TRANSLATIONS} />}
-                        {view === 'journal' && <JournalView logs={data.logs} transactions={data.transactions} categories={data.categories} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} />}
+                        {view === 'journal' && <JournalView logs={data.logs} transactions={data.transactions} categories={data.categories} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
                         {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} />}
-                        {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={data.user.unlockedAchievements} currentStats={{ txCount: data.transactions.length, expenseTotal: data.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), balance: data.accounts.reduce((a,c) => a + c.balance, 0), questCount: data.claimedQuests.length, level: data.user.level, itemCount: data.inventory.length, friendCount: data.friends.length }} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={data.user.unlockedAchievements} currentStats={currentStats} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'social' && <SocialView user={data.user} friends={data.friends || []} onAddFriend={handleAddFriend} onRemoveFriend={handleRemoveFriend} onLikeFriend={handleLikeFriend} onUpdateId={handleUpdateId} lang={lang} translations={TRANSLATIONS} />}
                     </main>
                     <nav className="fixed bottom-0 w-full glass border-t border-theme-border px-1 flex justify-between items-center z-30 h-20 rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.05)] shrink-0 pb-1 overflow-x-auto no-scrollbar">
@@ -1619,7 +1561,15 @@ const PixelPet = ({ id, className, animate = true }) => {
                     )}
                     <input type="file" id="hidden-file-input" className="hidden" accept="image/*" onChange={handleAvatarUpload}/>
                     
-                    {showTitleSelect && <SelectorSheet title="更換稱號" options={TITLES_LIST.map(title => ({ value: title.id, label: title.name, desc: title.desc, locked: !data.user.unlockedTitles.includes(title.id), condition: title.condition }))} current={data.user.title} onSelect={handleSetTitle} onClose={() => setShowTitleSelect(false)} />}
+                    {/* 稱號選擇面板 (包含進度顯示) */}
+                    {showTitleSelect && <SelectorSheet title="更換稱號" options={TITLES_LIST.map(title => {
+                        let conditionText = title.condition;
+                        if (!data.user.unlockedTitles.includes(title.id) && title.getProgress) {
+                            conditionText += ` (進度: ${title.getProgress(currentStats, EXCHANGE_RATES[mainCurrency] || 1)})`;
+                        }
+                        return { value: title.id, label: title.name, desc: title.desc, locked: !data.user.unlockedTitles.includes(title.id), condition: conditionText };
+                    })} current={data.user.title} onSelect={handleSetTitle} onClose={() => setShowTitleSelect(false)} />}
+                    
                     {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => TRANSLATIONS[lang]?.[`theme_${opt.label}`] || opt.label} />}
                     {showCurrencySelect && <SelectorSheet title={t('exchange')} options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={() => setShowLevelUp({ ...showLevelUp, show: false })} />}
