@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V28 (Standalone)</title>
+    <title>SakuraWallet V28 (Cloud Sync & Calendar)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=DotGothic16&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
@@ -73,12 +78,6 @@
         .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); }
         .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; }
         .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
-        
-        /* Item Effects */
-        .effect-sparkle { animation: shimmer 2s linear infinite; }
-        .effect-float { animation: float 3s ease-in-out infinite; }
-        .effect-pulse { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        .effect-flame { filter: drop-shadow(0 -4px 6px rgba(239, 68, 68, 0.5)); }
     </style>
 </head>
 <body>
@@ -86,6 +85,23 @@
 
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
+
+        // --- FIREBASE 初始化設定 ---
+        const firebaseConfig = {
+apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
+authDomain: "rpgmoney-73cfd.firebaseapp.com",
+projectId: "rpgmoney-73cfd",
+storageBucket: "rpgmoney-73cfd.firebasestorage.app",
+messagingSenderId: "804479578382",
+appId: "1:804479578382:web:0882920513d9377998a75f",
+measurementId: "G-FKDCX3WG8T"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         // --- ICONS ---
         const ICON_PATHS = {
@@ -299,6 +315,7 @@
                 purchase_history: '購買紀錄',
                 equipment: '裝備',
                 upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物',
+                cancel: '取消', confirm: '確認'
             }, 
             en: { 
                 adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Achievements', upgrade: 'Character', exchange: 'Exchange', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Pet', settings: 'Settings',
@@ -322,10 +339,10 @@
                 purchase_history: 'Purchase History',
                 equipment: 'Equipment',
                 upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet',
+                cancel: 'Cancel', confirm: 'Confirm'
             },
             ja: {
-                // ... (existing translations) ...
-                guardian: 'ペット', upload_avatar: '画像アップロード', choose_pet: 'パートナーを選ぶ',
+                guardian: 'ペット', upload_avatar: '画像アップロード', choose_pet: 'パートナーを選ぶ', cancel: 'キャンセル', confirm: '確認'
             }
         };
 
@@ -1030,9 +1047,12 @@
             );
         };
 
-        const JournalView = ({ logs, transactions, lang, translations }) => {
+        const JournalView = ({ logs, transactions, categories, lang, translations }) => {
             const [subView, setSubView] = useState('fin');
             const [timeFilter, setTimeFilter] = useState('month');
+            const [calDate, setCalDate] = useState(new Date());
+            const [selectedDate, setSelectedDate] = useState(null);
+
             const t = (key) => translations[lang]?.[key] || key;
             const financialStats = useMemo(() => {
                 const now = new Date(); const todayStr = now.toDateString(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear();
@@ -1051,30 +1071,152 @@
             };
             const filteredLogs = useMemo(() => logs.filter(l => { if (subView === 'sys') return l.type === 'system'; if (subView === 'fin') { if (l.type === 'system') return false; const logDate = new Date(l.date); const now = new Date(); if (timeFilter === 'today') return logDate.toDateString() === now.toDateString(); if (timeFilter === 'month') return logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear(); return true; } return false; }), [logs, subView, timeFilter]);
 
+            const renderCalendar = () => {
+                const year = calDate.getFullYear();
+                const month = calDate.getMonth();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+
+                const prevMonth = () => { setCalDate(new Date(year, month - 1, 1)); setSelectedDate(null); };
+                const nextMonth = () => { setCalDate(new Date(year, month + 1, 1)); setSelectedDate(null); };
+
+                const daysArray = Array.from({length: firstDay}, () => null).concat(Array.from({length: daysInMonth}, (_, i) => i + 1));
+
+                const getDailyStats = (day) => {
+                    if (!day) return null;
+                    const dateStr = new Date(year, month, day).toDateString();
+                    const dailyTxs = transactions.filter(tx => new Date(tx.date).toDateString() === dateStr);
+                    const inc = dailyTxs.filter(t => t.type === 'income').reduce((a,c) => a + c.amount, 0);
+                    const exp = dailyTxs.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0);
+                    return { inc, exp, txs: dailyTxs };
+                };
+
+                const selectedDateStr = selectedDate ? new Date(year, month, selectedDate).toDateString() : null;
+                const selectedTxs = selectedDate ? transactions.filter(tx => new Date(tx.date).toDateString() === selectedDateStr) : [];
+
+                return (
+                    <div className="flex flex-col gap-4 animate-[fadeIn_0.3s]">
+                        <div className="flex justify-between items-center bg-theme-card p-3 rounded-2xl shadow-sm border border-theme-border">
+                            <button onClick={prevMonth} className="p-1.5 bg-theme-bg hover:bg-theme-accent/20 rounded-lg active:scale-95 text-theme-text transition-colors"><Icon name="ArrowUp" size={16} className="-rotate-90"/></button>
+                            <div className="font-bold font-pixel tracking-widest text-theme-text">{year} 年 {month + 1} 月</div>
+                            <button onClick={nextMonth} className="p-1.5 bg-theme-bg hover:bg-theme-accent/20 rounded-lg active:scale-95 text-theme-text transition-colors"><Icon name="ArrowUp" size={16} className="rotate-90"/></button>
+                        </div>
+
+                        <div className="bg-theme-card rounded-2xl p-4 border border-theme-border shadow-sm">
+                            <div className="grid grid-cols-7 gap-1 text-center mb-2">
+                                {['日','一','二','三','四','五','六'].map((d, i) => <div key={d} className={`text-[10px] font-bold ${i===0 || i===6 ? 'text-red-400' : 'text-theme-sub'}`}>{d}</div>)}
+                            </div>
+                            <div className="grid grid-cols-7 gap-1">
+                                {daysArray.map((day, idx) => {
+                                    const stats = getDailyStats(day);
+                                    const isSelected = day === selectedDate;
+                                    const isToday = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                                    return (
+                                        <div key={idx} onClick={() => day && setSelectedDate(isSelected ? null : day)}
+                                             className={`relative flex flex-col items-center justify-start pt-1 pb-1.5 h-[52px] rounded-xl border-2 transition-all ${day ? 'cursor-pointer active:scale-95' : 'border-transparent'} ${isSelected ? 'border-theme-accent bg-theme-accent/10 shadow-sm z-10 scale-105' : day ? 'border-transparent hover:bg-theme-bg' : ''} ${isToday && !isSelected ? 'bg-yellow-500/10 border-yellow-400/50' : ''}`}>
+                                            {day && (
+                                                <>
+                                                    <span className={`text-xs font-bold leading-none mb-1 ${isToday ? 'text-theme-accent' : 'text-theme-text'}`}>{day}</span>
+                                                    <div className="flex flex-col gap-0.5 items-center w-full">
+                                                        {stats.inc > 0 && <span className="text-[8px] font-mono text-green-500 leading-none bg-green-50 px-1 rounded truncate max-w-[90%]">+{stats.inc}</span>}
+                                                        {stats.exp > 0 && <span className="text-[8px] font-mono text-red-500 leading-none bg-red-50 px-1 rounded truncate max-w-[90%]">-{stats.exp}</span>}
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        {selectedDate && (
+                            <div className="bg-theme-card p-4 rounded-2xl border border-theme-border shadow-sm animate-[slideUp_0.2s]">
+                                <h4 className="text-xs font-bold text-theme-sub mb-3 uppercase flex items-center gap-2"><Icon name="Scroll" size={14} className="text-theme-accent"/> {month+1}月{selectedDate}日 行動紀錄</h4>
+                                <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
+                                    {selectedTxs.length > 0 ? selectedTxs.map(tx => (
+                                        <div key={tx.id} className="flex justify-between items-center py-2 px-3 bg-theme-bg rounded-xl border border-theme-border/50 shadow-sm">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-inner ${tx.type === 'income' ? 'bg-green-400' : 'bg-red-400'}`}>
+                                                    <Icon name={categories[tx.category]?.icon || 'ShoppingBag'} size={14}/>
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-bold text-theme-text">{categories[tx.category]?.label || '其他'}</div>
+                                                    {tx.note && <div className="text-[10px] text-theme-sub truncate max-w-[120px]">{tx.note}</div>}
+                                                </div>
+                                            </div>
+                                            <div className={`font-mono font-bold text-lg ${tx.type === 'income' ? 'text-green-500' : 'text-red-500'}`}>
+                                                {tx.type === 'income' ? '+' : '-'}{tx.amount}
+                                            </div>
+                                        </div>
+                                    )) : <div className="text-[10px] text-theme-sub text-center py-6 bg-theme-bg rounded-xl border border-theme-border border-dashed">本日無紀錄</div>}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
             return (
                 <div className="animate-[fadeIn_0.5s] space-y-4 p-4 pb-24 h-full overflow-y-auto bg-theme-bg">
                     <div className="flex bg-theme-card p-1 rounded-xl border border-theme-border shadow-sm">
-                        <button onClick={() => setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${subView === 'fin' ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>財務變動</button>
-                        <button onClick={() => setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${subView === 'sys' ? 'bg-theme-accent text-white shadow' : 'text-theme-sub'}`}>系統事件</button>
+                        <button onClick={() => setSubView('fin')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${subView === 'fin' ? 'bg-theme-accent text-white shadow' : 'text-theme-sub hover:bg-theme-bg'}`}>財務變動</button>
+                        <button onClick={() => setSubView('cal')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${subView === 'cal' ? 'bg-theme-accent text-white shadow' : 'text-theme-sub hover:bg-theme-bg'}`}>行事曆</button>
+                        <button onClick={() => setSubView('sys')} className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${subView === 'sys' ? 'bg-theme-accent text-white shadow' : 'text-theme-sub hover:bg-theme-bg'}`}>系統事件</button>
                     </div>
+
+                    {subView === 'cal' && renderCalendar()}
+
                     {subView === 'fin' && (
-                        <>
-                            <div className="flex justify-center gap-2">{['all', 'month', 'today'].map((tf) => (<button key={tf} onClick={() => setTimeFilter(tf)} className={`px-4 py-1.5 rounded-full text-[10px] font-bold border transition-all active:scale-95 ${timeFilter === tf ? 'bg-theme-text text-theme-bg border-theme-text' : 'bg-transparent text-theme-sub border-theme-border'}`}>{tf === 'all' ? '全部' : tf === 'month' ? '本月' : '今日'}</button>))}</div>
-                            <div className="glass p-5 rounded-3xl border border-theme-border relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
-                                <div className="flex justify-between items-center mb-4 relative z-10"><h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Chart" size={16} className="text-theme-accent"/> {timeFilter === 'all' ? '總覽' : timeFilter === 'month' ? '本月收支' : '今日收支'}</h3><div className={`font-mono font-bold ${financialStats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>{financialStats.net >= 0 ? '+' : ''}{financialStats.net}</div></div>
-                                <div className="flex gap-3 relative z-10"><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center"><span className="text-[10px] text-green-600 font-bold mb-1 uppercase">Income</span><span className="text-lg font-mono font-bold text-green-500">+{financialStats.in}</span></div><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center"><span className="text-[10px] text-red-600 font-bold mb-1 uppercase">Expense</span><span className="text-lg font-mono font-bold text-red-500">-{financialStats.out}</span></div></div>
+                        <div className="glass p-5 rounded-3xl border border-theme-border relative overflow-hidden animate-[fadeIn_0.3s]">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
+                            
+                            <div className="flex justify-between items-center mb-4 relative z-10">
+                                <h3 className="font-bold text-sm text-theme-text flex items-center gap-2">
+                                    <Icon name="Chart" size={16} className="text-theme-accent"/> {timeFilter === 'all' ? '總覽' : timeFilter === 'month' ? '本月' : '今日'}魔力總量
+                                </h3>
+                                <div className={`font-mono text-xl font-bold ${financialStats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                    {financialStats.net >= 0 ? '+' : ''}{financialStats.net}
+                                </div>
                             </div>
-                        </>
+                            
+                            <div className="flex gap-3 relative z-10 mb-5">
+                                <div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm">
+                                    <span className="text-[10px] text-green-600 font-bold mb-1 uppercase">Income</span>
+                                    <span className="text-lg font-mono font-bold text-green-500">+{financialStats.in}</span>
+                                </div>
+                                <div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm">
+                                    <span className="text-[10px] text-red-600 font-bold mb-1 uppercase">Expense</span>
+                                    <span className="text-lg font-mono font-bold text-red-500">-{financialStats.out}</span>
+                                </div>
+                            </div>
+
+                            {/* 時間切換：移動到魔力總量框架左下方 */}
+                            <div className="flex justify-start gap-2 relative z-10 border-t border-theme-border/50 pt-4">
+                                {['all', 'month', 'today'].map((tf) => (
+                                    <button key={tf} onClick={() => setTimeFilter(tf)} className={`px-4 py-1.5 rounded-full text-[10px] font-bold border transition-all active:scale-95 shadow-sm ${timeFilter === tf ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border hover:brightness-95'}`}>
+                                        {tf === 'all' ? '全部' : tf === 'month' ? '本月' : '今日'}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     )}
-                    <div className="space-y-3 pb-20 min-h-[200px]">
-                        {filteredLogs.length > 0 ? filteredLogs.map(l => (
-                            <div key={l.id} className="bg-theme-card p-4 rounded-2xl flex gap-3 items-center active:scale-[0.99] transition-transform border border-theme-border shadow-sm">
-                                <div className={`w-1.5 h-10 rounded-full shrink-0 ${l.type === 'system' ? 'bg-blue-400' : l.type.includes('in') ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                                <div className="flex-1 min-w-0"><div className="flex justify-between items-center mb-1"><span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${l.type === 'system' ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-500'}`}>{new Date(l.date).toLocaleDateString()}</span><span className="text-[10px] opacity-40 font-mono">{new Date(l.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div><div className="text-sm font-bold text-theme-text truncate">{formatLogMsg(l)}</div></div>
-                            </div>
-                        )) : <div className="flex flex-col items-center justify-center py-10 opacity-50"><Icon name="Ghost" size={48} className="text-theme-sub mb-2"/><span className="text-xs text-theme-sub font-bold">尚無相關紀錄</span></div>}
-                    </div>
+
+                    {(subView === 'fin' || subView === 'sys') && (
+                        <div className="space-y-3 pb-20 min-h-[200px] animate-[fadeIn_0.3s]">
+                            {filteredLogs.length > 0 ? filteredLogs.map(l => (
+                                <div key={l.id} className="bg-theme-card p-4 rounded-2xl flex gap-3 items-center active:scale-[0.99] transition-transform border border-theme-border shadow-sm">
+                                    <div className={`w-1.5 h-10 rounded-full shrink-0 ${l.type === 'system' ? 'bg-blue-400' : l.type.includes('in') ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${l.type === 'system' ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-500'}`}>{new Date(l.date).toLocaleDateString()}</span>
+                                            <span className="text-[10px] opacity-40 font-mono">{new Date(l.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                        </div>
+                                        <div className="text-sm font-bold text-theme-text truncate">{formatLogMsg(l)}</div>
+                                    </div>
+                                </div>
+                            )) : <div className="flex flex-col items-center justify-center py-10 opacity-50"><Icon name="Ghost" size={48} className="text-theme-sub mb-2"/><span className="text-xs text-theme-sub font-bold">尚無相關紀錄</span></div>}
+                        </div>
+                    )}
                 </div>
             );
         };
@@ -1255,6 +1397,9 @@
         };
 
         const App = () => {
+            const [authUser, setAuthUser] = useState(null);
+            const [authLoading, setAuthLoading] = useState(true);
+
             const [data, setData] = useState(INITIAL_DATA);
             const [view, setView] = useState('home');
             const [theme, setTheme] = useState('ink');
@@ -1274,22 +1419,70 @@
             const [showPetSelector, setShowPetSelector] = useState(false);
             const [showProfileOptions, setShowProfileOptions] = useState(false);
             const [showTitleSelect, setShowTitleSelect] = useState(false);
+            
+            // 暱稱變更專用 State
+            const [showRenameModal, setShowRenameModal] = useState(false);
+            const [newNameInput, setNewNameInput] = useState('');
+
+            // 用於控制登入或註冊表單
+            const [isRegistering, setIsRegistering] = useState(false);
+            const [accountInput, setAccountInput] = useState('');
+            const [passwordInput, setPasswordInput] = useState('');
+            const [nicknameInput, setNicknameInput] = useState('');
+            const [authError, setAuthError] = useState('');
+            const [cloudSyncing, setCloudSyncing] = useState(false);
 
             useEffect(() => {
-                const savedData = localStorage.getItem('gw_v28_data');
-                if (savedData) {
-                    try { const parsed = JSON.parse(savedData); setData({ ...INITIAL_DATA, ...parsed, user: { ...INITIAL_DATA.user, ...parsed.user } }); } 
-                    catch (e) { console.error("Failed to load data", e); }
-                } else {
-                     setData(prev => ({ ...prev, friends: [{ uid: 'mock_1', name: 'Sakura Guide', gender: 'female', level: 10, title: 'Novice', appearance: { hair: '#f472b6', skin: '#ffccbc', armor: '#fff', cape: '#ec4899' }, equipped: { head: SHOP_ITEMS[1], mainHand: SHOP_ITEMS[3] }, lastLogin: 'Online', likes: 999 }] }));
-                }
+                const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                    if (user) {
+                        setAuthUser(user);
+                        try {
+                            const doc = await db.collection('users').doc(user.uid).get();
+                            if (doc.exists) {
+                                const cloudData = doc.data();
+                                setData({ ...INITIAL_DATA, ...cloudData, user: { ...INITIAL_DATA.user, ...cloudData.user, uid: user.uid, name: user.displayName || cloudData.user.name || 'Hero' } });
+                            } else {
+                                // 新用戶註冊後建立初始雲端資料
+                                let newInitialData = { ...INITIAL_DATA };
+                                newInitialData.user = { ...newInitialData.user, uid: user.uid, name: user.displayName || 'Hero' };
+                                newInitialData.friends = [{ uid: 'mock_1', name: 'Sakura Guide', gender: 'female', level: 10, title: 'Novice', appearance: { hair: '#f472b6', skin: '#ffccbc', armor: '#fff', cape: '#ec4899' }, equipped: { head: SHOP_ITEMS[1], mainHand: SHOP_ITEMS[3] }, lastLogin: 'Online', likes: 999 }];
+                                setData(newInitialData);
+                                await db.collection('users').doc(user.uid).set(newInitialData);
+                            }
+                        } catch (e) {
+                            console.error("Cloud load failed", e);
+                            const fallbackData = localStorage.getItem(`gw_v28_data_${user.uid}`);
+                            if (fallbackData) setData({ ...INITIAL_DATA, ...JSON.parse(fallbackData) });
+                        }
+                    } else {
+                        setAuthUser(null);
+                    }
+                    setAuthLoading(false);
+                });
+
                 const savedTheme = localStorage.getItem('gw_theme'); if (savedTheme) setTheme(savedTheme);
                 const savedLang = localStorage.getItem('gw_lang'); if (savedLang) setLang(savedLang);
                 const savedCurr = localStorage.getItem('gw_curr'); if (savedCurr) setMainCurrency(savedCurr);
+
+                return () => unsubscribe();
             }, []);
 
-            useEffect(() => { if (data.user && !data.user.pet && !showPetSelector) { setShowPetSelector(true); } }, [data.user]);
-            useEffect(() => { localStorage.setItem('gw_v28_data', JSON.stringify(data)); }, [data]);
+            useEffect(() => { if (data.user && !data.user.pet && !showPetSelector && authUser) { setShowPetSelector(true); } }, [data.user, authUser]);
+            
+            // 雲端同步與本地備份 (設定防抖 debounce 以免過度寫入資料庫)
+            useEffect(() => { 
+                if (authUser && data && !authLoading) {
+                    const timer = setTimeout(() => {
+                        setCloudSyncing(true);
+                        db.collection('users').doc(authUser.uid).set(data)
+                            .then(() => setCloudSyncing(false))
+                            .catch(e => { console.error("Sync error", e); setCloudSyncing(false); });
+                        localStorage.setItem(`gw_v28_data_${authUser.uid}`, JSON.stringify(data)); 
+                    }, 2000);
+                    return () => clearTimeout(timer);
+                }
+            }, [data, authUser, authLoading]);
+            
             useEffect(() => { document.body.setAttribute('data-theme', theme); localStorage.setItem('gw_theme', theme); }, [theme]);
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
             useEffect(() => { localStorage.setItem('gw_curr', mainCurrency); }, [mainCurrency]);
@@ -1405,6 +1598,26 @@
                 setData(prev => ({ ...prev, user: { ...prev.user, uid: newId, gold: newGold, isIdChanged: true }, logs: newLogs }));
             };
 
+            const handleAuthSubmit = async (e) => {
+                e.preventDefault();
+                setAuthError('');
+                const virtualEmail = `${accountInput}@sakura.rpg`;
+                try {
+                    if (isRegistering) {
+                        if (!nicknameInput.trim()) { setAuthError('請輸入暱稱'); return; }
+                        const userCredential = await auth.createUserWithEmailAndPassword(virtualEmail, passwordInput);
+                        await userCredential.user.updateProfile({ displayName: nicknameInput });
+                    } else {
+                        await auth.signInWithEmailAndPassword(virtualEmail, passwordInput);
+                    }
+                } catch (err) {
+                    if (err.code === 'auth/invalid-email') setAuthError('帳號格式錯誤（請輸入英數字）');
+                    else if (err.code === 'auth/email-already-in-use') setAuthError('此帳號已被註冊');
+                    else if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') setAuthError('帳號或密碼錯誤');
+                    else setAuthError(err.message);
+                }
+            };
+
             const activeQuests = useMemo(() => {
                 if (!data.user) return [];
                 const todayStr = new Date().toDateString();
@@ -1427,7 +1640,59 @@
             }, [data.transactions, data.accounts, data.claimedQuests, mainCurrency]);
             const pendingQuestCount = activeQuests.filter(q => q.isCompleted && !q.isClaimed).length;
 
-            if (!data.user) return <div>Loading...</div>;
+            // 登入狀態與畫面渲染邏輯
+            if (authLoading) {
+                return <div className="h-[100dvh] w-full flex items-center justify-center bg-[#f8f9fa] text-xl font-bold font-pixel text-theme-text" data-theme={theme}>Loading...</div>;
+            }
+
+            if (!authUser) {
+                return (
+                    <div className="h-[100dvh] w-full flex flex-col items-center justify-center bg-theme-bg text-theme-text font-pixel relative overflow-hidden" data-theme={theme}>
+                        <BackgroundIllustrations theme={theme} />
+                        
+                        {/* 右上方外觀變更按鈕 */}
+                        <div className="absolute top-4 right-4 z-20">
+                            <button onClick={() => setShowThemeSelect(true)} className="w-12 h-12 bg-theme-card text-theme-accent rounded-full flex items-center justify-center shadow-lg border-2 border-theme-border active:scale-95 transition-transform hover:shadow-xl hover:-translate-y-1">
+                                <Icon name="Paint" size={24}/>
+                            </button>
+                        </div>
+
+                        <div className="z-10 flex flex-col items-center p-8 bg-theme-glass backdrop-blur-xl rounded-[2.5rem] shadow-2xl border-2 border-theme-border max-w-sm w-11/12">
+                            <Icon name="Cloud" size={64} className="text-theme-accent mb-4 animate-float drop-shadow-md" />
+                            <h1 className="text-2xl font-bold mb-2 text-theme-text text-center tracking-widest">公會雲端同步系統</h1>
+                            <p className="text-theme-sub mb-8 text-xs">{isRegistering ? '建立新的冒險者通行證' : '驗證您的冒險者身分'}</p>
+
+                            <form onSubmit={handleAuthSubmit} className="w-full space-y-4">
+                                {isRegistering && (
+                                    <div className="animate-pop-in">
+                                        <input type="text" value={nicknameInput} onChange={e=>setNicknameInput(e.target.value)} placeholder="暱稱 (Nickname)" className="w-full bg-theme-bg border-2 border-theme-border rounded-xl p-4 text-sm font-bold outline-none focus:border-theme-accent text-theme-text placeholder-theme-sub/50 transition-colors" required={isRegistering} />
+                                    </div>
+                                )}
+                                <div>
+                                    <input type="text" value={accountInput} onChange={e=>setAccountInput(e.target.value)} placeholder="帳號 (Account)" className="w-full bg-theme-bg border-2 border-theme-border rounded-xl p-4 text-sm font-bold outline-none focus:border-theme-accent text-theme-text placeholder-theme-sub/50 transition-colors" required />
+                                </div>
+                                <div>
+                                    <input type="password" value={passwordInput} onChange={e=>setPasswordInput(e.target.value)} placeholder="密碼 (Password)" className="w-full bg-theme-bg border-2 border-theme-border rounded-xl p-4 text-sm font-bold outline-none focus:border-theme-accent text-theme-text placeholder-theme-sub/50 transition-colors" required minLength="6"/>
+                                </div>
+                                {authError && <div className="text-red-500 text-[10px] font-bold text-center bg-red-100 p-2 rounded-lg break-all">{authError}</div>}
+
+                                <button type="submit" className="w-full bg-theme-accent text-white py-4 mt-2 rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform hover:brightness-110">
+                                    <Icon name={isRegistering ? "UserPlus" : "Key"} size={18}/> {isRegistering ? '註冊並開啟金庫' : '登入金庫'}
+                                </button>
+                            </form>
+
+                            <button onClick={() => { setIsRegistering(!isRegistering); setAuthError(''); }} className="mt-6 text-xs text-theme-sub hover:text-theme-text transition-colors font-bold underline decoration-theme-sub/30 underline-offset-4">
+                                {isRegistering ? '已有通行證？返回登入' : '第一次來？註冊成為勇者'}
+                            </button>
+                        </div>
+                        
+                        {/* 呼叫外部的 Theme Selector */}
+                        {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => TRANSLATIONS[lang]?.[`theme_${opt.label}`] || opt.label} />}
+                    </div>
+                );
+            }
+
+            if (!data.user) return <div>Loading Profile...</div>;
 
             return (
                 <div className="flex flex-col h-[100dvh] relative z-10 text-theme-text overflow-hidden bg-theme-bg select-none" data-theme={theme}>
@@ -1439,7 +1704,10 @@
                                        {data.user.avatarImage ? <img src={data.user.avatarImage} alt="avatar" className="w-full h-full object-cover" style={{imageRendering: 'pixelated'}} /> : <Icon name="UserPlus" size={20} className="text-theme-sub"/>}
                                   </div>
                                   <div className="flex flex-col items-start">
-                                       <div className="flex items-center gap-2"><h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1></div>
+                                       <div className="flex items-center gap-2">
+                                            <h1 className="font-bold text-sm text-theme-text">{data.user.name}</h1>
+                                            <button onClick={() => { setNewNameInput(data.user.name); setShowRenameModal(true); }} className="text-[10px] text-theme-sub hover:text-theme-accent transition-colors p-1"><Icon name="Edit" size={12}/></button>
+                                       </div>
                                        <button onClick={() => setShowTitleSelect(true)} className="text-[9px] font-bold text-theme-sub mt-0.5 bg-theme-bg px-2 py-0.5 rounded border border-theme-border hover:bg-theme-accent hover:text-white transition-colors">{TITLES_LIST.find(t => t.id === data.user?.title)?.name || data.user.title} <Icon name="Edit" size={8} className="inline ml-1"/></button>
                                   </div>
                               </div>
@@ -1448,18 +1716,26 @@
                                    <button onClick={() => setShowCurrencySelect(true)} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{mainCurrency}</button>
                                    <button onClick={() => setLang(l => l === 'zh' ? 'en' : l === 'en' ? 'ja' : 'zh')} className="w-9 h-9 bg-theme-bg text-theme-text rounded-full flex items-center justify-center shadow-sm border border-theme-border text-[9px] font-bold active:scale-95 transition-transform">{lang.toUpperCase()}</button>
                                    <button onClick={() => setShowThemeSelect(true)} className="w-9 h-9 bg-theme-bg text-theme-accent rounded-full flex items-center justify-center shadow-sm border border-theme-border active:scale-95"><Icon name="Paint" size={16}/></button>
+                                   
+                                   {/* 獨立登出按鈕 */}
+                                   <button onClick={() => auth.signOut()} className="w-9 h-9 bg-theme-bg text-red-500 rounded-full flex items-center justify-center shadow-sm border border-red-200 active:scale-95 transition-transform hover:bg-red-50">
+                                        <Icon name="LogOut" size={16}/>
+                                   </button>
                               </div>
                          </div>
-                         <div className="w-full mt-1 relative">
-                              <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 text-theme-sub"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div>
-                              <div className="w-full h-1.5 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border"><div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div>
+                         <div className="w-full mt-1 relative flex items-center gap-2">
+                              <div className="flex-1">
+                                  <div className="flex justify-between text-[10px] font-bold opacity-60 mb-1 text-theme-sub"><span>NEXT LEVEL</span><span>{data.user.exp} / {data.user.level * 100}</span></div>
+                                  <div className="w-full h-1.5 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border"><div className="h-full bg-theme-accent transition-all duration-700" style={{width: `${(data.user.exp / (data.user.level*100))*100}%`}}></div></div>
+                              </div>
+                              {cloudSyncing && <Icon name="Cloud" size={12} className="text-theme-accent animate-pulse" />}
                          </div>
                     </header>
                     <main className="flex-1 overflow-hidden relative z-10">
                         {view === 'home' && <HomeView user={data.user} equipped={data.equipped} accounts={data.accounts} onOpenAdd={() => setShowAddModal(true)} onOpenAsset={(acc) => { setEditingAccount(acc || null); setTempAccountName(acc?.name || ''); setTempAccountBalance(acc?.balance.toString() || ''); setAssetModalOpen(true); }} lang={lang} translations={TRANSLATIONS} onRenamePet={handleRenamePet} />}
                         {view === 'shop' && <ShopView gold={data.user.gold} inventory={data.inventory} equipped={data.equipped} user={data.user} onBuy={handleBuyItem} lang={lang} translations={TRANSLATIONS} purchaseHistory={data.purchaseHistory} />}
                         {view === 'character' && <CharacterView level={data.user.level} equipped={data.equipped} gender={data.user.gender} appearance={data.user.appearance} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} lang={lang} translations={TRANSLATIONS} />}
-                        {view === 'journal' && <JournalView logs={data.logs} transactions={data.transactions} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'journal' && <JournalView logs={data.logs} transactions={data.transactions} categories={data.categories} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={data.user.unlockedAchievements} currentStats={{ txCount: data.transactions.length, expenseTotal: data.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), balance: data.accounts.reduce((a,c) => a + c.balance, 0), questCount: data.claimedQuests.length, level: data.user.level, itemCount: data.inventory.length, friendCount: data.friends.length }} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'social' && <SocialView user={data.user} friends={data.friends || []} onAddFriend={handleAddFriend} onRemoveFriend={handleRemoveFriend} onLikeFriend={handleLikeFriend} onUpdateId={handleUpdateId} lang={lang} translations={TRANSLATIONS} />}
@@ -1473,12 +1749,47 @@
                             </button>
                         ))}
                     </nav>
+                    
+                    {/* 更改暱稱對話框 */}
+                    {showRenameModal && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center animate-[fadeIn_0.2s]">
+                            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowRenameModal(false)}></div>
+                            <div className="bg-theme-card p-6 rounded-3xl shadow-2xl w-full max-w-sm relative z-10 animate-pop-in">
+                                <h3 className="font-bold text-lg text-theme-text mb-4 text-center">更改暱稱</h3>
+                                <div className="mb-6">
+                                    <input type="text" value={newNameInput} onChange={e => setNewNameInput(e.target.value)} className="w-full bg-theme-bg border-2 border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent" autoFocus placeholder="輸入新暱稱..." />
+                                </div>
+                                <div className="flex gap-3">
+                                    <button onClick={() => setShowRenameModal(false)} className="flex-1 py-3 rounded-xl font-bold bg-theme-bg border border-theme-border text-theme-sub active:scale-95">{t('cancel')}</button>
+                                    <button onClick={() => {
+                                        if (!newNameInput.trim()) return;
+                                        const newLogs = addLog('system', `更改暱稱為: ${newNameInput}`, data.logs);
+                                        setData(prev => ({ ...prev, user: { ...prev.user, name: newNameInput }, logs: newLogs }));
+                                        if (authUser) { authUser.updateProfile({ displayName: newNameInput }).catch(e => console.error(e)); }
+                                        setShowRenameModal(false);
+                                    }} className="flex-1 py-3 rounded-xl font-bold text-white shadow-lg active:scale-95 flex items-center justify-center gap-2 bg-theme-accent"><Icon name="Check" size={16}/> {t('confirm')}</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {showAddModal && <AddTransactionModal accounts={data.accounts} categories={data.categories} onClose={() => setShowAddModal(false)} onAdd={handleAddTransaction} />}
                     {showPetSelector && <PetSelectorModal onSelect={handleSelectPet} />}
+                    
                     {showProfileOptions && (
-                        <SelectorSheet title="頭像設定" options={[{ value: 'edit', label: '編輯角色外觀', desc: '進入更衣室' },{ value: 'upload', label: '上傳圖片', desc: '從裝置選擇' },{ value: 'remove', label: '移除圖片', desc: '使用像素角色' }]} current="" onSelect={(val) => { if (val === 'edit') setShowAvatarEdit(true); if (val === 'upload') document.getElementById('hidden-file-input')?.click(); if (val === 'remove') setData(prev => ({...prev, user: {...prev.user, avatarImage: ''}})); setShowProfileOptions(false); }} onClose={() => setShowProfileOptions(false)} />
+                        <SelectorSheet title="頭像與外觀設定" options={[
+                            { value: 'edit', label: '編輯角色外觀', desc: '進入更衣室' },
+                            { value: 'upload', label: '上傳圖片', desc: '從裝置選擇' },
+                            { value: 'remove', label: '移除圖片', desc: '使用像素角色' }
+                        ]} current="" onSelect={(val) => { 
+                            if (val === 'edit') setShowAvatarEdit(true); 
+                            if (val === 'upload') document.getElementById('hidden-file-input')?.click(); 
+                            if (val === 'remove') setData(prev => ({...prev, user: {...prev.user, avatarImage: ''}})); 
+                            setShowProfileOptions(false); 
+                        }} onClose={() => setShowProfileOptions(false)} />
                     )}
                     <input type="file" id="hidden-file-input" className="hidden" accept="image/*" onChange={handleAvatarUpload}/>
+                    
                     {showTitleSelect && <SelectorSheet title="更換稱號" options={TITLES_LIST.map(title => ({ value: title.id, label: title.name, desc: title.desc, locked: !data.user.unlockedTitles.includes(title.id), condition: title.condition }))} current={data.user.title} onSelect={handleSetTitle} onClose={() => setShowTitleSelect(false)} />}
                     {showThemeSelect && <SelectorSheet title={t('theme')} options={THEMES.map(t => ({ value: t.id, label: t.name, color: t.color }))} current={theme} onSelect={setTheme} onClose={() => setShowThemeSelect(false)} getLabel={(opt) => TRANSLATIONS[lang]?.[`theme_${opt.label}`] || opt.label} />}
                     {showCurrencySelect && <SelectorSheet title={t('exchange')} options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
