@@ -25,13 +25,7 @@
             },
             colors: {
               theme: {
-                bg: 'var(--bg-color)',
-                card: 'var(--card-bg)',
-                text: 'var(--text-main)',
-                sub: 'var(--text-sub)',
-                accent: 'var(--accent-color)',
-                border: 'var(--border-color)',
-                glass: 'var(--glass-bg)'
+                bg: 'var(--bg-color)', card: 'var(--card-bg)', text: 'var(--text-main)', sub: 'var(--text-sub)', accent: 'var(--accent-color)', border: 'var(--border-color)', glass: 'var(--glass-bg)'
               }
             },
             animation: { 
@@ -57,11 +51,7 @@
       }
     </script>
     <style>
-        :root { 
-            --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; 
-            --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); 
-            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); 
-        }
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
@@ -107,7 +97,7 @@ projectId: "rpgmoney-73cfd",
 storageBucket: "rpgmoney-73cfd.firebasestorage.app",
 messagingSenderId: "804479578382",
 appId: "1:804479578382:web:0882920513d9377998a75f",
-measurementId: "G-FKDCX3WG8T" 
+measurementId: "G-FKDCX3WG8T"
         };
         
         if (!firebase.apps.length) {
@@ -118,68 +108,55 @@ measurementId: "G-FKDCX3WG8T"
 
         // --- ICONS ---
         const ICON_PATHS = {
-            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10", 
+            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
             Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
-            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4", 
+            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",
             Globe: "M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",
-            Plus: "M12 5v14 M5 12h14", 
-            X: "M18 6L6 18 M6 6l12 12", 
+            Plus: "M12 5v14 M5 12h14",
+            X: "M18 6L6 18 M6 6l12 12",
             Cloud: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",
-            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4", 
+            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
             Crown: "M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
             Star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
             CreditCard: "M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",
-            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8", 
+            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",
             Utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",
-            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2", 
+            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",
             ShoppingBag: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
-            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", 
+            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
             Pill: "M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",
-            GraduationCap: "M22 10v6M2 10l10-5 10 5", 
+            GraduationCap: "M22 10v6M2 10l10-5 10 5",
             Briefcase: "M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",
-            Plane: "M2 12h20 M13 2l9 10-9 10", 
+            Plane: "M2 12h20 M13 2l9 10-9 10",
             LogOut: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
             Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
             Key: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",
             Trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
-            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5", 
+            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",
             Book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
-            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", 
+            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
             Hammer: "M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
-            Gem: "M6 3h12l4 6-10 13L2 9z", 
-            Sun: "M12 1v2 M12 21v2", 
+            Gem: "M6 3h12l4 6-10 13L2 9z",
+            Sun: "M12 1v2 M12 21v2",
             Moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
-            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8", 
-            EyeOff: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M1 1l22 22",
-            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z", 
+            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8",
+            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
             Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
-            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z", 
-            Backspace: "M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM18 9l-6 6M12 9l6 6",
-            Minus: "M5 12h14", 
-            Check: "M20 6L9 17l-5-5", 
+            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+            Check: "M20 6L9 17l-5-5",
             Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
             Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
-            Tree: "M12 2L4 14h6v8h4v-8h6L12 2z", 
             Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
-            Sort: "M3 6h18M6 12h12M9 18h6", 
-            Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
-            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z", 
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",
             CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
             Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
             Chart: "M18 20V10M12 20V4M6 20v-6",
-            ArrowUp: "M12 19V5M5 12l7-7 7 7", 
+            ArrowUp: "M12 19V5M5 12l7-7 7 7",
             ArrowDown: "M12 5v14M19 12l-7 7-7-7",
             Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
-            Male: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
-            Female: "M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 12c4.42 0 8 2.69 8 6v2H4v-2c0-3.31 3.58-6 8-6z",
             Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
-            Flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z M4 22v-7",
             Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",
-            Fire: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.011.535-5.461a.02.02 0 0 1 .037-.003c.745 1.487 2.102 2.946 2.053 4.636 0 1.556.88 2.306 1.375 2.828.61.643.565 1.58-.2 2.183-.807.636-1.258 1.428-1.258 2.317 0 1.25.98 2.19 1.458 2.502.028.019.012.062-.014.058C8.006 17.5 7.152 14.5 8.5 14.5z",
             Heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
-            Search: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
-            Filter: "M4 6h16M4 12h16M4 18h7",
-            Tag: "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z",
             Users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
             Copy: "M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",
             Egg: "M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",
@@ -346,7 +323,8 @@ measurementId: "G-FKDCX3WG8T"
                 enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！',
                 edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用',
                 purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物',
-                relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金'
+                relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金',
+                cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。'
             }, 
             en: { 
                 adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Achievements', upgrade: 'Character', exchange: 'Currency', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this asset?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Pet', settings: 'Settings',
@@ -368,11 +346,13 @@ measurementId: "G-FKDCX3WG8T"
                 enter_id: 'Enter Adventurer ID', my_card: 'Adventurer Card', copy_id: 'Copy ID', copied: 'Copied', remove_friend: 'Remove Friend', send_like: 'Send Like', like_success: 'Like Sent!',
                 edit_id: 'Edit ID', change_id_title: 'Change ID', change_id_cost: 'Cost', change_id_free: 'First Free', enter_new_id: 'New ID', id_too_short: 'ID too short', id_taken: 'ID taken',
                 purchase_history: 'Purchase History', equipment: 'Equipment', upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet',
-                relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Type', currency_type: 'Currency', cash: 'Cash'
+                relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Type', currency_type: 'Currency', cash: 'Cash',
+                cannot_add_self: 'Cannot add yourself!', user_not_found: 'User ID not found.'
             },
             ja: {
                 guardian: 'ペット', upload_avatar: '画像アップロード', choose_pet: 'パートナーを選ぶ', cancel: 'キャンセル', confirm: '確認', exchange: '通貨切替',
-                relic_name: '聖遺物名', mana_reserve: '魔力残量', container_type: '種類', currency_type: '通貨', cash: '現金'
+                relic_name: '聖遺物名', mana_reserve: '魔力残量', container_type: '種類', currency_type: '通貨', cash: '現金',
+                cannot_add_self: '自分は追加できません！', user_not_found: 'ユーザーが見つかりません。'
             }
         };
 
@@ -409,7 +389,7 @@ measurementId: "G-FKDCX3WG8T"
         );
 
         // ===============================================
-        // 第二部分開始 (請直接將下一段代碼接在這裡)
+        // 第二段開始 (請將下半部的代碼接續在此處)
         // ===============================================
 const PixelPet = ({ id, className, animate = true }) => {
             const isSlime = id.includes('slime'); const isCat = id.includes('cat'); const isDino = id.includes('dino');
@@ -522,13 +502,17 @@ const PixelPet = ({ id, className, animate = true }) => {
             const [category, setCategory] = useState(initialData?.category || defaultCatKey);
             const [accountId, setAccountId] = useState(initialData?.accountId || accounts[0]?.id || '');
             const [note, setNote] = useState(initialData?.note || '');
+            
+            // 日期編輯欄位
+            const [txDate, setTxDate] = useState(initialData?.date || new Date().toISOString().split('T')[0]);
             const [showCalc, setShowCalc] = useState(false);
             
             const handleSubmit = (e) => {
                 e?.preventDefault(); let finalAmount = 0;
                 try { finalAmount = Function(`'use strict'; return (${amountStr || '0'})`)(); } catch(err) { finalAmount = parseFloat(amountStr); }
                 if (!finalAmount || isNaN(finalAmount) || finalAmount <= 0 || !accountId) return;
-                onAdd({ type, amount: Number(finalAmount), category, note, accountId });
+                
+                onAdd({ type, amount: Number(finalAmount), category, note, accountId, date: txDate });
             };
             
             const handlePadClick = (val) => {
@@ -553,6 +537,8 @@ const PixelPet = ({ id, className, animate = true }) => {
                                     <div className="p-3 rounded-xl bg-theme-accent/10 text-theme-accent group-hover:scale-110 transition-transform"><Icon name="Calculator" size={24}/></div>
                                 </div>
                             </div>
+                            
+                            {/* 分類選擇 */}
                             <div>
                                 <div className="flex justify-between items-center mb-2 px-1"><div className="text-xs font-bold text-theme-sub uppercase">分類</div></div>
                                 <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1">
@@ -561,6 +547,13 @@ const PixelPet = ({ id, className, animate = true }) => {
                                     ))}
                                 </div>
                             </div>
+                            
+                            {/* 新增的日期編輯欄位 */}
+                            <div className="flex justify-between items-center bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm font-bold text-theme-text">
+                                <span className="text-xs text-theme-sub uppercase">發生日期</span>
+                                <input type="date" value={txDate} onChange={e => setTxDate(e.target.value)} className="bg-transparent outline-none font-mono" />
+                            </div>
+
                             <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text" placeholder="備註 (選填)..."/>
                             <select value={accountId} onChange={e => setAccountId(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text">{accounts.map(acc => (<option key={acc.id} value={acc.id}>{acc.name} ({acc.currency})</option>))}</select>
                             <button onClick={handleSubmit} className="w-full bg-theme-accent text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform mt-2 mb-4">確認儲存</button>
@@ -759,8 +752,10 @@ const PixelPet = ({ id, className, animate = true }) => {
                             </div>
                         )}
                     </div>
+                    
+                    {/* 防止被 Nav bar 擋住，加入 bottom-24 */}
                     {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
+                        <div className="absolute bottom-24 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
                             <div className="bg-[#3e2723] border-2 border-[#5d4037] p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden">
                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-50"></div>
                                 <div className="flex-1 relative z-10"><div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div><div className="text-lg font-bold text-[#efebe9] font-pixel">{previewItem.name}</div><div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div></div>
@@ -1177,7 +1172,8 @@ const PixelPet = ({ id, className, animate = true }) => {
                             const doc = await db.collection('users').doc(user.uid).get();
                             if (doc.exists) {
                                 const cloudData = doc.data();
-                                setData({ ...data, ...cloudData, user: { ...data.user, ...cloudData.user, uid: cloudData.user?.isIdChanged ? cloudData.user.uid : (cloudData.user?.uid || user.uid), name: cloudData.user?.name || user.displayName || 'Hero' } });
+                                const realUid = cloudData.user?.isIdChanged ? cloudData.user.uid : (cloudData.user?.uid || user.uid);
+                                setData({ ...data, ...cloudData, user: { ...data.user, ...cloudData.user, uid: realUid, name: cloudData.user?.name || user.displayName || 'Hero' } });
                             } else {
                                 let newInitialData = { ...data };
                                 newInitialData.user = { ...newInitialData.user, uid: user.uid, name: user.displayName || 'Hero' };
@@ -1199,7 +1195,11 @@ const PixelPet = ({ id, className, animate = true }) => {
                 return () => unsubscribe();
             }, []);
 
-            useEffect(() => { if (!authLoading && authUser && data.user && !data.user.pet && !showPetSelector) { setShowPetSelector(true); } }, [data.user?.pet, authUser, authLoading]);
+            useEffect(() => { 
+                if (!authLoading && authUser && data.user && !data.user.pet && !showPetSelector) { 
+                    setShowPetSelector(true); 
+                } 
+            }, [data.user?.pet, authUser, authLoading]);
             
             useEffect(() => { 
                 if (authUser && data && !authLoading) {
@@ -1255,7 +1255,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                     const txIndex = newData.transactions.findIndex(t => t.id === editingTx.id); if (txIndex > -1) { newData.transactions[txIndex] = { ...editingTx, ...tData }; }
                     newLogs = addLog('system', `編輯紀錄: ${data.categories[tData.category]?.label || '其他'}`, newLogs); newData.accounts = newAccounts; newData.logs = newLogs; setData(newData); checkUnlockables(newData);
                 } else {
-                    const newTx = { id: Date.now().toString(), ...tData, date: new Date().toISOString().split('T')[0], timestamp: Date.now() };
+                    const newTx = { id: Date.now().toString(), ...tData, date: tData.date || new Date().toISOString().split('T')[0], timestamp: Date.now() };
                     const newAccIdx = newAccounts.findIndex(a => a.id == tData.accountId); if (newAccIdx > -1) { newAccounts[newAccIdx] = { ...newAccounts[newAccIdx] }; newAccounts[newAccIdx].balance += (tData.type === 'expense' ? -tData.amount : tData.amount); }
                     const earnedExp = 100; const earnedGold = tData.type === 'income' ? Math.floor(tData.amount * 0.1) + 50 : 50;
                     let newUser = { ...data.user }; newUser.gold += earnedGold; newUser.exp += earnedExp;
@@ -1291,7 +1291,34 @@ const PixelPet = ({ id, className, animate = true }) => {
                 else { setTempAccountBalance(prev => { if (prev === '' || prev === '0') { if (['+','*','/'].includes(val)) return prev; return val; } return prev + val; }); }
             };
 
-            const handleAddFriend = (id) => { if (!id || !id.trim() || data.friends.some(f => f.uid === id)) return; const newFriend = { uid: id, name: `冒險者 ${id.substring(0,4)}`, level: Math.floor(Math.random() * 50) + 1, title: 'Novice', gender: Math.random() > 0.5 ? 'male' : 'female', appearance: DEFAULT_APPEARANCE, equipped: { mainHand: SHOP_ITEMS[0], body: Math.random() > 0.5 ? SHOP_ITEMS[4] : undefined }, lastLogin: 'Online', likes: 0 }; const newLogs = addLog('system', `新增好友: ${newFriend.name}`, data.logs); setData(prev => ({ ...prev, friends: [...(prev.friends || []), newFriend], logs: newLogs })); };
+            const handleAddFriend = async (id) => { 
+                if (!id || !id.trim() || data.friends.some(f => f.uid === id)) return;
+                if (id === data.user.uid) { alert(t('cannot_add_self') || '無法加自己為好友喔！'); return; }
+
+                try {
+                    const snap = await db.collection('users').where('user.uid', '==', id).get();
+                    if (snap.empty) { alert(t('user_not_found') || '找不到該 ID 的冒險者。'); return; }
+
+                    const targetDoc = snap.docs[0];
+                    const targetData = targetDoc.data();
+
+                    const newFriend = { uid: targetData.user.uid, name: targetData.user.name, level: targetData.user.level, title: targetData.user.title, gender: targetData.user.gender, appearance: targetData.user.appearance, equipped: targetData.equipped || {}, lastLogin: 'Online', likes: 0 };
+                    const newLogs = addLog('system', `結交好友: ${newFriend.name}`, data.logs);
+                    setData(prev => ({ ...prev, friends: [...(prev.friends || []), newFriend], logs: newLogs }));
+
+                    const myProfile = { uid: data.user.uid, name: data.user.name, level: data.user.level, title: data.user.title, gender: data.user.gender, appearance: data.user.appearance, equipped: data.equipped || {}, lastLogin: 'Online', likes: 0 };
+                    let targetFriends = targetData.friends || [];
+                    targetFriends = targetFriends.filter(f => f.uid !== myProfile.uid);
+                    targetFriends.push(myProfile);
+
+                    await targetDoc.ref.update({ friends: targetFriends });
+                    alert(`成功招募 ${newFriend.name}！對方也已將您加入名單。`);
+                } catch (error) {
+                    console.error("Add friend error: ", error);
+                    alert('新增好友時發生錯誤。');
+                }
+            };
+            
             const handleRemoveFriend = (id) => { setData(prev => ({ ...prev, friends: prev.friends.filter(f => f.uid !== id) })); };
             const handleLikeFriend = (id) => { setData(prev => ({ ...prev, friends: prev.friends.map(f => { if (f.uid === id) { return { ...f, likes: (f.likes || 0) + 1, lastInteract: new Date().toISOString() }; } return f; }) })); };
             
@@ -1302,7 +1329,12 @@ const PixelPet = ({ id, className, animate = true }) => {
                 const newLogs = addLog('system', `更名為: ${newId} (費用: ${cost})`, data.logs);
                 const newData = { ...data, user: { ...data.user, uid: newId, gold: newGold, isIdChanged: true }, logs: newLogs };
                 setData(newData);
-                if (authUser) { try { await db.collection('users').doc(authUser.uid).set(newData); } catch(e) { console.error("更新ID失敗", e); } }
+                
+                if (authUser) { 
+                    try { 
+                        await db.collection('users').doc(authUser.uid).set(newData); 
+                    } catch(e) { console.error("ID Update error:", e); } 
+                }
                 localStorage.setItem(`gw_v28_data_${authUser?.uid || 'guest'}`, JSON.stringify(newData));
             };
 
