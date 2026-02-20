@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V28 (Cloud Sync & Magic Abacus)</title>
+    <title>SakuraWallet V28 (Magic RPG & Friends)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -25,7 +25,13 @@
             },
             colors: {
               theme: {
-                bg: 'var(--bg-color)', card: 'var(--card-bg)', text: 'var(--text-main)', sub: 'var(--text-sub)', accent: 'var(--accent-color)', border: 'var(--border-color)', glass: 'var(--glass-bg)'
+                bg: 'var(--bg-color)',
+                card: 'var(--card-bg)',
+                text: 'var(--text-main)',
+                sub: 'var(--text-sub)',
+                accent: 'var(--accent-color)',
+                border: 'var(--border-color)',
+                glass: 'var(--glass-bg)'
               }
             },
             animation: { 
@@ -51,7 +57,11 @@
       }
     </script>
     <style>
-        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        :root { 
+            --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; 
+            --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); 
+            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); 
+        }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
@@ -89,7 +99,7 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- FIREBASE 初始化設定 ---
+        // --- FIREBASE 初始化設定 (請務必替換為您自己的金鑰) ---
         const firebaseConfig = {
 apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
 authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -106,7 +116,7 @@ measurementId: "G-FKDCX3WG8T"
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // --- ICONS ---
+        // --- ICONS 完整定義 ---
         const ICON_PATHS = {
             Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
             Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
@@ -160,7 +170,8 @@ measurementId: "G-FKDCX3WG8T"
             Users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
             Copy: "M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",
             Egg: "M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",
-            Calculator: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z"
+            Calculator: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",
+            Settings: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
         };
 
         const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => {
@@ -240,16 +251,24 @@ measurementId: "G-FKDCX3WG8T"
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
 
         const DEFAULT_CATEGORIES = {
-            bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
-            dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
+            bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, 
+            lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
+            dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, 
+            drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
             snack: { label: '零食', icon: 'Utensils', color: '#fdba74', order: 5 },
-            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 }, mtr: { label: '捷運', icon: 'Bus', color: '#3b82f6', order: 7 },
+            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 }, 
+            mtr: { label: '捷運', icon: 'Bus', color: '#3b82f6', order: 7 },
             taxi: { label: '計程車', icon: 'Bus', color: '#2563eb', order: 8 },
-            shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 },
-            bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 },
-            health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 },
-            invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 },
-            salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 },
+            shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, 
+            game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 },
+            bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, 
+            rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 },
+            health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, 
+            edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 },
+            invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, 
+            travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 },
+            salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, 
+            bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 },
             other: { label: '其他', icon: 'Scroll', color: '#94a3b8', order: 99 }
         };
 
@@ -317,8 +336,7 @@ measurementId: "G-FKDCX3WG8T"
                 theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', 
                 theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)',
                 change_stats: '能力變化',
-                confirm_buy_title: '確認購買',
-                confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？',
+                confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？',
                 social: '公會', guild: '冒險公會', friend_list: '好友名單', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線',
                 enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！',
                 edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用',
@@ -340,8 +358,7 @@ measurementId: "G-FKDCX3WG8T"
                 theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', 
                 theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight',
                 change_stats: 'Stats Change',
-                confirm_buy_title: 'Confirm Purchase',
-                confirm_buy_msg: 'Are you sure you want to buy {item} for {cost} G?',
+                confirm_buy_title: 'Confirm Purchase', confirm_buy_msg: 'Are you sure you want to buy {item} for {cost} G?',
                 social: 'Social', guild: 'Guild Hall', friend_list: 'Friend List', add_friend: 'Recruit', visit: 'Visit', online: 'Online', offline: 'Offline',
                 enter_id: 'Enter Adventurer ID', my_card: 'Adventurer Card', copy_id: 'Copy ID', copied: 'Copied', remove_friend: 'Remove Friend', send_like: 'Send Like', like_success: 'Like Sent!',
                 edit_id: 'Edit ID', change_id_title: 'Change ID', change_id_cost: 'Cost', change_id_free: 'First Free', enter_new_id: 'New ID', id_too_short: 'ID too short', id_taken: 'ID taken',
@@ -356,7 +373,7 @@ measurementId: "G-FKDCX3WG8T"
             }
         };
 
-        // --- 共用組件 : 魔法算盤 (計算機) ---
+        // --- 共用組件 : 魔法算盤 (RPG計算機) ---
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
             <div className="fixed inset-0 z-[120] flex flex-col justify-end animate-[fadeIn_0.2s] select-none">
                 <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
@@ -494,8 +511,144 @@ const PixelPet = ({ id, className, animate = true }) => {
                 </div>
             );
         };
+        
+        // --- 類別管理系統 (支援拖曳排序) ---
+        const CategoryManagerModal = ({ categories, onClose, onSave }) => {
+            const [cats, setCats] = useState(() => {
+                return Object.entries(categories)
+                    .sort((a,b) => (a[1].order || 0) - (b[1].order || 0))
+                    .map(([id, val]) => ({ id, ...val }));
+            });
+            const [editingId, setEditingId] = useState(null);
+            const [editLabel, setEditLabel] = useState('');
+            const [editIcon, setEditIcon] = useState('Star');
+            const [editColor, setEditColor] = useState('#000000');
 
-        const AddTransactionModal = ({ accounts, categories, onClose, onAdd, initialData }) => {
+            const dragItem = useRef();
+            const dragOverItem = useRef();
+
+            const handleDragStart = (e, position) => {
+                dragItem.current = position;
+                e.target.style.opacity = 0.5;
+            };
+            
+            const handleDragEnter = (e, position) => {
+                dragOverItem.current = position;
+            };
+            
+            const handleDragEnd = (e) => {
+                e.target.style.opacity = 1;
+                if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) {
+                    const copyListItems = [...cats];
+                    const dragItemContent = copyListItems[dragItem.current];
+                    copyListItems.splice(dragItem.current, 1);
+                    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+                    setCats(copyListItems);
+                }
+                dragItem.current = null;
+                dragOverItem.current = null;
+            };
+
+            const startEdit = (cat) => {
+                setEditingId(cat.id); setEditLabel(cat.label); setEditIcon(cat.icon); setEditColor(cat.color);
+            };
+
+            const saveEdit = () => {
+                setCats(cats.map(c => c.id === editingId ? { ...c, label: editLabel, icon: editIcon, color: editColor } : c));
+                setEditingId(null);
+            };
+
+            const addNew = () => {
+                const newId = 'cat_' + Date.now();
+                setCats([...cats, { id: newId, label: '新類別', icon: 'Star', color: '#94a3b8' }]);
+                startEdit({ id: newId, label: '新類別', icon: 'Star', color: '#94a3b8' });
+            };
+
+            const removeCat = (id) => {
+                if(cats.length <= 1) return alert("至少需要保留一個類別！");
+                setCats(cats.filter(c => c.id !== id));
+            };
+
+            const confirmSave = () => {
+                const newObj = {};
+                cats.forEach((c, i) => { const {id, ...rest} = c; newObj[id] = {...rest, order: i+1}; });
+                onSave(newObj);
+            };
+
+            const availableIcons = ['Utensils','Coffee','Bus','ShoppingBag','Zap','Pill','GraduationCap','Briefcase','Plane','Wallet','Gem','Heart','Star','Gamepad'];
+
+            return (
+                <div className="fixed inset-0 z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-full">
+                        <div className="flex justify-between items-center mb-6 shrink-0">
+                            <button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X" size={24}/></button>
+                            <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">管理類別</h3>
+                            <button onClick={confirmSave} className="text-theme-accent font-bold"><Icon name="Check" size={24}/></button>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto space-y-2 pr-2">
+                            {cats.map((cat, index) => (
+                                <div key={cat.id} 
+                                     draggable
+                                     onDragStart={(e) => handleDragStart(e, index)}
+                                     onDragEnter={(e) => handleDragEnter(e, index)}
+                                     onDragEnd={handleDragEnd}
+                                     onDragOver={(e) => e.preventDefault()}
+                                     className="bg-theme-bg p-3 rounded-2xl border border-theme-border shadow-sm flex items-center justify-between group cursor-grab active:cursor-grabbing">
+                                    
+                                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                                        <div className="text-theme-sub/50 cursor-grab px-1"><Icon name="Grip" size={16}/></div>
+                                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm shrink-0" style={{backgroundColor: cat.color}}>
+                                            <Icon name={cat.icon} size={18}/>
+                                        </div>
+                                        <div className="font-bold text-theme-text truncate">{cat.label}</div>
+                                    </div>
+                                    <button onClick={() => startEdit(cat)} className="p-2 text-theme-sub hover:text-theme-accent bg-theme-card rounded-lg shadow-sm border border-theme-border/50 transition-colors ml-2"><Icon name="Edit" size={16}/></button>
+                                </div>
+                            ))}
+                            <button onClick={addNew} className="w-full py-4 border-2 border-dashed border-theme-sub/50 rounded-2xl text-theme-sub font-bold hover:bg-theme-bg hover:text-theme-accent transition-colors flex justify-center items-center gap-2 mt-4"><Icon name="Plus"/> 新增類別</button>
+                        </div>
+
+                        {/* 編輯面板 (內嵌) */}
+                        {editingId && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] border-t border-theme-border animate-[slideUp_0.2s] z-20">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h4 className="font-bold text-theme-text">編輯類別</h4>
+                                    <button onClick={() => setEditingId(null)} className="text-theme-sub"><Icon name="X" size={20}/></button>
+                                </div>
+                                <div className="space-y-4">
+                                    <input type="text" value={editLabel} onChange={e=>setEditLabel(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent" placeholder="類別名稱"/>
+                                    
+                                    <div>
+                                        <label className="text-xs font-bold text-theme-sub uppercase mb-2 block">圖示</label>
+                                        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                            {availableIcons.map(ic => (
+                                                <button key={ic} onClick={()=>setEditIcon(ic)} className={`p-3 rounded-xl border shrink-0 transition-all ${editIcon === ic ? 'bg-theme-accent/10 border-theme-accent text-theme-accent' : 'bg-theme-bg border-theme-border text-theme-sub'}`}>
+                                                    <Icon name={ic} size={20}/>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-4">
+                                        <label className="text-xs font-bold text-theme-sub uppercase">顏色</label>
+                                        <input type="color" value={editColor} onChange={e=>setEditColor(e.target.value)} className="w-12 h-12 rounded-lg cursor-pointer border-2 border-white shadow-sm p-0 bg-transparent"/>
+                                    </div>
+
+                                    <div className="flex gap-3 pt-2">
+                                        <button onClick={() => removeCat(editingId)} className="py-3 px-4 bg-red-50 text-red-500 font-bold rounded-xl active:scale-95 border border-red-200"><Icon name="Trash" size={18}/></button>
+                                        <button onClick={saveEdit} className="flex-1 py-3 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-md flex justify-center items-center gap-2"><Icon name="Check" size={18}/> 確定儲存</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const AddTransactionModal = ({ accounts, categories, onClose, onAdd, initialData, onManageCategories }) => {
             const [type, setType] = useState(initialData?.type || 'expense');
             const [amountStr, setAmountStr] = useState(initialData?.amount?.toString() || '');
             const defaultCatKey = Object.keys(categories)[0];
@@ -538,9 +691,12 @@ const PixelPet = ({ id, className, animate = true }) => {
                                 </div>
                             </div>
                             
-                            {/* 分類選擇 */}
+                            {/* 分類選擇與編輯管理 */}
                             <div>
-                                <div className="flex justify-between items-center mb-2 px-1"><div className="text-xs font-bold text-theme-sub uppercase">分類</div></div>
+                                <div className="flex justify-between items-center mb-2 px-1">
+                                    <div className="text-xs font-bold text-theme-sub uppercase">分類</div>
+                                    <button type="button" onClick={onManageCategories} className="text-[10px] bg-theme-bg text-theme-sub px-2 py-1 rounded border border-theme-border hover:text-theme-accent transition-colors flex items-center gap-1"><Icon name="Settings" size={10}/> 編輯類別</button>
+                                </div>
                                 <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1">
                                     {sortedCats.map(([key, cat]) => (
                                         <button key={key} type="button" onClick={() => setCategory(key)} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${category === key ? 'bg-theme-accent/10 border-2 border-theme-accent shadow-sm' : 'border-2 border-transparent opacity-60'}`}><div className="w-8 h-8 rounded-full flex items-center justify-center transition-transform text-white shadow-sm" style={{backgroundColor: cat.color}}><Icon name={cat.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold text-theme-text truncate w-full text-center">{cat.label}</span></button>
@@ -548,7 +704,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                                 </div>
                             </div>
                             
-                            {/* 新增的日期編輯欄位 */}
+                            {/* 編輯日期 */}
                             <div className="flex justify-between items-center bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm font-bold text-theme-text">
                                 <span className="text-xs text-theme-sub uppercase">發生日期</span>
                                 <input type="date" value={txDate} onChange={e => setTxDate(e.target.value)} className="bg-transparent outline-none font-mono" />
@@ -753,7 +909,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                         )}
                     </div>
                     
-                    {/* 防止被 Nav bar 擋住，加入 bottom-24 */}
+                    {/* 避免被底部列遮擋，加入 bottom-24 */}
                     {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
                         <div className="absolute bottom-24 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
                             <div className="bg-[#3e2723] border-2 border-[#5d4037] p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden">
@@ -1110,10 +1266,10 @@ const PixelPet = ({ id, className, animate = true }) => {
                                     </div>
                                     <h3 className="text-xs font-bold text-theme-sub uppercase mb-3 px-1">{t('equipment')}</h3>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('mainHand')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped.mainHand?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('body')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped.body?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('head')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped.head?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('back')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped.back?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('mainHand')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.mainHand?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('body')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.body?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('head')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.head?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('back')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.back?.name || '-'}</div></div>
                                     </div>
                                 </div>
                             </div>
@@ -1149,6 +1305,9 @@ const PixelPet = ({ id, className, animate = true }) => {
             const [tempAccountType, setTempAccountType] = useState('cash');
             const [showAssetCalc, setShowAssetCalc] = useState(false);
             
+            // 類別管理專用 State
+            const [showCategoryManager, setShowCategoryManager] = useState(false);
+
             const [equipModalOpen, setEquipModalOpen] = useState(false);
             const [selectedSlot, setSelectedSlot] = useState(null);
             const [showPetSelector, setShowPetSelector] = useState(false);
@@ -1293,11 +1452,11 @@ const PixelPet = ({ id, className, animate = true }) => {
 
             const handleAddFriend = async (id) => { 
                 if (!id || !id.trim() || data.friends.some(f => f.uid === id)) return;
-                if (id === data.user.uid) { alert(t('cannot_add_self') || '無法加自己為好友喔！'); return; }
+                if (id === data.user.uid) { alert(t('cannot_add_self')); return; }
 
                 try {
                     const snap = await db.collection('users').where('user.uid', '==', id).get();
-                    if (snap.empty) { alert(t('user_not_found') || '找不到該 ID 的冒險者。'); return; }
+                    if (snap.empty) { alert(t('user_not_found')); return; }
 
                     const targetDoc = snap.docs[0];
                     const targetData = targetDoc.data();
@@ -1437,6 +1596,9 @@ const PixelPet = ({ id, className, animate = true }) => {
                             <button key={nav.id} onClick={() => setView(nav.id)} className={`flex flex-col items-center justify-center gap-0.5 min-w-[50px] flex-1 h-12 rounded-2xl transition-all duration-300 relative ${view === nav.id ? 'text-theme-accent -translate-y-4 bg-theme-card shadow-lg border border-theme-border scale-110 z-10' : 'text-theme-sub hover:text-theme-text opacity-70'}`}><Icon name={nav.icon} size={20} strokeWidth={view === nav.id ? 2.5 : 2} /><span className={`text-[9px] font-bold transition-all duration-300 ${view === nav.id ? 'text-theme-accent scale-105' : 'text-theme-sub opacity-80'}`}>{nav.label}</span>{nav.badge ? <span className="absolute top-0 right-3 w-3 h-3 bg-red-500 rounded-full border border-white animate-bounce"></span> : null}</button>
                         ))}
                     </nav>
+
+                    {/* 全局模態框區 */}
+                    {showCategoryManager && <CategoryManagerModal categories={data.categories} onClose={() => setShowCategoryManager(false)} onSave={(newCats) => { setData(prev => ({...prev, categories: newCats})); setShowCategoryManager(false); }} />}
                     
                     {showRenameModal && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center animate-[fadeIn_0.2s]">
@@ -1449,7 +1611,7 @@ const PixelPet = ({ id, className, animate = true }) => {
                         </div>
                     )}
 
-                    {showAddModal && <AddTransactionModal initialData={editingTx} accounts={data.accounts} categories={data.categories} onClose={() => { setShowAddModal(false); setEditingTx(null); }} onAdd={handleSaveTransaction} />}
+                    {showAddModal && <AddTransactionModal initialData={editingTx} accounts={data.accounts} categories={data.categories} onClose={() => { setShowAddModal(false); setEditingTx(null); }} onAdd={handleSaveTransaction} onManageCategories={() => setShowCategoryManager(true)} />}
                     {showPetSelector && <PetSelectorModal onSelect={handleSelectPet} />}
                     
                     {showProfileOptions && (
@@ -1478,8 +1640,20 @@ const PixelPet = ({ id, className, animate = true }) => {
                                     </div>
                                     
                                     <div className="flex gap-2">
-                                        <div className="flex-1"><label className="text-[10px] text-theme-sub font-bold uppercase mb-1 block">{t('currency_type')}</label><select value={tempAccountCurrency} onChange={e=>setTempAccountCurrency(e.target.value)} className="w-full bg-theme-bg p-3 rounded-2xl outline-none font-bold text-theme-text border border-theme-border">{MAIN_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}</select></div>
-                                        <div className="flex-1"><label className="text-[10px] text-theme-sub font-bold uppercase mb-1 block">{t('container_type')}</label><select value={tempAccountType} onChange={e=>setTempAccountType(e.target.value)} className="w-full bg-theme-bg p-3 rounded-2xl outline-none font-bold text-theme-text border border-theme-border"><option value="cash">{t('cash')}</option><option value="bank">{t('bank')}</option><option value="card">{t('card')}</option></select></div>
+                                        <div className="flex-1">
+                                            <label className="text-[10px] text-theme-sub font-bold uppercase mb-1 block">{t('currency_type')}</label>
+                                            <select value={tempAccountCurrency} onChange={e=>setTempAccountCurrency(e.target.value)} className="w-full bg-theme-bg p-3 rounded-2xl outline-none font-bold text-theme-text border border-theme-border">
+                                                {MAIN_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                        </div>
+                                        <div className="flex-1">
+                                            <label className="text-[10px] text-theme-sub font-bold uppercase mb-1 block">{t('container_type')}</label>
+                                            <select value={tempAccountType} onChange={e=>setTempAccountType(e.target.value)} className="w-full bg-theme-bg p-3 rounded-2xl outline-none font-bold text-theme-text border border-theme-border">
+                                                <option value="cash">{t('cash')}</option>
+                                                <option value="bank">{t('bank')}</option>
+                                                <option value="card">{t('card')}</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <button onClick={handleSaveAccount} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold shadow-md active:scale-95 transition-transform">{t('save')}</button>
