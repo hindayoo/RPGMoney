@@ -46,6 +46,12 @@
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
         [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+        [data-theme="magic"] { --bg-color: #f3e8ff; --card-bg: #ffffff; --text-main: #4c1d95; --text-sub: #7e22ce; --accent-color: #9333ea; --border-color: #d8b4fe; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#9333ea 0.5px, transparent 0.5px); }
+        [data-theme="matcha"] { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-main: #14532d; --text-sub: #166534; --accent-color: #15803d; --border-color: #bbf7d0; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#15803d 0.5px, transparent 0.5px); }
+        [data-theme="latte"] { --bg-color: #fdf8f6; --card-bg: #ffffff; --text-main: #431407; --text-sub: #78350f; --accent-color: #b45309; --border-color: #fed7aa; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#b45309 0.5px, transparent 0.5px); }
+        [data-theme="peach"] { --bg-color: #fff1f2; --card-bg: #ffffff; --text-main: #881337; --text-sub: #be123c; --accent-color: #e11d48; --border-color: #fecdd3; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#e11d48 0.5px, transparent 0.5px); }
+        [data-theme="lavender"] { --bg-color: #f5f3ff; --card-bg: #ffffff; --text-main: #4c1d95; --text-sub: #6d28d9; --accent-color: #7c3aed; --border-color: #ddd6fe; --glass-bg: rgba(255, 255, 255, 0.85); --bg-pattern: radial-gradient(#7c3aed 0.5px, transparent 0.5px); }
+
         body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; overscroll-behavior: none; }
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
         .pixel-icon { image-rendering: pixelated; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1); transform: scale(1.1); }
@@ -177,7 +183,9 @@
         };
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣切換', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '系統設定', total_wealth: '總資產', no_assets: '尚未建立任何資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '裝備屋', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', offHand: '副手', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包是空的，去商店看看吧！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '尚無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？', social: '公會', guild: '冒險公會', friend_list: '好友名單', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。' }
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣切換', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '系統設定', total_wealth: '總資產', no_assets: '尚未建立任何資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '裝備屋', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包是空的，去商店看看吧！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '尚無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？', social: '公會', guild: '冒險公會', friend_list: '好友名單', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。' },
+            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Achievements', upgrade: 'Upgrade', exchange: 'Currency', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Level', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this record?', logout: 'Log Out', theme: 'Theme', lang: 'Language', guardian: 'Pet', settings: 'Settings', total_wealth: 'Total Wealth', no_assets: 'No assets yet', add: 'Add', wallet: 'Wallet', bank: 'Bank', card: 'Card', invest: 'Invest', equipment_shop: 'Equipment Shop', gold: 'Gold', search: 'Search...', sort: 'Sort', filter: 'Filter', all: 'All', mainHand: 'Weapon', head: 'Head', body: 'Body', feet: 'Feet', back: 'Back', spiritRing: 'Spirit Ring', offHand: 'Off-Hand', price: 'Price', rarity: 'Rarity', name: 'Name', owned: 'Owned', equipped: 'Equipped', buy: 'Buy', not_enough_gold: 'Not Enough Gold', buy_success: 'Purchase Successful!', character_stats: 'Stats', dressing_room: 'Dressing Room', male: 'Male', female: 'Female', equipment_manager: 'Equipment', bag: 'Bag', equip: 'Equip', unequip: 'Unequip', empty_bag: 'Bag is empty!', transaction_scroll: 'Ledger', no_records: 'No records', income: 'Income', expense: 'Expense', mana_flow: 'Mana Flow', today: 'Today', month: 'Month', daily_view: 'Daily', in: 'In', out: 'Out', financial: 'Finance', system: 'System', no_logs: 'No logs', record_action: 'New Record', category: 'Category', note: 'Note (Optional)', select_account: 'Select Account', confirm: 'Confirm', cancel: 'Cancel', edit_account: 'Edit Account', new_account: 'New Account', log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward', claimed: 'Claimed', claim: 'Claim', theme_ink: 'Ink', theme_sakura: 'Sakura', theme_sky: 'Sky', theme_magic: 'Magic', theme_matcha: 'Matcha', theme_latte: 'Latte', theme_peach: 'Peach', theme_lavender: 'Lavender', theme_midnight: 'Midnight', change_stats: 'Stat Change', confirm_buy_title: 'Confirm Purchase', confirm_buy_msg: 'Spend {cost} G to buy {item}?', social: 'Guild', guild: 'Adventure Guild', friend_list: 'Friend List', add_friend: 'Recruit', visit: 'Visit', online: 'Online', offline: 'Offline', enter_id: 'Enter Adventurer ID', my_card: 'My Card', copy_id: 'Copy ID', copied: 'Copied!', remove_friend: 'Remove', send_like: 'Like', like_success: 'Liked!', edit_id: 'Change ID', change_id_title: 'Change Adventurer ID', change_id_cost: 'Cost', change_id_free: 'First time free', enter_new_id: 'Enter new ID', id_too_short: 'ID too short', id_taken: 'ID is taken', purchase_history: 'History', equipment: 'Equipment', upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet', relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Container Type', currency_type: 'Currency', cash: 'Cash', cannot_add_self: 'Cannot add yourself!', user_not_found: 'User not found.' },
+            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '通貨', journal: '日誌', shop: '店', main: 'メイン', daily: '毎日', challenge: '挑戦', level: 'Lv', exp: 'EXP', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: 'この記録を削除しますか？', logout: 'ログアウト', theme: '外観', lang: '言語', guardian: 'ペット', settings: '設定', total_wealth: '総資産', no_assets: '資産がありません', add: '追加', wallet: '財布', bank: '銀行', card: 'カード', invest: '投資', equipment_shop: '装備屋', gold: 'ゴールド', search: '検索...', sort: 'ソート', filter: '絞り込み', all: '全て', mainHand: '武器', head: '頭部', body: '体', feet: '足', back: '背中', spiritRing: '魂環', offHand: '副手', price: '価格', rarity: 'レア度', name: '名前', owned: '所持', equipped: '装備中', buy: '購入', not_enough_gold: 'ゴールド不足', buy_success: '購入成功！', character_stats: 'ステータス', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '装備管理', bag: 'バッグ', equip: '装備', unequip: '外す', empty_bag: 'バッグは空です！', transaction_scroll: '収支巻物', no_records: '記録なし', income: '収入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '今月', daily_view: '日別', in: '収入', out: '支出', financial: '財務', system: 'システム', no_logs: 'ログなし', record_action: '記録追加', category: 'カテゴリ', note: 'メモ (任意)', select_account: '口座選択', confirm: '確認', cancel: '取消', edit_account: '口座編集', new_account: '新規口座', log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬', claimed: '受取済', claim: '受取', theme_ink: '水墨', theme_sakura: '桜', theme_sky: '空', theme_magic: '魔法', theme_matcha: '抹茶', theme_latte: 'ラテ', theme_peach: '桃', theme_lavender: 'ラベンダー', theme_midnight: '真夜中', change_stats: '能力変化', confirm_buy_title: '購入確認', confirm_buy_msg: '{cost} Gで {item} を購入しますか？', social: 'ギルド', guild: 'ギルド', friend_list: 'フレンド', add_friend: '仲間募集', visit: '確認', online: 'オンライン', offline: 'オフライン', enter_id: 'IDを入力', my_card: 'マイカード', copy_id: 'IDコピー', copied: 'コピー済', remove_friend: 'フレンド解除', send_like: 'いいね', like_success: 'いいね済', edit_id: 'ID変更', change_id_title: 'ID変更', change_id_cost: '変更費用', change_id_free: '初回無料', enter_new_id: '新ID入力', id_too_short: '短すぎます', id_taken: '使用済のIDです', purchase_history: '購入履歴', equipment: '装備', upload_avatar: '画像アップ', choose_pet: '初期ペット選択', relic_name: '聖器名', mana_reserve: '魔力量', container_type: 'タイプ', currency_type: '通貨', cash: '現金', cannot_add_self: '自分は追加できません', user_not_found: '見つかりません' }
         };
 
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
@@ -186,11 +194,11 @@
             { id: 'ink', name: 'ink', color: '#343a40' }, { id: 'sakura', name: 'sakura', color: '#db2777' },
             { id: 'sky', name: 'sky', color: '#0ea5e9' }, { id: 'magic', name: 'magic', color: '#9333ea' },
             { id: 'matcha', name: 'matcha', color: '#15803d' }, { id: 'latte', name: 'latte', color: '#b45309' },
-            { id: 'peach', name: 'peach', color: '#f43f5e' }, { id: 'lavender', name: 'lavender', color: '#a855f7' },
+            { id: 'peach', name: 'peach', color: '#e11d48' }, { id: 'lavender', name: 'lavender', color: '#a855f7' },
             { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
 
-        // 🌟 3D 裝備視覺特效 (含新增 MMORPG 神級裝備)
+        // 🌟 3D 裝備視覺特效 (含新增 MMORPG 神級裝備與魂環)
         const GEAR_VISUALS = {
             's1': () => <g transform="translate(-2, 2)"><path fill="#cfd8dc" d="M10 10 L14 6 L18 10 L14 26 Z" style={{filter:'drop-shadow(1px 1px 1px #94a3b8)'}}/><path fill="#5d4037" d="M12 24 H16 V28 H12 Z" /></g>, 
             's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
@@ -221,6 +229,19 @@
             's102': () => <g className="animate-float origin-center"><path fill="#1a1a1a" d="M16 14 Q6 0 -4 10 Q6 10 12 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#1a1a1a" d="M16 14 Q26 0 36 10 Q26 10 20 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#7f1d1d" d="M16 14 Q8 4 0 10 Q8 10 13 16 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 14 Q24 4 32 10 Q24 10 19 16 Z" opacity="0.8"/></g>,
             's103': () => <g transform="scale(1.2) translate(-2, -2)"><path fill="#404040" d="M14 8 L18 28 L16 28 L12 8 Z" /><path fill="#cbd5e1" d="M8 6 Q16 -2 22 8 L18 10 Q14 4 10 10 Z" style={{filter:'drop-shadow(0 0 4px #dc2626)'}}/><path fill="#991b1b" d="M20 8 L22 10 L14 14 L12 12 Z"/></g>,
             's104': () => <g transform="translate(18, 12)"><path fill="#fbbf24" d="M-4 -4 L4 -4 L6 6 Q0 12 -6 6 Z" stroke="#d97706" strokeWidth="1" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#fef08a" d="M-2 -2 L2 -2 L3 4 Q0 8 -3 4 Z"/><circle cx="0" cy="2" r="1.5" fill="#38bdf8"/></g>,
+            
+            // 魂環特效視覺 (Spirit Rings)
+            'r1': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#f8fafc" strokeWidth="2" style={{filter:'drop-shadow(0 0 5px #f8fafc)'}} className="animate-pulse" />,
+            'r2': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#facc15" strokeWidth="2" style={{filter:'drop-shadow(0 0 6px #facc15)'}} className="animate-pulse" />,
+            'r3': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#a855f7" strokeWidth="2.5" style={{filter:'drop-shadow(0 0 8px #a855f7)'}} className="animate-pulse" />,
+            'r4': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#1f2937" strokeWidth="3" style={{filter:'drop-shadow(0 0 10px #1f2937)'}} className="animate-pulse" />,
+            'r5': () => <g className="animate-float origin-center">
+                <ellipse cx="16" cy="28" rx="20" ry="7" fill="none" stroke="#ef4444" strokeWidth="2.5" style={{filter:'drop-shadow(0 0 10px #ef4444)'}} className="animate-spin-slow"/>
+                <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#1f2937" strokeWidth="2" style={{filter:'drop-shadow(0 0 8px #1f2937)'}} className="animate-pulse"/>
+                <ellipse cx="16" cy="20" rx="16" ry="5" fill="none" stroke="#a855f7" strokeWidth="2" style={{filter:'drop-shadow(0 0 8px #a855f7)'}} />
+                <ellipse cx="16" cy="16" rx="14" ry="4" fill="none" stroke="#eab308" strokeWidth="1.5" style={{filter:'drop-shadow(0 0 6px #eab308)'}} />
+                <ellipse cx="16" cy="12" rx="12" ry="3" fill="none" stroke="#f8fafc" strokeWidth="1.5" style={{filter:'drop-shadow(0 0 4px #f8fafc)'}} />
+            </g>
         };
 
         const SHOP_ITEMS = [
@@ -251,7 +272,14 @@
             { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] },
             { id: 's102', name: '魔尊·暗炎之翼', type: 'back', rarity: 'legendary', cost: 25000, icon: 'Ghost', stats: { str: 50, vit: -20, agi: 30 }, desc: "散發著毀滅氣息的暗黑巨翼，宛如魔神降臨。", effects: ['float', 'glow'] },
             { id: 's103', name: '死神·噬魂巨鐮', type: 'mainHand', rarity: 'legendary', cost: 30000, icon: 'Sword', stats: { str: 80, agi: 20, int: 20 }, desc: "收割靈魂的恐怖鐮刀，刃口閃爍著寒芒。", effects: ['pulse'] },
-            { id: 's104', name: '神聖·天穹之盾', type: 'offHand', rarity: 'legendary', cost: 22000, icon: 'Shield', stats: { vit: 100, str: 20 }, desc: "抵擋一切邪惡的絕對壁壘。", effects: ['glow'] }
+            { id: 's104', name: '神聖·天穹之盾', type: 'offHand', rarity: 'legendary', cost: 22000, icon: 'Shield', stats: { vit: 100, str: 20 }, desc: "抵擋一切邪惡的絕對壁壘。", effects: ['glow'] },
+            
+            // 🌟 魂環列表
+            { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。" },
+            { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。" },
+            { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。" },
+            { id: 'r4', name: '萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 50000, icon: 'Sun', stats: { vit: 200, str: 200, agi: 50 }, desc: "黑色的萬年魂環，隱隱散發威壓。" },
+            { id: 'r5', name: '十萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 200000, icon: 'Sun', stats: { vit: 800, str: 500, int: 500 }, desc: "血紅色的十萬年魂環，擁有五道光環護體！" }
         ];
 
         const ITEM_ICONS = {
@@ -282,9 +310,15 @@
             's102': () => <g><path fill="#1a1a1a" d="M16 16 Q8 4 2 12 Q8 12 14 20 Z" opacity="0.9"/><path fill="#1a1a1a" d="M16 16 Q24 4 30 12 Q24 12 18 20 Z" opacity="0.9"/><path fill="#7f1d1d" d="M16 16 Q10 8 4 12 Q10 12 14 18 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 16 Q22 8 28 12 Q22 12 18 18 Z" opacity="0.8"/></g>,
             's103': () => <g transform="rotate(-15, 16, 16)"><path fill="#404040" d="M14 4 L18 28 L16 28 L12 4 Z" /><path fill="#cbd5e1" d="M8 2 Q18 -4 24 6 L20 8 Q14 2 10 8 Z" /><path fill="#991b1b" d="M22 6 L24 8 L14 12 L12 10 Z"/></g>,
             's104': () => <g><path fill="#fbbf24" d="M10 6 L22 6 L24 18 Q16 26 8 18 Z" stroke="#d97706" strokeWidth="2"/><path fill="#fef08a" d="M12 8 L20 8 L21 16 Q16 22 11 16 Z"/><circle cx="16" cy="14" r="3" fill="#38bdf8"/></g>,
+            
+            // 魂環圖示 (用於裝備屋與背包)
+            'r1': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#f8fafc" strokeWidth="4" />,
+            'r2': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#facc15" strokeWidth="4" />,
+            'r3': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#a855f7" strokeWidth="4" />,
+            'r4': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#1f2937" strokeWidth="4" />,
+            'r5': () => <g><circle cx="16" cy="16" r="12" fill="none" stroke="#ef4444" strokeWidth="2" /><circle cx="16" cy="16" r="8" fill="none" stroke="#ef4444" strokeWidth="2" /></g>,
         };
-
-        const ACHIEVEMENTS_LIST = [
+const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -316,8 +350,9 @@
             { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50, getProgress: (s) => `${s.questCount} / 50` },
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
         ];
-// ==========================================
-        // ⬇️ 第二部分開始 (共用元件與部分視圖) ⬇️
+
+        // ==========================================
+        // ⬇️ 共用元件與模態框 ⬇️
         // ==========================================
 
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
@@ -362,18 +397,41 @@
         const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
-            const headGear = equipped?.head; const bodyGear = equipped?.body; const mainHand = equipped?.mainHand; const offHand = equipped?.offHand; const backGear = equipped?.back; const feetGear = equipped?.feet;
-            const capeColor = backGear ? (backGear.id === 's13' ? '#212121' : backGear.id === 's6' ? '#7e57c2' : (backGear.rarity === 'legendary' ? '#eab308' : '#3b82f6')) : cape;
+            
+            const headGear = equipped?.head; 
+            const bodyGear = equipped?.body; 
+            const mainHand = equipped?.mainHand; 
+            const offHand = equipped?.offHand; 
+            const feetGear = equipped?.feet;
+            // 背飾多件渲染邏輯
+            const backGears = Array.isArray(equipped?.back) ? equipped.back : (equipped?.back ? [equipped.back] : []);
+            // 魂環
+            const spiritRing = equipped?.spiritRing;
             
             return (
                 <svg viewBox="0 0 32 32" overflow="visible" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
+                    {/* 魂環特效 (置於最底層發光) */}
+                    {spiritRing && GEAR_VISUALS[spiritRing.id] && (
+                        <g className="origin-center" style={{transformBox: 'fill-box'}}>
+                            {GEAR_VISUALS[spiritRing.id]()}
+                        </g>
+                    )}
+                    
                     <ellipse cx="16" cy="30" rx="10" ry="2" fill="rgba(0,0,0,0.15)" />
+                    
                     <g className="animate-idle-breathe origin-bottom">
                         {!headGear && gender === 'female' && <path fill={hair} d="M8 9h16v12H8z" opacity="0.9" />}
+                        
+                        {/* 疊加渲染背飾 */}
                         <g className="origin-top-center animate-cape-flow">
-                            {(!backGear || !GEAR_VISUALS[backGear.id]) && <path fill={capeColor} d={gender === 'male' ? "M7 16h18v16H7z M9 16h14v14H9z" : "M8 16h16v16H8z M10 16h12v14H10z"} opacity="0.95" />}
-                            {backGear && GEAR_VISUALS[backGear.id] && GEAR_VISUALS[backGear.id]()}
+                            {backGears.length === 0 && <path fill={cape} d={gender === 'male' ? "M7 16h18v16H7z M9 16h14v14H9z" : "M8 16h16v16H8z M10 16h12v14H10z"} opacity="0.95" />}
+                            {backGears.map((bg, index) => (
+                                <g key={bg.id + index}>
+                                    {GEAR_VISUALS[bg.id] ? GEAR_VISUALS[bg.id]() : null}
+                                </g>
+                            ))}
                         </g>
+                        
                         <path fill={'#3e2723'} d={gender === 'male' ? "M11 24h3v6h-3zM18 24h3v6h-3z" : "M12 25h3v5h-3zM17 25h3v5h-3z"} />
                         {feetGear && GEAR_VISUALS[feetGear.id] && GEAR_VISUALS[feetGear.id]()}
                         {!feetGear && <path fill={feetGear ? '#546e7a' : 'transparent'} d={gender === 'male' ? "M10 29h4v3h-4zM18 29h4v3h-4z" : "M11 30h4v2h-4zM17 30h4v2h-4z"} opacity="0.5"/>}
@@ -408,49 +466,58 @@
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[70vh] flex flex-col border-t-4 border-theme-accent/20"><div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div><h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3><div className="grid gap-3 overflow-y-auto custom-scrollbar">{options.map(opt => (<button key={opt.value} onClick={() => { if(opt.locked && onLockedClick) { onLockedClick(opt); } else if (!opt.locked) { onSelect(opt.value); onClose(); } }} className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}><div className="flex items-center gap-3">{opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}<div className="flex flex-col items-start"><span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>{opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}{opt.locked && opt.condition && <span className="text-[9px] text-red-400 mt-1 font-mono bg-red-50 px-1 rounded border border-red-100">🔒 {opt.condition}</span>}</div></div>{current === opt.value && <Icon name="Check" className="text-theme-accent"/>}{opt.locked && <Icon name="Lock" className="text-theme-sub"/>}</button>))}</div><button onClick={onClose} className="w-full mt-6 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button></div></div>
         );
 
-        const InventoryModal = ({ slot, inventory, onClose, onEquip }) => {
+        const InventoryModal = ({ slot, inventory, equipped, onClose, onEquip }) => {
             if (!slot) return null; const availableItems = inventory.filter(i => i.type === slot);
+            
+            // 判斷多選狀態 (僅限背飾)
+            const isEquipped = (item) => {
+                if (slot === 'back' && Array.isArray(equipped.back)) {
+                    return equipped.back.some(i => i.id === item.id);
+                }
+                return equipped[slot]?.id === item.id;
+            };
+
             return (
-                <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col"><h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">選擇裝備 ({slot})</h3><div className="grid gap-3 overflow-y-auto pb-4"><button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg"><div className="w-10 h-10 flex items-center justify-center"><Icon name="X"/></div><span className="font-bold">卸下裝備</span></button>{availableItems.length === 0 && <div className="text-center text-theme-sub py-4">沒有可用的裝備</div>}{availableItems.map(item => { const VisualIcon = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 bg-theme-bg hover:bg-theme-card rarity-${item.rarity}`}><div className="flex items-center gap-3"><div className="w-12 h-12 rounded-xl bg-white/50 shadow-sm flex items-center justify-center border border-white/30 overflow-hidden">{VisualIcon ? <svg viewBox="0 0 32 32" className="w-10 h-10 pixel-icon"><VisualIcon/></svg> : <Icon name={item.icon} className="pixel-icon"/>}</div><div className="text-left"><div className="font-bold text-theme-text">{item.name}</div><div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div></div></div><div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded">裝備</div></button>); })}</div><button onClick={onClose} className="w-full mt-2 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button></div></div>
+                <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
+                        <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">
+                            選擇裝備 ({slot}) {slot === 'back' && <span className="text-[10px] text-theme-sub ml-2 bg-theme-bg px-2 py-1 rounded-full border border-theme-border">支援多穿疊加</span>}
+                        </h3>
+                        <div className="grid gap-3 overflow-y-auto pb-4 custom-scrollbar">
+                            <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg">
+                                <div className="w-10 h-10 flex items-center justify-center"><Icon name="X"/></div>
+                                <span className="font-bold">卸下全部</span>
+                            </button>
+                            {availableItems.length === 0 && <div className="text-center text-theme-sub py-4">沒有可用的裝備</div>}
+                            {availableItems.map(item => { 
+                                const VisualIcon = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; 
+                                const eqStatus = isEquipped(item);
+                                return (
+                                    <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 transition-all hover:bg-theme-card rarity-${item.rarity} ${eqStatus ? 'border-theme-accent shadow-md scale-[1.02]' : 'bg-theme-bg border-transparent'}`}>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-xl bg-white/50 shadow-sm flex items-center justify-center border border-white/30 overflow-hidden">{VisualIcon ? <svg viewBox="0 0 32 32" className="w-10 h-10 pixel-icon"><VisualIcon/></svg> : <Icon name={item.icon} className="pixel-icon"/>}</div>
+                                            <div className="text-left"><div className="font-bold text-theme-text">{item.name}</div><div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div></div>
+                                        </div>
+                                        {eqStatus && <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><Icon name="Check" size={10} /> 裝著中</div>}
+                                    </button>
+                                ); 
+                            })}
+                        </div>
+                        <button onClick={onClose} className="w-full mt-2 py-4 text-theme-sub font-bold active:scale-95 shrink-0 bg-theme-bg rounded-xl border border-theme-border">完成選擇</button>
+                    </div>
+                </div>
             );
         };
         
-        // 🌟 強化手機版拖曳體驗的分類管理器
         const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
             const dragItem = useRef(null); const dragOverItem = useRef(null);
             
-            // 增強型觸控與拖曳處理
-            const handleTouchStart = (e, index) => {
-                dragItem.current = index;
-                const target = e.currentTarget;
-                target.style.opacity = '0.5';
-                target.style.transform = 'scale(1.02)';
-                document.body.style.overflow = 'hidden'; // 防止手機滑動干擾
-            };
-            const handleTouchMove = (e) => {
-                if(dragItem.current === null) return;
-                const touch = e.touches[0];
-                const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                if (target && target.closest('[data-index]')) {
-                    dragOverItem.current = parseInt(target.closest('[data-index]').dataset.index);
-                }
-            };
-            const handleTouchEnd = (e) => {
-                e.currentTarget.style.opacity = '1';
-                e.currentTarget.style.transform = 'none';
-                document.body.style.overflow = 'auto'; // 恢復手機滑動
-                if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) { 
-                    const copyListItems = [...cats]; 
-                    const dragItemContent = copyListItems[dragItem.current]; 
-                    copyListItems.splice(dragItem.current, 1); 
-                    copyListItems.splice(dragOverItem.current, 0, dragItemContent); 
-                    setCats(copyListItems); 
-                } 
-                dragItem.current = null; 
-                dragOverItem.current = null; 
-            };
+            const handleTouchStart = (e, index) => { dragItem.current = index; const target = e.currentTarget; target.style.opacity = '0.5'; target.style.transform = 'scale(1.02)'; document.body.style.overflow = 'hidden'; };
+            const handleTouchMove = (e) => { if(dragItem.current === null) return; const touch = e.touches[0]; const target = document.elementFromPoint(touch.clientX, touch.clientY); if (target && target.closest('[data-index]')) { dragOverItem.current = parseInt(target.closest('[data-index]').dataset.index); } };
+            const handleTouchEnd = (e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'none'; document.body.style.overflow = 'auto'; if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) { const copyListItems = [...cats]; const dragItemContent = copyListItems[dragItem.current]; copyListItems.splice(dragItem.current, 1); copyListItems.splice(dragOverItem.current, 0, dragItemContent); setCats(copyListItems); } dragItem.current = null; dragOverItem.current = null; };
             
             const startEdit = (cat) => { setEditingId(cat.id); setEditLabel(cat.label); setEditIcon(cat.icon); setEditColor(cat.color); };
             const saveEdit = () => { setCats(cats.map(c => c.id === editingId ? { ...c, label: editLabel, icon: editIcon, color: editColor } : c)); setEditingId(null); };
@@ -482,7 +549,8 @@
                 <div className="fixed inset-0 z-50 flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div><div className="relative bg-theme-card w-full rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] overflow-hidden flex flex-col max-h-[90vh]"><div className="p-4 border-b border-theme-border flex justify-between items-center bg-theme-bg shrink-0"><button onClick={onClose} className="text-theme-sub hover:text-theme-text"><Icon name="X" /></button><div className="font-bold text-theme-text">{initialData ? '編輯行動紀錄' : '紀錄行動'}</div><div className="w-6"></div></div><div className="p-6 flex flex-col gap-6 overflow-y-auto pb-safe custom-scrollbar"><div className="flex bg-theme-bg p-1 rounded-xl border border-theme-border"><button type="button" onClick={() => setType('expense')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${type === 'expense' ? 'bg-red-500 text-white shadow-md' : 'text-theme-sub'}`}>支出</button><button type="button" onClick={() => setType('income')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${type === 'income' ? 'bg-green-500 text-white shadow-md' : 'text-theme-sub'}`}>收入</button></div><div><div onClick={() => setShowCalc(true)} className="relative text-center border-b border-theme-border pb-2 flex items-center justify-between cursor-pointer group"><span className="text-theme-text font-bold text-xl">$</span><div className="w-full bg-transparent text-right pr-4 text-5xl font-mono font-bold text-theme-text overflow-hidden whitespace-nowrap">{amountStr || '0'}</div><div className="p-3 rounded-xl bg-theme-accent/10 text-theme-accent group-hover:scale-110 transition-transform"><Icon name="Calculator" size={24}/></div></div></div><div><div className="flex justify-between items-center mb-2 px-1"><div className="text-xs font-bold text-theme-sub uppercase">分類</div><button type="button" onClick={onManageCategories} className="text-[10px] bg-theme-bg text-theme-sub px-2 py-1 rounded border border-theme-border hover:text-theme-accent transition-colors flex items-center gap-1"><Icon name="Settings" size={10}/> 編輯類別</button></div><div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1 custom-scrollbar">{sortedCats.map(([key, cat]) => (<button key={key} type="button" onClick={() => setCategory(key)} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${category === key ? 'bg-theme-accent/10 border-2 border-theme-accent shadow-sm' : 'border-2 border-transparent opacity-60'}`}><div className="w-8 h-8 rounded-full flex items-center justify-center transition-transform text-white shadow-sm" style={{backgroundColor: cat.color}}><Icon name={cat.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold text-theme-text truncate w-full text-center">{cat.label}</span></button>))}</div></div><div className="flex justify-between items-center bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm font-bold text-theme-text"><span className="text-xs text-theme-sub uppercase">發生日期</span><input type="date" value={txDate} onChange={e => setTxDate(e.target.value)} className="bg-transparent outline-none font-mono" /></div><input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text" placeholder="備註 (選填)..."/><select value={accountId} onChange={e => setAccountId(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text">{accounts.map(acc => (<option key={acc.id} value={acc.id}>{acc.name} ({acc.currency})</option>))}</select><button onClick={handleSubmit} className="w-full bg-theme-accent text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform mt-2 mb-4">確認儲存</button></div></div>{showCalc && <MagicAbacus value={amountStr} onPadClick={handlePadClick} onClose={() => setShowCalc(false)} />}</div>
             );
         };
-const LevelUpOverlay = ({ level, onClose }) => (
+
+        const LevelUpOverlay = ({ level, onClose }) => (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-[fadeIn_0.3s]"><div className="relative text-center w-full max-w-sm"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-conic-gradient from-transparent via-yellow-400/20 to-transparent animate-spin-slow opacity-50 rounded-full"></div><div className="relative z-10 animate-pop-in"><div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]">🎉</div><h2 className="text-5xl font-pixel text-yellow-300 font-bold tracking-widest drop-shadow-md mb-2 animate-bounce">LEVEL UP!</h2><div className="text-9xl font-black text-white drop-shadow-xl my-4">{level}</div><button onClick={onClose} className="mt-8 px-8 py-3 bg-white text-black font-bold rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] active:scale-95 transition-transform">CONTINUE</button></div></div></div>
         );
 
@@ -623,9 +691,23 @@ const LevelUpOverlay = ({ level, onClose }) => (
             const t = (key) => translations[lang]?.[key] || key;
             const safePurchaseHistory = Array.isArray(purchaseHistory) ? purchaseHistory : [];
             const [previewItem, setPreviewItem] = useState(null); const [showConfirmModal, setShowConfirmModal] = useState(false); const [filter, setFilter] = useState('all'); const [sort, setSort] = useState('rarityDesc'); const [showHistory, setShowHistory] = useState(false); const [buySuccessId, setBuySuccessId] = useState(null);
-            const currentPreviewEquipped = useMemo(() => { if (!previewItem) return equipped; return { ...equipped, [previewItem.type]: previewItem }; }, [equipped, previewItem]);
+            
+            // 商店預覽多背飾邏輯處理
+            const currentPreviewEquipped = useMemo(() => { 
+                if (!previewItem) return equipped; 
+                let newEquip = { ...equipped };
+                if (previewItem.type === 'back') {
+                    // 若預覽的是背飾，先模擬加進背飾陣列
+                    const currentBack = Array.isArray(equipped.back) ? equipped.back : (equipped.back ? [equipped.back] : []);
+                    newEquip.back = [...currentBack.filter(i => i.id !== previewItem.id), previewItem];
+                } else {
+                    newEquip[previewItem.type] = previewItem; 
+                }
+                return newEquip;
+            }, [equipped, previewItem]);
+            
             const displayedItems = useMemo(() => { let items = [...SHOP_ITEMS]; if (filter !== 'all') items = items.filter(i => i.type === filter); items.sort((a, b) => { if (sort === 'priceAsc') return a.cost - b.cost; if (sort === 'priceDesc') return b.cost - a.cost; if (sort === 'rarityDesc') { const rVal = { legendary: 4, epic: 3, rare: 2, common: 1 }; return (rVal[b.rarity] || 0) - (rVal[a.rarity] || 0); } return 0; }); return items; }, [filter, sort]);
-            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
+            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'spiritRing', label: t('spiritRing'), icon: 'Sun' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
             const getCardStyle = (rarity, isSelected) => { const base = "relative rounded-lg transition-all duration-200 border-[3px] overflow-hidden"; const selected = isSelected ? "ring-4 ring-white ring-offset-2 ring-offset-[#2d1b1e] scale-105 z-10" : "hover:-translate-y-1 hover:shadow-lg"; let theme = ""; switch (rarity) { case 'legendary': theme = "bg-gradient-to-br from-yellow-900 via-amber-700 to-yellow-900 border-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]"; break; case 'epic': theme = "bg-gradient-to-br from-purple-900 via-fuchsia-900 to-purple-900 border-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.2)]"; break; case 'rare': theme = "bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-900 border-cyan-400"; break; default: theme = "bg-[#4e342e] border-[#8d6e63] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"; break; } return `${base} ${selected} ${theme}`; };
             const handleBuyClick = () => { if (!previewItem || gold < previewItem.cost) return; setShowConfirmModal(true); };
             const confirmBuy = () => { onBuy(previewItem); setBuySuccessId(previewItem.id); setShowConfirmModal(false); };
@@ -651,13 +733,30 @@ const LevelUpOverlay = ({ level, onClose }) => (
             const currentGenderColors = appearance[gender] || appearance;
             const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
             const totalStats = { ...baseStats };
-            Object.values(equipped).forEach(item => { if(item.stats) { if(item.stats.str) totalStats.str += item.stats.str; if(item.stats.int) totalStats.int += item.stats.int; if(item.stats.vit) totalStats.vit += item.stats.vit; if(item.stats.agi) totalStats.agi += item.stats.agi; } });
+            
+            // 將所有裝備(含陣列中的多個背飾)納入能力計算
+            const calculateStats = (item) => {
+                if(item && item.stats) { 
+                    if(item.stats.str) totalStats.str += item.stats.str; 
+                    if(item.stats.int) totalStats.int += item.stats.int; 
+                    if(item.stats.vit) totalStats.vit += item.stats.vit; 
+                    if(item.stats.agi) totalStats.agi += item.stats.agi; 
+                }
+            };
+            Object.values(equipped).forEach(val => { 
+                if (Array.isArray(val)) { val.forEach(calculateStats); } else { calculateStats(val); }
+            });
+            
             const derivedStats = { hp: totalStats.vit * 20, mp: totalStats.int * 10, atk: totalStats.str * 5, def: totalStats.vit * 2, spd: totalStats.agi * 2, cri: Math.floor(totalStats.agi * 0.2) };
             const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
+            
             const renderSlot = (slotData) => {
-                const item = equipped[slotData.slot]; 
+                // 如果是背飾且是陣列，取第一個顯示在畫面上，但點擊一樣開背包
+                const item = Array.isArray(equipped[slotData.slot]) ? equipped[slotData.slot][0] : equipped[slotData.slot]; 
+                const isMulti = slotData.slot === 'back' && Array.isArray(equipped[slotData.slot]) && equipped[slotData.slot].length > 1;
+                
                 if (!item) { return ( <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all cursor-pointer hover:bg-black/10 active:scale-95" onClick={() => onEquipSlot(slotData.slot)}><div className="absolute text-xl text-theme-sub/30 font-mono top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">+</div><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm">{t(slotData.name)}</div></div> ); }
-                return ( <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all cursor-pointer hover:scale-105 active:scale-95 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}><Icon name={item.icon} size={16} className="text-theme-text pixel-icon sm:w-5 sm:h-5"/><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm">{item.name.substring(0,4)}</div></div> );
+                return ( <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all cursor-pointer hover:scale-105 active:scale-95 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}><Icon name={item.icon} size={16} className="text-theme-text pixel-icon sm:w-5 sm:h-5"/><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm flex items-center">{item.name.substring(0,4)}{isMulti && <span className="bg-theme-accent text-white px-0.5 ml-0.5 rounded text-[6px]">+{equipped[slotData.slot].length}</span>}</div></div> );
             };
             const ProgressBar = ({ val, max, color }) => (<div className="h-1.5 w-full bg-black/10 rounded-full overflow-hidden mt-1"><div className={`h-full ${color}`} style={{ width: `${Math.min((val / max) * 100, 100)}%` }}></div></div>);
 
@@ -667,7 +766,7 @@ const LevelUpOverlay = ({ level, onClose }) => (
                     
                     <div className="flex-1 min-h-0 relative w-full flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-4 w-[120px] h-[20px] rounded-full bg-theme-accent/20 animate-pulse blur-xl"></div>
-                        <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">{renderSlot({slot: 'head', name:'head'})}{renderSlot({slot: 'body', name:'body'})}{renderSlot({slot: 'mainHand', name:'mainHand'})}</div>
+                        <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">{renderSlot({slot: 'head', name:'head'})}{renderSlot({slot: 'body', name:'body'})}{renderSlot({slot: 'mainHand', name:'mainHand'})}{renderSlot({slot: 'spiritRing', name:'spiritRing'})}</div>
                         <div className="relative z-20 transform scale-110 sm:scale-125"><PixelAvatar gender={gender} colors={appearance} equipped={equipped} className="w-48 h-48 sm:w-56 sm:h-56 object-contain drop-shadow-2xl filter contrast-110"/></div>
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">{renderSlot({slot: 'back', name:'back'})}{renderSlot({slot: 'offHand', name:'offHand'})}{renderSlot({slot: 'feet', name:'feet'})}</div>
                     </div>
@@ -908,7 +1007,7 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                                         <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('mainHand')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.mainHand?.name || '-'}</div></div>
                                         <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('body')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.body?.name || '-'}</div></div>
                                         <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('head')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.head?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('back')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.back?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('back')}</div><div className="font-bold text-sm text-theme-text truncate">{Array.isArray(selectedFriend.equipped?.back) ? (selectedFriend.equipped.back.length > 0 ? selectedFriend.equipped.back.map(b=>b.name).join(', ') : '-') : (selectedFriend.equipped?.back?.name || '-')}</div></div>
                                     </div>
                                 </div>
                             </div>
@@ -958,7 +1057,7 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
             const [authError, setAuthError] = useState('');
             const [cloudSyncing, setCloudSyncing] = useState(false);
 
-            // 🌟 絕對安全防護：解決任何陣列丟失導致的白畫面問題
+            // 🌟 絕對安全防護
             const safeData = useMemo(() => {
                 const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false };
                 const currentUser = data.user || defaultUser;
@@ -1049,7 +1148,6 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
             const t = (key) => TRANSLATIONS[lang]?.[key] || key;
             const addLog = (type, msg, currentLogs) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...currentLogs].slice(0, 50); };
             
-            // 獨立計算統計數據，確保符合主貨幣匯率
             const currentStats = useMemo(() => {
                 const rate = EXCHANGE_RATES[mainCurrency] || 1;
                 const convertedExpense = safeData.transactions.filter(t => t.type === 'expense').reduce((a,c) => {
@@ -1118,12 +1216,38 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
             const handleSelectPet = (petId) => { if (!safeData.user) return; const newPet = { id: petId, name: PET_DEFINITIONS[petId].name, exp: 0, level: 1, bond: 0 }; setData(prev => ({ ...prev, user: { ...prev.user, pet: newPet } })); setShowPetSelector(false); };
             const handleRenamePet = (newName) => { if (!safeData.user.pet) return; setData(prev => ({ ...prev, user: { ...prev.user, pet: { ...prev.user.pet, name: newName } } })); };
             const handleSetTitle = (titleId) => { setData(prev => ({ ...prev, user: { ...prev.user, title: titleId } })); };
+            
             const handleBuyItem = (item) => {
                 const newGold = safeData.user.gold - item.cost; const newInventory = [...safeData.inventory, item]; const newLogs = addLog('system', `Bought: ${item.name}`, safeData.logs);
                 const newPurchase = { id: Date.now().toString(), itemId: item.id, itemName: item.name, cost: item.cost, date: new Date().toISOString() };
                 setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...safeData.purchaseHistory] }));
             };
-            const handleEquipItem = (slot, item) => { const newEquipped = { ...data.equipped }; if (item) { newEquipped[slot] = item; } else { delete newEquipped[slot]; } setData(prev => ({ ...prev, equipped: newEquipped })); setEquipModalOpen(false); };
+            
+            // 🌟 裝備切換邏輯 (支援背飾多選)
+            const handleEquipItem = (slot, item) => { 
+                const newEquipped = { ...data.equipped }; 
+                if (item) { 
+                    if (slot === 'back') {
+                        // 確保當前是陣列
+                        const currentBack = Array.isArray(newEquipped.back) ? newEquipped.back : (newEquipped.back ? [newEquipped.back] : []);
+                        // Toggle邏輯：如果有就拿掉，沒有就加上
+                        if (currentBack.some(i => i.id === item.id)) {
+                            newEquipped.back = currentBack.filter(i => i.id !== item.id);
+                        } else {
+                            newEquipped.back = [...currentBack, item];
+                        }
+                    } else {
+                        newEquipped[slot] = item; 
+                    }
+                } else { 
+                    delete newEquipped[slot]; 
+                } 
+                setData(prev => ({ ...prev, equipped: newEquipped })); 
+                // 若不是背飾，裝備後自動關閉彈窗；若是背飾，保留彈窗讓玩家繼續選
+                if (slot !== 'back' || !item) {
+                    setEquipModalOpen(false); 
+                }
+            };
             
             const handleSaveTransaction = (tData) => {
                 let newData = { ...safeData }; let newAccounts = [...safeData.accounts]; let newLogs = [...safeData.logs];
@@ -1214,7 +1338,7 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                 }
             };
 
-            // 🌟 獨立計算：任務進度自動根據帳戶的貨幣換算成主貨幣
+            // 🌟 多層次任務清單生成 (大量任務擴充)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString(); 
                 const totalTxCount = safeData.transactions.length; 
@@ -1233,13 +1357,37 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                     return a + (c.balance / accRate) * rate;
                 }, 0); 
                 
-                const targetM2 = Math.floor(500 * rate); 
+                const targetM1 = Math.floor(500 * rate); 
+                const targetM2 = Math.floor(5000 * rate);
+                const targetM3 = Math.floor(20000 * rate);
                 const targetC1 = Math.floor(10000 * rate); 
                 const targetC2 = Math.floor(50000 * rate);
+                const targetC3 = Math.floor(200000 * rate);
                 
-                const rawQuests = [{ id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 150, coins: 50, progress: 1, target: 1 }, { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 100, coins: 50, progress: dailyTxCount, target: 1 }, { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 200, coins: 100, progress: dailyTxCount, target: 3 }, { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 200, coins: 100, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, { id: 'm3', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 400, coins: 200, progress: totalTxCount, target: 10 }, { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${targetM2.toLocaleString()} ${mainCurrency}`, exp: 300, coins: 150, progress: totalExpenseVal, target: targetM2 }, { id: 'm4', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 200, coins: 100, progress: safeData.friends.length, target: 1 }, { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 500, coins: 300, progress: totalAssetVal, target: targetC1 }, { id: 'c2', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 500, progress: totalAssetVal, target: targetC2 }];
+                const rawQuests = [
+                    // Daily
+                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 150, coins: 50, progress: 1, target: 1 }, 
+                    { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 100, coins: 50, progress: dailyTxCount, target: 1 }, 
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 200, coins: 100, progress: dailyTxCount, target: 3 },
+                    { id: `d5_${todayStr}`, type: 'daily', title: '財務總管', desc: '今日記帳 5 次', exp: 400, coins: 200, progress: dailyTxCount, target: 5 },
+                    // Main
+                    { id: 'm1_tx', type: 'main', title: '初次記帳', desc: '記錄第 1 筆消費', exp: 200, coins: 100, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, 
+                    { id: 'm10_tx', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 400, coins: 200, progress: totalTxCount, target: 10 }, 
+                    { id: 'm50_tx', type: 'main', title: '專業會計', desc: '記錄 50 筆消費', exp: 800, coins: 500, progress: totalTxCount, target: 50 }, 
+                    { id: 'm_exp1', type: 'main', title: '財務起步', desc: `累積消費 ${targetM1.toLocaleString()} ${mainCurrency}`, exp: 300, coins: 150, progress: totalExpenseVal, target: targetM1 }, 
+                    { id: 'm_exp2', type: 'main', title: '消費習慣', desc: `累積消費 ${targetM2.toLocaleString()} ${mainCurrency}`, exp: 600, coins: 300, progress: totalExpenseVal, target: targetM2 }, 
+                    { id: 'm_exp3', type: 'main', title: '花錢如流水', desc: `累積消費 ${targetM3.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 800, progress: totalExpenseVal, target: targetM3 }, 
+                    { id: 'm_fr1', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 200, coins: 100, progress: safeData.friends.length, target: 1 }, 
+                    { id: 'm_fr5', type: 'main', title: '萬人迷', desc: '新增 5 位好友', exp: 800, coins: 500, progress: safeData.friends.length, target: 5 }, 
+                    { id: 'm_lv10', type: 'main', title: '嶄露頭角', desc: '角色等級達到 10', exp: 500, coins: 500, progress: safeData.user.level, target: 10 }, 
+                    // Challenge
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 500, coins: 300, progress: totalAssetVal, target: targetC1 }, 
+                    { id: 'c2', type: 'challenge', title: '財務自由', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 500, progress: totalAssetVal, target: targetC2 },
+                    { id: 'c3', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC3.toLocaleString()} ${mainCurrency}`, exp: 3000, coins: 1500, progress: totalAssetVal, target: targetC3 },
+                    { id: 'c_it10', type: 'challenge', title: '裝備大師', desc: '收集 10 件裝備(含魂環)', exp: 1000, coins: 1000, progress: safeData.inventory.length, target: 10 }
+                ];
                 return rawQuests.map(q => ({ ...q, uniqueId: q.id, isClaimed: safeData.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target })).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
-            }, [safeData.transactions, safeData.accounts, safeData.claimedQuests, mainCurrency, safeData.friends]);
+            }, [safeData.transactions, safeData.accounts, safeData.claimedQuests, mainCurrency, safeData.friends, safeData.inventory, safeData.user.level]);
             
             const pendingQuestCount = activeQuests.filter(q => q.isCompleted && !q.isClaimed).length;
 
@@ -1337,7 +1485,7 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                     {showCurrencySelect && <SelectorSheet title={t('exchange')} options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={() => setShowLevelUp({ ...showLevelUp, show: false })} />}
                     {showAvatarEdit && safeData.user && <AvatarEditor appearanceData={safeData.user.appearance} onSave={(newApp) => { setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } })); setShowAvatarEdit(false); }} onClose={() => setShowAvatarEdit(false)} />}
-                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={safeData.inventory} onClose={() => setEquipModalOpen(false)} onEquip={handleEquipItem} />}
+                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={safeData.inventory} equipped={safeData.equipped} onClose={() => setEquipModalOpen(false)} onEquip={handleEquipItem} />}
                     
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
