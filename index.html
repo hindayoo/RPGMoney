@@ -3,60 +3,204 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V29 (Ultimate RPG Edition)</title>
+    <title>SakuraWallet V30 (Ultimate Touch & Magic Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=DotGothic16&display=swap" rel="stylesheet">
     <script>
-      tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['"Zen Maru Gothic"','sans-serif'],pixel:['"DotGothic16"','sans-serif']},colors:{theme:{bg:'var(--bg-color)',card:'var(--card-bg)',text:'var(--text-main)',sub:'var(--text-sub)',accent:'var(--accent-color)',border:'var(--border-color)',glass:'var(--glass-bg)'}},animation:{'float':'float 4s ease-in-out infinite','pulse-slow':'pulse 3s infinite','pop-in':'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards','shimmer':'shimmer 2s linear infinite','glow':'glow 2s ease-in-out infinite alternate','shake':'shake 0.5s cubic-bezier(.36,.07,.19,.97) both','bounce-gentle':'bounceGentle 2s infinite'},keyframes:{float:{'0%, 100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-5px)'}},popIn:{'0%':{opacity:'0',transform:'scale(0.8)'},'100%':{opacity:'1',transform:'scale(1)'}},glow:{'0%':{filter:'drop-shadow(0 0 2px rgba(255,255,255,0.5))'},'100%':{filter:'drop-shadow(0 0 10px rgba(255,255,255,0.9))'}},bounceGentle:{'0%, 100%':{transform:'translateY(0) scaleY(1)'},'50%':{transform:'translateY(-2px) scaleY(0.95)'}}}}}}
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { 
+                sans: ['"Zen Maru Gothic"', 'sans-serif'], 
+                pixel: ['"DotGothic16"', 'sans-serif'] 
+            },
+            colors: {
+              theme: { bg: 'var(--bg-color)', card: 'var(--card-bg)', text: 'var(--text-main)', sub: 'var(--text-sub)', accent: 'var(--accent-color)', border: 'var(--border-color)', glass: 'var(--glass-bg)' }
+            },
+            animation: { 
+                'float': 'float 4s ease-in-out infinite', 
+                'pulse-slow': 'pulse 3s infinite',
+                'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                'shimmer': 'shimmer 2s linear infinite', 
+                'glow': 'glow 2s ease-in-out infinite alternate',
+                'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both', 
+                'spin-slow': 'spin 12s linear infinite',
+                'bounce-gentle': 'bounceGentle 2s infinite',
+            },
+            keyframes: { 
+                float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
+                popIn: { '0%': { opacity: '0', transform: 'scale(0.8)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                shimmer: { '0%': { backgroundPosition: '-200% center' }, '100%': { backgroundPosition: '200% center' } },
+                glow: { '0%': { filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.5))' }, '100%': { filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.9))' } },
+                shake: { '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' }, '20%, 80%': { transform: 'translate3d(2px, 0, 0)' }, '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' }, '40%, 60%': { transform: 'translate3d(4px, 0, 0)' } },
+                bounceGentle: { '0%, 100%': { transform: 'translateY(0) scaleY(1)' }, '50%': { transform: 'translateY(-2px) scaleY(0.95)' } }
+            }
+          }
+        }
+      }
     </script>
     <style>
-        :root{--bg-color:#f8f9fa;--card-bg:#ffffff;--text-main:#212529;--text-sub:#868e96;--accent-color:#343a40;--border-color:#dee2e6;--glass-bg:rgba(255,255,255,0.9);--bg-pattern:radial-gradient(#ced4da 1px,transparent 1px)}
-        [data-theme="ink"]{--bg-color:#f8f9fa;--card-bg:#ffffff;--text-main:#212529;--text-sub:#868e96;--accent-color:#343a40;--border-color:#dee2e6;--glass-bg:rgba(255,255,255,0.9);--bg-pattern:radial-gradient(#ced4da 1px,transparent 1px)}
-        [data-theme="sakura"]{--bg-color:#fff0f5;--card-bg:#ffffff;--text-main:#831843;--text-sub:#be185d;--accent-color:#db2777;--border-color:#fbcfe8;--glass-bg:rgba(255,255,255,0.75);--bg-pattern:radial-gradient(#db2777 0.5px,transparent 0.5px)}
-        [data-theme="sky"]{--bg-color:#f0f9ff;--card-bg:#ffffff;--text-main:#0c4a6e;--text-sub:#38bdf8;--accent-color:#0ea5e9;--border-color:#bae6fd;--glass-bg:rgba(255,255,255,0.8);--bg-pattern:radial-gradient(#38bdf8 0.5px,transparent 0.5px)}
-        [data-theme="midnight"]{--bg-color:#0f172a;--card-bg:#1e293b;--text-main:#f8fafc;--text-sub:#94a3b8;--accent-color:#38bdf8;--border-color:#334155;--glass-bg:rgba(30,41,59,0.8);--bg-pattern:radial-gradient(#38bdf8 0.5px,transparent 0.5px)}
-        body{background-color:var(--bg-color);background-image:var(--bg-pattern);background-size:20px 20px;color:var(--text-main);transition:all 0.5s ease;overscroll-behavior:none}
-        .glass{background:var(--glass-bg);backdrop-filter:blur(12px);border:1px solid var(--border-color);box-shadow:0 4px 20px rgba(0,0,0,0.05)}
-        .pixel-icon{image-rendering:pixelated;filter:drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1);transform:scale(1.1)}
-        .no-scrollbar::-webkit-scrollbar{display:none} .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-        .rarity-common{border-color:#cbd5e1;background:linear-gradient(135deg,#f8fafc,#e2e8f0)} .rarity-rare{border-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#dbeafe)} .rarity-epic{border-color:#a855f7;background:linear-gradient(135deg,#faf5ff,#f3e8ff)} .rarity-legendary{border-color:#eab308;background:linear-gradient(135deg,#fffbeb,#fff7ed)}
-        .aura-lv10{filter:drop-shadow(0 0 5px rgba(59,130,246,0.5))} .aura-lv30{filter:drop-shadow(0 0 10px rgba(168,85,247,0.6));animation:glow 2s infinite alternate} .aura-lv50{filter:drop-shadow(0 0 15px rgba(234,179,8,0.8));animation:pulse-slow 2s infinite}
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
+        [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
+        [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+        [data-theme="midnight"] { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f8fafc; --text-sub: #94a3b8; --accent-color: #38bdf8; --border-color: #334155; --glass-bg: rgba(30, 41, 59, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
+        body { background-color: var(--bg-color); background-image: var(--bg-pattern); background-size: 20px 20px; color: var(--text-main); transition: all 0.5s ease; overscroll-behavior: none; }
+        .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        .pixel-icon { image-rendering: pixelated; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1); transform: scale(1.1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
+        .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); }
+        .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); animation: pulse-purple 3s infinite alternate; }
+        .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); animation: glow-gold 2s infinite alternate; }
+        @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
+        @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
+        .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); }
+        .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; }
+        .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
     </style>
 </head>
 <body>
     <div id="root"></div>
+
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- FIREBASE 初始化 (請替換您的 KEY) ---
-        const firebaseConfig = { apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI", authDomain: "rpgmoney-73cfd.firebaseapp.com", projectId: "rpgmoney-73cfd", storageBucket: "rpgmoney-73cfd.firebasestorage.app", messagingSenderId: "804479578382", appId: "1:804479578382:web:0882920513d9377998a75f" };
+        // --- FIREBASE 初始化設定 (請替換您的金鑰) ---
+        const firebaseConfig = {
+apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
+authDomain: "rpgmoney-73cfd.firebaseapp.com",
+projectId: "rpgmoney-73cfd",
+storageBucket: "rpgmoney-73cfd.firebasestorage.app",
+messagingSenderId: "804479578382",
+appId: "1:804479578382:web:0882920513d9377998a75f"
+        };
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const auth = firebase.auth(); const db = firebase.firestore();
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // 靜態資料區
-        const ICON_PATHS={Home:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",Scroll:"M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",Wallet:"M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",Globe:"M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",Plus:"M12 5v14 M5 12h14",X:"M18 6L6 18 M6 6l12 12",Cloud:"M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",LogIn:"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",Crown:"M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",Star:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",CreditCard:"M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",Landmark:"M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",Utensils:"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",Bus:"M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",ShoppingBag:"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",Zap:"M13 2L3 14h9l-1 8 10-12h-9l1-8z",Pill:"M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",GraduationCap:"M22 10v6M2 10l10-5 10 5",Briefcase:"M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",Plane:"M2 12h20 M13 2l9 10-9 10",LogOut:"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",Camera:"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",Key:"M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",Trophy:"M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",Sword:"M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",Book:"M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",Shield:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",Hammer:"M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",Gem:"M6 3h12l4 6-10 13L2 9z",Sun:"M12 1v2 M12 21v2",Moon:"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",Eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8",Coffee:"M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",Gamepad:"M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",UserPlus:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",Check:"M20 6L9 17l-5-5",Edit:"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",Trash:"M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",Ghost:"M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",Paint:"M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",CheckCircle:"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",Lock:"M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",Chart:"M18 20V10M12 20V4M6 20v-6",ArrowUp:"M12 19V5M5 12l7-7 7 7",ArrowDown:"M12 5v14M19 12l-7 7-7-7",Shop:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",Calendar:"M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",Users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",Copy:"M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",Egg:"M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",Calculator:"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",Settings:"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"};
-        const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
+        const ICON_PATHS = {
+            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
+            Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
+            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",
+            Globe: "M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",
+            Plus: "M12 5v14 M5 12h14",
+            X: "M18 6L6 18 M6 6l12 12",
+            Cloud: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",
+            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
+            Crown: "M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
+            Star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+            CreditCard: "M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",
+            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",
+            Utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",
+            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",
+            ShoppingBag: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
+            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+            Pill: "M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",
+            GraduationCap: "M22 10v6M2 10l10-5 10 5",
+            Briefcase: "M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",
+            Plane: "M2 12h20 M13 2l9 10-9 10",
+            LogOut: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
+            Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
+            Key: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",
+            Trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
+            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",
+            Book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
+            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+            Hammer: "M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
+            Gem: "M6 3h12l4 6-10 13L2 9z",
+            Sun: "M12 1v2 M12 21v2",
+            Moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8",
+            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
+            Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
+            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+            Check: "M20 6L9 17l-5-5",
+            Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+            Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",
+            CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
+            Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
+            Chart: "M18 20V10M12 20V4M6 20v-6",
+            ArrowUp: "M12 19V5M5 12l7-7 7 7",
+            ArrowDown: "M12 5v14M19 12l-7 7-7-7",
+            Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
+            Smile: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 9h.01M14 9h.01M12 16c2.5 0 4-1.5 4-3",
+            Coin: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z",
+            Heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+            Calendar: "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",
+            Users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+            Copy: "M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",
+            Egg: "M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",
+            Calculator: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",
+            Settings: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+            Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+        };
+
+        const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+                <path d={ICON_PATHS[name] || ICON_PATHS['Star']}/>
+            </svg>
+        );
+
+        // ==========================================
+        // 第一部分結束
+        // ==========================================
+// ==========================================
+        // ⬇️ 第二部分開始 (遊戲靜態資料) ⬇️
+        // ==========================================
 
         const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
         const EXCHANGE_RATES = { 'TWD': 1, 'HKD': 0.24, 'JPY': 4.6 };
         
-        const GEAR_VISUALS={'s1':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#5d4037" d="M12 20H20V22H12Z"/></g>,'s2':()=><g><path fill="#8d1d1d" d="M9 5h14v10h-14z"/><path fill="#eab308" d="M11 5h10v2h-10z"/></g>,'s3':()=><g><path fill="#5d4037" d="M11 29h4v3h-4zM17 29h4v3h-4z"/></g>,'s4':()=><path fill="none" stroke="#558b2f" strokeWidth="2" d="M22 14C16 20,16 20,22 26"/>,'s5':()=><g><path fill="#94a3b8" d="M10 17h12v9H10z"/><rect x="12" y="19" width="2" height="2" fill="#475569"/><rect x="16" y="19" width="2" height="2" fill="#475569"/><rect x="20" y="19" width="2" height="2" fill="#475569"/></g>,'s6':()=><g><path fill="#b71c1c" d="M7 17h18v15H7z" opacity="0.9"/></g>,'s7':()=><g transform="rotate(15,24,16)"><path fill="#5d4037" d="M22 12h2v14h-2z"/><circle cx="23" cy="11" r="3" fill="#d32f2f"/></g>,'s8':()=><g><circle cx="6" cy="22" r="6" fill="#3e2723" stroke="#271c19"/></g>,'s9':()=><path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3a5 1 0 1 1 10 0a5 1 0 1 1-10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}}/>,'s12':()=><circle cx="6" cy="22" r="2" fill="transparent" stroke="#ffb300" strokeWidth="1.5"/>,'s13':()=><g><path fill="#1a1a1a" d="M10 17h12v9H10z"/><path fill="#e5e5e5" d="M10 17h4v2h-4z M18 17h4v2h-4z"/></g>,'s14':()=><g transform="rotate(-15,24,16)"><path fill="#5d4037" d="M22 16h2v10h-2z"/><path fill="#43a047" d="M22 16l4-2l2 4l-6 2z"/></g>,'s15':()=><g><path fill="#e0f2f1" d="M22 18l4-4l2 2l-4 4z"/><path fill="#5d4037" d="M20 20l2-2" stroke="#5d4037" strokeWidth="2"/></g>,'s17':()=>null,'s18':()=><g><path fill="#e2e8f0" d="M10 8H22V18H20V20H12V18H10Z"/><rect x="14" y="4" width="4" height="6" fill="#cbd5e1"/></g>,'s19':()=><g transform="translate(0,-2)"><path fill="#312e81" d="M12 14L16 4L20 14Z"/><path fill="#4338ca" d="M8 14H24V16H8Z"/></g>,'s20':()=><g><path fill="#9ca3af" d="M8 12H24V24H8Z"/><path fill="#cbd5e1" d="M12 12h8v12h-8z"/></g>,'s21':()=><g><path fill="#1f2937" d="M10 12H22V24H10Z"/><path fill="#ef4444" d="M10 16H22V18H10Z"/></g>,'s22':()=><g transform="rotate(45,16,16)"><path fill="#38bdf8" d="M14 4H18V10L16 14Z"/><path fill="#5d4037" d="M15 14H17V26H15Z"/></g>,'s23':()=><g transform="rotate(45,16,16)"><path fill="#e2e8f0" d="M15 4H17V20H15Z"/><path fill="#1f2937" d="M13 20H19V22H13Z"/><path fill="#b91c1c" d="M14 22H18V28H14Z"/></g>,'s24':()=><g transform="rotate(45,16,16)"><path fill="#fef08a" d="M15 4H17V18H15Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 18H21V20H11Z"/><path fill="#f59e0b" d="M14 20H18V26H14Z"/></g>,'s25':()=><g><path fill="#7e22ce" d="M8 10H24V26H8Z"/><path fill="#fbbf24" d="M16 12V24M12 18H20" stroke="#fbbf24" strokeWidth="2"/></g>,'s99':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M14 6H18V20H14Z"/><path fill="#eab308" d="M16 6V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,'s100':()=><g className="animate-pulse"><path fill="#4a044e" d="M6 18Q2 12 10 10L16 18" opacity="0.8"/><path fill="#4a044e" d="M26 18Q30 12 22 10L16 18" opacity="0.8"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
-        const SHOP_ITEMS=[{id:'s2',name:'紅蓮兜帽',type:'head',rarity:'common',cost:150,icon:'Crown',stats:{vit:5,int:5},desc:"鮮紅色的兜帽，帶有金色的裝飾。"},{id:'s18',name:'白銀頭盔',type:'head',rarity:'rare',cost:600,icon:'Crown',stats:{vit:15,str:5},desc:"堅固的白銀製頭盔。"},{id:'s19',name:'大賢者之帽',type:'head',rarity:'epic',cost:2500,icon:'Crown',stats:{int:30},desc:"傳說中大賢者戴過的帽子。"},{id:'s13',name:'暗影輕甲',type:'body',rarity:'rare',cost:800,icon:'Shield',stats:{agi:15,vit:10},desc:"適合潛行的輕型鎧甲，能融入夜色。"},{id:'s5',name:'鱗片護甲',type:'body',rarity:'rare',cost:1000,icon:'Shield',stats:{vit:25,str:5},desc:"堅固的鱗片製成，防禦力優異。"},{id:'s20',name:'重型鋼甲',type:'body',rarity:'epic',cost:2200,icon:'Shield',stats:{vit:40,agi:-5},desc:"極度沉重但防禦無敵的鋼甲。"},{id:'s21',name:'忍者服',type:'body',rarity:'epic',cost:1800,icon:'Shield',stats:{agi:35},desc:"特製的忍者服，輕如羽毛。"},{id:'s1',name:'鐵製長劍',type:'mainHand',rarity:'common',cost:200,icon:'Sword',stats:{str:10},desc:"標準的冒險者長劍。"},{id:'s4',name:'精靈長弓',type:'mainHand',rarity:'rare',cost:1200,icon:'Sword',stats:{agi:25,int:5},desc:"精靈製作的弓，精準無比。"},{id:'s15',name:'雙子匕首',type:'mainHand',rarity:'rare',cost:900,icon:'Sword',stats:{agi:20,str:10},desc:"輕巧鋒利的雙刀，適合快速連擊。"},{id:'s14',name:'戰斧',type:'mainHand',rarity:'epic',cost:1500,icon:'Hammer',stats:{str:40},desc:"沉重而鋒利的戰斧，破壞力驚人。"},{id:'s22',name:'水晶魔杖',type:'mainHand',rarity:'epic',cost:2000,icon:'Gem',stats:{int:45},desc:"頂端鑲嵌著冰藍色水晶的魔杖。"},{id:'s23',name:'名刀·櫻吹雪',type:'mainHand',rarity:'legendary',cost:6000,icon:'Sword',stats:{str:40,agi:30},desc:"揮舞時如同櫻花飛舞的傳說名刀。"},{id:'s24',name:'聖劍·艾斯卡',type:'mainHand',rarity:'legendary',cost:8500,icon:'Sword',stats:{str:60,vit:20},desc:"散發著神聖光芒的勇者之劍。"},{id:'s8',name:'圓木盾',type:'offHand',rarity:'common',cost:300,icon:'Shield',stats:{vit:15},desc:"基本的防禦裝備，輕便好用。"},{id:'s17',name:'藍寶石護符',type:'offHand',rarity:'epic',cost:2000,icon:'Gem',stats:{int:30,vit:15},desc:"蘊含海洋之力的護符。"},{id:'s25',name:'古代魔導書',type:'offHand',rarity:'epic',cost:2800,icon:'Book',stats:{int:35,str:-5},desc:"記載著失傳魔法的古老書本。"},{id:'s12',name:'力量指環',type:'offHand',rarity:'legendary',cost:4500,icon:'Heart',stats:{str:30,agi:10},desc:"賦予佩戴者強大力量的魔法指環。"},{id:'s6',name:'神秘法袍',type:'back',rarity:'epic',cost:1800,icon:'Briefcase',stats:{int:35,vit:10},desc:"散發著微弱魔力的紅色法袍。"},{id:'s100',name:'惡魔之翼',type:'back',rarity:'epic',cost:9500,icon:'Briefcase',stats:{str:30,vit:-10},desc:"來自深淵的翅膀。",effects:['pulse']},{id:'s101',name:'天使光翼',type:'back',rarity:'legendary',cost:15000,icon:'Briefcase',stats:{int:40,vit:40},desc:"純潔的光之翼。",effects:['float','glow']},{id:'s3',name:'旅行者之靴',type:'feet',rarity:'common',cost:80,icon:'Zap',stats:{agi:5},desc:"輕便耐穿，適合長途跋涉。"},{id:'s9',name:'聖靈光環',type:'head',rarity:'legendary',cost:8888,icon:'Sun',stats:{int:60,vit:30},desc:"神聖的守護光輝。",effects:['glow','float']},{id:'s99',name:'雷霆之劍',type:'mainHand',rarity:'legendary',cost:12000,icon:'Zap',stats:{str:60,agi:20},desc:"纏繞著閃電的傳說之劍。",effects:['sparkle']}];
-        const ITEM_ICONS={'s2':()=><g><path fill="#8d1d1d" d="M10 6H22V18H20V20H12V18H10Z"/><path fill="#eab308" d="M14 6H18V8H14ZM16 4V6H16Z"/><path fill="#b91c1c" d="M11 7H21V17H11Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18H12V20H10ZM20 18H22V20H20Z"/></g>,'s13':()=><g><path fill="#1a1a1a" d="M8 12H24V24H8Z"/><path fill="#404040" d="M10 12H22V14H10ZM12 14V24H14V14Z"/><path fill="#e5e5e5" d="M8 12H12V14H8ZM20 12H24V14H20Z"/><path fill="#ffffff" d="M12 12H14V24H12ZM18 12H20V24H18Z" opacity="0.3"/></g>,'s5':()=><g><path fill="#94a3b8" d="M8 12H24V22H22V24H10V22H8Z"/><path fill="#e2e8f0" d="M8 12H10V14H8ZM22 12H24V14H22Z"/><rect x="11" y="14" width="2" height="2" fill="#475569"/><rect x="15" y="14" width="2" height="2" fill="#475569"/><rect x="19" y="14" width="2" height="2" fill="#475569"/><rect x="13" y="17" width="2" height="2" fill="#475569"/><rect x="17" y="17" width="2" height="2" fill="#475569"/><rect x="11" y="20" width="2" height="2" fill="#475569"/><rect x="15" y="20" width="2" height="2" fill="#475569"/><rect x="19" y="20" width="2" height="2" fill="#475569"/></g>,'s8':()=><g><circle cx="16" cy="16" r="10" fill="#3e2723" stroke="#271c19" strokeWidth="2"/><circle cx="16" cy="16" r="3" fill="#9e9e9e"/><path fill="#5d4037" d="M16 6V26M6 16H26" opacity="0.5" stroke="#271c19" strokeWidth="1"/></g>,'s4':()=><g transform="rotate(45,16,16)"><path fill="none" stroke="#558b2f" strokeWidth="3" d="M8 4C0 16,0 16,8 28"/><path fill="none" stroke="#dcedc8" strokeWidth="1" d="M8 4L8 28"/><rect x="6" y="14" width="4" height="4" fill="#33691e"/></g>,'s15':()=><g><g transform="translate(-4,2)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g><g transform="translate(6,2) scale(-1,1) translate(-32,0)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g></g>,'s1':()=><g transform="rotate(45,16,16)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#90a4ae" d="M14 6L16 4L18 6"/><path fill="#5d4037" d="M12 20H20V22H12Z"/><path fill="#3e2723" d="M15 22H17V26H15Z"/><circle cx="16" cy="27" r="1.5" fill="#ffd700"/></g>,'s14':()=><g transform="rotate(-15,16,16)"><path fill="#5d4037" d="M14 26L18 26L18 6L14 6Z"/><path fill="#43a047" d="M18 8L24 6L26 10L18 12Z"/><path fill="#2e7d32" d="M18 12L26 14L24 18L18 16Z"/><rect x="14" y="20" width="4" height="4" fill="#8d6e63"/></g>,'s6':()=><g><path fill="#b71c1c" d="M8 10H24V28H8Z"/><path fill="#ef5350" d="M10 10H14V28H10ZM18 10H22V28H18Z"/><path fill="#ffca28" d="M14 10H18V28H14Z" opacity="0.8"/><path fill="#7f0000" d="M8 10H24V12H8Z"/></g>,'s17':()=><g><path fill="none" stroke="#ffb300" strokeWidth="2" d="M10 8Q16 20 22 8"/><circle cx="16" cy="20" r="5" fill="#ffb300"/><circle cx="16" cy="20" r="3" fill="#00bcd4"/></g>,'s7':()=><g transform="rotate(15,16,16)"><path fill="#5d4037" d="M14 8H18V28H14Z"/><circle cx="16" cy="6" r="5" fill="#8d6e63"/><circle cx="16" cy="6" r="3" fill="#d32f2f"/></g>,'s12':()=><g><circle cx="16" cy="16" r="7" fill="transparent" stroke="#ffb300" strokeWidth="3"/><rect x="14" y="7" width="4" height="4" fill="#d32f2f" transform="rotate(45,16,9)"/></g>,'s18':()=><g><path fill="#e2e8f0" d="M10 8H22V18H20V20H12V18H10Z"/><rect x="14" y="4" width="4" height="6" fill="#cbd5e1"/></g>,'s19':()=><g transform="translate(0,-2)"><path fill="#312e81" d="M12 14L16 4L20 14Z"/><path fill="#4338ca" d="M8 14H24V16H8Z"/></g>,'s20':()=><g><path fill="#9ca3af" d="M8 12H24V24H8Z"/><path fill="#cbd5e1" d="M12 12h8v12h-8z"/></g>,'s21':()=><g><path fill="#1f2937" d="M10 12H22V24H10Z"/><path fill="#ef4444" d="M10 16H22V18H10Z"/></g>,'s22':()=><g transform="rotate(45,16,16)"><path fill="#38bdf8" d="M14 4H18V10L16 14Z"/><path fill="#5d4037" d="M15 14H17V26H15Z"/></g>,'s23':()=><g transform="rotate(45,16,16)"><path fill="#e2e8f0" d="M15 4H17V20H15Z"/><path fill="#1f2937" d="M13 20H19V22H13Z"/><path fill="#b91c1c" d="M14 22H18V28H14Z"/></g>,'s24':()=><g transform="rotate(45,16,16)"><path fill="#fef08a" d="M15 4H17V18H15Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 18H21V20H11Z"/><path fill="#f59e0b" d="M14 20H18V26H14Z"/></g>,'s25':()=><g><path fill="#7e22ce" d="M8 10H24V26H8Z"/><path fill="#fbbf24" d="M16 12V24M12 18H20" stroke="#fbbf24" strokeWidth="2"/></g>,'s99':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M14 6H18V20H14Z"/><path fill="#eab308" d="M16 6V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,'s100':()=><g className="animate-pulse"><path fill="#4a044e" d="M6 18Q2 12 10 10L16 18" opacity="0.8"/><path fill="#4a044e" d="M26 18Q30 12 22 10L16 18" opacity="0.8"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
+        const GEAR_VISUALS={'s1':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#5d4037" d="M12 20H20V22H12Z"/></g>,'s2':()=><g><path fill="#8d1d1d" d="M9 5h14v10h-14z"/><path fill="#eab308" d="M11 5h10v2h-10z"/></g>,'s3':()=><g><path fill="#5d4037" d="M11 29h4v3h-4zM17 29h4v3h-4z"/></g>,'s4':()=><path fill="none" stroke="#558b2f" strokeWidth="2" d="M22 14C16 20,16 20,22 26"/>,'s5':()=><g><path fill="#94a3b8" d="M10 17h12v9H10z"/><rect x="12" y="19" width="2" height="2" fill="#475569"/><rect x="16" y="19" width="2" height="2" fill="#475569"/><rect x="20" y="19" width="2" height="2" fill="#475569"/></g>,'s6':()=><g><path fill="#b71c1c" d="M7 17h18v15H7z" opacity="0.9"/></g>,'s7':()=><g transform="rotate(15,24,16)"><path fill="#5d4037" d="M22 12h2v14h-2z"/><circle cx="23" cy="11" r="3" fill="#d32f2f"/></g>,'s8':()=><g><circle cx="6" cy="22" r="6" fill="#3e2723" stroke="#271c19"/></g>,'s9':()=><path fill="transparent" stroke="#ffeb3b" strokeWidth="2" d="M11 3a5 1 0 1 1 10 0a5 1 0 1 1-10 0" style={{filter:'drop-shadow(0 0 2px #ffeb3b)'}}/>,'s12':()=><circle cx="6" cy="22" r="2" fill="transparent" stroke="#ffb300" strokeWidth="1.5"/>,'s13':()=><g><path fill="#1a1a1a" d="M10 17h12v9H10z"/><path fill="#e5e5e5" d="M10 17h4v2h-4z M18 17h4v2h-4z"/></g>,'s14':()=><g transform="rotate(-15,24,16)"><path fill="#5d4037" d="M22 16h2v10h-2z"/><path fill="#43a047" d="M22 16l4-2l2 4l-6 2z"/></g>,'s15':()=><g><path fill="#e0f2f1" d="M22 18l4-4l2 2l-4 4z"/><path fill="#5d4037" d="M20 20l2-2" stroke="#5d4037" strokeWidth="2"/></g>,'s17':()=>null,'s18':()=><g><path fill="#e2e8f0" d="M9 5h14v8h-14z"/><rect x="14" y="2" width="4" height="6" fill="#cbd5e1"/></g>,'s19':()=><g transform="translate(0,-4)"><path fill="#312e81" d="M8 12L16 2L24 12Z"/><path fill="#4338ca" d="M6 12H26V14H6Z"/></g>,'s20':()=><g><path fill="#9ca3af" d="M10 17h12v10h-12z"/><path fill="#cbd5e1" d="M14 17h4v10h-4z"/></g>,'s21':()=><g><path fill="#1f2937" d="M11 17h10v10h-10z"/><path fill="#ef4444" d="M11 20h10v2h-10z"/></g>,'s22':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#38bdf8" d="M14 2H18V6L16 10Z"/><path fill="#5d4037" d="M15 10H17V22H15Z"/></g>,'s23':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#e2e8f0" d="M15 2H17V18H15Z"/><path fill="#1f2937" d="M13 18H19V20H13Z"/><path fill="#b91c1c" d="M14 20H18V26H14Z"/></g>,'s24':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M15 2H17V16H15Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 16H21V18H11Z"/><path fill="#f59e0b" d="M14 18H18V24H14Z"/></g>,'s25':()=><g><path fill="#7e22ce" d="M12 16H20V26H12Z"/><path fill="#fbbf24" d="M16 18V24M14 21H18" stroke="#fbbf24" strokeWidth="1"/></g>,'s99':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M14 6H18V20H14Z"/><path fill="#eab308" d="M16 6V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,'s100':()=><g className="animate-pulse"><path fill="#4a044e" d="M6 18Q2 12 10 10L16 18" opacity="0.8"/><path fill="#4a044e" d="M26 18Q30 12 22 10L16 18" opacity="0.8"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
+        const SHOP_ITEMS=[
+            {id:'s2',name:'紅蓮兜帽',type:'head',rarity:'common',cost:150,icon:'Crown',stats:{vit:5,int:5},desc:"鮮紅色的兜帽，帶有金色的裝飾。"},
+            {id:'s18',name:'白銀頭盔',type:'head',rarity:'rare',cost:600,icon:'Crown',stats:{vit:15,str:5},desc:"堅固的白銀製頭盔。"},
+            {id:'s19',name:'大賢者之帽',type:'head',rarity:'epic',cost:2500,icon:'Crown',stats:{int:30},desc:"傳說中大賢者戴過的帽子。"},
+            {id:'s13',name:'暗影輕甲',type:'body',rarity:'rare',cost:800,icon:'Shield',stats:{agi:15,vit:10},desc:"適合潛行的輕型鎧甲，能融入夜色。"},
+            {id:'s5',name:'鱗片護甲',type:'body',rarity:'rare',cost:1000,icon:'Shield',stats:{vit:25,str:5},desc:"堅固的鱗片製成，防禦力優異。"},
+            {id:'s20',name:'重型鋼甲',type:'body',rarity:'epic',cost:2200,icon:'Shield',stats:{vit:40,agi:-5},desc:"極度沉重但防禦無敵的鋼甲。"},
+            {id:'s21',name:'忍者服',type:'body',rarity:'epic',cost:1800,icon:'Shield',stats:{agi:35},desc:"特製的忍者服，輕如羽毛。"},
+            {id:'s1',name:'鐵製長劍',type:'mainHand',rarity:'common',cost:200,icon:'Sword',stats:{str:10},desc:"標準的冒險者長劍。"},
+            {id:'s4',name:'精靈長弓',type:'mainHand',rarity:'rare',cost:1200,icon:'Sword',stats:{agi:25,int:5},desc:"精靈製作的弓，精準無比。"},
+            {id:'s15',name:'雙子匕首',type:'mainHand',rarity:'rare',cost:900,icon:'Sword',stats:{agi:20,str:10},desc:"輕巧鋒利的雙刀，適合快速連擊。"},
+            {id:'s14',name:'戰斧',type:'mainHand',rarity:'epic',cost:1500,icon:'Hammer',stats:{str:40},desc:"沉重而鋒利的戰斧，破壞力驚人。"},
+            {id:'s22',name:'水晶魔杖',type:'mainHand',rarity:'epic',cost:2000,icon:'Gem',stats:{int:45},desc:"頂端鑲嵌著冰藍色水晶的魔杖。"},
+            {id:'s23',name:'名刀·櫻吹雪',type:'mainHand',rarity:'legendary',cost:6000,icon:'Sword',stats:{str:40,agi:30},desc:"揮舞時如同櫻花飛舞的傳說名刀。"},
+            {id:'s24',name:'聖劍·艾斯卡',type:'mainHand',rarity:'legendary',cost:8500,icon:'Sword',stats:{str:60,vit:20},desc:"散發著神聖光芒的勇者之劍。"},
+            {id:'s8',name:'圓木盾',type:'offHand',rarity:'common',cost:300,icon:'Shield',stats:{vit:15},desc:"基本的防禦裝備，輕便好用。"},
+            {id:'s17',name:'藍寶石護符',type:'offHand',rarity:'epic',cost:2000,icon:'Gem',stats:{int:30,vit:15},desc:"蘊含海洋之力的護符。"},
+            {id:'s25',name:'古代魔導書',type:'offHand',rarity:'epic',cost:2800,icon:'Book',stats:{int:35,str:-5},desc:"記載著失傳魔法的古老書本。"},
+            {id:'s12',name:'力量指環',type:'offHand',rarity:'legendary',cost:4500,icon:'Heart',stats:{str:30,agi:10},desc:"賦予佩戴者強大力量的魔法指環。"},
+            {id:'s6',name:'神秘法袍',type:'back',rarity:'epic',cost:1800,icon:'Briefcase',stats:{int:35,vit:10},desc:"散發著微弱魔力的紅色法袍。"},
+            {id:'s100',name:'惡魔之翼',type:'back',rarity:'epic',cost:9500,icon:'Briefcase',stats:{str:30,vit:-10},desc:"來自深淵的翅膀。",effects:['pulse']},
+            {id:'s101',name:'天使光翼',type:'back',rarity:'legendary',cost:15000,icon:'Briefcase',stats:{int:40,vit:40},desc:"純潔的光之翼。",effects:['float','glow']},
+            {id:'s3',name:'旅行者之靴',type:'feet',rarity:'common',cost:80,icon:'Zap',stats:{agi:5},desc:"輕便耐穿，適合長途跋涉。"},
+            {id:'s9',name:'聖靈光環',type:'head',rarity:'legendary',cost:8888,icon:'Sun',stats:{int:60,vit:30},desc:"神聖的守護光輝。",effects:['glow','float']},
+            {id:'s99',name:'雷霆之劍',type:'mainHand',rarity:'legendary',cost:12000,icon:'Zap',stats:{str:60,agi:20},desc:"纏繞著閃電的傳說之劍。",effects:['sparkle']}
+        ];
+        const ITEM_ICONS={'s2':()=><g><path fill="#8d1d1d" d="M10 6H22V18H20V20H12V18H10Z"/><path fill="#eab308" d="M14 6H18V8H14ZM16 4V6H16Z"/><path fill="#b91c1c" d="M11 7H21V17H11Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18H12V20H10ZM20 18H22V20H20Z"/></g>,'s13':()=><g><path fill="#1a1a1a" d="M8 12H24V24H8Z"/><path fill="#404040" d="M10 12H22V14H10ZM12 14V24H14V14Z"/><path fill="#e5e5e5" d="M8 12H12V14H8ZM20 12H24V14H20Z"/><path fill="#ffffff" d="M12 12H14V24H12ZM18 12H20V24H18Z" opacity="0.3"/></g>,'s5':()=><g><path fill="#94a3b8" d="M8 12H24V22H22V24H10V22H8Z"/><path fill="#e2e8f0" d="M8 12H10V14H8ZM22 12H24V14H22Z"/><rect x="11" y="14" width="2" height="2" fill="#475569"/><rect x="15" y="14" width="2" height="2" fill="#475569"/><rect x="19" y="14" width="2" height="2" fill="#475569"/><rect x="13" y="17" width="2" height="2" fill="#475569"/><rect x="17" y="17" width="2" height="2" fill="#475569"/><rect x="11" y="20" width="2" height="2" fill="#475569"/><rect x="15" y="20" width="2" height="2" fill="#475569"/><rect x="19" y="20" width="2" height="2" fill="#475569"/></g>,'s8':()=><g><circle cx="16" cy="16" r="10" fill="#3e2723" stroke="#271c19" strokeWidth="2"/><circle cx="16" cy="16" r="3" fill="#9e9e9e"/><path fill="#5d4037" d="M16 6V26M6 16H26" opacity="0.5" stroke="#271c19" strokeWidth="1"/></g>,'s4':()=><g transform="rotate(45,16,16)"><path fill="none" stroke="#558b2f" strokeWidth="3" d="M8 4C0 16,0 16,8 28"/><path fill="none" stroke="#dcedc8" strokeWidth="1" d="M8 4L8 28"/><rect x="6" y="14" width="4" height="4" fill="#33691e"/></g>,'s15':()=><g><g transform="translate(-4,2)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g><g transform="translate(6,2) scale(-1,1) translate(-32,0)"><path fill="#e0f2f1" d="M12 12L16 8L18 10L14 14Z"/><path fill="#4db6ac" d="M14 14L16 16L14 18L12 16Z"/><path fill="#5d4037" d="M10 18L12 16L10 14L8 16Z"/></g></g>,'s1':()=><g transform="rotate(45,16,16)"><path fill="#cfd8dc" d="M14 6H18V20H14Z"/><path fill="#90a4ae" d="M14 6L16 4L18 6"/><path fill="#5d4037" d="M12 20H20V22H12Z"/><path fill="#3e2723" d="M15 22H17V26H15Z"/><circle cx="16" cy="27" r="1.5" fill="#ffd700"/></g>,'s14':()=><g transform="rotate(-15,16,16)"><path fill="#5d4037" d="M14 26L18 26L18 6L14 6Z"/><path fill="#43a047" d="M18 8L24 6L26 10L18 12Z"/><path fill="#2e7d32" d="M18 12L26 14L24 18L18 16Z"/><rect x="14" y="20" width="4" height="4" fill="#8d6e63"/></g>,'s6':()=><g><path fill="#b71c1c" d="M8 10H24V28H8Z"/><path fill="#ef5350" d="M10 10H14V28H10ZM18 10H22V28H18Z"/><path fill="#ffca28" d="M14 10H18V28H14Z" opacity="0.8"/><path fill="#7f0000" d="M8 10H24V12H8Z"/></g>,'s17':()=><g><path fill="none" stroke="#ffb300" strokeWidth="2" d="M10 8Q16 20 22 8"/><circle cx="16" cy="20" r="5" fill="#ffb300"/><circle cx="16" cy="20" r="3" fill="#00bcd4"/></g>,'s7':()=><g transform="rotate(15,16,16)"><path fill="#5d4037" d="M14 8H18V28H14Z"/><circle cx="16" cy="6" r="5" fill="#8d6e63"/><circle cx="16" cy="6" r="3" fill="#d32f2f"/></g>,'s12':()=><g><circle cx="16" cy="16" r="7" fill="transparent" stroke="#ffb300" strokeWidth="3"/><rect x="14" y="7" width="4" height="4" fill="#d32f2f" transform="rotate(45,16,9)"/></g>,'s18':()=><g><path fill="#e2e8f0" d="M10 8H22V18H20V20H12V18H10Z"/><rect x="14" y="4" width="4" height="6" fill="#cbd5e1"/></g>,'s19':()=><g transform="translate(0,-2)"><path fill="#312e81" d="M12 14L16 4L20 14Z"/><path fill="#4338ca" d="M8 14H24V16H8Z"/></g>,'s20':()=><g><path fill="#9ca3af" d="M8 12H24V24H8Z"/><path fill="#cbd5e1" d="M12 12h8v12h-8z"/></g>,'s21':()=><g><path fill="#1f2937" d="M10 12H22V24H10Z"/><path fill="#ef4444" d="M10 16H22V18H10Z"/></g>,'s22':()=><g transform="rotate(45,16,16)"><path fill="#38bdf8" d="M14 4H18V10L16 14Z"/><path fill="#5d4037" d="M15 14H17V26H15Z"/></g>,'s23':()=><g transform="rotate(45,16,16)"><path fill="#e2e8f0" d="M15 4H17V20H15Z"/><path fill="#1f2937" d="M13 20H19V22H13Z"/><path fill="#b91c1c" d="M14 22H18V28H14Z"/></g>,'s24':()=><g transform="rotate(45,16,16)"><path fill="#fef08a" d="M15 4H17V18H15Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 18H21V20H11Z"/><path fill="#f59e0b" d="M14 20H18V26H14Z"/></g>,'s25':()=><g><path fill="#7e22ce" d="M8 10H24V26H8Z"/><path fill="#fbbf24" d="M16 12V24M12 18H20" stroke="#fbbf24" strokeWidth="2"/></g>,'s99':()=><g transform="rotate(45,24,16) translate(-8,-8)"><path fill="#fef08a" d="M14 6H18V20H14Z"/><path fill="#eab308" d="M16 6V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,'s100':()=><g className="animate-pulse"><path fill="#4a044e" d="M4 10Q10 2 16 12Q22 2 28 10Q22 16 16 22Q10 16 4 10"/></g>,'s101':()=><g className="animate-float"><path fill="#f0f9ff" d="M6 18Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18Q30 6 16 14" opacity="0.6"/></g>};
+        
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
         const DEFAULT_CATEGORIES = { bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 }, dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 }, snack: { label: '零食', icon: 'Utensils', color: '#fdba74', order: 5 }, bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 }, mtr: { label: '捷運', icon: 'Bus', color: '#3b82f6', order: 7 }, taxi: { label: '計程車', icon: 'Bus', color: '#2563eb', order: 8 }, shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 }, bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 }, health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 }, invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 }, salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 }, other: { label: '其他', icon: 'Scroll', color: '#94a3b8', order: 99 } };
         const PET_DEFINITIONS = { 'slime_blue': { id: 'slime_blue', name: '藍史萊姆', stage: 1, emoji: '💧', color: '#60a5fa', desc: 'QQ彈彈的可愛生物', nextEvolution: {'10': 'slime_king', '15': 'slime_ninja'} }, 'cat_white': { id: 'cat_white', name: '小白貓', stage: 1, emoji: '🐱', color: '#f3f4f6', desc: '優雅的小貓咪', nextEvolution: {'10': 'cat_witch', '15': 'cat_lion'} }, 'dino_green': { id: 'dino_green', name: '小恐龍', stage: 1, emoji: '🦖', color: '#4ade80', desc: '充滿活力的小恐龍', nextEvolution: {'10': 'dino_rex', '15': 'dino_dragon'} }, 'slime_king': { id: 'slime_king', name: '史萊姆王', stage: 2, emoji: '👑', color: '#3b82f6', desc: '戴著王冠的史萊姆' }, 'slime_ninja': { id: 'slime_ninja', name: '忍萊姆', stage: 2, emoji: '🥷', color: '#1e3a8a', desc: '來無影去無蹤' }, 'cat_witch': { id: 'cat_witch', name: '魔法喵', stage: 2, emoji: '🔮', color: '#a855f7', desc: '精通魔法的貓' }, 'cat_lion': { id: 'cat_lion', name: '獅子王', stage: 2, emoji: '🦁', color: '#f59e0b', desc: '森林之王' }, 'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' }, 'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' } };
         const THEMES = [ { id: 'ink', name: 'ink', color: '#343a40' }, { id: 'sakura', name: 'sakura', color: '#db2777' }, { id: 'sky', name: 'sky', color: '#0ea5e9' }, { id: 'magic', name: 'magic', color: '#9333ea' }, { id: 'matcha', name: 'matcha', color: '#15803d' }, { id: 'latte', name: 'latte', color: '#b45309' }, { id: 'peach', name: 'peach', color: '#f43f5e' }, { id: 'lavender', name: 'lavender', color: '#a855f7' }, { id: 'midnight', name: 'midnight', color: '#0f172a' } ];
         
         const ACHIEVEMENTS_LIST = [
-            { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' }, { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' }, { id: 'ach_tx_100', icon: 'Library', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' }, { id: 'ach_tx_200', icon: 'Library', title: '神之書記', desc: '累積 200 筆記帳', target: 200, type: 'txCount' },
+            { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' }, { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' }, { id: 'ach_tx_100', icon: 'Library', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' }, { id: 'ach_tx_500', icon: 'Library', title: '神之書記', desc: '累積 500 筆記帳', target: 500, type: 'txCount' },
             { id: 'ach_exp_1k', icon: 'ShoppingBag', title: '初級消費者', desc: '累積消費突破 1,000', target: 1000, type: 'expenseTotal' }, { id: 'ach_exp_10k', icon: 'Gem', title: '揮金如土', desc: '累積消費突破 10,000', target: 10000, type: 'expenseTotal' }, { id: 'ach_exp_100k', icon: 'Crown', title: '購物狂', desc: '累積消費突破 100,000', target: 100000, type: 'expenseTotal' },
             { id: 'ach_bal_5k', icon: 'Wallet', title: '儲蓄見習', desc: '總資產突破 5,000', target: 5000, type: 'balance' }, { id: 'ach_bal_50k', icon: 'Landmark', title: '理財專家', desc: '總資產突破 50,000', target: 50000, type: 'balance' }, { id: 'ach_bal_1m', icon: 'Trophy', title: '百萬富翁', desc: '總資產突破 1,000,000', target: 1000000, type: 'balance' },
             { id: 'ach_qst_5', icon: 'Trophy', title: '賞金獵人', desc: '完成 5 個任務', target: 5, type: 'questCount' }, { id: 'ach_qst_100', icon: 'Crown', title: '傳奇傭兵', desc: '完成 100 個任務', target: 100, type: 'questCount' },
@@ -87,10 +231,7 @@
         };
 
         // ==========================================
-        // ⬇️ 第二部分結束，請回覆「繼續」獲取第三部分 ⬇️
-        // ==========================================
-// ==========================================
-        // ⬇️ 第三部分開始 ⬇️
+        // ⬇️ 第三部分開始 (共用元件與編輯器) ⬇️
         // ==========================================
 
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
@@ -306,6 +447,13 @@
             );
         };
 
+        // ==========================================
+        // ⬇️ 第三部分結束，請回覆「繼續」獲取最後的第四部分 ⬇️
+        // ==========================================
+// ==========================================
+        // ⬇️ 第四部分開始 (視圖與主程式) ⬇️
+        // ==========================================
+
         const AddTransactionModal = ({ accounts, categories, onClose, onAdd, initialData, onManageCategories }) => {
             const [type, setType] = useState(initialData?.type || 'expense');
             const [amountStr, setAmountStr] = useState(initialData?.amount?.toString() || '');
@@ -346,21 +494,25 @@
                                     <div className="p-3 rounded-xl bg-theme-accent/10 text-theme-accent group-hover:scale-110 transition-transform"><Icon name="Calculator" size={24}/></div>
                                 </div>
                             </div>
+                            
+                            {/* 分類選擇與編輯管理 */}
                             <div>
                                 <div className="flex justify-between items-center mb-2 px-1">
                                     <div className="text-xs font-bold text-theme-sub uppercase">分類</div>
                                     <button type="button" onClick={onManageCategories} className="text-[10px] bg-theme-bg text-theme-sub px-2 py-1 rounded border border-theme-border hover:text-theme-accent transition-colors flex items-center gap-1"><Icon name="Settings" size={10}/> 編輯類別</button>
                                 </div>
-                                <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1">
+                                <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-1 custom-scrollbar">
                                     {sortedCats.map(([key, cat]) => (
                                         <button key={key} type="button" onClick={() => setCategory(key)} className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-95 ${category === key ? 'bg-theme-accent/10 border-2 border-theme-accent shadow-sm' : 'border-2 border-transparent opacity-60'}`}><div className="w-8 h-8 rounded-full flex items-center justify-center transition-transform text-white shadow-sm" style={{backgroundColor: cat.color}}><Icon name={cat.icon} size={14} color="white"/></div><span className="text-[9px] mt-1 font-bold text-theme-text truncate w-full text-center">{cat.label}</span></button>
                                     ))}
                                 </div>
                             </div>
+                            
                             <div className="flex justify-between items-center bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm font-bold text-theme-text">
                                 <span className="text-xs text-theme-sub uppercase">發生日期</span>
                                 <input type="date" value={txDate} onChange={e => setTxDate(e.target.value)} className="bg-transparent outline-none font-mono" />
                             </div>
+
                             <input type="text" value={note} onChange={e => setNote(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text" placeholder="備註 (選填)..."/>
                             <select value={accountId} onChange={e => setAccountId(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-4 text-sm outline-none focus:border-theme-accent font-bold text-theme-text">{accounts.map(acc => (<option key={acc.id} value={acc.id}>{acc.name} ({acc.currency})</option>))}</select>
                             <button onClick={handleSubmit} className="w-full bg-theme-accent text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform mt-2 mb-4">確認儲存</button>
@@ -440,13 +592,6 @@
             );
         };
 
-        // ==========================================
-        // 第三部分結束
-        // ==========================================
-// ==========================================
-        // ⬇️ 第四部分開始 (主視圖與主程式) ⬇️
-        // ==========================================
-
         const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const totalBalance = accounts.reduce((acc, curr) => acc + curr.balance, 0);
@@ -455,9 +600,15 @@
             const petDef = user.pet ? PET_DEFINITIONS[user.pet.id] : null;
             const startRename = () => { if(user.pet) { setNewPetName(user.pet.name); setIsRenamingPet(true); } }
             const confirmRename = () => { if (newPetName && onRenamePet) { onRenamePet(newPetName); setIsRenamingPet(false); } }
+            
             return (
                 <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto pb-24 no-scrollbar p-4 space-y-4">
-                    <div className="flex justify-between items-center mb-2 px-2"><div><div className="text-[10px] text-theme-sub font-bold uppercase">{t('total_wealth')}</div><div className="text-2xl font-mono font-bold text-theme-text">{totalBalance.toLocaleString()}</div></div></div>
+                    <div className="flex justify-between items-center mb-2 px-2">
+                        <div>
+                            <div className="text-[10px] text-theme-sub font-bold uppercase">{t('total_wealth')}</div>
+                            <div className="text-2xl font-mono font-bold text-theme-text">{totalBalance.toLocaleString()}</div>
+                        </div>
+                    </div>
                     <div className="flex flex-col gap-4">
                         <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
                              <div className="absolute top-0 right-0 w-32 h-32 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
@@ -465,7 +616,11 @@
                              <div className="flex items-center justify-between relative z-10">
                                  <div className="flex flex-col justify-between h-32">
                                      <h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Smile" size={14}/> {t('character')}</h3>
-                                     <div className="mt-2"><div className="font-bold text-lg text-theme-text">{user.name}</div><div className="text-xs text-theme-sub font-mono bg-theme-bg/50 px-2 py-1 rounded inline-block border border-theme-border/50">EXP: {user.exp % 100}/100</div><div className="mt-1 text-[10px] text-theme-sub bg-theme-bg px-1 rounded inline-block">{TITLES_LIST.find(ti => ti.id === user.title)?.name || user.title}</div></div>
+                                     <div className="mt-2">
+                                         <div className="font-bold text-lg text-theme-text">{user.name}</div>
+                                         <div className="text-xs text-theme-sub font-mono bg-theme-bg/50 px-2 py-1 rounded inline-block border border-theme-border/50">EXP: {user.exp % 100}/100</div>
+                                         <div className="mt-1 text-[10px] text-theme-sub bg-theme-bg px-1 rounded inline-block">{TITLES_LIST.find(t => t.id === user.title)?.name || user.title}</div>
+                                     </div>
                                  </div>
                                  <div className="h-32 w-32 flex items-end justify-center relative"><div className="absolute bottom-1 w-16 h-4 bg-black/10 rounded-[100%] blur-sm"></div><PixelAvatar gender={user.gender} colors={user.appearance[user.gender]} equipped={equipped} className="w-32 h-32 drop-shadow-md filter contrast-110" level={user.level} /></div>
                              </div>
@@ -475,7 +630,17 @@
                              <div className="flex items-center justify-between flex-row-reverse relative z-10">
                                  <div className="flex flex-col justify-between h-32 items-end text-right">
                                      <h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Egg" size={14}/> {t('guardian')}</h3>
-                                     {petDef ? (<div className="mt-2 flex flex-col items-end">{isRenamingPet ? (<div className="flex items-center gap-1 mb-1"><input value={newPetName} onChange={e => setNewPetName(e.target.value)} className="w-24 text-right bg-theme-bg border border-theme-border rounded px-1 text-sm font-bold outline-none" autoFocus /><button onClick={confirmRename} className="text-green-500"><Icon name="Check" size={14}/></button></div>) : (<div className="font-bold text-lg text-theme-text flex items-center gap-2">{user.pet?.name} <button onClick={startRename} className="opacity-30 hover:opacity-100"><Icon name="Edit" size={12}/></button></div>)}<div className="text-xs text-theme-sub italic opacity-70 px-1">"{petDef.desc}"</div><div className="mt-2 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">Stage {petDef.stage}</div></div>) : (<div className="text-sm text-theme-sub mt-4">No Pet Selected</div>)}
+                                     {petDef ? (
+                                         <div className="mt-2 flex flex-col items-end">
+                                             {isRenamingPet ? (
+                                                 <div className="flex items-center gap-1 mb-1"><input value={newPetName} onChange={e => setNewPetName(e.target.value)} className="w-24 text-right bg-theme-bg border border-theme-border rounded px-1 text-sm font-bold outline-none" autoFocus /><button onClick={confirmRename} className="text-green-500"><Icon name="Check" size={14}/></button></div>
+                                             ) : (
+                                                 <div className="font-bold text-lg text-theme-text flex items-center gap-2">{user.pet?.name} <button onClick={startRename} className="opacity-30 hover:opacity-100"><Icon name="Edit" size={12}/></button></div>
+                                             )}
+                                             <div className="text-xs text-theme-sub italic opacity-70 px-1">"{petDef.desc}"</div>
+                                             <div className="mt-2 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">Stage {petDef.stage}</div>
+                                         </div>
+                                     ) : (<div className="text-sm text-theme-sub mt-4">No Pet Selected</div>)}
                                  </div>
                                  <div className="h-32 w-32 flex items-center justify-center flex-col relative">{petDef ? (<><div className="w-24 h-24 relative flex items-center justify-center"><PixelPet id={petDef.id} className="w-full h-full drop-shadow-lg" /></div><div className="absolute bottom-4 w-12 h-3 bg-black/10 rounded-[100%] blur-sm"></div></>) : (<Icon name="Egg" size={48} className="text-theme-sub opacity-30"/>)}</div>
                              </div>
@@ -513,6 +678,7 @@
                 return items;
             }, [filter, sort]);
             const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
+            
             const getCardStyle = (rarity, isSelected) => {
                 const base = "relative rounded-lg transition-all duration-200 border-[3px] overflow-hidden";
                 const selected = isSelected ? "ring-4 ring-white ring-offset-2 ring-offset-[#2d1b1e] scale-105 z-10" : "hover:-translate-y-1 hover:shadow-lg";
@@ -566,6 +732,7 @@
                         )}
                     </div>
                     
+                    {/* 避免被底部列遮擋 */}
                     {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
                         <div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
                             <div className="bg-[#3e2723] border-2 border-[#5d4037] p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden">
@@ -645,7 +812,6 @@
             const [showMonthPicker, setShowMonthPicker] = useState(false);
             const [pickerYear, setPickerYear] = useState(calDate.getFullYear());
             
-            // 用於選擇每日統計的自訂日期
             const [dailyDate, setDailyDate] = useState(new Date().toISOString().split('T')[0]);
 
             const t = (key) => translations[lang]?.[key] || key;
@@ -654,7 +820,6 @@
                 const now = new Date(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear();
                 let filteredTxs = transactions;
                 if (timeFilter === 'today') { 
-                    // 改為使用 dailyDate 來過濾
                     filteredTxs = transactions.filter(tx => new Date(tx.date).toDateString() === new Date(dailyDate).toDateString()); 
                 } else if (timeFilter === 'month') { 
                     filteredTxs = transactions.filter(tx => { const d = new Date(tx.date); return d.getMonth() === currentMonth && d.getFullYear() === currentYear; }); 
@@ -713,7 +878,7 @@
                         {selectedDate && (
                             <div className="bg-theme-card p-4 rounded-2xl border border-theme-border shadow-sm animate-[slideUp_0.2s]">
                                 <h4 className="text-xs font-bold text-theme-sub mb-3 uppercase flex items-center gap-2"><Icon name="Scroll" size={14} className="text-theme-accent"/> {month+1}月{selectedDate}日 行動紀錄</h4>
-                                <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1 custom-scrollbar">
+                                <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
                                     {selectedTxs.length > 0 ? selectedTxs.map(tx => (
                                         <div key={tx.id} className="flex justify-between items-center py-2 px-3 bg-theme-bg rounded-xl border border-theme-border/50 shadow-sm">
                                             <div className="flex items-center gap-3"><div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-inner ${tx.type === 'income' ? 'bg-green-400' : 'bg-red-400'}`}><Icon name={categories[tx.category]?.icon || 'ShoppingBag'} size={14}/></div><div><div className="text-sm font-bold text-theme-text">{categories[tx.category]?.label || '其他'}</div>{tx.note && <div className="text-[10px] text-theme-sub truncate max-w-[120px]">{tx.note}</div>}</div></div>
@@ -751,7 +916,7 @@
                     {subView === 'fin' && (
                         <div className="glass p-5 rounded-3xl border border-theme-border relative overflow-hidden animate-[fadeIn_0.3s]">
                             <div className="absolute top-0 right-0 w-24 h-24 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
-                            <div className="flex justify-between items-center mb-4 relative z-10"><h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Chart" size={16} className="text-theme-accent"/> {timeFilter === 'all' ? t('all') : timeFilter === 'month' ? t('month') : t('daily_view')} {t('mana_flow')}</h3><div className={`font-mono text-xl font-bold ${financialStats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>{financialStats.net >= 0 ? '+' : ''}{financialStats.net}</div></div>
+                            <div className="flex justify-between items-center mb-4 relative z-10"><h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Chart" size={16} className="text-theme-accent"/> {timeFilter === 'all' ? t('all') : timeFilter === 'month' ? t('month') : t('daily_view')}魔力總量</h3><div className={`font-mono text-xl font-bold ${financialStats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>{financialStats.net >= 0 ? '+' : ''}{financialStats.net}</div></div>
                             <div className="flex gap-3 relative z-10 mb-5"><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm"><span className="text-[10px] text-green-600 font-bold mb-1 uppercase">{t('in')}</span><span className="text-lg font-mono font-bold text-green-500">+{financialStats.in}</span></div><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm"><span className="text-[10px] text-red-600 font-bold mb-1 uppercase">{t('out')}</span><span className="text-lg font-mono font-bold text-red-500">-{financialStats.out}</span></div></div>
                             <div className="flex justify-start gap-2 relative z-10 border-t border-theme-border/50 pt-4 items-center">
                                 {['all', 'month', 'today'].map((tf) => (
@@ -952,6 +1117,7 @@
                         <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
                             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedFriend(null)}></div>
                             <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 max-h-[85vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/30">
+                                {/* 修復：縮小尺寸並保持居中，不使用會截斷畫面的巨大 transform scale */}
                                 <div className="relative h-40 w-full flex items-center justify-center bg-gradient-to-b from-theme-bg to-theme-card shrink-0">
                                      <button onClick={() => setSelectedFriend(null)} className="absolute top-4 right-4 p-2 bg-black/20 rounded-full text-white hover:bg-black/40 z-20"><Icon name="X" size={20}/></button>
                                      <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
@@ -1024,14 +1190,16 @@
             const [authError, setAuthError] = useState('');
             const [cloudSyncing, setCloudSyncing] = useState(false);
 
-            // 加入保護防止舊版資料遺失 friends 或 categories
+            // 加入保護防止舊版資料遺失 friends 或 categories，避免 .map 報錯
             const safeData = useMemo(() => ({
                 ...data,
                 friends: data.friends || [],
                 categories: data.categories || DEFAULT_CATEGORIES,
                 transactions: data.transactions || [],
                 logs: data.logs || [],
-                accounts: data.accounts || []
+                accounts: data.accounts || [],
+                inventory: data.inventory || [],
+                claimedQuests: data.claimedQuests || []
             }), [data]);
 
             useEffect(() => {
@@ -1072,22 +1240,22 @@
                 } 
             }, [safeData.user?.pet, authUser, authLoading]);
             
-            // 雲端同步與好友背景更新
+            // 雲端同步與好友背景拉取
             useEffect(() => { 
                 if (authUser && data && !authLoading) {
                     const timer = setTimeout(async () => {
                         setCloudSyncing(true);
                         try {
                             const doc = await db.collection('users').doc(authUser.uid).get();
-                            let latestFriends = data.friends || [];
+                            let latestFriends = safeData.friends || [];
                             if (doc.exists) {
                                 const cloudData = doc.data();
                                 const mergedMap = new Map();
-                                (data.friends || []).forEach(f => mergedMap.set(f.uid, f));
+                                (safeData.friends || []).forEach(f => mergedMap.set(f.uid, f));
                                 (cloudData.friends || []).forEach(f => mergedMap.set(f.uid, f));
                                 latestFriends = Array.from(mergedMap.values());
                                 
-                                if (latestFriends.length > (data.friends || []).length) {
+                                if (latestFriends.length > (safeData.friends || []).length) {
                                     setData(prev => ({ ...prev, friends: latestFriends }));
                                 }
                             }
@@ -1102,7 +1270,7 @@
                     }, 2000);
                     return () => clearTimeout(timer);
                 }
-            }, [data, authUser, authLoading]);
+            }, [data, authUser, authLoading, safeData.friends]);
             
             useEffect(() => { document.body.setAttribute('data-theme', theme); localStorage.setItem('gw_theme', theme); }, [theme]);
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
@@ -1124,7 +1292,7 @@
             const checkUnlockables = (currentData) => {
                 const stats = { txCount: (currentData.transactions||[]).length, expenseTotal: (currentData.transactions||[]).filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), balance: (currentData.accounts||[]).reduce((a,c) => a + c.balance, 0), questCount: (currentData.claimedQuests||[]).length, level: currentData.user ? currentData.user.level : 1, itemCount: (currentData.inventory||[]).length, friendCount: (currentData.friends||[]).length };
                 let newUser = { ...currentData.user }; let logs = [...(currentData.logs||[])]; let updated = false;
-                TITLES_LIST.forEach(t => { if (!newUser.unlockedTitles.includes(t.id) && t.check(stats, 1)) { newUser.unlockedTitles.push(t.id); logs = addLog('system', `${t('log_sys_title')}: ${t.name}`, logs); updated = true; } });
+                TITLES_LIST.forEach(tTitle => { if (!newUser.unlockedTitles.includes(tTitle.id) && tTitle.check(stats, 1)) { newUser.unlockedTitles.push(tTitle.id); logs = addLog('system', `${t('log_sys_title')}: ${tTitle.name}`, logs); updated = true; } });
                 ACHIEVEMENTS_LIST.forEach(ach => {
                     if (!newUser.unlockedAchievements.includes(ach.id)) {
                         let achieved = false;
@@ -1145,9 +1313,9 @@
             const handleRenamePet = (newName) => { if (!data.user || !data.user.pet) return; setData(prev => ({ ...prev, user: { ...prev.user, pet: { ...prev.user.pet, name: newName } } })); };
             const handleSetTitle = (titleId) => { if (!data.user) return; setData(prev => ({ ...prev, user: { ...prev.user, title: titleId } })); };
             const handleBuyItem = (item) => {
-                if (!data.user) return; const newGold = data.user.gold - item.cost; const newInventory = [...(data.inventory||[]), item]; const newLogs = addLog('system', `Bought: ${item.name}`, data.logs||[]);
+                if (!data.user) return; const newGold = data.user.gold - item.cost; const newInventory = [...(safeData.inventory||[]), item]; const newLogs = addLog('system', `Bought: ${item.name}`, safeData.logs);
                 const newPurchase = { id: Date.now().toString(), itemId: item.id, itemName: item.name, cost: item.cost, date: new Date().toISOString() };
-                setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...(data.purchaseHistory || [])] }));
+                setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...(safeData.purchaseHistory || [])] }));
             };
             const handleEquipItem = (slot, item) => { const newEquipped = { ...data.equipped }; if (item) { newEquipped[slot] = item; } else { delete newEquipped[slot]; } setData(prev => ({ ...prev, equipped: newEquipped })); setEquipModalOpen(false); };
             
@@ -1356,7 +1524,7 @@
                         ))}
                     </nav>
 
-                    {/* 模態框區 */}
+                    {/* 全局模態框區 */}
                     {showCategoryManager && <CategoryManagerModal categories={safeData.categories} onClose={() => setShowCategoryManager(false)} onSave={(newCats) => { setData(prev => ({...prev, categories: newCats})); setShowCategoryManager(false); }} />}
                     
                     {showRenameModal && (
