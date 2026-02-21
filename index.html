@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>SakuraWallet V30 (Ultimate RPG Edition)</title>
+    <title>RPGMoney</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -24,15 +24,7 @@
                 pixel: ['"DotGothic16"', 'sans-serif'] 
             },
             colors: {
-              theme: {
-                bg: 'var(--bg-color)',
-                card: 'var(--card-bg)',
-                text: 'var(--text-main)',
-                sub: 'var(--text-sub)',
-                accent: 'var(--accent-color)',
-                border: 'var(--border-color)',
-                glass: 'var(--glass-bg)'
-              }
+              theme: { bg: 'var(--bg-color)', card: 'var(--card-bg)', text: 'var(--text-main)', sub: 'var(--text-sub)', accent: 'var(--accent-color)', border: 'var(--border-color)', glass: 'var(--glass-bg)' }
             },
             animation: { 
                 'float': 'float 4s ease-in-out infinite', 
@@ -57,11 +49,7 @@
       }
     </script>
     <style>
-        :root { 
-            --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; 
-            --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); 
-            --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); 
-        }
+        :root { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="ink"] { --bg-color: #f8f9fa; --card-bg: #ffffff; --text-main: #212529; --text-sub: #868e96; --accent-color: #343a40; --border-color: #dee2e6; --glass-bg: rgba(255, 255, 255, 0.9); --bg-pattern: radial-gradient(#ced4da 1px, transparent 1px); }
         [data-theme="sakura"] { --bg-color: #fff0f5; --card-bg: #ffffff; --text-main: #831843; --text-sub: #be185d; --accent-color: #db2777; --border-color: #fbcfe8; --glass-bg: rgba(255, 255, 255, 0.75); --bg-pattern: radial-gradient(#db2777 0.5px, transparent 0.5px); }
         [data-theme="sky"] { --bg-color: #f0f9ff; --card-bg: #ffffff; --text-main: #0c4a6e; --text-sub: #38bdf8; --accent-color: #0ea5e9; --border-color: #bae6fd; --glass-bg: rgba(255, 255, 255, 0.8); --bg-pattern: radial-gradient(#38bdf8 0.5px, transparent 0.5px); }
@@ -115,59 +103,72 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 核心圖示資料庫
-        const ICON_PATHS={Home:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",Scroll:"M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",Wallet:"M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",Globe:"M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",Plus:"M12 5v14 M5 12h14",X:"M18 6L6 18 M6 6l12 12",Cloud:"M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",LogIn:"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",Crown:"M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",Star:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",CreditCard:"M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",Landmark:"M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",Utensils:"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",Bus:"M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",ShoppingBag:"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",Zap:"M13 2L3 14h9l-1 8 10-12h-9l1-8z",Pill:"M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",GraduationCap:"M22 10v6M2 10l10-5 10 5",Briefcase:"M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",Plane:"M2 12h20 M13 2l9 10-9 10",LogOut:"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",Camera:"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",Key:"M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",Trophy:"M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",Sword:"M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",Book:"M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",Shield:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",Hammer:"M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",Gem:"M6 3h12l4 6-10 13L2 9z",Sun:"M12 1v2 M12 21v2",Moon:"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",Eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8",Coffee:"M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",Gamepad:"M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",UserPlus:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",Check:"M20 6L9 17l-5-5",Edit:"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",Trash:"M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",Ghost:"M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",Paint:"M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",CheckCircle:"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",Lock:"M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",Chart:"M18 20V10M12 20V4M6 20v-6",ArrowUp:"M12 19V5M5 12l7-7 7 7",ArrowDown:"M12 5v14M19 12l-7 7-7-7",Shop:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",Calendar:"M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",Users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",Copy:"M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",Egg:"M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",Calculator:"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",Settings:"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"};
-        const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
+        // --- 核心圖示資料庫 ---
+        const ICON_PATHS = {
+            Home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
+            Scroll: "M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z",
+            Wallet: "M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4",
+            Globe: "M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z M2 12h20",
+            Plus: "M12 5v14 M5 12h14",
+            X: "M18 6L6 18 M6 6l12 12",
+            Cloud: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z",
+            LogIn: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
+            Crown: "M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
+            Star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+            CreditCard: "M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M1 10h22",
+            Landmark: "M3 22v-8 M6 22v-8 M9 22v-8 M12 22v-8",
+            Utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3",
+            Bus: "M8 6v6 M15 6v6 M2 12h19.6 M18 21v-2",
+            ShoppingBag: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
+            Zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+            Pill: "M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10",
+            GraduationCap: "M22 10v6M2 10l10-5 10 5",
+            Briefcase: "M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11",
+            Plane: "M2 12h20 M13 2l9 10-9 10",
+            LogOut: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
+            Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
+            Key: "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5",
+            Trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
+            Sword: "M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",
+            Book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
+            Shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+            Hammer: "M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
+            Gem: "M6 3h12l4 6-10 13L2 9z",
+            Sun: "M12 1v2 M12 21v2",
+            Moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+            Eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8",
+            Coffee: "M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
+            Gamepad: "M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
+            UserPlus: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+            Check: "M20 6L9 17l-5-5",
+            Edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+            Trash: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+            Ghost: "M9 22v-2c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v2 M12 2a9 9 0 0 0-9 9v11l4-4 4 4 4-4 4 4v-11a9 9 0 0 0-9-9z",
+            Paint: "M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z",
+            CheckCircle: "M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
+            Lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-2 0V7a5 5 0 0 0-10 0v4",
+            Chart: "M18 20V10M12 20V4M6 20v-6",
+            ArrowUp: "M12 19V5M5 12l7-7 7 7",
+            ArrowDown: "M12 5v14M19 12l-7 7-7-7",
+            Shop: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 14h8",
+            Calendar: "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",
+            Users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+            Copy: "M8 4h10a2 2 0 0 1 2 2v10M16 8H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z",
+            Egg: "M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z",
+            Calculator: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 7h6v2H9V7zm-2 6h2v2H7v-2zm0 4h2v2H7v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2z",
+            Settings: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+            Grip: "M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+        };
+
+        const Icon = ({ name, size = 20, className = "", color = "currentColor", strokeWidth = 2.5 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+                <path d={ICON_PATHS[name] || ICON_PATHS['Star']}/>
+            </svg>
+        );
 
         const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
         const EXCHANGE_RATES = { 'TWD': 1, 'HKD': 0.24, 'JPY': 4.6 };
-
-        const THEMES = [
-            { id: 'ink', name: 'ink', color: '#343a40' }, { id: 'sakura', name: 'sakura', color: '#db2777' },
-            { id: 'sky', name: 'sky', color: '#0ea5e9' }, { id: 'magic', name: 'magic', color: '#9333ea' },
-            { id: 'matcha', name: 'matcha', color: '#15803d' }, { id: 'latte', name: 'latte', color: '#b45309' },
-            { id: 'peach', name: 'peach', color: '#f43f5e' }, { id: 'lavender', name: 'lavender', color: '#a855f7' },
-            { id: 'midnight', name: 'midnight', color: '#0f172a' }
-        ];
-
-        const DEFAULT_CATEGORIES = {
-            bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
-            dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
-            snack: { label: '零食', icon: 'Utensils', color: '#fdba74', order: 5 }, bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 },
-            mtr: { label: '捷運', icon: 'Bus', color: '#3b82f6', order: 7 }, taxi: { label: '計程車', icon: 'Bus', color: '#2563eb', order: 8 },
-            shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 },
-            bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 },
-            health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 },
-            invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 },
-            salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 },
-            other: { label: '其他', icon: 'Scroll', color: '#94a3b8', order: 99 }
-        };
-
-        const PET_DEFINITIONS = {
-            'slime_blue': { id: 'slime_blue', name: '藍史萊姆', stage: 1, emoji: '💧', color: '#60a5fa', desc: 'QQ彈彈的可愛生物', nextEvolution: {'10': 'slime_king', '15': 'slime_ninja'} },
-            'cat_white': { id: 'cat_white', name: '小白貓', stage: 1, emoji: '🐱', color: '#f3f4f6', desc: '優雅的小貓咪', nextEvolution: {'10': 'cat_witch', '15': 'cat_lion'} },
-            'dino_green': { id: 'dino_green', name: '小恐龍', stage: 1, emoji: '🦖', color: '#4ade80', desc: '充滿活力的小恐龍', nextEvolution: {'10': 'dino_rex', '15': 'dino_dragon'} },
-            
-            // 利姆露進化線
-            'slime_rimuru': { id: 'slime_rimuru', name: '利姆露 (史萊姆)', stage: 1, emoji: '💧', color: '#93c5fd', desc: '不可思議的轉生史萊姆', nextEvolution: {'10': 'rimuru_human', '30': 'rimuru_demon_lord'} },
-            'rimuru_human': { id: 'rimuru_human', name: '利姆露 (人型)', stage: 2, emoji: '👤', color: '#3b82f6', desc: '獲得人類姿態的萌王' },
-            'rimuru_demon_lord': { id: 'rimuru_demon_lord', name: '覺醒魔王·利姆露', stage: 3, emoji: '👑', color: '#1e3a8a', desc: '君臨八星魔王的絕對強者' },
-
-            'slime_king': { id: 'slime_king', name: '史萊姆王', stage: 2, emoji: '👑', color: '#3b82f6', desc: '戴著王冠的史萊姆' },
-            'slime_ninja': { id: 'slime_ninja', name: '忍萊姆', stage: 2, emoji: '🥷', color: '#1e3a8a', desc: '來無影去無蹤' },
-            'cat_witch': { id: 'cat_witch', name: '魔法喵', stage: 2, emoji: '🔮', color: '#a855f7', desc: '精通魔法的貓' },
-            'cat_lion': { id: 'cat_lion', name: '獅子王', stage: 2, emoji: '🦁', color: '#f59e0b', desc: '森林之王' },
-            'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' },
-            'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' }
-        };
-
-        const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
-
-        // 結束第一部分
-// ==========================================
-        // ⬇️ 第二部分開始 (裝備、成就與翻譯資料) ⬇️
-        // ==========================================
 
         // 🌟 裝備視覺特效 (RPG 風格強化)
         const GEAR_VISUALS = {
@@ -185,8 +186,6 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             's14': () => <g transform="rotate(-15, 24, 16)"><path fill="#78350f" d="M22 16 h2 v10 h-2 z" /><path fill="#94a3b8" d="M22 16 l4 -2 l2 4 l-6 2 z" /><path fill="#cbd5e1" d="M26 14 l2 2 l-2 -2 z"/></g>,
             's15': () => <g><path fill="#99f6e4" d="M22 18 l4 -4 l2 2 l-4 4 z" /><path fill="#5d4037" d="M20 20 l2 -2" stroke="#5d4037" strokeWidth="2"/></g>,
             's17': () => <circle cx="6" cy="22" r="3" fill="#38bdf8" style={{filter:'drop-shadow(0 0 4px #7dd3fc)'}}/>,
-            
-            // 全新裝備外觀
             's18': () => <g><path fill="#e2e8f0" d="M9 5 h14 v8 h-14 z"/><rect x="14" y="2" width="4" height="6" fill="#94a3b8"/></g>,
             's19': () => <g transform="translate(0, -4)"><path fill="#312e81" d="M8 12 L16 2 L24 12 Z"/><path fill="#4338ca" d="M6 12 H26 V14 H6 Z"/></g>,
             's20': () => <g><path fill="#64748b" d="M10 17 h12 v10 h-12 z"/><path fill="#475569" d="M14 17 h4 v10 h-4 z"/></g>,
@@ -196,21 +195,28 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             's24': () => <g transform="rotate(45, 24, 16) translate(-8,-8)"><path fill="#fef08a" d="M15 2 H17 V16 H15 Z" style={{filter:'drop-shadow(0 0 4px #fde047)'}}/><path fill="#eab308" d="M11 16 H21 V18 H11 Z"/><path fill="#f59e0b" d="M14 18 H18 V24 H14 Z"/></g>,
             's25': () => <g className="animate-float"><path fill="#7e22ce" d="M3 20 H11 V28 H3 Z"/><path fill="#fbbf24" d="M5 22 H9 M5 24 H9 M5 26 H7" stroke="#fbbf24" strokeWidth="0.5"/></g>,
             's26': () => <g className="animate-spin-slow origin-center" style={{transformBox: 'fill-box', transformOrigin: 'center'}}><circle cx="16" cy="16" r="14" fill="none" stroke="#c084fc" strokeWidth="1" strokeDasharray="4 2" style={{filter:'drop-shadow(0 0 3px #d8b4fe)'}}/><polygon points="16,2 28,23 4,23" fill="none" stroke="#c084fc" strokeWidth="0.5"/><polygon points="16,30 4,9 28,9" fill="none" stroke="#c084fc" strokeWidth="0.5"/></g>,
-            
             's99': () => <g transform="rotate(45, 24, 16) translate(-8,-8)"><path fill="#fef08a" d="M14 6 H18 V20 H14 Z" /><path fill="#eab308" d="M16 6 V20" strokeWidth="1"/><circle cx="16" cy="10" r="1" fill="white" className="animate-pulse"/></g>,
             's100': () => <g className="animate-pulse origin-center"><path fill="#1f2937" d="M6 18 Q2 12 10 10 L16 18" opacity="0.9"/><path fill="#1f2937" d="M26 18 Q30 12 22 10 L16 18" opacity="0.9"/></g>,
             's101': () => <g className="animate-float origin-center"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.8" style={{filter:'drop-shadow(0 0 5px #bae6fd)'}}/><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.8" style={{filter:'drop-shadow(0 0 5px #bae6fd)'}}/></g>,
         };
 
-        // 🌟 新增商品與裝備
+        // ==========================================
+        // ⬆️ 第一部分結束，請回覆「繼續」獲取第二部分 ⬆️
+        // ==========================================
+// ==========================================
+        // ⬇️ 第二部分開始 (裝備、寵物與翻譯字典) ⬇️
+        // ==========================================
+
         const SHOP_ITEMS = [
             { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'common', cost: 150, icon: 'Crown', stats: { vit: 5, int: 5 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。" },
             { id: 's18', name: '白銀頭盔', type: 'head', rarity: 'rare', cost: 600, icon: 'Crown', stats: { vit: 15, str: 5 }, desc: "堅固的白銀製頭盔。" },
             { id: 's19', name: '大賢者之帽', type: 'head', rarity: 'epic', cost: 2500, icon: 'Crown', stats: { int: 30 }, desc: "傳說中大賢者戴過的帽子。" },
+            
             { id: 's13', name: '暗影輕甲', type: 'body', rarity: 'rare', cost: 800, icon: 'Shield', stats: { agi: 15, vit: 10 }, desc: "適合潛行的輕型鎧甲，能融入夜色。" },
             { id: 's5', name: '鱗片護甲', type: 'body', rarity: 'rare', cost: 1000, icon: 'Shield', stats: { vit: 25, str: 5 }, desc: "堅固的鱗片製成，防禦力優異。" },
             { id: 's20', name: '重型鋼甲', type: 'body', rarity: 'epic', cost: 2200, icon: 'Shield', stats: { vit: 40, agi: -5 }, desc: "極度沉重但防禦無敵的鋼甲。" },
             { id: 's21', name: '忍者服', type: 'body', rarity: 'epic', cost: 1800, icon: 'Shield', stats: { agi: 35 }, desc: "特製的忍者服，輕如羽毛。" },
+            
             { id: 's1', name: '鐵製長劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的冒險者長劍。" },
             { id: 's4', name: '精靈長弓', type: 'mainHand', rarity: 'rare', cost: 1200, icon: 'Sword', stats: { agi: 25, int: 5 }, desc: "精靈製作的弓，精準無比。" },
             { id: 's15', name: '雙子匕首', type: 'mainHand', rarity: 'rare', cost: 900, icon: 'Sword', stats: { agi: 20, str: 10 }, desc: "輕巧鋒利的雙刀，適合快速連擊。" },
@@ -218,17 +224,21 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             { id: 's22', name: '水晶魔杖', type: 'mainHand', rarity: 'epic', cost: 2000, icon: 'Gem', stats: { int: 45 }, desc: "頂端鑲嵌著冰藍色水晶的魔杖。" },
             { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 6000, icon: 'Sword', stats: { str: 40, agi: 30 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。" },
             { id: 's24', name: '聖劍·艾斯卡', type: 'mainHand', rarity: 'legendary', cost: 8500, icon: 'Sword', stats: { str: 60, vit: 20 }, desc: "散發著神聖光芒的勇者之劍。" },
+
             { id: 's8', name: '圓木盾', type: 'offHand', rarity: 'common', cost: 300, icon: 'Shield', stats: { vit: 15 }, desc: "基本的防禦裝備，輕便好用。" },
             { id: 's17', name: '藍寶石護符', type: 'offHand', rarity: 'epic', cost: 2000, icon: 'Gem', stats: { int: 30, vit: 15 }, desc: "蘊含海洋之力的護符。" },
             { id: 's25', name: '古代魔導書', type: 'offHand', rarity: 'epic', cost: 2800, icon: 'Book', stats: { int: 35, str: -5 }, desc: "記載著失傳魔法的古老書本。" },
             { id: 's12', name: '力量指環', type: 'offHand', rarity: 'legendary', cost: 4500, icon: 'Heart', stats: { str: 30, agi: 10 }, desc: "賦予佩戴者強大力量的魔法指環。" },
+
             { id: 's6', name: '神秘法袍', type: 'back', rarity: 'epic', cost: 1800, icon: 'Briefcase', stats: { int: 35, vit: 10 }, desc: "散發著微弱魔力的紅色法袍。" },
             { id: 's26', name: '六芒星魔法陣', type: 'back', rarity: 'legendary', cost: 18000, icon: 'Sun', stats: { int: 50, vit: 20 }, desc: "懸浮在背後的神秘魔法陣。" },
             { id: 's100', name: '惡魔之翼', type: 'back', rarity: 'epic', cost: 9500, icon: 'Briefcase', stats: { str: 30, vit: -10 }, desc: "來自深淵的翅膀。", effects: ['pulse'] },
             { id: 's101', name: '天使光翼', type: 'back', rarity: 'legendary', cost: 15000, icon: 'Briefcase', stats: { int: 40, vit: 40 }, desc: "純潔的光之翼。", effects: ['float', 'glow'] },
+            
             { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 }, desc: "輕便耐穿，適合長途跋涉。" },
+            
             { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 8888, icon: 'Sun', stats: { int: 60, vit: 30 }, desc: "神聖的守護光輝。", effects: ['glow', 'float'] },
-            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] }
+            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] },
         ];
 
         const ITEM_ICONS = {
@@ -250,13 +260,63 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             's21': () => <g><path fill="#1f2937" d="M10 12 H22 V24 H10 Z" /><path fill="#ef4444" d="M10 16 H22 V18 H10 Z" /></g>,
             's22': () => <g transform="rotate(45, 16, 16)"><path fill="#38bdf8" d="M14 4 H18 V10 L16 14 Z" /><path fill="#5d4037" d="M15 14 H17 V26 H15 Z" /></g>,
             's23': () => <g transform="rotate(45, 16, 16)"><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z" /><path fill="#1f2937" d="M13 20 H19 V22 H13 Z" /><path fill="#b91c1c" d="M14 22 H18 V28 H14 Z" /></g>,
-            's24': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M15 4 H17 V18 H15 Z" /><path fill="#eab308" d="M11 18 H21 V20 H11 Z" /><path fill="#f59e0b" d="M14 20 H18 V26 H14 Z" /></g>,
+            's24': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M15 4 H17 V18 H15 Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 18 H21 V20 H11 Z" /><path fill="#f59e0b" d="M14 20 H18 V26 H14 Z" /></g>,
             's25': () => <g><path fill="#7e22ce" d="M8 10 H24 V26 H8 Z" /><path fill="#fbbf24" d="M16 12 V24 M12 18 H20" stroke="#fbbf24" strokeWidth="2" /></g>,
             's26': () => <g className="animate-spin-slow origin-center" style={{transformBox: 'fill-box', transformOrigin: 'center'}}><circle cx="16" cy="16" r="12" fill="none" stroke="#c084fc" strokeWidth="2" strokeDasharray="4 2"/><polygon points="16,4 26,22 6,22" fill="none" stroke="#c084fc" strokeWidth="1"/><polygon points="16,28 6,10 26,10" fill="none" stroke="#c084fc" strokeWidth="1"/></g>,
             's99': () => <g><path fill="#fef08a" d="M14 6 L18 20 L14 26 L10 20 Z" /><path fill="#eab308" d="M12 20 L16 26" stroke="#eab308" strokeWidth="2" /><animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite" /></g>,
             's100': () => <g><path fill="#4a044e" d="M4 10 Q10 2 16 12 Q22 2 28 10 Q22 16 16 22 Q10 16 4 10" /></g>,
-            's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6"/><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6"/></g>,
+            's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6" /><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6" /></g>,
         };
+
+        const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
+
+        const DEFAULT_CATEGORIES = {
+            bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, 
+            lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
+            dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, 
+            drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
+            snack: { label: '零食', icon: 'Utensils', color: '#fdba74', order: 5 }, 
+            bus: { label: '巴士', icon: 'Bus', color: '#60a5fa', order: 6 },
+            mtr: { label: '捷運', icon: 'Bus', color: '#3b82f6', order: 7 }, 
+            taxi: { label: '計程車', icon: 'Bus', color: '#2563eb', order: 8 },
+            shop: { label: '購物', icon: 'ShoppingBag', color: '#c084fc', order: 9 }, 
+            game: { label: '遊戲', icon: 'Gamepad', color: '#a855f7', order: 10 },
+            bill: { label: '帳單', icon: 'Zap', color: '#fbbf24', order: 11 }, 
+            rent: { label: '房租', icon: 'Landmark', color: '#f59e0b', order: 12 },
+            health: { label: '醫療', icon: 'Pill', color: '#34d399', order: 13 }, 
+            edu: { label: '學習', icon: 'GraduationCap', color: '#2dd4bf', order: 14 },
+            invest: { label: '投資', icon: 'Briefcase', color: '#a78bfa', order: 15 }, 
+            travel: { label: '旅行', icon: 'Plane', color: '#f472b6', order: 16 },
+            salary: { label: '薪水', icon: 'Wallet', color: '#84cc16', order: 17 }, 
+            bonus: { label: '獎金', icon: 'Gem', color: '#bef264', order: 18 },
+            other: { label: '其他', icon: 'Scroll', color: '#94a3b8', order: 99 }
+        };
+
+        const PET_DEFINITIONS = {
+            'slime_blue': { id: 'slime_blue', name: '藍史萊姆', stage: 1, emoji: '💧', color: '#60a5fa', desc: 'QQ彈彈的可愛生物', nextEvolution: {'10': 'slime_king', '15': 'slime_ninja'} },
+            'cat_white': { id: 'cat_white', name: '小白貓', stage: 1, emoji: '🐱', color: '#f3f4f6', desc: '優雅的小貓咪', nextEvolution: {'10': 'cat_witch', '15': 'cat_lion'} },
+            'dino_green': { id: 'dino_green', name: '小恐龍', stage: 1, emoji: '🦖', color: '#4ade80', desc: '充滿活力的小恐龍', nextEvolution: {'10': 'dino_rex', '15': 'dino_dragon'} },
+            
+            // 🌟 利姆露專屬進化線
+            'slime_rimuru': { id: 'slime_rimuru', name: '利姆露 (史萊姆)', stage: 1, emoji: '💧', color: '#93c5fd', desc: '不可思議的轉生史萊姆', nextEvolution: {'10': 'rimuru_human', '30': 'rimuru_demon_lord'} },
+            'rimuru_human': { id: 'rimuru_human', name: '利姆露 (人型)', stage: 2, emoji: '👤', color: '#3b82f6', desc: '獲得人類姿態的萌王' },
+            'rimuru_demon_lord': { id: 'rimuru_demon_lord', name: '覺醒魔王·利姆露', stage: 3, emoji: '👑', color: '#1e3a8a', desc: '君臨八星魔王的絕對強者' },
+
+            'slime_king': { id: 'slime_king', name: '史萊姆王', stage: 2, emoji: '👑', color: '#3b82f6', desc: '戴著王冠的史萊姆' },
+            'slime_ninja': { id: 'slime_ninja', name: '忍萊姆', stage: 2, emoji: '🥷', color: '#1e3a8a', desc: '來無影去無蹤' },
+            'cat_witch': { id: 'cat_witch', name: '魔法喵', stage: 2, emoji: '🔮', color: '#a855f7', desc: '精通魔法的貓' },
+            'cat_lion': { id: 'cat_lion', name: '獅子王', stage: 2, emoji: '🦁', color: '#f59e0b', desc: '森林之王' },
+            'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' },
+            'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' }
+        };
+
+        const THEMES = [
+            { id: 'ink', name: 'ink', color: '#343a40' }, { id: 'sakura', name: 'sakura', color: '#db2777' },
+            { id: 'sky', name: 'sky', color: '#0ea5e9' }, { id: 'magic', name: 'magic', color: '#9333ea' },
+            { id: 'matcha', name: 'matcha', color: '#15803d' }, { id: 'latte', name: 'latte', color: '#b45309' },
+            { id: 'peach', name: 'peach', color: '#f43f5e' }, { id: 'lavender', name: 'lavender', color: '#a855f7' },
+            { id: 'midnight', name: 'midnight', color: '#0f172a' }
+        ];
 
         const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
@@ -296,54 +356,40 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
         const TRANSLATIONS = { 
             zh: { 
                 adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣切換', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '系統設定',
-                total_wealth: '總資產', no_assets: '尚未建立任何資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資',
-                equipment_shop: '裝備屋', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', offHand: '副手',
-                price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！',
+                total_wealth: '總資產', no_assets: '尚未建立任何資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '裝備屋', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', offHand: '副手', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！',
                 character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包是空的，去商店看看吧！',
-                transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '瑪娜流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '尚無相關紀錄',
+                transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '尚無相關紀錄',
                 record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶',
                 log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取',
-                theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)',
-                change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？',
+                theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？',
                 social: '公會', guild: '冒險公會', friend_list: '好友名單', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！',
-                edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用',
-                purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。'
+                edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。'
             }, 
             en: { 
                 adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Achievements', upgrade: 'Character', exchange: 'Currency', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Lv.', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this record?', logout: 'Logout', theme: 'Theme', lang: 'Lang', guardian: 'Pet', settings: 'Settings',
-                total_wealth: 'Total Wealth', no_assets: 'No assets yet', add: 'Add', wallet: 'Wallet', bank: 'Bank', card: 'Card', invest: 'Invest', equipment_shop: 'Equipment Shop', gold: 'Gold', search: 'Search...', sort: 'Sort', filter: 'Filter', all: 'All', mainHand: 'Weapon', head: 'Head', body: 'Body', feet: 'Feet', back: 'Back', offHand: 'Offhand',
-                price: 'Price', rarity: 'Rarity', name: 'Name', owned: 'Owned', equipped: 'Equipped', buy: 'Buy', not_enough_gold: 'Not enough gold', buy_success: 'Buy Success!',
+                total_wealth: 'Total Wealth', no_assets: 'No assets yet', add: 'Add', wallet: 'Wallet', bank: 'Bank', card: 'Card', invest: 'Invest', equipment_shop: 'Equipment Shop', gold: 'Gold', search: 'Search...', sort: 'Sort', filter: 'Filter', all: 'All', mainHand: 'Weapon', head: 'Head', body: 'Body', feet: 'Feet', back: 'Back', offHand: 'Offhand', price: 'Price', rarity: 'Rarity', name: 'Name', owned: 'Owned', equipped: 'Equipped', buy: 'Buy', not_enough_gold: 'Not enough gold', buy_success: 'Buy Success!',
                 character_stats: 'Character Stats', dressing_room: 'Dressing Room', male: 'Male', female: 'Female', equipment_manager: 'Equipment Manager', bag: 'Bag', equip: 'Equip', unequip: 'Unequip', empty_bag: 'Bag is empty, visit the shop!',
                 transaction_scroll: 'Transaction Scroll', no_records: 'No records', income: 'Income', expense: 'Expense', mana_flow: 'Mana Flow', today: 'Today', month: 'Month', daily_view: 'Daily', in: 'IN', out: 'OUT', financial: 'Financial', system: 'System', no_logs: 'No logs found',
-                record_action: 'Record Action', category: 'Category', note: 'Note (Optional)', select_account: 'Select Account', confirm: 'Confirm', cancel: 'Cancel', edit_account: 'Edit Account', new_account: 'New Account',
-                log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward', claimed: 'Claimed', claim: 'Claim',
-                theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight',
-                change_stats: 'Stats Change', confirm_buy_title: 'Confirm Purchase', confirm_buy_msg: 'Are you sure you want to buy {item} for {cost} G?',
-                social: 'Social', guild: 'Guild Hall', friend_list: 'Friend List', add_friend: 'Recruit', visit: 'Visit', online: 'Online', offline: 'Offline', enter_id: 'Enter Adventurer ID', my_card: 'Adventurer Card', copy_id: 'Copy ID', copied: 'Copied', remove_friend: 'Remove Friend', send_like: 'Send Like', like_success: 'Like Sent!',
-                edit_id: 'Edit ID', change_id_title: 'Change ID', change_id_cost: 'Cost', change_id_free: 'First Free', enter_new_id: 'New ID', id_too_short: 'ID too short', id_taken: 'ID taken',
-                purchase_history: 'Purchase History', equipment: 'Equipment', upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet', relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Type', currency_type: 'Currency', cash: 'Cash', cannot_add_self: 'Cannot add yourself!', user_not_found: 'User ID not found.'
+                record_action: 'Record Action', category: 'Category', note: 'Note (Optional)', select_account: 'Select Account', confirm: 'Confirm', cancel: 'Cancel', edit_account: 'Edit Account', new_account: 'New Account', log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward', claimed: 'Claimed', claim: 'Claim',
+                theme_ink: 'Ink Scroll', theme_sakura: 'Sakura Blessing', theme_sky: 'Sky Realm', theme_magic: 'Arcane Mist', theme_matcha: 'Matcha Power', theme_latte: 'Latte Art', theme_peach: 'Sweet Peach', theme_lavender: 'Lavender Field', theme_midnight: 'Midnight', change_stats: 'Stats Change', confirm_buy_title: 'Confirm Purchase', confirm_buy_msg: 'Are you sure you want to buy {item} for {cost} G?',
+                social: 'Social', guild: 'Guild Hall', friend_list: 'Friend List', add_friend: 'Recruit', visit: 'Visit', online: 'Online', offline: 'Offline', enter_id: 'Enter Adventurer ID', my_card: 'Adventurer Card', copy_id: 'Copy ID', copied: 'Copied', remove_friend: 'Remove Friend', send_like: 'Send Like', like_success: 'Like Sent!', edit_id: 'Edit ID', change_id_title: 'Change ID', change_id_cost: 'Cost', change_id_free: 'First Free', enter_new_id: 'New ID', id_too_short: 'ID too short', id_taken: 'ID taken', purchase_history: 'Purchase History', equipment: 'Equipment', upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet', relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Type', currency_type: 'Currency', cash: 'Cash', cannot_add_self: 'Cannot add yourself!', user_not_found: 'User ID not found.'
             },
-            ja: {
+            ja: { 
                 adventure: '冒険', character: 'キャラ', quests: 'クエスト', achievements: '実績', upgrade: '強化', exchange: '通貨切替', journal: '日誌', shop: 'ショップ', main: 'メイン', daily: 'デイリー', challenge: '挑戦', level: 'Lv.', exp: 'EXP', assets: '資産', forge: '鍛冶', save: '保存', delete: '削除', confirmDelete: 'この記録を削除しますか？', logout: 'ログアウト', theme: 'テーマ', lang: '言語', guardian: 'ペット', settings: '設定',
-                total_wealth: '総資産', no_assets: '資産がありません', add: '追加', wallet: '財布', bank: '銀行', card: 'カード', invest: '投資', equipment_shop: '装備屋', gold: 'ゴールド', search: '検索...', sort: '並替', filter: '絞込', all: '全て', mainHand: '武器', head: '頭', body: '体', feet: '足', back: '背中', offHand: '副手',
-                price: '価格', rarity: 'レア度', name: '名前', owned: '所持済', equipped: '装備中', buy: '購入', not_enough_gold: '資金不足', buy_success: '購入成功！',
+                total_wealth: '総資産', no_assets: '資産がありません', add: '追加', wallet: '財布', bank: '銀行', card: 'カード', invest: '投資', equipment_shop: '装備屋', gold: 'ゴールド', search: '検索...', sort: '並替', filter: '絞込', all: '全て', mainHand: '武器', head: '頭', body: '体', feet: '足', back: '背中', offHand: '副手', price: '価格', rarity: 'レア度', name: '名前', owned: '所持済', equipped: '装備中', buy: '購入', not_enough_gold: '資金不足', buy_success: '購入成功！',
                 character_stats: 'ステータス', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '装備管理', bag: 'バッグ', equip: '装備', unequip: '外す', empty_bag: 'バッグは空です',
-                transaction_scroll: '収支の巻物', no_records: '記録なし', income: '収入', expense: '支出', mana_flow: 'マナの流れ', today: '今日', month: '今月', daily_view: '日別', in: '収入', out: '支出', financial: '財務変動', system: 'システム', no_logs: '記録がありません',
-                record_action: '行動を記録', category: 'カテゴリ', note: 'メモ (任意)', select_account: '口座選択', confirm: '確認', cancel: 'キャンセル', edit_account: '口座編集', new_account: '新規口座',
-                log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: 'クエスト報酬', claimed: '受取済', claim: '受取',
-                theme_ink: '水墨の巻物', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘法の霧', theme_matcha: '抹茶の力', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー', theme_midnight: '真夜中',
-                change_stats: '能力変化', confirm_buy_title: '購入確認', confirm_buy_msg: '{cost} G で {item} を購入しますか？',
-                social: 'ギルド', guild: '冒険者ギルド', friend_list: 'フレンド一覧', add_friend: '仲間を募集', visit: '訪問', online: 'オンライン', offline: 'オフライン', enter_id: '冒険者IDを入力', my_card: '冒険者カード', copy_id: 'IDをコピー', copied: 'コピー済', remove_friend: 'フレンド解除', send_like: 'いいね！', like_success: '送信完了！',
-                edit_id: 'ID変更', change_id_title: '冒険者IDを変更', change_id_cost: '変更費用', change_id_free: '初回無料', enter_new_id: '新しいIDを入力', id_too_short: 'IDが短すぎます', id_taken: '既に使用されています',
-                purchase_history: '購入履歴', equipment: '装備', upload_avatar: '画像アップロード', choose_pet: 'パートナーを選ぶ', relic_name: '聖遺物名', mana_reserve: '魔力残量', container_type: '種類', currency_type: '通貨', cash: '現金', cannot_add_self: '自分は追加できません！', user_not_found: 'ユーザーが見つかりません。'
+                transaction_scroll: '収支の巻物', no_records: '記録なし', income: '収入', expense: '支出', mana_flow: '魔力の流れ', today: '今日', month: '今月', daily_view: '日別', in: '収入', out: '支出', financial: '財務変動', system: 'システム', no_logs: '記録がありません',
+                record_action: '行動を記録', category: 'カテゴリ', note: 'メモ (任意)', select_account: '口座選択', confirm: '確認', cancel: 'キャンセル', edit_account: '口座編集', new_account: '新規口座', log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: 'クエスト報酬', claimed: '受取済', claim: '受取',
+                theme_ink: '水墨の巻物', theme_sakura: '桜の祝福', theme_sky: '天空の境', theme_magic: '秘法の霧', theme_matcha: '抹茶の力', theme_latte: 'ラテアート', theme_peach: '甘い桃', theme_lavender: 'ラベンダー', theme_midnight: '真夜中', change_stats: '能力変化', confirm_buy_title: '購入確認', confirm_buy_msg: '{cost} G で {item} を購入しますか？',
+                social: 'ギルド', guild: '冒険者ギルド', friend_list: 'フレンド一覧', add_friend: '仲間を募集', visit: '訪問', online: 'オンライン', offline: 'オフライン', enter_id: '冒険者IDを入力', my_card: '冒険者カード', copy_id: 'IDをコピー', copied: 'コピー済', remove_friend: 'フレンド解除', send_like: 'いいね！', like_success: '送信完了！', edit_id: 'ID変更', change_id_title: '冒険者IDを変更', change_id_cost: '変更費用', change_id_free: '初回無料', enter_new_id: '新しいIDを入力', id_too_short: 'IDが短すぎます', id_taken: '既に使用されています', purchase_history: '購入履歴', equipment: '装備', upload_avatar: '画像アップロード', choose_pet: 'パートナーを選ぶ', relic_name: '聖遺物名', mana_reserve: '魔力残量', container_type: '種類', currency_type: '通貨', cash: '現金', cannot_add_self: '自分は追加できません！', user_not_found: 'ユーザーが見つかりません。'
             }
         };
 
         // ==========================================
-        // ⬇️ 第二部分結束，請回覆「繼續」獲取第三部分 ⬇️
+        // ⬆️ 第二部分結束，請回覆「繼續」獲取第三部分 ⬆️
         // ==========================================
 // ==========================================
-        // ⬇️ 第三部分與第四部分開始 (視圖與主程式) ⬇️
+        // ⬇️ 第三部分開始 (共用元件與視窗) ⬇️
         // ==========================================
 
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
@@ -378,7 +424,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
         );
 
         const PixelPet = ({ id, className, animate = true }) => {
-            const isSlime = id.includes('slime'); const isCat = id.includes('cat'); const isDino = id.includes('dino'); const isRimuru = id.includes('rimuru');
+            const isSlime = id.includes('slime'); const isCat = id.includes('cat'); const isDino = id.includes('dino');
             
             const renderContent = () => {
                 if (id === 'slime_rimuru') {
@@ -422,7 +468,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                     return (<g className={animate ? "animate-bounce-gentle" : ""}><ellipse cx="16" cy="28" rx="10" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M8 26 h16 c2 0 4-2 4-6 c0-8-6-12-12-12 c-6 0-12 4-12 12 c0 4 2 6 4 6 Z" stroke="#1d4ed8" strokeWidth="0.5" /><path d="M10 14 q4 -4 8 0" strokeLinecap="round" strokeWidth="2" stroke="rgba(255,255,255,0.4)" fill="none" />{hasNinjaMask ? (<g><path fill="#1f2937" d="M6 18 h20 v6 h-20 z" /><rect x="10" y="20" width="4" height="1" fill="white" /><rect x="18" y="20" width="4" height="1" fill="white" /></g>) : (<g className={animate ? "animate-blink" : ""}><rect x="10" y="18" width="2" height="3" fill="#1e3a8a" rx="1" /><rect x="20" y="18" width="2" height="3" fill="#1e3a8a" rx="1" /><circle cx="8" cy="21" r="1.5" fill="rgba(236, 72, 153, 0.4)" /><circle cx="24" cy="21" r="1.5" fill="rgba(236, 72, 153, 0.4)" /></g>)}{hasCrown && (<g transform="translate(8, 2)"><path fill="#fbbf24" d="M4 6 L4 2 L8 6 L12 2 L12 6 Z" stroke="#b45309" strokeWidth="0.5" /><circle cx="4" cy="2" r="1" fill="#ef4444" /><circle cx="8" cy="6" r="1" fill="#3b82f6" /><circle cx="12" cy="2" r="1" fill="#ef4444" /></g>)}{hasNinjaMask && <path fill="#ef4444" d="M24 18 l4 -2 l-2 4 z" />}</g>);
                 } else if (isCat) {
                     const color = id.includes('lion') ? '#fcd34d' : id.includes('witch') ? '#d8b4fe' : '#f3f4f6'; const isLion = id.includes('lion'); const isWitch = id.includes('witch');
-                    return (<g className={animate ? "animate-pulse-slow" : ""}><ellipse cx="16" cy="28" rx="8" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M22 24 q4 -4 2 -8" stroke={color} strokeWidth="3" strokeLinecap="round" />{isLion && <circle cx="16" cy="18" r="11" fill="#ea580c" />}<path fill={color} d="M10 26 h12 v-8 h-12 z" /><path fill={color} d="M16 8 l-6 6 v12 h12 v-12 z" /><path fill={color} d="M10 10 l-2 -4 l4 2 z" /><path fill={color} d="M22 10 l2 -4 l-4 2 z" /><circle cx="14" cy="16" r="1.5" fill="#374151" /><circle cx="18" cy="16" r="1.5" fill="#374151" /><path fill="#pink" d="M16 19 l-1 -1 h2 z" />{isWitch && (<g transform="translate(8, 0)"><path fill="#581c87" d="M0 8 h16 l-8 -10 z" /><path fill="#581c87" d="M-2 8 h20 v2 h-20 z" /></g>)}</g>);
+                    return (<g className={animate ? "animate-pulse-slow" : ""}><ellipse cx="16" cy="28" rx="8" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M22 24 q4 -4 2 -8" stroke={color} strokeWidth="3" strokeLinecap="round" />{isLion && <circle cx="16" cy="18" r="11" fill="#ea580c" />}<path fill={color} d="M10 26 h12 v-8 h-12 z" /><path fill={color} d="M16 8 l-6 6 v12 h12 v-12 z" /><path fill={color} d="M10 10 l-2 -4 l4 2 z" /><path fill={color} d="M22 10 l2 -4 l-4 2 z" /><circle cx="14" cy="16" r="1.5" fill="#374151" /><circle cx="18" cy="16" r="1.5" fill="#374151" /><path fill="pink" d="M16 19 l-1 -1 h2 z" />{isWitch && (<g transform="translate(8, 0)"><path fill="#581c87" d="M0 8 h16 l-8 -10 z" /><path fill="#581c87" d="M-2 8 h20 v2 h-20 z" /></g>)}</g>);
                 } else if (isDino) {
                     const color = id.includes('dragon') ? '#ef4444' : id.includes('rex') ? '#15803d' : '#4ade80'; const isDragon = id.includes('dragon'); const isRex = id.includes('rex');
                     return (<g className={animate ? "animate-bounce" : ""}><ellipse cx="16" cy="28" rx="9" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M8 24 l-6 -4 l6 4" stroke={color} strokeWidth="4" />{isDragon && <path fill="#991b1b" d="M20 16 l8 -6 l-2 10 z" opacity="0.8"/>}<rect x="8" y="16" width="14" height="10" fill={color} rx="2" /><path fill={color} d="M14 8 h10 v10 h-10 z" /><path fill="#fde047" d="M8 16 l-2 -2 l2 2 M12 16 l-2 -4 l2 4 M16 8 l-2 -4 l2 4" /><rect x="20" y="10" width="2" height="2" fill="white" /><rect x="21" y="10" width="1" height="1" fill="black" />{isRex && <path fill="white" d="M24 18 l-1 2 l-1 -2" />}</g>);
@@ -443,23 +489,38 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                     <g className="animate-idle-breathe origin-bottom">
                         {!headGear && gender === 'female' && <path fill={hair} d="M8 9h16v12H8z" opacity="0.9" />}
                         <g className="origin-top-center animate-cape-flow">
+                            {/* 如果沒有特殊背飾，畫一般披風 */}
                             {(!backGear || !GEAR_VISUALS[backGear.id]) && <path fill={capeColor} d={gender === 'male' ? "M6 18h20v14H6z M8 18h16v12H8z" : "M7 18h18v14H7z M9 18h14v12H9z"} opacity="0.95" />}
+                            {/* 如果有特殊背飾(如翅膀或魔法陣)，套用其繪圖 */}
                             {backGear && GEAR_VISUALS[backGear.id] && GEAR_VISUALS[backGear.id]()}
                         </g>
+                        
                         <path fill={'#3e2723'} d={gender === 'male' ? "M11 26h4v6h-4zM17 26h4v6h-4z" : "M12 28h3v4h-3zM17 28h3v4h-3z"} />
+                        
                         {feetGear && GEAR_VISUALS[feetGear.id] && GEAR_VISUALS[feetGear.id]()}
                         {!feetGear && <path fill={feetGear ? '#546e7a' : 'transparent'} d={gender === 'male' ? "M11 29h4v3h-4zM17 29h4v3h-4z" : "M12 30h3v2h-3zM17 30h3v2h-3z"} opacity="0.5"/>}
-                        <g>{!bodyGear ? (<><path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />{gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}<path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} /><path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} /></>) : (GEAR_VISUALS[bodyGear.id] ? GEAR_VISUALS[bodyGear.id]() : (<><path fill="#90a4ae" d="M10 17h12v9H10z" /><path fill="#cfd8dc" d="M12 18h8v6h-8z" /><path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" /></>))}</g>
+                        
+                        <g>
+                            {!bodyGear ? (<><path fill={armor} d={gender === 'male' ? "M10 17h12v9H10z M12 18h8v6h-8z" : "M11 17h10v7H11z M13 18h6v5h-6z"} />{gender === 'female' && <path fill="#1565c0" d="M10 24h12v4H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}<path fill="#ffb300" d={gender === 'male' ? "M10 17h12v1H10zM10 25h12v1H10zM15 18h2v5h-2z" : "M11 17h10v1H11zM11 24h10v1H11z"} /><path fill="#ffca28" d={gender === 'male' ? "M7 16h4v4H7zM21 16h4v4h-4z" : "M9 17h3v3H9zM20 17h3v3h-3z"} /></>) : (GEAR_VISUALS[bodyGear.id] ? GEAR_VISUALS[bodyGear.id]() : (<><path fill="#90a4ae" d="M10 17h12v9H10z" /><path fill="#cfd8dc" d="M12 18h8v6h-8z" /><path fill="#607d8b" d="M7 16h4v4H7zM21 16h4v4h-4z" /></>))}
+                        </g>
+
                         <g className="animate-head-bob">
                             <path fill={skin} d={gender === 'male' ? "M10 9h12v8H10z" : "M11 10h10v7H11z"} />
                             <g className="animate-blink"><path fill="#1a237e" d={gender === 'male' ? "M12 12h2v2h-2zM18 12h2v2h-2z" : "M12 13h2v2h-2zM18 13h2v2h-2z"} /></g>
                             <path fill="#d7ccc8" d={gender === 'male' ? "M14 15h4v1h-4z" : "M15 15h2v1h-2z"} opacity="0.6"/>
                             {(!headGear || headGear.id === 's9' || headGear.id === 's11') && (gender === 'male' ? <path fill={hair} d="M9 4h14v5H9zM8 6h2v6H8zM22 6h2v6h-2zM14 2h4v2h-4z" /> : <path fill={hair} d="M10 5h12v5H10zM9 8h2v8H9zM21 8h2v8h-2z" />)}
+                            
                             {headGear && (GEAR_VISUALS[headGear.id] ? GEAR_VISUALS[headGear.id]() : <path fill="#546e7a" d="M9 6h14v7H9z M11 7h2v2h-2z M19 7h2v2h-2z" />)}
                             {!headGear && (<><path fill="#ffb300" d={gender === 'male' ? "M9 7h14v2H9z" : "M10 8h12v2H10z"} /><path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 6h2v3h-2z" : "M15 7h2v3h-2z"} /></>)}
                         </g>
-                        <g className="animate-weapon-sway origin-bottom-right" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>{offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}</g>
-                        <g transform={gender==='male'?"":"translate(0,1)"} className="animate-weapon-sway origin-bottom-left" style={{ transformBox: 'fill-box' }}>{!mainHand ? (<><path fill="#5d4037" d="M23 19h4v2h-4z" /><path fill="#ffb300" d="M24 18h2v4h-2z" /><path fill="#e0e0e0" d="M26 19h6v2h-6z" /></>) : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 18h4v10h-4z" />)}</g>
+                        <g className="animate-weapon-sway origin-bottom-right" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
+                            {offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}
+                        </g>
+                        
+                        {/* 武器放大特效，確保玩家能清楚看見裝備 */}
+                        <g transform={gender==='male'?"scale(1.25) translate(-4, -4)":"translate(0,1) scale(1.25) translate(-4, -5)"} className="animate-weapon-sway origin-bottom-left" style={{ transformBox: 'fill-box' }}>
+                            {!mainHand ? (<><path fill="#5d4037" d="M23 19h4v2h-4z" /><path fill="#ffb300" d="M24 18h2v4h-2z" /><path fill="#e0e0e0" d="M26 19h6v2h-6z" /></>) : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 18h4v10h-4z" />)}
+                        </g>
                     </g>
                 </svg>
             );
@@ -530,6 +591,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             );
         };
         
+        // --- 手機支援拖曳的分類管理器 ---
         const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const [cats, setCats] = useState(() => {
                 return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val }));
@@ -542,7 +604,6 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             const dragItem = useRef();
             const dragOverItem = useRef();
 
-            // 手機版拖曳支援
             const handleDragStart = (e, position) => { dragItem.current = position; e.target.style.opacity = 0.5; };
             const handleDragEnter = (e, position) => { dragOverItem.current = position; };
             const handleDragEnd = (e) => {
@@ -578,15 +639,15 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                                     onDragEnter={(e) => handleDragEnter(e, index)} 
                                     onDragEnd={handleDragEnd} 
                                     onDragOver={(e) => e.preventDefault()}
-                                    onTouchStart={(e) => { dragItem.current = index; e.target.style.opacity = 0.5; }}
+                                    onTouchStart={(e) => { dragItem.current = index; e.currentTarget.style.opacity = 0.5; }}
                                     onTouchMove={(e) => { 
                                         const touch = e.touches[0];
                                         const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                                        if (target && target.dataset.index !== undefined) {
-                                            dragOverItem.current = parseInt(target.dataset.index);
+                                        if (target && target.closest('[data-index]')) {
+                                            dragOverItem.current = parseInt(target.closest('[data-index]').dataset.index);
                                         }
                                     }}
-                                    onTouchEnd={handleDragEnd}
+                                    onTouchEnd={(e) => handleDragEnd(e)}
                                     data-index={index}
                                     className="bg-theme-bg p-3 rounded-2xl border border-theme-border shadow-sm flex items-center justify-between group cursor-grab active:cursor-grabbing">
                                     <div className="flex items-center gap-3 flex-1 min-w-0 pointer-events-none">
@@ -619,6 +680,13 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                 </div>
             );
         };
+
+        // ==========================================
+        // ⬆️ 第三部分結束，請回覆「繼續」獲取第四部分 ⬆️
+        // ==========================================
+// ==========================================
+        // ⬇️ 第四部分開始 (視圖與主程式) ⬇️
+        // ==========================================
 
         const AddTransactionModal = ({ accounts, categories, onClose, onAdd, initialData, onManageCategories }) => {
             const [type, setType] = useState(initialData?.type || 'expense');
@@ -759,7 +827,13 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
 
         const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
-            const totalBalance = accounts.reduce((acc, curr) => acc + curr.balance, 0);
+            
+            // 🌟 總資產：按幣種獨立計算
+            const balancesByCurrency = accounts.reduce((acc, curr) => {
+                acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance;
+                return acc;
+            }, {});
+
             const [isRenamingPet, setIsRenamingPet] = useState(false);
             const [newPetName, setNewPetName] = useState('');
             const petDef = user.pet ? PET_DEFINITIONS[user.pet.id] : null;
@@ -768,14 +842,24 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             
             return (
                 <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto pb-24 no-scrollbar p-4 space-y-4">
-                    <div className="flex justify-between items-center mb-2 px-2">
+                    <div className="flex justify-between items-start mb-2 px-2">
                         <div>
-                            <div className="text-[10px] text-theme-sub font-bold uppercase">{t('total_wealth')}</div>
-                            <div className="text-2xl font-mono font-bold text-theme-text">{totalBalance.toLocaleString()}</div>
+                            <div className="text-[10px] text-theme-sub font-bold uppercase mb-1">{t('total_wealth')}</div>
+                            <div className="flex flex-col gap-1">
+                                {Object.keys(balancesByCurrency).length > 0 ? (
+                                    Object.entries(balancesByCurrency).map(([currency, total]) => (
+                                        <div key={currency} className="text-2xl font-mono font-bold text-theme-text leading-none flex items-end gap-1">
+                                            {total.toLocaleString()} <span className="text-xs text-theme-sub pb-0.5">{currency}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-2xl font-mono font-bold text-theme-text leading-none">0</div>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
+                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-visible group hover:shadow-md transition-all">
                              <div className="absolute top-0 right-0 w-32 h-32 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
                              <div className="absolute top-4 right-4 z-20"><span className="text-[10px] bg-theme-accent text-white px-2 py-1 rounded-full font-pixel shadow-sm tracking-wide">Lv.{user.level}</span></div>
                              <div className="flex items-center justify-between relative z-10">
@@ -866,7 +950,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                     {!showHistory && (
                         <div className="relative shrink-0 h-48 bg-[#1a1012] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden">
                             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-yellow-500/10 blur-[60px] rounded-full pointer-events-none"></div>
-                            <div className="relative z-10 scale-[1.8] transform translate-y-4 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><PixelAvatar gender={user.gender} colors={user.appearance[user.gender]} equipped={currentPreviewEquipped} className="w-32 h-32"/><div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/40 blur-sm rounded-full -z-10"></div></div>
+                            <div className="relative z-10 scale-[1.8] transform translate-y-4 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><PixelAvatar gender={user.gender} colors={user.appearance[user.gender]} equipped={currentPreviewEquipped} className="w-32 h-32" level={user.level}/><div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/40 blur-sm rounded-full -z-10"></div></div>
                             {previewItem && ( <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity} text-white`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-2 font-pixel">{previewItem.name}</div></div> )}
                         </div>
                     )}
@@ -945,10 +1029,10 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                          <div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{cp}</span></div></div>
                          <div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div>
                     </div>
-                    <div className="relative w-full h-[320px] flex items-center justify-center">
+                    <div className="relative w-full h-[320px] flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-10 width-[140px] height-[30px] rounded-full bg-theme-accent/30 animate-pulse blur-xl"></div>
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-8 z-30">{renderSlot({slot: 'head', name:'head'})}{renderSlot({slot: 'body', name:'body'})}{renderSlot({slot: 'mainHand', name:'mainHand'})}</div>
-                        <div className="relative z-20 transform translate-y-6"><PixelAvatar gender={gender} colors={currentGenderColors} equipped={equipped} className="w-60 h-60 object-contain drop-shadow-2xl filter contrast-110"/></div>
+                        <div className="relative z-20 transform translate-y-6 scale-125"><PixelAvatar gender={gender} colors={currentGenderColors} equipped={equipped} className="w-60 h-60 object-contain drop-shadow-2xl filter contrast-110" level={level}/></div>
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-8 z-30">{renderSlot({slot: 'back', name:'back'})}{renderSlot({slot: 'offHand', name:'offHand'})}{renderSlot({slot: 'feet', name:'feet'})}</div>
                     </div>
                     <div className="bg-theme-card p-5 rounded-3xl border border-theme-border shadow-sm relative z-40">
@@ -963,6 +1047,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-dashed border-theme-border mt-2"><div className="text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1">Attack</div><div className="text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1">Defense</div><div className="text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1">Crit Rate</div><div className="text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div>
                         </div>
                     </div>
+                    {isEditing && <AvatarEditor appearanceData={appearance} onSave={(newAppearanceData) => { onUpdateAppearance(newAppearanceData); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
             );
         };
@@ -1088,6 +1173,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                                         {tf === 'all' ? t('all') : tf === 'month' ? t('month') : t('daily_view')}
                                     </button>
                                 ))}
+                                {/* 顯示自訂日期選擇器 */}
                                 {timeFilter === 'today' && (
                                     <input type="date" value={dailyDate} onChange={e => setDailyDate(e.target.value)} className="bg-theme-card border border-theme-border text-theme-text text-[10px] font-bold rounded-lg px-2 py-1 outline-none shadow-sm ml-2" />
                                 )}
