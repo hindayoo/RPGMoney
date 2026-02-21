@@ -70,6 +70,13 @@
         @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
         .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); } .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; } .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
+
+        /* 🌟 新增：魂環流光特效與脈衝動畫 */
+        @keyframes dash-flow { to { stroke-dashoffset: -30; } }
+        .ring-flow { animation: dash-flow 0.8s linear infinite; }
+        .ring-flow-reverse { animation: dash-flow 0.8s linear infinite reverse; }
+        @keyframes ring-pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.03); opacity: 1; } }
+        .ring-container { animation: ring-pulse 2.5s ease-in-out infinite; transform-origin: 16px 24px; }
     </style>
 </head>
 <body>
@@ -149,8 +156,7 @@
             Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
         };
         const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
-
-        const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
+const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
         const EXCHANGE_RATES = { 'TWD': 1, 'HKD': 0.24, 'JPY': 4.6 };
 
@@ -183,9 +189,7 @@
         };
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣切換', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '系統設定', total_wealth: '總資產', no_assets: '尚未建立任何資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '裝備屋', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包是空的，去商店看看吧！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '尚無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨卷軸', theme_sakura: '櫻花祝福', theme_sky: '天空之境', theme_magic: '秘法迷霧', theme_matcha: '抹茶(能力茶)', theme_latte: '拿鐵(拿鐵)', theme_peach: '桃(蜜桃)', theme_lavender: '薰衣草(薰衣草)', theme_midnight: '午夜(午夜)', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '您確定要花費 {cost} G 購買 {item} 嗎？', social: '公會', guild: '冒險公會', friend_list: '好友名單', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入冒險者 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '按讚成功！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改 ID 費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已被使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己為好友喔！', user_not_found: '找不到該 ID 的冒險者。' },
-            en: { adventure: 'Adventure', character: 'Character', quests: 'Quests', achievements: 'Achievements', upgrade: 'Upgrade', exchange: 'Currency', journal: 'Journal', shop: 'Shop', main: 'Main', daily: 'Daily', challenge: 'Challenge', level: 'Level', exp: 'EXP', assets: 'Assets', forge: 'Forge', save: 'Save', delete: 'Delete', confirmDelete: 'Delete this record?', logout: 'Log Out', theme: 'Theme', lang: 'Language', guardian: 'Pet', settings: 'Settings', total_wealth: 'Total Wealth', no_assets: 'No assets yet', add: 'Add', wallet: 'Wallet', bank: 'Bank', card: 'Card', invest: 'Invest', equipment_shop: 'Equipment Shop', gold: 'Gold', search: 'Search...', sort: 'Sort', filter: 'Filter', all: 'All', mainHand: 'Weapon', head: 'Head', body: 'Body', feet: 'Feet', back: 'Back', spiritRing: 'Spirit Ring', offHand: 'Off-Hand', price: 'Price', rarity: 'Rarity', name: 'Name', owned: 'Owned', equipped: 'Equipped', buy: 'Buy', not_enough_gold: 'Not Enough Gold', buy_success: 'Purchase Successful!', character_stats: 'Stats', dressing_room: 'Dressing Room', male: 'Male', female: 'Female', equipment_manager: 'Equipment', bag: 'Bag', equip: 'Equip', unequip: 'Unequip', empty_bag: 'Bag is empty!', transaction_scroll: 'Ledger', no_records: 'No records', income: 'Income', expense: 'Expense', mana_flow: 'Mana Flow', today: 'Today', month: 'Month', daily_view: 'Daily', in: 'In', out: 'Out', financial: 'Finance', system: 'System', no_logs: 'No logs', record_action: 'New Record', category: 'Category', note: 'Note (Optional)', select_account: 'Select Account', confirm: 'Confirm', cancel: 'Cancel', edit_account: 'Edit Account', new_account: 'New Account', log_income: 'Income', log_expense: 'Expense', log_sys_title: 'Title Unlocked', log_sys_quest: 'Quest Reward', claimed: 'Claimed', claim: 'Claim', theme_ink: 'Ink', theme_sakura: 'Sakura', theme_sky: 'Sky', theme_magic: 'Magic', theme_matcha: 'Matcha', theme_latte: 'Latte', theme_peach: 'Peach', theme_lavender: 'Lavender', theme_midnight: 'Midnight', change_stats: 'Stat Change', confirm_buy_title: 'Confirm Purchase', confirm_buy_msg: 'Spend {cost} G to buy {item}?', social: 'Guild', guild: 'Adventure Guild', friend_list: 'Friend List', add_friend: 'Recruit', visit: 'Visit', online: 'Online', offline: 'Offline', enter_id: 'Enter Adventurer ID', my_card: 'My Card', copy_id: 'Copy ID', copied: 'Copied!', remove_friend: 'Remove', send_like: 'Like', like_success: 'Liked!', edit_id: 'Change ID', change_id_title: 'Change Adventurer ID', change_id_cost: 'Cost', change_id_free: 'First time free', enter_new_id: 'Enter new ID', id_too_short: 'ID too short', id_taken: 'ID is taken', purchase_history: 'History', equipment: 'Equipment', upload_avatar: 'Upload Avatar', choose_pet: 'Choose Starter Pet', relic_name: 'Relic Name', mana_reserve: 'Mana Reserve', container_type: 'Container Type', currency_type: 'Currency', cash: 'Cash', cannot_add_self: 'Cannot add yourself!', user_not_found: 'User not found.' },
-            ja: { adventure: '冒険', character: 'キャラ', quests: '任務', achievements: '実績', upgrade: '強化', exchange: '通貨', journal: '日誌', shop: '店', main: 'メイン', daily: '毎日', challenge: '挑戦', level: 'Lv', exp: 'EXP', assets: '資産', forge: '鍛造', save: '保存', delete: '削除', confirmDelete: 'この記録を削除しますか？', logout: 'ログアウト', theme: '外観', lang: '言語', guardian: 'ペット', settings: '設定', total_wealth: '総資産', no_assets: '資産がありません', add: '追加', wallet: '財布', bank: '銀行', card: 'カード', invest: '投資', equipment_shop: '装備屋', gold: 'ゴールド', search: '検索...', sort: 'ソート', filter: '絞り込み', all: '全て', mainHand: '武器', head: '頭部', body: '体', feet: '足', back: '背中', spiritRing: '魂環', offHand: '副手', price: '価格', rarity: 'レア度', name: '名前', owned: '所持', equipped: '装備中', buy: '購入', not_enough_gold: 'ゴールド不足', buy_success: '購入成功！', character_stats: 'ステータス', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '装備管理', bag: 'バッグ', equip: '装備', unequip: '外す', empty_bag: 'バッグは空です！', transaction_scroll: '収支巻物', no_records: '記録なし', income: '収入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '今月', daily_view: '日別', in: '収入', out: '支出', financial: '財務', system: 'システム', no_logs: 'ログなし', record_action: '記録追加', category: 'カテゴリ', note: 'メモ (任意)', select_account: '口座選択', confirm: '確認', cancel: '取消', edit_account: '口座編集', new_account: '新規口座', log_income: '収入', log_expense: '支出', log_sys_title: '称号獲得', log_sys_quest: '任務報酬', claimed: '受取済', claim: '受取', theme_ink: '水墨', theme_sakura: '桜', theme_sky: '空', theme_magic: '魔法', theme_matcha: '抹茶', theme_latte: 'ラテ', theme_peach: '桃', theme_lavender: 'ラベンダー', theme_midnight: '真夜中', change_stats: '能力変化', confirm_buy_title: '購入確認', confirm_buy_msg: '{cost} Gで {item} を購入しますか？', social: 'ギルド', guild: 'ギルド', friend_list: 'フレンド', add_friend: '仲間募集', visit: '確認', online: 'オンライン', offline: 'オフライン', enter_id: 'IDを入力', my_card: 'マイカード', copy_id: 'IDコピー', copied: 'コピー済', remove_friend: 'フレンド解除', send_like: 'いいね', like_success: 'いいね済', edit_id: 'ID変更', change_id_title: 'ID変更', change_id_cost: '変更費用', change_id_free: '初回無料', enter_new_id: '新ID入力', id_too_short: '短すぎます', id_taken: '使用済のIDです', purchase_history: '購入履歴', equipment: '装備', upload_avatar: '画像アップ', choose_pet: '初期ペット選択', relic_name: '聖器名', mana_reserve: '魔力量', container_type: 'タイプ', currency_type: '通貨', cash: '現金', cannot_add_self: '自分は追加できません', user_not_found: '見つかりません' }
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。' }
         };
 
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
@@ -198,126 +202,113 @@
             { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
 
-        // 🌟 3D 裝備視覺特效 (含新增 MMORPG 神級裝備與魂環)
+        // 🌟 輔助函數：產生斗羅大陸風格的立體流光魂環
+        // rx, ry 控制橢圓視角(3D感)，dasharray 控制流光斷點，duration 控制轉速
+        const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle="") => (
+            <g transform={`translate(0, ${cyOffset})`} className="ring-container" style={{...zIndexStyle}}>
+                {/* 淡淡的底色環 */}
+                <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} opacity="0.2" />
+                {/* 主流光 */}
+                <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} strokeDasharray={dash1} className="ring-flow" style={{ animationDuration: dur, filter: `drop-shadow(0 0 ${width*3}px ${color})` }} />
+                {/* 點綴逆向流光 */}
+                <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke="#ffffff" strokeWidth={width*0.6} strokeDasharray={dash2} className="ring-flow-reverse" style={{ animationDuration: `${parseFloat(dur)*1.5}s`, opacity: 0.8 }} />
+            </g>
+        );
+
+        // 🌟 3D 裝備視覺特效 (擴充斗羅、斗破、眼睛與多層次魂環)
         const GEAR_VISUALS = {
+            // -- 基礎裝備 --
             's1': () => <g transform="translate(-2, 2)"><path fill="#cfd8dc" d="M10 10 L14 6 L18 10 L14 26 Z" style={{filter:'drop-shadow(1px 1px 1px #94a3b8)'}}/><path fill="#5d4037" d="M12 24 H16 V28 H12 Z" /></g>, 
             's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
             's3': () => <g><path fill="#5d4037" d="M12 28h3v4h-3z M17 28h3v4h-3z" /><path fill="#78350f" d="M12 30h3v2h-3z M17 30h3v2h-3z"/></g>,
             's4': () => <g transform="translate(-4, 0)"><path fill="none" stroke="#65a30d" strokeWidth="2.5" d="M20 10 C 12 16, 12 22, 20 28" style={{filter:'drop-shadow(1px 1px 2px #84cc16)'}}/><path fill="#4d7c0f" d="M16 18 h4 v2 h-4 z"/></g>, 
             's5': () => <g><path fill="#64748b" d="M11 14h10v10H11z" style={{filter:'drop-shadow(0 2px 2px rgba(0,0,0,0.3))'}}/><rect x="13" y="16" width="2" height="2" fill="#334155"/><rect x="17" y="16" width="2" height="2" fill="#334155"/><rect x="13" y="20" width="2" height="2" fill="#334155"/><rect x="17" y="20" width="2" height="2" fill="#334155"/></g>,
             's6': () => <g><path fill="#7c2d12" d="M8 14h16v14H8z" opacity="0.95"/><path fill="#f59e0b" d="M16 14v14" stroke="#f59e0b" strokeWidth="0.5"/></g>,
-            's7': () => <g transform="translate(14, 8) rotate(15)"><path fill="#78350f" d="M0 0 h2 v14 h-2 z" /><circle cx="1" cy="-1" r="3" fill="#ef4444" style={{filter:'drop-shadow(0 0 3px #f87171)'}}/></g>, 
-            's8': () => <g transform="translate(22, 14)"><circle cx="0" cy="0" r="6" fill="#78350f" stroke="#451a03" strokeWidth="1.5" style={{filter:'drop-shadow(-2px 2px 2px rgba(0,0,0,0.4))'}}/><circle cx="0" cy="0" r="2" fill="#94a3b8"/></g>,
-            's9': () => <path fill="transparent" stroke="#fde047" strokeWidth="2.5" d="M10 2 a6 2 0 1 1 12 0 a6 2 0 1 1 -12 0" style={{filter:'drop-shadow(0 0 4px #fef08a)'}} />, 
-            's12': () => <circle cx="26" cy="18" r="2.5" fill="transparent" stroke="#f59e0b" strokeWidth="2" style={{filter:'drop-shadow(0 0 2px #fbbf24)'}}/>,
-            's13': () => <g><path fill="#1e293b" d="M11 14h10v10H11z" /><path fill="#0f172a" d="M11 14h3v3h-3z M18 14h3v3h-3z"/></g>, 
             's14': () => <g transform="translate(-4, 0)"><path fill="#78350f" d="M14 10 h2 v16 h-2 z" style={{filter:'drop-shadow(2px 2px 1px rgba(0,0,0,0.5))'}}/><path fill="#94a3b8" d="M15 12 l6 -4 l2 6 l-8 2 z" /><path fill="#cbd5e1" d="M21 10 l2 2 l-2 -2 z"/></g>,
-            's15': () => <g transform="translate(-4, 6)"><path fill="#99f6e4" d="M14 14 l4 -8 l2 2 l-4 8 z" style={{filter:'drop-shadow(1px 1px 2px #5eead4)'}}/><path fill="#5d4037" d="M12 16 l2 -2" stroke="#5d4037" strokeWidth="2"/></g>,
-            's17': () => <circle cx="26" cy="18" r="3" fill="#38bdf8" style={{filter:'drop-shadow(0 0 5px #7dd3fc)'}}/>,
-            's18': () => <g><path fill="#e2e8f0" d="M10 4 h12 v7 h-12 z" style={{filter:'drop-shadow(0 2px 1px rgba(0,0,0,0.2))'}}/><rect x="15" y="2" width="2" height="6" fill="#94a3b8"/></g>,
-            's19': () => <g transform="translate(0, -6)"><path fill="#312e81" d="M9 12 L16 2 L23 12 Z"/><path fill="#4338ca" d="M7 12 H25 V14 H7 Z" style={{filter:'drop-shadow(0 2px 2px rgba(0,0,0,0.4))'}}/></g>,
-            's20': () => <g><path fill="#64748b" d="M10 14 h12 v11 h-12 z" style={{filter:'drop-shadow(0 2px 2px rgba(0,0,0,0.5))'}}/><path fill="#475569" d="M14 14 h4 v11 h-4 z"/></g>,
-            's21': () => <g><path fill="#0f172a" d="M11 14 h10 v11 h-10 z"/><path fill="#ef4444" d="M11 18 h10 v2 h-10 z"/></g>,
-            's22': () => <g transform="translate(-4, -2)"><path fill="#38bdf8" d="M14 4 L18 8 L14 12 L10 8 Z" style={{filter:'drop-shadow(0 0 5px #7dd3fc)'}}/><path fill="#78350f" d="M13 12 H15 V26 H13 Z" style={{filter:'drop-shadow(2px 2px 1px rgba(0,0,0,0.4))'}}/></g>,
             's23': () => <g transform="translate(-4, -2)"><path fill="#fbcfe8" d="M14 2 H16 V20 H14 Z" style={{filter:'drop-shadow(0 0 4px #f9a8d4)'}}/><path fill="#1f2937" d="M12 20 H18 V22 H12 Z"/><path fill="#be185d" d="M13 22 H17 V28 H13 Z"/></g>,
-            's24': () => <g transform="translate(-4, -4)"><path fill="#fef08a" d="M14 2 H16 V18 H14 Z" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#eab308" d="M10 18 H20 V20 H10 Z"/><path fill="#f59e0b" d="M13 20 H17 V28 H13 Z"/></g>,
-            's25': () => <g transform="translate(18, 12)" className="animate-float"><path fill="#7e22ce" d="M0 0 H8 V10 H0 Z" style={{filter:'drop-shadow(-2px 2px 2px rgba(0,0,0,0.4))'}}/><path fill="#fbbf24" d="M2 2 H6 M2 4 H6 M2 6 H4" stroke="#fbbf24" strokeWidth="0.5"/></g>,
-            's26': () => <g className="animate-spin-slow origin-center" style={{transformBox: 'fill-box', transformOrigin: 'center'}}><circle cx="16" cy="16" r="15" fill="none" stroke="#c084fc" strokeWidth="1" strokeDasharray="4 2" style={{filter:'drop-shadow(0 0 5px #d8b4fe)'}}/><polygon points="16,1 29,23 3,23" fill="none" stroke="#c084fc" strokeWidth="0.5"/><polygon points="16,31 3,9 29,9" fill="none" stroke="#c084fc" strokeWidth="0.5"/></g>,
-            's99': () => <g transform="translate(-4, -4)"><path fill="#fef08a" d="M14 2 L18 10 L16 14 L20 22 L14 28 L12 20 L14 16 L10 8 Z" style={{filter:'drop-shadow(0 0 8px #fde047)'}}/><animate attributeName="opacity" values="1;0.7;1" dur="0.3s" repeatCount="indefinite"/></g>,
-            's100': () => <g className="animate-pulse origin-center"><path fill="#1f2937" d="M6 18 Q0 10 8 8 L16 16" opacity="0.95" style={{filter:'drop-shadow(0 0 3px #4c1d95)'}}/><path fill="#1f2937" d="M26 18 Q32 10 24 8 L16 16" opacity="0.95" style={{filter:'drop-shadow(0 0 3px #4c1d95)'}}/></g>,
-            's101': () => <g className="animate-float origin-center"><path fill="#f0f9ff" d="M6 16 Q0 4 14 12" opacity="0.9" style={{filter:'drop-shadow(0 0 6px #bae6fd)'}}/><path fill="#f0f9ff" d="M26 16 Q32 4 18 12" opacity="0.9" style={{filter:'drop-shadow(0 0 6px #bae6fd)'}}/></g>,
-            's102': () => <g className="animate-float origin-center"><path fill="#1a1a1a" d="M16 14 Q6 0 -4 10 Q6 10 12 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#1a1a1a" d="M16 14 Q26 0 36 10 Q26 10 20 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#7f1d1d" d="M16 14 Q8 4 0 10 Q8 10 13 16 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 14 Q24 4 32 10 Q24 10 19 16 Z" opacity="0.8"/></g>,
-            's103': () => <g transform="scale(1.2) translate(-2, -2)"><path fill="#404040" d="M14 8 L18 28 L16 28 L12 8 Z" /><path fill="#cbd5e1" d="M8 6 Q16 -2 22 8 L18 10 Q14 4 10 10 Z" style={{filter:'drop-shadow(0 0 4px #dc2626)'}}/><path fill="#991b1b" d="M20 8 L22 10 L14 14 L12 12 Z"/></g>,
-            's104': () => <g transform="translate(18, 12)"><path fill="#fbbf24" d="M-4 -4 L4 -4 L6 6 Q0 12 -6 6 Z" stroke="#d97706" strokeWidth="1" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#fef08a" d="M-2 -2 L2 -2 L3 4 Q0 8 -3 4 Z"/><circle cx="0" cy="2" r="1.5" fill="#38bdf8"/></g>,
             
-            // 魂環特效視覺 (Spirit Rings)
-            'r1': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#f8fafc" strokeWidth="2" style={{filter:'drop-shadow(0 0 5px #f8fafc)'}} className="animate-pulse" />,
-            'r2': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#facc15" strokeWidth="2" style={{filter:'drop-shadow(0 0 6px #facc15)'}} className="animate-pulse" />,
-            'r3': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#a855f7" strokeWidth="2.5" style={{filter:'drop-shadow(0 0 8px #a855f7)'}} className="animate-pulse" />,
-            'r4': () => <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#1f2937" strokeWidth="3" style={{filter:'drop-shadow(0 0 10px #1f2937)'}} className="animate-pulse" />,
-            'r5': () => <g className="animate-float origin-center">
-                <ellipse cx="16" cy="28" rx="20" ry="7" fill="none" stroke="#ef4444" strokeWidth="2.5" style={{filter:'drop-shadow(0 0 10px #ef4444)'}} className="animate-spin-slow"/>
-                <ellipse cx="16" cy="24" rx="18" ry="6" fill="none" stroke="#1f2937" strokeWidth="2" style={{filter:'drop-shadow(0 0 8px #1f2937)'}} className="animate-pulse"/>
-                <ellipse cx="16" cy="20" rx="16" ry="5" fill="none" stroke="#a855f7" strokeWidth="2" style={{filter:'drop-shadow(0 0 8px #a855f7)'}} />
-                <ellipse cx="16" cy="16" rx="14" ry="4" fill="none" stroke="#eab308" strokeWidth="1.5" style={{filter:'drop-shadow(0 0 6px #eab308)'}} />
-                <ellipse cx="16" cy="12" rx="12" ry="3" fill="none" stroke="#f8fafc" strokeWidth="1.5" style={{filter:'drop-shadow(0 0 4px #f8fafc)'}} />
-            </g>
+            // -- 斗羅、斗破、特殊武器與裝備 --
+            'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>, // 玄重尺
+            'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>, // 昊天錘
+            'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>, // 八蛛矛
+            'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>, // 紫雲翼
+            'o_fire': () => <g className="animate-bounce" transform="translate(-2, 0)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>, // 骨靈冷火(青色)
+            'o_bluegrass': () => <g className="animate-float" transform="translate(0, 4)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>, // 藍銀皇
+            
+            // -- 眼睛特效 (繪製於臉部 cx:12~20, cy:10~12) --
+            // 寫輪眼 (紅底黑勾玉)
+            'e_sharingan': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#000"/><circle cx="19" cy="11.5" r="0.5" fill="#000"/></g>,
+            // 輪迴眼 (紫色波紋)
+            'e_rinnegan': () => <g><circle cx="13" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="13" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/><circle cx="19" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="19" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/></g>,
+            // 直死之魔眼 (冰藍+粉紅輝光)
+            'e_mystic': () => <g className="animate-glow"><circle cx="13" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/></g>,
+
+            // -- 🌟 魂環流光特效 (立體環繞) --
+            // 透過 cyOffset 控制高低層次，使多個魂環可以疊加顯示不衝突
+            'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),             // 十年(白) - 最底層
+            'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),            // 百年(黃)
+            'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),            // 千年(紫)
+            'r4': () => makeRing(-9, '#111827', 26, 8, '60 15', '25 30', '1.5s', 3),            // 萬年(黑)
+            'r5': () => makeRing(-12, '#ef4444', 28, 9, '80 10', '30 20', '1.2s', 3.5),         // 十萬年(紅)
+            'r6': () => makeRing(-15, '#f97316', 30, 10, '100 5', '40 10', '1s', 4),            // 凶獸(橙金)
+            'r7': () => makeRing(-18, '#fbbf24', 32, 11, '120 0', '50 5', '0.8s', 4.5),         // 百萬年(耀金)
+            'r8': () => makeRing(-21, '#38bdf8', 34, 12, '150 0', '60 0', '0.6s', 5)            // 神級(璀璨藍金)
+        };
+
+        // 🌟 物品圖示 (背包與商店清單專用平面圖標)
+        const ITEM_ICONS = {
+            'w_xuan': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M12 4 H20 V24 H12 Z" stroke="#374151" strokeWidth="1"/><path fill="#fbbf24" d="M14 6 H18 V8 H14 Z M14 20 H18 V22 H14 Z"/><path fill="#ef4444" d="M16 10 V18" stroke="#ef4444" strokeWidth="1"/></g>,
+            'w_haotian': () => <g transform="rotate(45, 16, 16)"><path fill="#1f2937" d="M14 12 H18 V28 H14 Z"/><path fill="#4b5563" d="M8 4 H24 V12 H8 Z"/><path fill="#3b82f6" d="M10 6 H22 V10 H10 Z"/></g>,
+            'b_spider': () => <g><path fill="none" stroke="#7e22ce" strokeWidth="2" d="M16 16 Q6 8 4 16 M16 16 Q26 8 28 16 M16 18 Q6 14 2 22 M16 18 Q26 14 30 22 M16 20 Q8 20 6 28 M16 20 Q24 20 26 28"/></g>,
+            'b_purplewings': () => <g><path fill="#a855f7" d="M16 16 Q8 4 2 12 Q8 12 12 20 Z"/><path fill="#a855f7" d="M16 16 Q24 4 30 12 Q24 12 20 20 Z"/><path fill="#c084fc" d="M16 16 Q10 8 6 12 Q10 12 13 18 Z"/><path fill="#c084fc" d="M16 16 Q22 8 26 12 Q22 12 19 18 Z"/></g>,
+            'o_fire': () => <g><path fill="#34d399" d="M16 8 Q8 20 16 28 Q24 20 16 8 Z"/><path fill="#6ee7b7" d="M16 14 Q12 22 16 26 Q20 22 16 14 Z"/></g>,
+            'o_bluegrass': () => <g><path fill="none" stroke="#3b82f6" strokeWidth="2" d="M12 26 Q8 16 12 8 M16 26 Q16 12 20 6 M20 26 Q26 18 22 10"/><circle cx="12" cy="8" r="2" fill="#bfdbfe"/><circle cx="20" cy="6" r="2" fill="#bfdbfe"/><circle cx="22" cy="10" r="2" fill="#bfdbfe"/></g>,
+            'e_sharingan': () => <g><circle cx="16" cy="16" r="10" fill="#ef4444" stroke="#7f1d1d" strokeWidth="2"/><circle cx="16" cy="16" r="2" fill="#000"/><circle cx="16" cy="10" r="1.5" fill="#000"/><circle cx="10.5" cy="19" r="1.5" fill="#000"/><circle cx="21.5" cy="19" r="1.5" fill="#000"/></g>,
+            'e_rinnegan': () => <g><circle cx="16" cy="16" r="10" fill="#d8b4fe" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="7" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="4" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="1" fill="#581c87"/></g>,
+            'e_mystic': () => <g><circle cx="16" cy="16" r="10" fill="#67e8f9" stroke="#0891b2" strokeWidth="2"/><circle cx="16" cy="16" r="4" fill="#f472b6" style={{filter:'blur(2px)'}}/></g>,
+            
+            // 魂環平面圖標 (店鋪用)
+            'r1': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#ffffff" strokeWidth="4" style={{filter:'drop-shadow(0 0 2px #fff)'}}/>,
+            'r2': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#facc15" strokeWidth="4" style={{filter:'drop-shadow(0 0 4px #facc15)'}}/>,
+            'r3': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#a855f7" strokeWidth="4" style={{filter:'drop-shadow(0 0 6px #a855f7)'}}/>,
+            'r4': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#1f2937" strokeWidth="5" style={{filter:'drop-shadow(0 0 8px #000)'}}/>,
+            'r5': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#ef4444" strokeWidth="6" style={{filter:'drop-shadow(0 0 10px #ef4444)'}}/>,
+            'r6': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#f97316" strokeWidth="6" style={{filter:'drop-shadow(0 0 12px #f97316)'}}/><circle cx="16" cy="16" r="12" fill="none" stroke="#fbbf24" strokeWidth="1" strokeDasharray="4 2"/></g>,
+            'r7': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#fbbf24" strokeWidth="8" style={{filter:'drop-shadow(0 0 15px #fde047)'}}/><path d="M16 2 L16 30 M2 16 L30 16" stroke="#fff" strokeWidth="2" opacity="0.5"/></g>,
+            'r8': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#38bdf8" strokeWidth="8" style={{filter:'drop-shadow(0 0 20px #7dd3fc)'}}/><circle cx="16" cy="16" r="5" fill="#fde047" style={{filter:'blur(2px)'}}/></g>
         };
 
         const SHOP_ITEMS = [
+            // --- 一般裝備 ---
             { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'common', cost: 150, icon: 'Crown', stats: { vit: 5, int: 5 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。" },
-            { id: 's18', name: '白銀頭盔', type: 'head', rarity: 'rare', cost: 600, icon: 'Crown', stats: { vit: 15, str: 5 }, desc: "堅固的白銀製頭盔。" },
-            { id: 's19', name: '大賢者之帽', type: 'head', rarity: 'epic', cost: 2500, icon: 'Crown', stats: { int: 30 }, desc: "傳說中大賢者戴過的帽子。" },
-            { id: 's13', name: '暗影輕甲', type: 'body', rarity: 'rare', cost: 800, icon: 'Shield', stats: { agi: 15, vit: 10 }, desc: "適合潛行的輕型鎧甲，能融入夜色。" },
-            { id: 's5', name: '鱗片護甲', type: 'body', rarity: 'rare', cost: 1000, icon: 'Shield', stats: { vit: 25, str: 5 }, desc: "堅固的鱗片製成，防禦力優異。" },
-            { id: 's20', name: '重型鋼甲', type: 'body', rarity: 'epic', cost: 2200, icon: 'Shield', stats: { vit: 40, agi: -5 }, desc: "極度沉重但防禦無敵的鋼甲。" },
-            { id: 's21', name: '忍者服', type: 'body', rarity: 'epic', cost: 1800, icon: 'Shield', stats: { agi: 35 }, desc: "特製的忍者服，輕如羽毛。" },
-            { id: 's1', name: '鐵製長劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的冒險者長劍。" },
-            { id: 's4', name: '精靈長弓', type: 'mainHand', rarity: 'rare', cost: 1200, icon: 'Sword', stats: { agi: 25, int: 5 }, desc: "精靈製作的弓，精準無比。" },
-            { id: 's15', name: '雙子匕首', type: 'mainHand', rarity: 'rare', cost: 900, icon: 'Sword', stats: { agi: 20, str: 10 }, desc: "輕巧鋒利的雙刀，適合快速連擊。" },
             { id: 's14', name: '戰斧', type: 'mainHand', rarity: 'epic', cost: 1500, icon: 'Hammer', stats: { str: 40 }, desc: "沉重而鋒利的戰斧，破壞力驚人。" },
-            { id: 's22', name: '水晶魔杖', type: 'mainHand', rarity: 'epic', cost: 2000, icon: 'Gem', stats: { int: 45 }, desc: "頂端鑲嵌著冰藍色水晶的魔杖。" },
             { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 6000, icon: 'Sword', stats: { str: 40, agi: 30 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。" },
-            { id: 's24', name: '聖劍·艾斯卡', type: 'mainHand', rarity: 'legendary', cost: 8500, icon: 'Sword', stats: { str: 60, vit: 20 }, desc: "散發著神聖光芒的勇者之劍。" },
-            { id: 's8', name: '圓木盾', type: 'offHand', rarity: 'common', cost: 300, icon: 'Shield', stats: { vit: 15 }, desc: "基本的防禦裝備，輕便好用。" },
-            { id: 's17', name: '藍寶石護符', type: 'offHand', rarity: 'epic', cost: 2000, icon: 'Gem', stats: { int: 30, vit: 15 }, desc: "蘊含海洋之力的護符。" },
-            { id: 's25', name: '古代魔導書', type: 'offHand', rarity: 'epic', cost: 2800, icon: 'Book', stats: { int: 35, str: -5 }, desc: "記載著失傳魔法的古老書本。" },
-            { id: 's12', name: '力量指環', type: 'offHand', rarity: 'legendary', cost: 4500, icon: 'Heart', stats: { str: 30, agi: 10 }, desc: "賦予佩戴者強大力量的魔法指環。" },
-            { id: 's6', name: '神秘法袍', type: 'back', rarity: 'epic', cost: 1800, icon: 'Briefcase', stats: { int: 35, vit: 10 }, desc: "散發著微弱魔力的紅色法袍。" },
-            { id: 's26', name: '六芒星魔法陣', type: 'back', rarity: 'legendary', cost: 18000, icon: 'Sun', stats: { int: 50, vit: 20 }, desc: "懸浮在背後的神秘魔法陣。" },
-            { id: 's100', name: '惡魔之翼', type: 'back', rarity: 'epic', cost: 9500, icon: 'Briefcase', stats: { str: 30, vit: -10 }, desc: "來自深淵的翅膀。", effects: ['pulse'] },
-            { id: 's101', name: '天使光翼', type: 'back', rarity: 'legendary', cost: 15000, icon: 'Briefcase', stats: { int: 40, vit: 40 }, desc: "純潔的光之翼。", effects: ['float', 'glow'] },
-            { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 }, desc: "輕便耐穿，適合長途跋涉。" },
-            { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 8888, icon: 'Sun', stats: { int: 60, vit: 30 }, desc: "神聖的守護光輝。", effects: ['glow', 'float'] },
-            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] },
-            { id: 's102', name: '魔尊·暗炎之翼', type: 'back', rarity: 'legendary', cost: 25000, icon: 'Ghost', stats: { str: 50, vit: -20, agi: 30 }, desc: "散發著毀滅氣息的暗黑巨翼，宛如魔神降臨。", effects: ['float', 'glow'] },
-            { id: 's103', name: '死神·噬魂巨鐮', type: 'mainHand', rarity: 'legendary', cost: 30000, icon: 'Sword', stats: { str: 80, agi: 20, int: 20 }, desc: "收割靈魂的恐怖鐮刀，刃口閃爍著寒芒。", effects: ['pulse'] },
-            { id: 's104', name: '神聖·天穹之盾', type: 'offHand', rarity: 'legendary', cost: 22000, icon: 'Shield', stats: { vit: 100, str: 20 }, desc: "抵擋一切邪惡的絕對壁壘。", effects: ['glow'] },
             
-            // 🌟 魂環列表
-            { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。" },
-            { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。" },
-            { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。" },
-            { id: 'r4', name: '萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 50000, icon: 'Sun', stats: { vit: 200, str: 200, agi: 50 }, desc: "黑色的萬年魂環，隱隱散發威壓。" },
-            { id: 'r5', name: '十萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 200000, icon: 'Sun', stats: { vit: 800, str: 500, int: 500 }, desc: "血紅色的十萬年魂環，擁有五道光環護體！" }
-        ];
+            // --- 斗破蒼穹 系列 ---
+            { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 15000, icon: 'Sword', stats: { str: 150, agi: -20, vit: 50 }, desc: "極度沉重的黑色巨尺，可壓制體內鬥氣。" },
+            { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 8500, icon: 'Briefcase', stats: { agi: 100, str: 20 }, desc: "五階飛行魔獸之翼煉化而成，速度極快。" },
+            { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 25000, icon: 'Zap', stats: { int: 200, str: 80 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。" },
 
-        const ITEM_ICONS = {
-            's2': () => <g><path fill="#8d1d1d" d="M10 6 H22 V18 H20 V20 H12 V18 H10 Z" /><path fill="#eab308" d="M14 6 H18 V8 H14 Z M16 4 V6 H16 Z" /><path fill="#b91c1c" d="M11 7 H21 V17 H11 Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18 H12 V20 H10 Z M20 18 H22 V20 H20 Z" /></g>,
-            's13': () => <g><path fill="#1a1a1a" d="M8 12 H24 V24 H8 Z" /><path fill="#404040" d="M10 12 H22 V14 H10 Z M12 14 V24 H14 V14 Z" /><path fill="#e5e5e5" d="M8 12 H12 V14 H8 Z M20 12 H24 V14 H20 Z" /><path fill="#ffffff" d="M12 12 H14 V24 H12 Z M18 12 H20 V24 H18 Z" opacity="0.3"/></g>,
-            's5': () => <g><path fill="#94a3b8" d="M8 12 H24 V22 H22 V24 H10 V22 H8 Z" /><path fill="#e2e8f0" d="M8 12 H10 V14 H8 Z M22 12 H24 V14 H22 Z" /><rect x="11" y="14" width="2" height="2" fill="#475569" /><rect x="15" y="14" width="2" height="2" fill="#475569" /><rect x="19" y="14" width="2" height="2" fill="#475569" /><rect x="13" y="17" width="2" height="2" fill="#475569" /><rect x="17" y="17" width="2" height="2" fill="#475569" /><rect x="11" y="20" width="2" height="2" fill="#475569" /><rect x="15" y="20" width="2" height="2" fill="#475569" /><rect x="19" y="20" width="2" height="2" fill="#475569" /></g>,
-            's8': () => <g><circle cx="16" cy="16" r="10" fill="#3e2723" stroke="#271c19" strokeWidth="2" /><circle cx="16" cy="16" r="3" fill="#9e9e9e" /><path fill="#5d4037" d="M16 6 V26 M6 16 H26" opacity="0.5" stroke="#271c19" strokeWidth="1" /></g>,
-            's4': () => <g transform="rotate(45, 16, 16)"><path fill="none" stroke="#558b2f" strokeWidth="3" d="M8 4 C 0 16, 0 16, 8 28" /><path fill="none" stroke="#dcedc8" strokeWidth="1" d="M8 4 L 8 28" /><rect x="6" y="14" width="4" height="4" fill="#33691e" /></g>,
-            's15': () => <g><g transform="translate(-4, 2)"><path fill="#e0f2f1" d="M12 12 L16 8 L18 10 L14 14 Z" /><path fill="#4db6ac" d="M14 14 L16 16 L14 18 L12 16 Z" /><path fill="#5d4037" d="M10 18 L12 16 L10 14 L8 16 Z" /></g><g transform="translate(6, 2) scale(-1, 1) translate(-32, 0)"><path fill="#e0f2f1" d="M12 12 L16 8 L18 10 L14 14 Z" /><path fill="#4db6ac" d="M14 14 L16 16 L14 18 L12 16 Z" /><path fill="#5d4037" d="M10 18 L12 16 L10 14 L8 16 Z" /></g></g>,
-            's1': () => <g transform="rotate(45, 16, 16)"><path fill="#cfd8dc" d="M14 6 H18 V20 H14 Z" /><path fill="#90a4ae" d="M14 6 L16 4 L18 6" /><path fill="#5d4037" d="M12 20 H20 V22 H12 Z" /><path fill="#3e2723" d="M15 22 H17 V26 H15 Z" /><circle cx="16" cy="27" r="1.5" fill="#ffd700" /></g>,
-            's14': () => <g transform="rotate(-15, 16, 16)"><path fill="#5d4037" d="M14 26 L18 26 L18 6 L14 6 Z" /><path fill="#43a047" d="M18 8 L24 6 L26 10 L18 12 Z" /><path fill="#2e7d32" d="M18 12 L26 14 L24 18 L18 16 Z" /><rect x="14" y="20" width="4" height="4" fill="#8d6e63" /></g>,
-            's6': () => <g><path fill="#b71c1c" d="M8 10 H24 V28 H8 Z" /><path fill="#ef5350" d="M10 10 H14 V28 H10 Z M18 10 H22 V28 H18 Z" /><path fill="#ffca28" d="M14 10 H18 V28 H14 Z" opacity="0.8" /><path fill="#7f0000" d="M8 10 H24 V12 H8 Z" /></g>,
-            's17': () => <g><path fill="none" stroke="#ffb300" strokeWidth="2" d="M10 8 Q16 20 22 8" /><circle cx="16" cy="20" r="5" fill="#ffb300" /><circle cx="16" cy="20" r="3" fill="#00bcd4" /></g>,
-            's7': () => <g transform="rotate(15, 16, 16)"><path fill="#5d4037" d="M14 8 H18 V28 H14 Z" /><circle cx="16" cy="6" r="5" fill="#8d6e63" /><circle cx="16" cy="6" r="3" fill="#d32f2f" /></g>,
-            's12': () => <g><circle cx="16" cy="16" r="7" fill="transparent" stroke="#ffb300" strokeWidth="3" /><rect x="14" y="7" width="4" height="4" fill="#d32f2f" transform="rotate(45, 16, 9)" /></g>,
-            's18': () => <g><path fill="#e2e8f0" d="M10 8 H22 V18 H20 V20 H12 V18 H10 Z" /><rect x="14" y="4" width="4" height="6" fill="#cbd5e1" /></g>,
-            's19': () => <g transform="translate(0, -2)"><path fill="#312e81" d="M12 14 L16 4 L20 14 Z" /><path fill="#4338ca" d="M8 14 H24 V16 H8 Z" /></g>,
-            's20': () => <g><path fill="#9ca3af" d="M8 12 H24 V24 H8 Z" /><path fill="#cbd5e1" d="M12 12 h 8 v 12 h -8 z" /></g>,
-            's21': () => <g><path fill="#1f2937" d="M10 12 H22 V24 H10 Z" /><path fill="#ef4444" d="M10 16 H22 V18 H10 Z" /></g>,
-            's22': () => <g transform="rotate(45, 16, 16)"><path fill="#38bdf8" d="M14 4 H18 V10 L16 14 Z" /><path fill="#5d4037" d="M15 14 H17 V26 H15 Z" /></g>,
-            's23': () => <g transform="rotate(45, 16, 16)"><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z" /><path fill="#1f2937" d="M13 20 H19 V22 H13 Z" /><path fill="#b91c1c" d="M14 22 H18 V28 H14 Z" /></g>,
-            's24': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M15 4 H17 V18 H15 Z" style={{filter:'drop-shadow(0 0 2px #fde047)'}}/><path fill="#eab308" d="M11 18 H21 V20 H11 Z" /><path fill="#f59e0b" d="M14 20 H18 V26 H14 Z" /></g>,
-            's25': () => <g><path fill="#7e22ce" d="M8 10 H24 V26 H8 Z" /><path fill="#fbbf24" d="M16 12 V24 M12 18 H20" stroke="#fbbf24" strokeWidth="2" /></g>,
-            's26': () => <g className="animate-spin-slow origin-center" style={{transformBox: 'fill-box', transformOrigin: 'center'}}><circle cx="16" cy="16" r="12" fill="none" stroke="#c084fc" strokeWidth="2" strokeDasharray="4 2"/><polygon points="16,4 26,22 6,22" fill="none" stroke="#c084fc" strokeWidth="1"/><polygon points="16,28 6,10 26,10" fill="none" stroke="#c084fc" strokeWidth="1"/></g>,
-            's99': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M14 6 L18 20 L14 26 L10 20 Z" /><path fill="#eab308" d="M12 20 L16 26" stroke="#eab308" strokeWidth="2" /><animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite" /></g>,
-            's100': () => <g><path fill="#4a044e" d="M4 10 Q10 2 16 12 Q22 2 28 10 Q22 16 16 22 Q10 16 4 10" /></g>,
-            's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6" /><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6" /></g>,
-            's102': () => <g><path fill="#1a1a1a" d="M16 16 Q8 4 2 12 Q8 12 14 20 Z" opacity="0.9"/><path fill="#1a1a1a" d="M16 16 Q24 4 30 12 Q24 12 18 20 Z" opacity="0.9"/><path fill="#7f1d1d" d="M16 16 Q10 8 4 12 Q10 12 14 18 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 16 Q22 8 28 12 Q22 12 18 18 Z" opacity="0.8"/></g>,
-            's103': () => <g transform="rotate(-15, 16, 16)"><path fill="#404040" d="M14 4 L18 28 L16 28 L12 4 Z" /><path fill="#cbd5e1" d="M8 2 Q18 -4 24 6 L20 8 Q14 2 10 8 Z" /><path fill="#991b1b" d="M22 6 L24 8 L14 12 L12 10 Z"/></g>,
-            's104': () => <g><path fill="#fbbf24" d="M10 6 L22 6 L24 18 Q16 26 8 18 Z" stroke="#d97706" strokeWidth="2"/><path fill="#fef08a" d="M12 8 L20 8 L21 16 Q16 22 11 16 Z"/><circle cx="16" cy="14" r="3" fill="#38bdf8"/></g>,
-            
-            // 魂環圖示 (用於裝備屋與背包)
-            'r1': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#f8fafc" strokeWidth="4" />,
-            'r2': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#facc15" strokeWidth="4" />,
-            'r3': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#a855f7" strokeWidth="4" />,
-            'r4': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#1f2937" strokeWidth="4" />,
-            'r5': () => <g><circle cx="16" cy="16" r="12" fill="none" stroke="#ef4444" strokeWidth="2" /><circle cx="16" cy="16" r="8" fill="none" stroke="#ef4444" strokeWidth="2" /></g>,
-        };
+            // --- 斗羅大陸 系列 ---
+            { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 20000, icon: 'Hammer', stats: { str: 250, vit: 100, agi: -30 }, desc: "天下第一器武魂，重達萬斤，無堅不摧。" },
+            { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 30000, icon: 'Briefcase', stats: { str: 120, agi: 150, vit: 80 }, desc: "極為罕見的外附魂骨，含有劇毒與強大穿透力。" },
+            { id: 'o_bluegrass', name: '藍銀皇', type: 'offHand', rarity: 'epic', cost: 12000, icon: 'Shield', stats: { vit: 150, int: 100 }, desc: "植物系魂獸皇者，生生不息，擁有強大控制與治癒力。" },
+
+            // --- 眼睛/瞳術 系列 (裝備於 eye 槽位) ---
+            { id: 'e_sharingan', name: '寫輪眼', type: 'eye', rarity: 'epic', cost: 18000, icon: 'Eye', stats: { int: 120, agi: 80, cri: 15 }, desc: "洞察眼與催眠眼，能看穿一切幻術與體術。" },
+            { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 45000, icon: 'Eye', stats: { int: 300, vit: 200, str: 100 }, desc: "掌控生死，駕馭陰陽的崇高之眼。" },
+            { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 50000, icon: 'Eye', stats: { atk: 500, cri: 50 }, desc: "能看見萬物的「死之線」，一擊必殺。" },
+
+            // --- 🌟 魂環列表 (支援多選疊加，特效為立體流光) ---
+            { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。" },
+            { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。" },
+            { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。" },
+            { id: 'r4', name: '萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 50000, icon: 'Sun', stats: { vit: 200, str: 200, agi: 50 }, desc: "黑色的萬年魂環。漆黑如墨，隱隱散發強大威壓。" },
+            { id: 'r5', name: '十萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 200000, icon: 'Sun', stats: { vit: 800, str: 500, int: 500 }, desc: "血紅色的十萬年魂環。猩紅流光護體，宛如殺神降臨！" },
+            { id: 'r6', name: '凶獸魂環', type: 'spiritRing', rarity: 'legendary', cost: 500000, icon: 'Sun', stats: { vit: 2000, str: 1200, agi: 800 }, desc: "超越二十萬年的凶獸所化，橙金光芒撕裂空間。" },
+            { id: 'r7', name: '百萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 1500000, icon: 'Sun', stats: { vit: 5000, str: 3000, int: 3000 }, desc: "傳說中的百萬年魂環，耀眼金光，成神之基。" },
+            { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！" }
+        ];
 const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
@@ -394,6 +385,7 @@ const ACHIEVEMENTS_LIST = [
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
 
+        // 🌟 核心引擎升級：支援瞳術與多重魂環立體環繞渲染
         const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
@@ -403,23 +395,24 @@ const ACHIEVEMENTS_LIST = [
             const mainHand = equipped?.mainHand; 
             const offHand = equipped?.offHand; 
             const feetGear = equipped?.feet;
-            // 背飾多件渲染邏輯
+            const eyeGear = equipped?.eye; // 新增眼睛部位
+
+            // 背飾與魂環的多件疊加渲染陣列化處理
             const backGears = Array.isArray(equipped?.back) ? equipped.back : (equipped?.back ? [equipped.back] : []);
-            // 魂環
-            const spiritRing = equipped?.spiritRing;
+            const spiritRings = Array.isArray(equipped?.spiritRing) ? equipped.spiritRing : (equipped?.spiritRing ? [equipped.spiritRing] : []);
             
             return (
                 <svg viewBox="0 0 32 32" overflow="visible" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
-                    {/* 魂環特效 (置於最底層發光) */}
-                    {spiritRing && GEAR_VISUALS[spiritRing.id] && (
-                        <g className="origin-center" style={{transformBox: 'fill-box'}}>
-                            {GEAR_VISUALS[spiritRing.id]()}
+                    {/* 🌟 魂環特效疊加層 (以立體形式在腳底環繞) */}
+                    {spiritRings.map((ring, index) => (
+                        <g key={ring.id + index} className="origin-center z-0" style={{transformBox: 'fill-box'}}>
+                            {GEAR_VISUALS[ring.id] ? GEAR_VISUALS[ring.id]() : null}
                         </g>
-                    )}
+                    ))}
                     
                     <ellipse cx="16" cy="30" rx="10" ry="2" fill="rgba(0,0,0,0.15)" />
                     
-                    <g className="animate-idle-breathe origin-bottom">
+                    <g className="animate-idle-breathe origin-bottom relative z-10">
                         {!headGear && gender === 'female' && <path fill={hair} d="M8 9h16v12H8z" opacity="0.9" />}
                         
                         {/* 疊加渲染背飾 */}
@@ -440,7 +433,14 @@ const ACHIEVEMENTS_LIST = [
                         </g>
                         <g className="animate-head-bob">
                             <path fill={skin} d={gender === 'male' ? "M10 7h12v7H10z" : "M11 8h10v6H11z"} />
-                            <g className="animate-blink"><path fill="#1a237e" d={gender === 'male' ? "M12 10h2v2h-2zM18 10h2v2h-2z" : "M12 11h2v2h-2zM18 11h2v2h-2z"} /></g>
+                            
+                            {/* 🌟 瞳術/眼睛 裝備渲染 */}
+                            {eyeGear && GEAR_VISUALS[eyeGear.id] ? GEAR_VISUALS[eyeGear.id]() : (
+                                <g className="animate-blink">
+                                    <path fill="#1a237e" d={gender === 'male' ? "M12 10h2v2h-2zM18 10h2v2h-2z" : "M12 11h2v2h-2zM18 11h2v2h-2z"} />
+                                </g>
+                            )}
+
                             <path fill="#d7ccc8" d={gender === 'male' ? "M14 13h4v1h-4z" : "M15 13h2v1h-2z"} opacity="0.6"/>
                             {(!headGear || headGear.id === 's9' || headGear.id === 's11') && (gender === 'male' ? <path fill={hair} d="M9 2h14v5H9zM8 4h2v6H8zM22 4h2v6h-2zM14 0h4v2h-4z" /> : <path fill={hair} d="M10 3h12v5H10zM9 6h2v8H9zM21 6h2v8h-2z" />)}
                             {headGear && (GEAR_VISUALS[headGear.id] ? GEAR_VISUALS[headGear.id]() : <path fill="#546e7a" d="M9 4h14v7H9z M11 5h2v2h-2z M19 5h2v2h-2z" />)}
@@ -466,23 +466,27 @@ const ACHIEVEMENTS_LIST = [
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[70vh] flex flex-col border-t-4 border-theme-accent/20"><div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div><h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3><div className="grid gap-3 overflow-y-auto custom-scrollbar">{options.map(opt => (<button key={opt.value} onClick={() => { if(opt.locked && onLockedClick) { onLockedClick(opt); } else if (!opt.locked) { onSelect(opt.value); onClose(); } }} className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}><div className="flex items-center gap-3">{opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}<div className="flex flex-col items-start"><span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>{opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}{opt.locked && opt.condition && <span className="text-[9px] text-red-400 mt-1 font-mono bg-red-50 px-1 rounded border border-red-100">🔒 {opt.condition}</span>}</div></div>{current === opt.value && <Icon name="Check" className="text-theme-accent"/>}{opt.locked && <Icon name="Lock" className="text-theme-sub"/>}</button>))}</div><button onClick={onClose} className="w-full mt-6 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button></div></div>
         );
 
+        // 🌟 升級版背包選擇器：支援背飾與魂環的多重選擇疊加
         const InventoryModal = ({ slot, inventory, equipped, onClose, onEquip }) => {
             if (!slot) return null; const availableItems = inventory.filter(i => i.type === slot);
             
-            // 判斷多選狀態 (僅限背飾)
+            // 判斷多選狀態 (背飾與魂環)
             const isEquipped = (item) => {
-                if (slot === 'back' && Array.isArray(equipped.back)) {
-                    return equipped.back.some(i => i.id === item.id);
+                if ((slot === 'back' || slot === 'spiritRing') && Array.isArray(equipped[slot])) {
+                    return equipped[slot].some(i => i.id === item.id);
                 }
                 return equipped[slot]?.id === item.id;
             };
+
+            const isMultiSlot = slot === 'back' || slot === 'spiritRing';
 
             return (
                 <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
                     <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
                         <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">
-                            選擇裝備 ({slot}) {slot === 'back' && <span className="text-[10px] text-theme-sub ml-2 bg-theme-bg px-2 py-1 rounded-full border border-theme-border">支援多穿疊加</span>}
+                            選擇裝備 ({slot}) 
+                            {isMultiSlot && <span className="text-[10px] text-theme-sub ml-2 bg-theme-bg px-2 py-1 rounded-full border border-theme-border">支援疊加</span>}
                         </h3>
                         <div className="grid gap-3 overflow-y-auto pb-4 custom-scrollbar">
                             <button onClick={() => onEquip(slot, null)} className="w-full p-4 rounded-2xl flex items-center gap-4 border-2 border-dashed border-theme-sub/50 text-theme-sub hover:bg-theme-bg">
@@ -573,8 +577,7 @@ const ACHIEVEMENTS_LIST = [
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">選擇您的夥伴</h3><p className="text-xs text-theme-sub">這將是您冒險旅途的開始</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">未來進化路線預覽</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> 確定選擇</button></div></div></div>
             );
         };
-
-        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
+const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
@@ -692,14 +695,13 @@ const ACHIEVEMENTS_LIST = [
             const safePurchaseHistory = Array.isArray(purchaseHistory) ? purchaseHistory : [];
             const [previewItem, setPreviewItem] = useState(null); const [showConfirmModal, setShowConfirmModal] = useState(false); const [filter, setFilter] = useState('all'); const [sort, setSort] = useState('rarityDesc'); const [showHistory, setShowHistory] = useState(false); const [buySuccessId, setBuySuccessId] = useState(null);
             
-            // 商店預覽多背飾邏輯處理
+            // 商店預覽多背飾與多魂環邏輯處理
             const currentPreviewEquipped = useMemo(() => { 
                 if (!previewItem) return equipped; 
                 let newEquip = { ...equipped };
-                if (previewItem.type === 'back') {
-                    // 若預覽的是背飾，先模擬加進背飾陣列
-                    const currentBack = Array.isArray(equipped.back) ? equipped.back : (equipped.back ? [equipped.back] : []);
-                    newEquip.back = [...currentBack.filter(i => i.id !== previewItem.id), previewItem];
+                if (previewItem.type === 'back' || previewItem.type === 'spiritRing') {
+                    const currentArray = Array.isArray(equipped[previewItem.type]) ? equipped[previewItem.type] : (equipped[previewItem.type] ? [equipped[previewItem.type]] : []);
+                    newEquip[previewItem.type] = [...currentArray.filter(i => i.id !== previewItem.id), previewItem];
                 } else {
                     newEquip[previewItem.type] = previewItem; 
                 }
@@ -707,7 +709,7 @@ const ACHIEVEMENTS_LIST = [
             }, [equipped, previewItem]);
             
             const displayedItems = useMemo(() => { let items = [...SHOP_ITEMS]; if (filter !== 'all') items = items.filter(i => i.type === filter); items.sort((a, b) => { if (sort === 'priceAsc') return a.cost - b.cost; if (sort === 'priceDesc') return b.cost - a.cost; if (sort === 'rarityDesc') { const rVal = { legendary: 4, epic: 3, rare: 2, common: 1 }; return (rVal[b.rarity] || 0) - (rVal[a.rarity] || 0); } return 0; }); return items; }, [filter, sort]);
-            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'spiritRing', label: t('spiritRing'), icon: 'Sun' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
+            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'spiritRing', label: t('spiritRing'), icon: 'Sun' }, { id: 'eye', label: t('eye'), icon: 'Eye' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
             const getCardStyle = (rarity, isSelected) => { const base = "relative rounded-lg transition-all duration-200 border-[3px] overflow-hidden"; const selected = isSelected ? "ring-4 ring-white ring-offset-2 ring-offset-[#2d1b1e] scale-105 z-10" : "hover:-translate-y-1 hover:shadow-lg"; let theme = ""; switch (rarity) { case 'legendary': theme = "bg-gradient-to-br from-yellow-900 via-amber-700 to-yellow-900 border-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]"; break; case 'epic': theme = "bg-gradient-to-br from-purple-900 via-fuchsia-900 to-purple-900 border-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.2)]"; break; case 'rare': theme = "bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-900 border-cyan-400"; break; default: theme = "bg-[#4e342e] border-[#8d6e63] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"; break; } return `${base} ${selected} ${theme}`; };
             const handleBuyClick = () => { if (!previewItem || gold < previewItem.cost) return; setShowConfirmModal(true); };
             const confirmBuy = () => { onBuy(previewItem); setBuySuccessId(previewItem.id); setShowConfirmModal(false); };
@@ -720,7 +722,34 @@ const ACHIEVEMENTS_LIST = [
                     <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#1a1012] relative pb-28">
                         {showHistory ? (<div className="p-4 space-y-3 bg-[#efebe9] min-h-full"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{item.cost} G</div></div></div>); })}</div>)}
                     </div>
-                    {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (<div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]"><div className="bg-[#2d1b1e] border-2 border-[#5d4037] p-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center gap-4 relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-30"></div><div className="flex-1 relative z-10"><div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div><div className="text-lg font-bold text-[#ffecb3] font-pixel drop-shadow-sm">{previewItem.name}</div><div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div></div><button onClick={handleBuyClick} disabled={gold < previewItem.cost} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] ${gold >= previewItem.cost ? 'bg-gradient-to-b from-[#ffca28] to-[#ff8f00] text-[#3e2723] hover:brightness-110 border-b-4 border-[#e65100]' : 'bg-[#3e2723] text-[#8d6e63] border-b-4 border-[#1a1012] cursor-not-allowed'}`}><span>{gold >= previewItem.cost ? t('buy') : t('not_enough_gold')}</span><span className="text-[10px] opacity-80 font-mono">{previewItem.cost} G</span></button></div></div>)}
+                    {/* 裝備數值詳情 */}
+                    {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
+                        <div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]">
+                            <div className="bg-[#2d1b1e] border-2 border-[#5d4037] p-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col gap-3 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-30"></div>
+                                <div className="flex items-center gap-4 relative z-10">
+                                    <div className="flex-1 relative z-10">
+                                        <div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div>
+                                        <div className="text-lg font-bold text-[#ffecb3] font-pixel drop-shadow-sm">{previewItem.name}</div>
+                                        <div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div>
+                                        {previewItem.stats && (
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                {Object.entries(previewItem.stats).map(([statName, val]) => (
+                                                    <span key={statName} className="text-[10px] px-2 py-0.5 rounded-md bg-[#1a1012] border border-[#5d4037] text-[#ffca28] font-mono shadow-sm flex items-center gap-1">
+                                                        {statName.toUpperCase()} {val > 0 ? `+${val}` : val}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button onClick={handleBuyClick} disabled={gold < previewItem.cost} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] shrink-0 ${gold >= previewItem.cost ? 'bg-gradient-to-b from-[#ffca28] to-[#ff8f00] text-[#3e2723] hover:brightness-110 border-b-4 border-[#e65100]' : 'bg-[#3e2723] text-[#8d6e63] border-b-4 border-[#1a1012] cursor-not-allowed'}`}>
+                                        <span>{gold >= previewItem.cost ? t('buy') : t('not_enough_gold')}</span>
+                                        <span className="text-[10px] opacity-80 font-mono">{previewItem.cost} G</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {showConfirmModal && previewItem && (<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]"><div className="bg-[#2d1b1e] p-6 rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.8)] w-full max-w-xs border-2 border-[#5d4037] text-center relative animate-pop-in"><div className="w-16 h-16 bg-[#ffca28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#ffca28] shadow-[0_0_15px_rgba(255,202,40,0.3)]"><Icon name="Coin" size={32} className="text-[#ffca28]"/></div><h3 className="font-bold text-lg mb-2 text-[#efebe9]">{t('confirm_buy_title')}</h3><p className="text-sm text-[#a1887f] mb-6 px-2">{t('confirm_buy_msg').replace('{cost}', previewItem.cost).replace('{item}', previewItem.name)}</p><div className="flex gap-3"><button onClick={() => setShowConfirmModal(false)} className="flex-1 py-3 rounded-xl font-bold text-[#a1887f] bg-[#1a1012] border border-[#5d4037] active:scale-95 hover:bg-[#3e2723] transition-colors">{t('cancel')}</button><button onClick={confirmBuy} className="flex-1 py-3 rounded-xl font-bold text-[#3e2723] bg-gradient-to-b from-[#ffca28] to-[#ff8f00] shadow-lg active:scale-95 border-b-4 border-[#e65100]">{t('confirm')}</button></div></div></div>)}
                     {buySuccessId && <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"><div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(34,197,94,0.5)] animate-bounce flex items-center gap-2"><Icon name="Check" /> {t('buy_success')}</div></div>}
                 </div>
@@ -734,13 +763,15 @@ const ACHIEVEMENTS_LIST = [
             const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
             const totalStats = { ...baseStats };
             
-            // 將所有裝備(含陣列中的多個背飾)納入能力計算
+            // 將所有裝備(含陣列中的多個背飾、魂環)納入能力計算
             const calculateStats = (item) => {
                 if(item && item.stats) { 
                     if(item.stats.str) totalStats.str += item.stats.str; 
                     if(item.stats.int) totalStats.int += item.stats.int; 
                     if(item.stats.vit) totalStats.vit += item.stats.vit; 
                     if(item.stats.agi) totalStats.agi += item.stats.agi; 
+                    if(item.stats.atk) totalStats.str += Math.floor(item.stats.atk / 5); 
+                    if(item.stats.cri) totalStats.agi += item.stats.cri * 5; 
                 }
             };
             Object.values(equipped).forEach(val => { 
@@ -751,9 +782,8 @@ const ACHIEVEMENTS_LIST = [
             const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
             
             const renderSlot = (slotData) => {
-                // 如果是背飾且是陣列，取第一個顯示在畫面上，但點擊一樣開背包
                 const item = Array.isArray(equipped[slotData.slot]) ? equipped[slotData.slot][0] : equipped[slotData.slot]; 
-                const isMulti = slotData.slot === 'back' && Array.isArray(equipped[slotData.slot]) && equipped[slotData.slot].length > 1;
+                const isMulti = (slotData.slot === 'back' || slotData.slot === 'spiritRing') && Array.isArray(equipped[slotData.slot]) && equipped[slotData.slot].length > 1;
                 
                 if (!item) { return ( <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all cursor-pointer hover:bg-black/10 active:scale-95" onClick={() => onEquipSlot(slotData.slot)}><div className="absolute text-xl text-theme-sub/30 font-mono top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">+</div><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm">{t(slotData.name)}</div></div> ); }
                 return ( <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all cursor-pointer hover:scale-105 active:scale-95 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}><Icon name={item.icon} size={16} className="text-theme-text pixel-icon sm:w-5 sm:h-5"/><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm flex items-center">{item.name.substring(0,4)}{isMulti && <span className="bg-theme-accent text-white px-0.5 ml-0.5 rounded text-[6px]">+{equipped[slotData.slot].length}</span>}</div></div> );
@@ -766,24 +796,34 @@ const ACHIEVEMENTS_LIST = [
                     
                     <div className="flex-1 min-h-0 relative w-full flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-4 w-[120px] h-[20px] rounded-full bg-theme-accent/20 animate-pulse blur-xl"></div>
-                        <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">{renderSlot({slot: 'head', name:'head'})}{renderSlot({slot: 'body', name:'body'})}{renderSlot({slot: 'mainHand', name:'mainHand'})}{renderSlot({slot: 'spiritRing', name:'spiritRing'})}</div>
+                        <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-5 z-30">
+                            {renderSlot({slot: 'head', name:'head'})}
+                            {renderSlot({slot: 'eye', name:'eye'})}
+                            {renderSlot({slot: 'body', name:'body'})}
+                            {renderSlot({slot: 'mainHand', name:'mainHand'})}
+                            {renderSlot({slot: 'spiritRing', name:'spiritRing'})}
+                        </div>
                         <div className="relative z-20 transform scale-110 sm:scale-125"><PixelAvatar gender={gender} colors={appearance} equipped={equipped} className="w-48 h-48 sm:w-56 sm:h-56 object-contain drop-shadow-2xl filter contrast-110"/></div>
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">{renderSlot({slot: 'back', name:'back'})}{renderSlot({slot: 'offHand', name:'offHand'})}{renderSlot({slot: 'feet', name:'feet'})}</div>
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-30">
+                            {renderSlot({slot: 'back', name:'back'})}
+                            {renderSlot({slot: 'offHand', name:'offHand'})}
+                            {renderSlot({slot: 'feet', name:'feet'})}
+                        </div>
                     </div>
 
                     <div className="shrink-0 bg-theme-card p-4 rounded-3xl border border-theme-border shadow-sm relative z-40">
                         <h3 className="font-bold opacity-60 text-xs sm:text-sm flex items-center gap-1 text-theme-text mb-3"><Icon name="Sword" size={12}/> {t('character_stats')}</h3>
                         <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{stat.val}</span></div>))}</div>
-                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{derivedStats.hp}</span></div><ProgressBar val={derivedStats.hp} max={2000} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{derivedStats.mp}</span></div><ProgressBar val={derivedStats.mp} max={1000} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div></div>
+                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{derivedStats.hp}</span></div><ProgressBar val={derivedStats.hp} max={derivedStats.hp*1.5} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{derivedStats.mp}</span></div><ProgressBar val={derivedStats.mp} max={derivedStats.mp*1.5} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div></div>
                     </div>
                     {isEditing && <AvatarEditor appearanceData={appearance} onSave={(newAppearanceData) => { onUpdateAppearance(newAppearanceData); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
             );
         };
-const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
+
+        const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
             const [subView, setSubView] = useState('fin'); const [timeFilter, setTimeFilter] = useState('month'); const [calDate, setCalDate] = useState(new Date()); const [selectedDate, setSelectedDate] = useState(null); const [showMonthPicker, setShowMonthPicker] = useState(false); const [pickerYear, setPickerYear] = useState(calDate.getFullYear()); const [dailyDate, setDailyDate] = useState(new Date().toISOString().split('T')[0]); const t = (key) => translations[lang]?.[key] || key;
             
-            // 將收支依照貨幣獨立計算
             const financialStats = useMemo(() => { 
                 const now = new Date(); const currentMonth = now.getMonth(); const currentYear = now.getFullYear(); 
                 let filteredTxs = transactions; 
@@ -798,7 +838,6 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                     if (tx.type === 'income') { statsByCurrency[cur].in += tx.amount; statsByCurrency[cur].net += tx.amount; } 
                     else { statsByCurrency[cur].out += tx.amount; statsByCurrency[cur].net -= tx.amount; }
                 });
-                
                 return { statsByCurrency, txs: filteredTxs }; 
             }, [transactions, timeFilter, dailyDate, accounts]);
             
@@ -811,7 +850,6 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                     const dateStr = new Date(tx.date).toLocaleDateString(); 
                     if (!groups[dateStr]) groups[dateStr] = { txs: [], stats: {} }; 
                     groups[dateStr].txs.push(tx); 
-                    
                     const acc = accounts.find(a => a.id == tx.accountId);
                     const cur = acc ? acc.currency : 'TWD';
                     if (!groups[dateStr].stats[cur]) groups[dateStr].stats[cur] = { exp: 0, inc: 0 };
@@ -856,30 +894,13 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                         <div className="space-y-4 animate-[fadeIn_0.3s]">
                             <div className="flex justify-start gap-2 pt-2 items-center">
                                 {['all', 'month', 'today'].map((tf) => (<button key={tf} onClick={() => setTimeFilter(tf)} className={`px-4 py-1.5 rounded-full text-[10px] font-bold border transition-all active:scale-95 shadow-sm ${timeFilter === tf ? 'bg-theme-accent text-white border-theme-accent' : 'bg-theme-bg text-theme-sub border-theme-border hover:brightness-95'}`}>{tf === 'all' ? t('all') : tf === 'month' ? t('month') : t('daily_view')}</button>))}
-                                {timeFilter === 'today' && (<input type="date" value={dailyDate} onChange={e => setDailyDate(e.target.value)} className="bg-theme-card border border-theme-border text-theme-text text-[10px] font-bold rounded-lg px-2 py-1 outline-none shadow-sm ml-2" />)}
                             </div>
-                            
-                            {Object.keys(financialStats.statsByCurrency).length === 0 && (
-                                <div className="glass p-5 rounded-3xl border border-theme-border text-center opacity-50"><span className="text-xs font-bold">{t('no_records')}</span></div>
-                            )}
-
+                            {Object.keys(financialStats.statsByCurrency).length === 0 && (<div className="glass p-5 rounded-3xl border border-theme-border text-center opacity-50"><span className="text-xs font-bold">{t('no_records')}</span></div>)}
                             {Object.entries(financialStats.statsByCurrency).map(([currency, stats]) => (
                                 <div key={currency} className="glass p-5 rounded-3xl border border-theme-border relative overflow-hidden shadow-sm">
                                     <div className="absolute top-0 right-0 w-24 h-24 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
-                                    <div className="flex justify-between items-center mb-4 relative z-10">
-                                        <h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Wallet" size={16} className="text-theme-accent"/> {currency} 結算</h3>
-                                        <div className={`font-mono text-xl font-bold ${stats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>{stats.net >= 0 ? '+' : ''}{stats.net.toLocaleString()}</div>
-                                    </div>
-                                    <div className="flex gap-3 relative z-10 mb-2">
-                                        <div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm">
-                                            <span className="text-[10px] text-green-600 font-bold mb-1 uppercase">{t('in')}</span>
-                                            <span className="text-lg font-mono font-bold text-green-500">+{stats.in.toLocaleString()}</span>
-                                        </div>
-                                        <div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm">
-                                            <span className="text-[10px] text-red-600 font-bold mb-1 uppercase">{t('out')}</span>
-                                            <span className="text-lg font-mono font-bold text-red-500">-{stats.out.toLocaleString()}</span>
-                                        </div>
-                                    </div>
+                                    <div className="flex justify-between items-center mb-4 relative z-10"><h3 className="font-bold text-sm text-theme-text flex items-center gap-2"><Icon name="Wallet" size={16} className="text-theme-accent"/> {currency} 結算</h3><div className={`font-mono text-xl font-bold ${stats.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>{stats.net >= 0 ? '+' : ''}{stats.net.toLocaleString()}</div></div>
+                                    <div className="flex gap-3 relative z-10 mb-2"><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm"><span className="text-[10px] text-green-600 font-bold mb-1 uppercase">{t('in')}</span><span className="text-lg font-mono font-bold text-green-500">+{stats.in.toLocaleString()}</span></div><div className="flex-1 bg-theme-bg/50 p-3 rounded-2xl border border-theme-border/50 flex flex-col items-center shadow-sm"><span className="text-[10px] text-red-600 font-bold mb-1 uppercase">{t('out')}</span><span className="text-lg font-mono font-bold text-red-500">-{stats.out.toLocaleString()}</span></div></div>
                                 </div>
                             ))}
                         </div>
@@ -1006,8 +1027,8 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('mainHand')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.mainHand?.name || '-'}</div></div>
                                         <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('body')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.body?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('head')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.head?.name || '-'}</div></div>
-                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('back')}</div><div className="font-bold text-sm text-theme-text truncate">{Array.isArray(selectedFriend.equipped?.back) ? (selectedFriend.equipped.back.length > 0 ? selectedFriend.equipped.back.map(b=>b.name).join(', ') : '-') : (selectedFriend.equipped?.back?.name || '-')}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('eye')}</div><div className="font-bold text-sm text-theme-text truncate">{selectedFriend.equipped?.eye?.name || '-'}</div></div>
+                                        <div className="bg-theme-bg p-3 rounded-xl border border-theme-border text-center"><div className="text-[10px] text-theme-sub uppercase font-bold mb-1 opacity-60">{t('spiritRing')}</div><div className="font-bold text-sm text-theme-text truncate">{Array.isArray(selectedFriend.equipped?.spiritRing) ? (selectedFriend.equipped.spiritRing.length > 0 ? `已裝備 ${selectedFriend.equipped.spiritRing.length} 個` : '-') : (selectedFriend.equipped?.spiritRing?.name || '-')}</div></div>
                                     </div>
                                 </div>
                             </div>
@@ -1057,7 +1078,6 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
             const [authError, setAuthError] = useState('');
             const [cloudSyncing, setCloudSyncing] = useState(false);
 
-            // 🌟 絕對安全防護
             const safeData = useMemo(() => {
                 const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false };
                 const currentUser = data.user || defaultUser;
@@ -1223,18 +1243,18 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                 setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...safeData.purchaseHistory] }));
             };
             
-            // 🌟 裝備切換邏輯 (支援背飾多選)
+            // 🌟 裝備切換邏輯 (支援背飾與魂環的多選疊加)
             const handleEquipItem = (slot, item) => { 
                 const newEquipped = { ...data.equipped }; 
                 if (item) { 
-                    if (slot === 'back') {
+                    if (slot === 'back' || slot === 'spiritRing') {
                         // 確保當前是陣列
-                        const currentBack = Array.isArray(newEquipped.back) ? newEquipped.back : (newEquipped.back ? [newEquipped.back] : []);
+                        const currentArray = Array.isArray(newEquipped[slot]) ? newEquipped[slot] : (newEquipped[slot] ? [newEquipped[slot]] : []);
                         // Toggle邏輯：如果有就拿掉，沒有就加上
-                        if (currentBack.some(i => i.id === item.id)) {
-                            newEquipped.back = currentBack.filter(i => i.id !== item.id);
+                        if (currentArray.some(i => i.id === item.id)) {
+                            newEquipped[slot] = currentArray.filter(i => i.id !== item.id);
                         } else {
-                            newEquipped.back = [...currentBack, item];
+                            newEquipped[slot] = [...currentArray, item];
                         }
                     } else {
                         newEquipped[slot] = item; 
@@ -1243,8 +1263,8 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                     delete newEquipped[slot]; 
                 } 
                 setData(prev => ({ ...prev, equipped: newEquipped })); 
-                // 若不是背飾，裝備後自動關閉彈窗；若是背飾，保留彈窗讓玩家繼續選
-                if (slot !== 'back' || !item) {
+                // 若不是可疊加槽位，裝備後自動關閉彈窗；若是疊加槽位，保留彈窗讓玩家繼續選
+                if ((slot !== 'back' && slot !== 'spiritRing') || !item) {
                     setEquipModalOpen(false); 
                 }
             };
@@ -1338,7 +1358,6 @@ const JournalView = ({ logs, transactions, categories, accounts, lang, translati
                 }
             };
 
-            // 🌟 多層次任務清單生成 (大量任務擴充)
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString(); 
                 const totalTxCount = safeData.transactions.length; 
