@@ -50,10 +50,17 @@
         .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
         .pixel-icon { image-rendering: pixelated; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.5)) contrast(1.2) saturate(1.1); transform: scale(1.1); }
         .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* MMORPG風卡片特效 */
         .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
         .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); }
         .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); animation: pulse-purple 3s infinite alternate; }
         .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); animation: glow-gold 2s infinite alternate; }
+        .rarity-text-legendary { color: #fbbf24; text-shadow: 0 0 5px rgba(251, 191, 36, 0.8); }
+        .rarity-text-epic { color: #c084fc; text-shadow: 0 0 5px rgba(192, 132, 252, 0.8); }
+        .rarity-text-rare { color: #60a5fa; }
+        .rarity-text-common { color: #94a3b8; }
+        
         @keyframes pulse-purple { 0% { box-shadow: 0 0 5px #a855f7; } 100% { box-shadow: 0 0 20px #a855f7, 0 0 10px white; } }
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
         .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); } .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; } .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
@@ -66,12 +73,12 @@
 
         // 🌟 請替換為您的 Firebase 參數
         const firebaseConfig = {
-apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
-authDomain: "rpgmoney-73cfd.firebaseapp.com",
-projectId: "rpgmoney-73cfd",
-storageBucket: "rpgmoney-73cfd.firebasestorage.app",
-messagingSenderId: "804479578382",
-appId: "1:804479578382:web:0882920513d9377998a75f"
+            apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
+            authDomain: "rpgmoney-73cfd.firebaseapp.com",
+            projectId: "rpgmoney-73cfd",
+            storageBucket: "rpgmoney-73cfd.firebasestorage.app",
+            messagingSenderId: "804479578382",
+            appId: "1:804479578382:web:0882920513d9377998a75f"
         };
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const auth = firebase.auth(); const db = firebase.firestore();
@@ -114,11 +121,12 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             Trophy:"M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16",
             Sword:"M14.5 17.5L3 22l4.5-11.5L21 2l-8.5 15.5z M10 13l5 5",
             Book:"M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
-            Library: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15",
             Shield:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
             Hammer:"M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-3 0-1.33.83-2.17.83-3 0 8.5-8.5",
             Gem:"M6 3h12l4 6-10 13L2 9z", Sun:"M12 1v2 M12 21v2", Moon:"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
-            Eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8", Coffee:"M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
+            Eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8", 
+            EyeOff:"M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22",
+            Coffee:"M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z",
             Gamepad:"M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M2 12c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2",
             UserPlus:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z", Check:"M20 6L9 17l-5-5",
             Edit:"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
@@ -182,7 +190,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
 
-        // 🌟 3D 裝備視覺特效
+        // 🌟 3D 裝備視覺特效 (含新增 MMORPG 神級裝備)
         const GEAR_VISUALS = {
             's1': () => <g transform="translate(-2, 2)"><path fill="#cfd8dc" d="M10 10 L14 6 L18 10 L14 26 Z" style={{filter:'drop-shadow(1px 1px 1px #94a3b8)'}}/><path fill="#5d4037" d="M12 24 H16 V28 H12 Z" /></g>, 
             's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
@@ -210,6 +218,9 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             's99': () => <g transform="translate(-4, -4)"><path fill="#fef08a" d="M14 2 L18 10 L16 14 L20 22 L14 28 L12 20 L14 16 L10 8 Z" style={{filter:'drop-shadow(0 0 8px #fde047)'}}/><animate attributeName="opacity" values="1;0.7;1" dur="0.3s" repeatCount="indefinite"/></g>,
             's100': () => <g className="animate-pulse origin-center"><path fill="#1f2937" d="M6 18 Q0 10 8 8 L16 16" opacity="0.95" style={{filter:'drop-shadow(0 0 3px #4c1d95)'}}/><path fill="#1f2937" d="M26 18 Q32 10 24 8 L16 16" opacity="0.95" style={{filter:'drop-shadow(0 0 3px #4c1d95)'}}/></g>,
             's101': () => <g className="animate-float origin-center"><path fill="#f0f9ff" d="M6 16 Q0 4 14 12" opacity="0.9" style={{filter:'drop-shadow(0 0 6px #bae6fd)'}}/><path fill="#f0f9ff" d="M26 16 Q32 4 18 12" opacity="0.9" style={{filter:'drop-shadow(0 0 6px #bae6fd)'}}/></g>,
+            's102': () => <g className="animate-float origin-center"><path fill="#1a1a1a" d="M16 14 Q6 0 -4 10 Q6 10 12 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#1a1a1a" d="M16 14 Q26 0 36 10 Q26 10 20 18 Z" opacity="0.9" style={{filter:'drop-shadow(0 0 8px #991b1b)'}}/><path fill="#7f1d1d" d="M16 14 Q8 4 0 10 Q8 10 13 16 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 14 Q24 4 32 10 Q24 10 19 16 Z" opacity="0.8"/></g>,
+            's103': () => <g transform="scale(1.2) translate(-2, -2)"><path fill="#404040" d="M14 8 L18 28 L16 28 L12 8 Z" /><path fill="#cbd5e1" d="M8 6 Q16 -2 22 8 L18 10 Q14 4 10 10 Z" style={{filter:'drop-shadow(0 0 4px #dc2626)'}}/><path fill="#991b1b" d="M20 8 L22 10 L14 14 L12 12 Z"/></g>,
+            's104': () => <g transform="translate(18, 12)"><path fill="#fbbf24" d="M-4 -4 L4 -4 L6 6 Q0 12 -6 6 Z" stroke="#d97706" strokeWidth="1" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#fef08a" d="M-2 -2 L2 -2 L3 4 Q0 8 -3 4 Z"/><circle cx="0" cy="2" r="1.5" fill="#38bdf8"/></g>,
         };
 
         const SHOP_ITEMS = [
@@ -237,7 +248,10 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             { id: 's101', name: '天使光翼', type: 'back', rarity: 'legendary', cost: 15000, icon: 'Briefcase', stats: { int: 40, vit: 40 }, desc: "純潔的光之翼。", effects: ['float', 'glow'] },
             { id: 's3', name: '旅行者之靴', type: 'feet', rarity: 'common', cost: 80, icon: 'Zap', stats: { agi: 5 }, desc: "輕便耐穿，適合長途跋涉。" },
             { id: 's9', name: '聖靈光環', type: 'head', rarity: 'legendary', cost: 8888, icon: 'Sun', stats: { int: 60, vit: 30 }, desc: "神聖的守護光輝。", effects: ['glow', 'float'] },
-            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] }
+            { id: 's99', name: '雷霆之劍', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { str: 60, agi: 20 }, desc: "纏繞著閃電的傳說之劍。", effects: ['sparkle'] },
+            { id: 's102', name: '魔尊·暗炎之翼', type: 'back', rarity: 'legendary', cost: 25000, icon: 'Ghost', stats: { str: 50, vit: -20, agi: 30 }, desc: "散發著毀滅氣息的暗黑巨翼，宛如魔神降臨。", effects: ['float', 'glow'] },
+            { id: 's103', name: '死神·噬魂巨鐮', type: 'mainHand', rarity: 'legendary', cost: 30000, icon: 'Sword', stats: { str: 80, agi: 20, int: 20 }, desc: "收割靈魂的恐怖鐮刀，刃口閃爍著寒芒。", effects: ['pulse'] },
+            { id: 's104', name: '神聖·天穹之盾', type: 'offHand', rarity: 'legendary', cost: 22000, icon: 'Shield', stats: { vit: 100, str: 20 }, desc: "抵擋一切邪惡的絕對壁壘。", effects: ['glow'] }
         ];
 
         const ITEM_ICONS = {
@@ -265,6 +279,9 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             's99': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M14 6 L18 20 L14 26 L10 20 Z" /><path fill="#eab308" d="M12 20 L16 26" stroke="#eab308" strokeWidth="2" /><animate attributeName="opacity" values="1;0.5;1" dur="0.5s" repeatCount="indefinite" /></g>,
             's100': () => <g><path fill="#4a044e" d="M4 10 Q10 2 16 12 Q22 2 28 10 Q22 16 16 22 Q10 16 4 10" /></g>,
             's101': () => <g className="animate-float"><path fill="#f0f9ff" d="M6 18 Q2 6 16 14" opacity="0.6" /><path fill="#f0f9ff" d="M26 18 Q30 6 16 14" opacity="0.6" /></g>,
+            's102': () => <g><path fill="#1a1a1a" d="M16 16 Q8 4 2 12 Q8 12 14 20 Z" opacity="0.9"/><path fill="#1a1a1a" d="M16 16 Q24 4 30 12 Q24 12 18 20 Z" opacity="0.9"/><path fill="#7f1d1d" d="M16 16 Q10 8 4 12 Q10 12 14 18 Z" opacity="0.8"/><path fill="#7f1d1d" d="M16 16 Q22 8 28 12 Q22 12 18 18 Z" opacity="0.8"/></g>,
+            's103': () => <g transform="rotate(-15, 16, 16)"><path fill="#404040" d="M14 4 L18 28 L16 28 L12 4 Z" /><path fill="#cbd5e1" d="M8 2 Q18 -4 24 6 L20 8 Q14 2 10 8 Z" /><path fill="#991b1b" d="M22 6 L24 8 L14 12 L12 10 Z"/></g>,
+            's104': () => <g><path fill="#fbbf24" d="M10 6 L22 6 L24 18 Q16 26 8 18 Z" stroke="#d97706" strokeWidth="2"/><path fill="#fef08a" d="M12 8 L20 8 L21 16 Q16 22 11 16 Z"/><circle cx="16" cy="14" r="3" fill="#38bdf8"/></g>,
         };
 
         const ACHIEVEMENTS_LIST = [
@@ -299,12 +316,8 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50, getProgress: (s) => `${s.questCount} / 50` },
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
         ];
-
-        // ==========================================
-        // 這是第一部分結尾，請回覆「繼續」獲取第二部分
-        // ==========================================
 // ==========================================
-        // ⬇️ 第二部分開始 (共用元件、視圖與主程式) ⬇️
+        // ⬇️ 第二部分開始 (共用元件與部分視圖) ⬇️
         // ==========================================
 
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
@@ -402,13 +415,43 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             );
         };
         
+        // 🌟 強化手機版拖曳體驗的分類管理器
         const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
-            const dragItem = useRef(); const dragOverItem = useRef();
-            const handleDragStart = (e, position) => { dragItem.current = position; e.target.style.opacity = 0.5; };
-            const handleDragEnter = (e, position) => { dragOverItem.current = position; };
-            const handleDragEnd = (e) => { e.target.style.opacity = 1; if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) { const copyListItems = [...cats]; const dragItemContent = copyListItems[dragItem.current]; copyListItems.splice(dragItem.current, 1); copyListItems.splice(dragOverItem.current, 0, dragItemContent); setCats(copyListItems); } dragItem.current = null; dragOverItem.current = null; };
+            const dragItem = useRef(null); const dragOverItem = useRef(null);
+            
+            // 增強型觸控與拖曳處理
+            const handleTouchStart = (e, index) => {
+                dragItem.current = index;
+                const target = e.currentTarget;
+                target.style.opacity = '0.5';
+                target.style.transform = 'scale(1.02)';
+                document.body.style.overflow = 'hidden'; // 防止手機滑動干擾
+            };
+            const handleTouchMove = (e) => {
+                if(dragItem.current === null) return;
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (target && target.closest('[data-index]')) {
+                    dragOverItem.current = parseInt(target.closest('[data-index]').dataset.index);
+                }
+            };
+            const handleTouchEnd = (e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.transform = 'none';
+                document.body.style.overflow = 'auto'; // 恢復手機滑動
+                if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) { 
+                    const copyListItems = [...cats]; 
+                    const dragItemContent = copyListItems[dragItem.current]; 
+                    copyListItems.splice(dragItem.current, 1); 
+                    copyListItems.splice(dragOverItem.current, 0, dragItemContent); 
+                    setCats(copyListItems); 
+                } 
+                dragItem.current = null; 
+                dragOverItem.current = null; 
+            };
+            
             const startEdit = (cat) => { setEditingId(cat.id); setEditLabel(cat.label); setEditIcon(cat.icon); setEditColor(cat.color); };
             const saveEdit = () => { setCats(cats.map(c => c.id === editingId ? { ...c, label: editLabel, icon: editIcon, color: editColor } : c)); setEditingId(null); };
             const addNew = () => { const newId = 'cat_' + Date.now(); setCats([...cats, { id: newId, label: '新類別', icon: 'Star', color: '#94a3b8' }]); startEdit({ id: newId, label: '新類別', icon: 'Star', color: '#94a3b8' }); };
@@ -417,7 +460,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             const availableIcons = ['Utensils','Coffee','Bus','ShoppingBag','Zap','Pill','GraduationCap','Briefcase','Plane','Wallet','Gem','Heart','Star','Gamepad'];
 
             return (
-                <div className="fixed inset-0 z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-full"><div className="flex justify-between items-center mb-6 shrink-0"><button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X" size={24}/></button><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">管理類別</h3><button onClick={confirmSave} className="text-theme-accent font-bold"><Icon name="Check" size={24}/></button></div><div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">{cats.map((cat, index) => (<div key={cat.id} draggable onDragStart={(e) => handleDragStart(e, index)} onDragEnter={(e) => handleDragEnter(e, index)} onDragEnd={handleDragEnd} onDragOver={(e) => e.preventDefault()} onTouchStart={(e) => { dragItem.current = index; e.currentTarget.style.opacity = 0.5; }} onTouchMove={(e) => { const touch = e.touches[0]; const target = document.elementFromPoint(touch.clientX, touch.clientY); if (target && target.closest('[data-index]')) { dragOverItem.current = parseInt(target.closest('[data-index]').dataset.index); } }} onTouchEnd={(e) => handleDragEnd(e)} data-index={index} className="bg-theme-bg p-3 rounded-2xl border border-theme-border shadow-sm flex items-center justify-between group cursor-grab active:cursor-grabbing"><div className="flex items-center gap-3 flex-1 min-w-0 pointer-events-none"><div className="text-theme-sub/50 px-1"><Icon name="Grip" size={16}/></div><div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm shrink-0" style={{backgroundColor: cat.color}}><Icon name={cat.icon} size={18}/></div><div className="font-bold text-theme-text truncate">{cat.label}</div></div><button onClick={(e) => { e.stopPropagation(); startEdit(cat); }} className="p-2 text-theme-sub hover:text-theme-accent bg-theme-card rounded-lg shadow-sm border border-theme-border/50 transition-colors ml-2"><Icon name="Edit" size={16}/></button></div>))} <button onClick={addNew} className="w-full py-4 border-2 border-dashed border-theme-sub/50 rounded-2xl text-theme-sub font-bold hover:bg-theme-bg hover:text-theme-accent transition-colors flex justify-center items-center gap-2 mt-4"><Icon name="Plus"/> 新增類別</button></div>{editingId && (<div className="absolute bottom-0 left-0 right-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] border-t border-theme-border animate-[slideUp_0.2s] z-20"><div className="flex justify-between items-center mb-4"><h4 className="font-bold text-theme-text">編輯類別</h4><button onClick={() => setEditingId(null)} className="text-theme-sub"><Icon name="X" size={20}/></button></div><div className="space-y-4"><input type="text" value={editLabel} onChange={e=>setEditLabel(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent" placeholder="類別名稱"/><div><label className="text-xs font-bold text-theme-sub uppercase mb-2 block">圖示</label><div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">{availableIcons.map(ic => (<button key={ic} onClick={()=>setEditIcon(ic)} className={`p-3 rounded-xl border shrink-0 transition-all ${editIcon === ic ? 'bg-theme-accent/10 border-theme-accent text-theme-accent' : 'bg-theme-bg border-theme-border text-theme-sub'}`}><Icon name={ic} size={20}/></button>))}</div></div><div className="flex items-center gap-4"><label className="text-xs font-bold text-theme-sub uppercase">顏色</label><input type="color" value={editColor} onChange={e=>setEditColor(e.target.value)} className="w-12 h-12 rounded-lg cursor-pointer border-2 border-white shadow-sm p-0 bg-transparent"/></div><div className="flex gap-3 pt-2"><button onClick={() => removeCat(editingId)} className="py-3 px-4 bg-red-50 text-red-500 font-bold rounded-xl active:scale-95 border border-red-200"><Icon name="Trash" size={18}/></button><button onClick={saveEdit} className="flex-1 py-3 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-md flex justify-center items-center gap-2"><Icon name="Check" size={18}/> 確定儲存</button></div></div></div>)}</div></div>
+                <div className="fixed inset-0 z-[60] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[85vh] flex flex-col h-full"><div className="flex justify-between items-center mb-6 shrink-0"><button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X" size={24}/></button><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">管理類別</h3><button onClick={confirmSave} className="text-theme-accent font-bold"><Icon name="Check" size={24}/></button></div><div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar pb-24">{cats.map((cat, index) => (<div key={cat.id} draggable onDragStart={(e) => {dragItem.current = index; e.target.style.opacity = 0.5;}} onDragEnter={(e) => {dragOverItem.current = index;}} onDragEnd={(e) => {e.target.style.opacity=1; handleTouchEnd(e);}} onDragOver={(e) => e.preventDefault()} onTouchStart={(e) => handleTouchStart(e, index)} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} data-index={index} className="bg-theme-bg p-3 rounded-2xl border border-theme-border shadow-sm flex items-center justify-between group cursor-grab active:cursor-grabbing transition-transform"><div className="flex items-center gap-3 flex-1 min-w-0 pointer-events-none"><div className="text-theme-sub/50 px-2 py-1 bg-black/5 rounded"><Icon name="Grip" size={16}/></div><div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm shrink-0" style={{backgroundColor: cat.color}}><Icon name={cat.icon} size={18}/></div><div className="font-bold text-theme-text truncate">{cat.label}</div></div><button onClick={(e) => { e.stopPropagation(); startEdit(cat); }} className="p-3 text-theme-sub hover:text-theme-accent bg-theme-card rounded-xl shadow-sm border border-theme-border/50 transition-colors ml-2 z-10"><Icon name="Edit" size={16}/></button></div>))} <button onClick={addNew} className="w-full py-4 border-2 border-dashed border-theme-sub/50 rounded-2xl text-theme-sub font-bold hover:bg-theme-bg hover:text-theme-accent transition-colors flex justify-center items-center gap-2 mt-4"><Icon name="Plus"/> 新增類別</button></div>{editingId && (<div className="absolute bottom-0 left-0 right-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] border-t border-theme-border animate-[slideUp_0.2s] z-20"><div className="flex justify-between items-center mb-4"><h4 className="font-bold text-theme-text">編輯類別</h4><button onClick={() => setEditingId(null)} className="text-theme-sub"><Icon name="X" size={20}/></button></div><div className="space-y-4"><input type="text" value={editLabel} onChange={e=>setEditLabel(e.target.value)} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent" placeholder="類別名稱"/><div><label className="text-xs font-bold text-theme-sub uppercase mb-2 block">圖示</label><div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">{availableIcons.map(ic => (<button key={ic} onClick={()=>setEditIcon(ic)} className={`p-3 rounded-xl border shrink-0 transition-all ${editIcon === ic ? 'bg-theme-accent/10 border-theme-accent text-theme-accent' : 'bg-theme-bg border-theme-border text-theme-sub'}`}><Icon name={ic} size={20}/></button>))}</div></div><div className="flex items-center gap-4"><label className="text-xs font-bold text-theme-sub uppercase">顏色</label><input type="color" value={editColor} onChange={e=>setEditColor(e.target.value)} className="w-12 h-12 rounded-lg cursor-pointer border-2 border-white shadow-sm p-0 bg-transparent"/></div><div className="flex gap-3 pt-2"><button onClick={() => removeCat(editingId)} className="py-3 px-4 bg-red-50 text-red-500 font-bold rounded-xl active:scale-95 border border-red-200"><Icon name="Trash" size={18}/></button><button onClick={saveEdit} className="flex-1 py-3 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-md flex justify-center items-center gap-2"><Icon name="Check" size={18}/> 確定儲存</button></div></div></div>)}</div></div>
             );
         };
 
@@ -464,29 +507,126 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             );
         };
 
+        // 🌟 首頁視圖：實裝「總資產隱藏」功能與「防止溢出」設定
         const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
+            const [hideAssets, setHideAssets] = useState(true); // 預設隱藏資產
+            
             const petDef = user.pet ? PET_DEFINITIONS[user.pet.id] : null; const petLevel = user.pet?.level || 1; const petExp = user.pet?.exp || 0; const petExpReq = petLevel * 100;
             const startRename = () => { if(user.pet) { setNewPetName(user.pet.name); setIsRenamingPet(true); } }; const confirmRename = () => { if (newPetName && onRenamePet) { onRenamePet(newPetName); setIsRenamingPet(false); } };
             
             return (
-                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto pb-24 no-scrollbar p-4 space-y-4">
-                    <div className="flex justify-between items-start mb-2 px-2"><div><div className="text-[10px] text-theme-sub font-bold uppercase mb-1">{t('total_wealth')}</div><div className="flex flex-col gap-1">{Object.keys(balancesByCurrency).length > 0 ? ( Object.entries(balancesByCurrency).map(([currency, total]) => ( <div key={currency} className="text-2xl font-mono font-bold text-theme-text leading-none flex items-end gap-1">{total.toLocaleString()} <span className="text-xs text-theme-sub pb-0.5">{currency}</span></div> )) ) : (<div className="text-2xl font-mono font-bold text-theme-text leading-none">0</div>)}</div></div></div>
-                    <div className="flex flex-col gap-4">
-                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-visible group hover:shadow-md transition-all"><div className="absolute top-0 right-0 w-32 h-32 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div><div className="absolute top-4 right-4 z-20"><LevelBadge level={user.level} /></div><div className="flex items-center justify-between relative z-10"><div className="flex flex-col justify-between h-32"><h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Smile" size={14}/> {t('character')}</h3><div className="mt-2"><div className="font-bold text-lg text-theme-text">{user.name}</div><div className="text-xs text-theme-sub font-mono bg-theme-bg/50 px-2 py-1 rounded inline-block border border-theme-border/50 mt-1">EXP: {user.exp % (user.level*100)}/{user.level*100}</div><div className="mt-1 text-[10px] text-theme-sub bg-theme-bg px-1 rounded inline-block">{TITLES_LIST.find(t => t.id === user.title)?.name || user.title}</div></div></div><div className="h-32 w-32 flex items-end justify-center relative"><div className="absolute bottom-1 w-16 h-4 bg-black/10 rounded-[100%] blur-sm"></div><PixelAvatar gender={user.gender} colors={user.appearance} equipped={equipped} className="w-32 h-32 drop-shadow-md filter contrast-110"/></div></div></div>
-                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all"><div className="absolute top-0 left-0 w-32 h-32 bg-green-400/5 rounded-full blur-2xl -translate-x-10 -translate-y-10"></div><div className="flex items-center justify-between flex-row-reverse relative z-10"><div className="flex flex-col justify-between h-32 items-end text-right w-1/2"><h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Egg" size={14}/> {t('guardian')}</h3>{petDef ? (<div className="mt-2 flex flex-col items-end w-full">{isRenamingPet ? (<div className="flex items-center gap-1 mb-1"><input value={newPetName} onChange={e => setNewPetName(e.target.value)} className="w-full text-right bg-theme-bg border border-theme-border rounded px-1 text-sm font-bold outline-none" autoFocus /><button onClick={confirmRename} className="text-green-500"><Icon name="Check" size={14}/></button></div>) : (<div className="font-bold text-lg text-theme-text flex items-center gap-2 truncate max-w-full">{user.pet?.name} <button onClick={startRename} className="opacity-30 hover:opacity-100 shrink-0"><Icon name="Edit" size={12}/></button></div>)}<div className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200 mt-1 mb-2">Lv.{petLevel} (Stage {petDef.stage})</div><div className="w-full"><div className="flex justify-between text-[8px] font-mono text-theme-sub mb-0.5"><span>EXP</span><span>{petExp}/{petExpReq}</span></div><div className="w-full h-1.5 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border/50"><div className="h-full bg-green-400 transition-all duration-500" style={{width: `${Math.min(100, (petExp/petExpReq)*100)}%`}}></div></div></div></div>) : (<div className="text-sm text-theme-sub mt-4">No Pet Selected</div>)}</div><div className="h-32 w-32 flex items-center justify-center flex-col relative">{petDef ? (<><div className="w-24 h-24 relative flex items-center justify-center"><PixelPet id={petDef.id} className="w-full h-full drop-shadow-lg" /></div><div className="absolute bottom-4 w-12 h-3 bg-black/10 rounded-[100%] blur-sm"></div></>) : (<Icon name="Egg" size={48} className="text-theme-sub opacity-30"/>)}</div></div></div>
+                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden pb-24 no-scrollbar p-4 space-y-4">
+                    <div className="flex justify-between items-start mb-2 px-2">
+                        <div>
+                            <div className="text-[10px] text-theme-sub font-bold uppercase mb-1 flex items-center gap-2">
+                                {t('total_wealth')}
+                                <button onClick={() => setHideAssets(!hideAssets)} className="text-theme-sub hover:text-theme-accent transition-colors">
+                                    <Icon name={hideAssets ? "EyeOff" : "Eye"} size={14} />
+                                </button>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                {Object.keys(balancesByCurrency).length > 0 ? ( 
+                                    Object.entries(balancesByCurrency).map(([currency, total]) => ( 
+                                        <div key={currency} className="text-2xl font-mono font-bold text-theme-text leading-none flex items-end gap-1">
+                                            {hideAssets ? '******' : total.toLocaleString()} <span className="text-xs text-theme-sub pb-0.5">{currency}</span>
+                                        </div> 
+                                    )) 
+                                ) : (
+                                    <div className="text-2xl font-mono font-bold text-theme-text leading-none">{hideAssets ? '******' : '0'}</div>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex justify-between items-center px-1 mt-2"><h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3><button onClick={() => onOpenAsset()} className="text-[10px] bg-theme-accent text-white px-3 py-1.5 rounded-full flex items-center gap-1 shadow-md active:scale-95 transition-transform hover:brightness-110"><Icon name="Plus" size={10}/> {t('add')}</button></div>
+                    
+                    <div className="flex flex-col gap-4">
+                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10 pointer-events-none"></div>
+                            <div className="absolute top-4 right-4 z-20"><LevelBadge level={user.level} /></div>
+                            <div className="flex items-center justify-between relative z-10">
+                                <div className="flex flex-col justify-between h-32">
+                                    <h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Smile" size={14}/> {t('character')}</h3>
+                                    <div className="mt-2">
+                                        <div className="font-bold text-lg text-theme-text">{user.name}</div>
+                                        <div className="text-xs text-theme-sub font-mono bg-theme-bg/50 px-2 py-1 rounded inline-block border border-theme-border/50 mt-1">EXP: {user.exp % (user.level*100)}/{user.level*100}</div>
+                                        <div className="mt-1 text-[10px] text-theme-sub bg-theme-bg px-1 rounded inline-block">{TITLES_LIST.find(t => t.id === user.title)?.name || user.title}</div>
+                                    </div>
+                                </div>
+                                <div className="h-32 w-32 flex items-end justify-center relative">
+                                    <div className="absolute bottom-1 w-16 h-4 bg-black/10 rounded-[100%] blur-sm"></div>
+                                    <PixelAvatar gender={user.gender} colors={user.appearance} equipped={equipped} className="w-32 h-32 drop-shadow-md filter contrast-110"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
+                            <div className="absolute top-0 left-0 w-32 h-32 bg-green-400/5 rounded-full blur-2xl -translate-x-10 -translate-y-10 pointer-events-none"></div>
+                            <div className="flex items-center justify-between flex-row-reverse relative z-10">
+                                <div className="flex flex-col justify-between h-32 items-end text-right w-1/2">
+                                    <h3 className="text-xs font-bold text-theme-sub flex items-center gap-1 mb-2"><Icon name="Egg" size={14}/> {t('guardian')}</h3>
+                                    {petDef ? (
+                                        <div className="mt-2 flex flex-col items-end w-full">
+                                            {isRenamingPet ? (
+                                                <div className="flex items-center gap-1 mb-1 w-full justify-end">
+                                                    <input value={newPetName} onChange={e => setNewPetName(e.target.value)} className="w-full max-w-[100px] text-right bg-theme-bg border border-theme-border rounded px-1 text-sm font-bold outline-none" autoFocus />
+                                                    <button onClick={confirmRename} className="text-green-500"><Icon name="Check" size={14}/></button>
+                                                </div>
+                                            ) : (
+                                                <div className="font-bold text-lg text-theme-text flex items-center justify-end gap-2 w-full">
+                                                    <span className="truncate max-w-[100px]">{user.pet?.name}</span>
+                                                    <button onClick={startRename} className="opacity-30 hover:opacity-100 shrink-0"><Icon name="Edit" size={12}/></button>
+                                                </div>
+                                            )}
+                                            <div className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200 mt-1 mb-2">Lv.{petLevel} (Stage {petDef.stage})</div>
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-[8px] font-mono text-theme-sub mb-0.5"><span>EXP</span><span>{petExp}/{petExpReq}</span></div>
+                                                <div className="w-full h-1.5 bg-theme-bg rounded-full overflow-hidden shadow-inner border border-theme-border/50">
+                                                    <div className="h-full bg-green-400 transition-all duration-500" style={{width: `${Math.min(100, (petExp/petExpReq)*100)}%`}}></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (<div className="text-sm text-theme-sub mt-4">No Pet Selected</div>)}
+                                </div>
+                                <div className="h-32 w-32 flex items-center justify-center flex-col relative">
+                                    {petDef ? (<><div className="w-24 h-24 relative flex items-center justify-center"><PixelPet id={petDef.id} className="w-full h-full drop-shadow-lg" /></div><div className="absolute bottom-4 w-12 h-3 bg-black/10 rounded-[100%] blur-sm"></div></>) : (<Icon name="Egg" size={48} className="text-theme-sub opacity-30"/>)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center px-1 mt-2">
+                        <h3 className="font-bold opacity-60 text-sm flex items-center gap-1 text-theme-text"><Icon name="Wallet" size={14}/> {t('assets')}</h3>
+                        <button onClick={() => onOpenAsset()} className="text-[10px] bg-theme-accent text-white px-3 py-1.5 rounded-full flex items-center gap-1 shadow-md active:scale-95 transition-transform hover:brightness-110"><Icon name="Plus" size={10}/> {t('add')}</button>
+                    </div>
+                    
                     <div className="space-y-3 pb-20">
                         {accounts.length === 0 && <div className="text-center py-8 text-theme-sub opacity-50 text-xs bg-theme-card rounded-xl border-2 border-dashed border-theme-border">{t('no_assets')}</div>}
-                        {accounts.map((acc) => (<div key={acc.id} onClick={() => onOpenAsset(acc)} className="glass p-4 rounded-2xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-[6px] border-l-theme-accent shadow-sm hover:shadow-md bg-theme-card"><div className="flex items-center gap-4"><div className="w-10 h-10 rounded-full bg-theme-bg flex items-center justify-center text-theme-accent border border-theme-border shadow-sm"><Icon name={acc.type === 'card' ? 'CreditCard' : acc.type === 'bank' ? 'Landmark' : 'Wallet'} size={20}/></div><div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub font-bold tracking-wider">{t(acc.type)}</div></div></div><div className="text-right"><div className="font-mono font-bold text-theme-text text-lg">{acc.balance.toLocaleString()}</div><div className="text-[10px] opacity-60 font-bold text-theme-sub">{acc.currency}</div></div></div>))}
+                        {accounts.map((acc) => (
+                            <div key={acc.id} onClick={() => onOpenAsset(acc)} className="glass p-4 rounded-2xl flex justify-between items-center active:scale-95 transition-transform cursor-pointer border-l-[6px] border-l-theme-accent shadow-sm hover:shadow-md bg-theme-card">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-theme-bg flex items-center justify-center text-theme-accent border border-theme-border shadow-sm"><Icon name={acc.type === 'card' ? 'CreditCard' : acc.type === 'bank' ? 'Landmark' : 'Wallet'} size={20}/></div>
+                                    <div><div className="font-bold text-sm text-theme-text">{acc.name}</div><div className="text-[10px] opacity-60 uppercase text-theme-sub font-bold tracking-wider">{t(acc.type)}</div></div>
+                                </div>
+                                <div className="text-right">
+                                    <div className="font-mono font-bold text-theme-text text-lg">{hideAssets ? '****' : acc.balance.toLocaleString()}</div>
+                                    <div className="text-[10px] opacity-60 font-bold text-theme-sub">{acc.currency}</div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                     <button onClick={onOpenAdd} className="fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-theme-accent to-theme-text text-white rounded-full shadow-2xl flex items-center justify-center z-40 active:scale-95 transition-transform border-4 border-theme-bg animate-pop-in hover:shadow-theme-accent/50"><Icon name="Plus" size={28} strokeWidth={3}/></button>
                 </div>
             );
         };
+
+        // ==========================================
+        // 這是第二部分結尾，請回覆「繼續」獲取第三部分
+        // ==========================================
+// ==========================================
+        // ⬇️ 第三部分開始 (視圖與主程式) ⬇️
+        // ==========================================
 
         const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, purchaseHistory }) => {
             const t = (key) => translations[lang]?.[key] || key;
@@ -500,16 +640,16 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             const confirmBuy = () => { onBuy(previewItem); setBuySuccessId(previewItem.id); setShowConfirmModal(false); };
 
             return (
-                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative bg-[#2d1b1e] overflow-hidden">
-                    <div className="bg-[#3e2723] z-30 shadow-xl border-b-4 border-[#271c19] px-4 py-2 shrink-0 flex items-center justify-between text-[#efebe9]"><div className="flex items-center gap-3"><h3 className="font-bold text-lg text-[#ffecb3] flex items-center gap-2 font-pixel shadow-black drop-shadow-md"><Icon name="Shop" className="text-[#ffca28]" /> {t('equipment_shop')}</h3></div><div className="flex gap-2"><button onClick={() => setShowHistory(!showHistory)} className={`w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all active:scale-95 ${showHistory ? 'bg-[#ffca28] text-[#3e2723] border-[#ff6f00]' : 'bg-[#3e2723] text-[#bcaaa4] border-[#5d4037]'}`}><Icon name="Scroll" size={16} /></button><div className="flex items-center gap-2 bg-[#271c19] px-3 py-1 rounded-full border border-[#5d4037] shadow-inner min-w-[80px] justify-center"><Icon name="Coin" size={14} className="text-[#ffca28] drop-shadow-sm"/><span className="font-bold text-[#ffecb3] font-mono text-sm">{gold.toLocaleString()}</span></div></div></div>
-                    {!showHistory && (<div className="relative shrink-0 h-48 bg-[#1a1012] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden"><div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-yellow-500/10 blur-[60px] rounded-full pointer-events-none"></div><div className="relative z-10 scale-[1.5] transform translate-y-2 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={currentPreviewEquipped} className="w-32 h-32"/></div>{previewItem && ( <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity} text-white`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-2 font-pixel">{previewItem.name}</div></div> )}</div>)}
-                    {!showHistory && (<div className="bg-[#3e2723] border-b-4 border-[#271c19] px-2 pt-2 flex items-end gap-1 overflow-x-auto no-scrollbar shrink-0">{categories.map(cat => ( <button key={cat.id} onClick={() => setFilter(cat.id)} className={`group relative flex flex-col items-center justify-center min-w-[60px] h-12 pb-1 rounded-t-lg border-t-2 border-x-2 transition-all duration-200 ${filter === cat.id ? 'bg-[#2d1b1e] border-[#5d4037] text-[#ffca28] translate-y-[4px] z-10' : 'bg-[#4e342e] border-[#3e2723] text-[#a1887f] hover:bg-[#5d4037] hover:text-[#efebe9] mb-[4px]'}`}><Icon name={cat.icon} size={14} className={filter === cat.id ? 'drop-shadow-glow' : ''}/><span className="text-[9px] font-bold mt-0.5">{cat.label}</span></button> ))}</div>)}
-                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#2d1b1e] relative pb-28">
-                        {showHistory ? (<div className="p-4 space-y-3 bg-[#efebe9] min-h-full"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{item.cost} G</div></div></div>); })}</div>)}
+                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative bg-[#1a1012] overflow-hidden">
+                    <div className="bg-[#2d1b1e] z-30 shadow-xl border-b-4 border-[#3e2723] px-4 py-2 shrink-0 flex items-center justify-between text-[#efebe9]"><div className="flex items-center gap-3"><h3 className="font-bold text-lg text-[#ffecb3] flex items-center gap-2 font-pixel shadow-black drop-shadow-md"><Icon name="Shop" className="text-[#ffca28]" /> {t('equipment_shop')}</h3></div><div className="flex gap-2"><button onClick={() => setShowHistory(!showHistory)} className={`w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all active:scale-95 ${showHistory ? 'bg-[#ffca28] text-[#3e2723] border-[#ff6f00]' : 'bg-[#3e2723] text-[#bcaaa4] border-[#5d4037]'}`}><Icon name="Scroll" size={16} /></button><div className="flex items-center gap-2 bg-[#1a1012] px-3 py-1 rounded-full border border-[#5d4037] shadow-inner min-w-[80px] justify-center"><Icon name="Coin" size={14} className="text-[#ffca28] drop-shadow-sm"/><span className="font-bold text-[#ffecb3] font-mono text-sm">{gold.toLocaleString()}</span></div></div></div>
+                    {!showHistory && (<div className="relative shrink-0 h-48 bg-[#000000] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden"><div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-red-900/20 blur-[60px] rounded-full pointer-events-none"></div><div className="relative z-10 scale-[1.5] transform translate-y-2 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={currentPreviewEquipped} className="w-32 h-32"/></div>{previewItem && ( <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s] shadow-[0_0_10px_rgba(0,0,0,0.5)]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity}`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-2 font-pixel">{previewItem.name}</div></div> )}</div>)}
+                    {!showHistory && (<div className="bg-[#2d1b1e] border-b-4 border-[#1a1012] px-2 pt-2 flex items-end gap-1 overflow-x-auto no-scrollbar shrink-0">{categories.map(cat => ( <button key={cat.id} onClick={() => setFilter(cat.id)} className={`group relative flex flex-col items-center justify-center min-w-[60px] h-12 pb-1 rounded-t-lg border-t-2 border-x-2 transition-all duration-200 ${filter === cat.id ? 'bg-[#1a1012] border-[#5d4037] text-[#ffca28] translate-y-[4px] z-10' : 'bg-[#3e2723] border-[#2d1b1e] text-[#a1887f] hover:bg-[#4e342e] hover:text-[#efebe9] mb-[4px]'}`}><Icon name={cat.icon} size={14} className={filter === cat.id ? 'drop-shadow-glow' : ''}/><span className="text-[9px] font-bold mt-0.5">{cat.label}</span></button> ))}</div>)}
+                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#1a1012] relative pb-28">
+                        {showHistory ? (<div className="p-4 space-y-3 bg-[#efebe9] min-h-full"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{item.cost} G</div></div></div>); })}</div>)}
                     </div>
-                    {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (<div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]"><div className="bg-[#3e2723] border-2 border-[#5d4037] p-4 rounded-2xl shadow-2xl flex items-center gap-4 relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-50"></div><div className="flex-1 relative z-10"><div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div><div className="text-lg font-bold text-[#efebe9] font-pixel">{previewItem.name}</div><div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div></div><button onClick={handleBuyClick} disabled={gold < previewItem.cost} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] ${gold >= previewItem.cost ? 'bg-[#ffca28] text-[#3e2723] hover:brightness-110 border-b-4 border-[#ff6f00]' : 'bg-[#4e342e] text-[#8d6e63] border-b-4 border-[#3e2723] cursor-not-allowed'}`}><span>{gold >= previewItem.cost ? t('buy') : t('not_enough_gold')}</span><span className="text-[10px] opacity-80 font-mono">{previewItem.cost} G</span></button></div></div>)}
-                    {showConfirmModal && previewItem && (<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-[fadeIn_0.2s]"><div className="bg-[#2d1b1e] p-6 rounded-3xl shadow-2xl w-full max-w-xs border-2 border-[#5d4037] text-center relative animate-pop-in"><div className="w-16 h-16 bg-[#ffca28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#ffca28]"><Icon name="Coin" size={32} className="text-[#ffca28]"/></div><h3 className="font-bold text-lg mb-2 text-[#efebe9]">{t('confirm_buy_title')}</h3><p className="text-sm text-[#a1887f] mb-6 px-2">{t('confirm_buy_msg').replace('{cost}', previewItem.cost).replace('{item}', previewItem.name)}</p><div className="flex gap-3"><button onClick={() => setShowConfirmModal(false)} className="flex-1 py-3 rounded-xl font-bold text-[#a1887f] bg-[#3e2723] border border-[#5d4037] active:scale-95">{t('cancel')}</button><button onClick={confirmBuy} className="flex-1 py-3 rounded-xl font-bold text-[#3e2723] bg-[#ffca28] shadow-lg active:scale-95 border-b-4 border-[#ff6f00]">{t('confirm')}</button></div></div></div>)}
-                    {buySuccessId && <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"><div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-xl animate-bounce flex items-center gap-2"><Icon name="Check" /> {t('buy_success')}</div></div>}
+                    {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (<div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s]"><div className="bg-[#2d1b1e] border-2 border-[#5d4037] p-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center gap-4 relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-30"></div><div className="flex-1 relative z-10"><div className="text-xs text-[#a1887f] font-bold uppercase mb-0.5">{t('buy')}</div><div className="text-lg font-bold text-[#ffecb3] font-pixel drop-shadow-sm">{previewItem.name}</div><div className="text-[10px] text-[#8d6e63] italic truncate">{previewItem.desc}</div></div><button onClick={handleBuyClick} disabled={gold < previewItem.cost} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] ${gold >= previewItem.cost ? 'bg-gradient-to-b from-[#ffca28] to-[#ff8f00] text-[#3e2723] hover:brightness-110 border-b-4 border-[#e65100]' : 'bg-[#3e2723] text-[#8d6e63] border-b-4 border-[#1a1012] cursor-not-allowed'}`}><span>{gold >= previewItem.cost ? t('buy') : t('not_enough_gold')}</span><span className="text-[10px] opacity-80 font-mono">{previewItem.cost} G</span></button></div></div>)}
+                    {showConfirmModal && previewItem && (<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]"><div className="bg-[#2d1b1e] p-6 rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.8)] w-full max-w-xs border-2 border-[#5d4037] text-center relative animate-pop-in"><div className="w-16 h-16 bg-[#ffca28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#ffca28] shadow-[0_0_15px_rgba(255,202,40,0.3)]"><Icon name="Coin" size={32} className="text-[#ffca28]"/></div><h3 className="font-bold text-lg mb-2 text-[#efebe9]">{t('confirm_buy_title')}</h3><p className="text-sm text-[#a1887f] mb-6 px-2">{t('confirm_buy_msg').replace('{cost}', previewItem.cost).replace('{item}', previewItem.name)}</p><div className="flex gap-3"><button onClick={() => setShowConfirmModal(false)} className="flex-1 py-3 rounded-xl font-bold text-[#a1887f] bg-[#1a1012] border border-[#5d4037] active:scale-95 hover:bg-[#3e2723] transition-colors">{t('cancel')}</button><button onClick={confirmBuy} className="flex-1 py-3 rounded-xl font-bold text-[#3e2723] bg-gradient-to-b from-[#ffca28] to-[#ff8f00] shadow-lg active:scale-95 border-b-4 border-[#e65100]">{t('confirm')}</button></div></div></div>)}
+                    {buySuccessId && <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"><div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(34,197,94,0.5)] animate-bounce flex items-center gap-2"><Icon name="Check" /> {t('buy_success')}</div></div>}
                 </div>
             );
         };
@@ -576,7 +716,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             );
         };
 
-        const QuestView = ({ activeQuests, onClaim, lang, translations }) => {
+        const QuestView = ({ activeQuests, onClaim, lang, translations, mainCurrency }) => {
             const [subView, setSubView] = useState('daily');
             const t = (key) => translations[lang]?.[key] || key;
             const filteredQuests = activeQuests.filter(q => q.type === subView);
@@ -586,13 +726,12 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                     <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">{['main','daily','challenge'].map(type => (<button key={type} onClick={() => setSubView(type)} className={`px-5 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 whitespace-nowrap ${subView === type ? 'bg-theme-accent text-white' : 'bg-theme-bg text-theme-sub'}`}>{t(type)}</button>))}</div>
                     {filteredQuests.length === 0 && <div className="text-center py-10 opacity-50 flex flex-col items-center"><Icon name="Check" size={48} className="mb-2"/><span className="text-xs">暫無任務</span></div>}
                     {filteredQuests.map(q => (
-                        <div key={q.uniqueId || q.id} className={`p-5 rounded-3xl relative active:scale-95 transition-transform border border-transparent shadow-sm ${q.isCompleted ? (q.isClaimed ? 'opacity-60 grayscale bg-theme-bg' : 'bg-gradient-to-r from-yellow-50 to-white border-yellow-300 shadow-md') : 'glass border-theme-border'}`}><div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2 items-center"><span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 rounded font-bold">+{q.exp} EXP</span>{q.coins > 0 && <span className="text-[10px] bg-yellow-100 text-yellow-700 px-1.5 rounded font-bold">+{q.coins} G</span>}</div></div><p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p><div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress)}/{q.target}</span></div>{q.isCompleted && !q.isClaimed && <button onClick={() => onClaim(q)} className="w-full py-2 bg-theme-accent text-white rounded-xl font-bold text-xs shadow-md animate-bounce">{t('claim')}</button>}{q.isClaimed && <div className="text-center text-[10px] font-bold text-theme-sub border-t border-theme-border pt-2 mt-2">{t('claimed')}</div>}</div>
+                        <div key={q.uniqueId || q.id} className={`p-5 rounded-3xl relative active:scale-95 transition-transform border border-transparent shadow-sm ${q.isCompleted ? (q.isClaimed ? 'opacity-60 grayscale bg-theme-bg' : 'bg-gradient-to-r from-yellow-50 to-white border-yellow-300 shadow-md') : 'glass border-theme-border'}`}><div className="flex justify-between"><h4 className="font-bold text-theme-text">{q.title}</h4><div className="flex gap-2 items-center"><span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 rounded font-bold">+{q.exp} EXP</span>{q.coins > 0 && <span className="text-[10px] bg-yellow-100 text-yellow-700 px-1.5 rounded font-bold">+{q.coins} G</span>}</div></div><p className="text-xs opacity-60 mt-1 mb-3 text-theme-sub">{q.desc}</p><div className="flex items-center gap-2 mb-2"><div className="flex-1 h-3 bg-theme-bg rounded-full overflow-hidden border border-theme-border/50"><div className="h-full bg-theme-accent transition-all" style={{width: `${Math.min(100, (q.progress/q.target)*100)}%`}}></div></div><span className="text-[10px] font-bold text-theme-sub">{Math.floor(q.progress).toLocaleString()} / {q.target.toLocaleString()}</span></div>{q.isCompleted && !q.isClaimed && <button onClick={() => onClaim(q)} className="w-full py-2 bg-theme-accent text-white rounded-xl font-bold text-xs shadow-md animate-bounce">{t('claim')}</button>}{q.isClaimed && <div className="text-center text-[10px] font-bold text-theme-sub border-t border-theme-border pt-2 mt-2">{t('claimed')}</div>}</div>
                     ))}
                 </div>
             );
         };
 
-        // 🌟 嚴格防呆版的成就頁面
         const AchievementView = ({ achievements, unlockedIds = [], currentStats = {}, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const safeUnlockedIds = Array.isArray(unlockedIds) ? unlockedIds : [];
@@ -835,20 +974,55 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
             const t = (key) => TRANSLATIONS[lang]?.[key] || key;
             const addLog = (type, msg, currentLogs) => { const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; return [newLog, ...currentLogs].slice(0, 50); };
             
-            const currentStats = useMemo(() => ({ 
-                txCount: safeData.transactions.length, 
-                expenseTotal: safeData.transactions.filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), 
-                balance: safeData.accounts.reduce((a,c) => a + c.balance, 0), 
-                questCount: safeData.claimedQuests.length, 
-                level: safeData.user.level, 
-                itemCount: safeData.inventory.length, 
-                friendCount: safeData.friends.length 
-            }), [safeData]);
+            // 獨立計算統計數據，確保符合主貨幣匯率
+            const currentStats = useMemo(() => {
+                const rate = EXCHANGE_RATES[mainCurrency] || 1;
+                const convertedExpense = safeData.transactions.filter(t => t.type === 'expense').reduce((a,c) => {
+                    const acc = safeData.accounts.find(ac => ac.id == c.accountId);
+                    const txRate = acc ? (EXCHANGE_RATES[acc.currency] || 1) : 1;
+                    return a + (c.amount / txRate) * rate;
+                }, 0);
+                const convertedBalance = safeData.accounts.reduce((a,c) => {
+                    const accRate = EXCHANGE_RATES[c.currency] || 1;
+                    return a + (c.balance / accRate) * rate;
+                }, 0);
+
+                return { 
+                    txCount: safeData.transactions.length, 
+                    expenseTotal: convertedExpense, 
+                    balance: convertedBalance, 
+                    questCount: safeData.claimedQuests.length, 
+                    level: safeData.user.level, 
+                    itemCount: safeData.inventory.length, 
+                    friendCount: safeData.friends.length 
+                };
+            }, [safeData, mainCurrency]);
 
             const checkUnlockables = (currentData) => {
-                const stats = { txCount: (currentData.transactions||[]).length, expenseTotal: (currentData.transactions||[]).filter(t => t.type === 'expense').reduce((a,c) => a + c.amount, 0), balance: (currentData.accounts||[]).reduce((a,c) => a + c.balance, 0), questCount: (currentData.claimedQuests||[]).length, level: currentData.user.level, itemCount: (currentData.inventory||[]).length, friendCount: (currentData.friends||[]).length };
+                const rate = EXCHANGE_RATES[mainCurrency] || 1;
+                const convertedExpense = (currentData.transactions||[]).filter(t => t.type === 'expense').reduce((a,c) => {
+                    const acc = (currentData.accounts||[]).find(ac => ac.id == c.accountId);
+                    const txRate = acc ? (EXCHANGE_RATES[acc.currency] || 1) : 1;
+                    return a + (c.amount / txRate) * rate;
+                }, 0);
+                const convertedBalance = (currentData.accounts||[]).reduce((a,c) => {
+                    const accRate = EXCHANGE_RATES[c.currency] || 1;
+                    return a + (c.balance / accRate) * rate;
+                }, 0);
+
+                const stats = { 
+                    txCount: (currentData.transactions||[]).length, 
+                    expenseTotal: convertedExpense, 
+                    balance: convertedBalance, 
+                    questCount: (currentData.claimedQuests||[]).length, 
+                    level: currentData.user.level, 
+                    itemCount: (currentData.inventory||[]).length, 
+                    friendCount: (currentData.friends||[]).length 
+                };
+                
                 let newUser = { ...currentData.user, unlockedTitles: currentData.user.unlockedTitles || ['Novice'], unlockedAchievements: currentData.user.unlockedAchievements || [] }; 
                 let logs = [...(currentData.logs||[])]; let updated = false;
+                
                 TITLES_LIST.forEach(tTitle => { if (!newUser.unlockedTitles.includes(tTitle.id) && tTitle.check(stats, 1)) { newUser.unlockedTitles.push(tTitle.id); logs = addLog('system', `${t('log_sys_title')}: ${tTitle.name}`, logs); updated = true; } });
                 ACHIEVEMENTS_LIST.forEach(ach => {
                     if (!newUser.unlockedAchievements.includes(ach.id)) {
@@ -965,11 +1139,33 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                 }
             };
 
+            // 🌟 獨立計算：任務進度自動根據帳戶的貨幣換算成主貨幣
             const activeQuests = useMemo(() => {
-                const todayStr = new Date().toDateString(); const totalTxCount = safeData.transactions.length; const dailyTxCount = safeData.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length; const rate = EXCHANGE_RATES[mainCurrency] || 1; const totalExpenseVal = safeData.transactions.filter(t => t.type === 'expense').reduce((a,c)=>a+c.amount, 0); const totalAssetVal = safeData.accounts.reduce((a,c)=>a+c.balance, 0); const targetM2 = Math.floor(500 * rate); const targetC1 = Math.floor(10000 * rate); const targetC2 = Math.floor(50000 * rate);
+                const todayStr = new Date().toDateString(); 
+                const totalTxCount = safeData.transactions.length; 
+                const dailyTxCount = safeData.transactions.filter(t => new Date(t.date).toDateString() === todayStr).length; 
+                
+                const rate = EXCHANGE_RATES[mainCurrency] || 1; 
+                
+                const totalExpenseVal = safeData.transactions.filter(t => t.type === 'expense').reduce((a,c) => {
+                    const acc = safeData.accounts.find(ac => ac.id == c.accountId);
+                    const txRate = acc ? (EXCHANGE_RATES[acc.currency] || 1) : 1;
+                    return a + (c.amount / txRate) * rate;
+                }, 0); 
+                
+                const totalAssetVal = safeData.accounts.reduce((a,c) => {
+                    const accRate = EXCHANGE_RATES[c.currency] || 1;
+                    return a + (c.balance / accRate) * rate;
+                }, 0); 
+                
+                const targetM2 = Math.floor(500 * rate); 
+                const targetC1 = Math.floor(10000 * rate); 
+                const targetC2 = Math.floor(50000 * rate);
+                
                 const rawQuests = [{ id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 150, coins: 50, progress: 1, target: 1 }, { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 100, coins: 50, progress: dailyTxCount, target: 1 }, { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 200, coins: 100, progress: dailyTxCount, target: 3 }, { id: 'm1', type: 'main', title: '初次記帳', desc: '記錄第一筆消費', exp: 200, coins: 100, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, { id: 'm3', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 400, coins: 200, progress: totalTxCount, target: 10 }, { id: 'm2', type: 'main', title: '財務起步', desc: `累積消費 ${targetM2.toLocaleString()} ${mainCurrency}`, exp: 300, coins: 150, progress: totalExpenseVal, target: targetM2 }, { id: 'm4', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 200, coins: 100, progress: safeData.friends.length, target: 1 }, { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 500, coins: 300, progress: totalAssetVal, target: targetC1 }, { id: 'c2', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 500, progress: totalAssetVal, target: targetC2 }];
                 return rawQuests.map(q => ({ ...q, uniqueId: q.id, isClaimed: safeData.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target })).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [safeData.transactions, safeData.accounts, safeData.claimedQuests, mainCurrency, safeData.friends]);
+            
             const pendingQuestCount = activeQuests.filter(q => q.isCompleted && !q.isClaimed).length;
 
             if (authLoading) return <div className="h-[100dvh] w-full flex items-center justify-center bg-[#f8f9fa] text-xl font-bold font-pixel text-theme-text" data-theme={theme}>Loading...</div>;
@@ -1024,7 +1220,7 @@ appId: "1:804479578382:web:0882920513d9377998a75f"
                         {view === 'shop' && <ShopView gold={safeData.user.gold} inventory={safeData.inventory} equipped={safeData.equipped} user={safeData.user} onBuy={handleBuyItem} lang={lang} translations={TRANSLATIONS} purchaseHistory={safeData.purchaseHistory} />}
                         {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'journal' && <JournalView logs={safeData.logs} transactions={safeData.transactions} categories={safeData.categories} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
-                        {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} mainCurrency={mainCurrency} />}
                         {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={safeData.user.unlockedAchievements} currentStats={currentStats} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'social' && <SocialView user={safeData.user} friends={safeData.friends} onAddFriend={handleAddFriend} onRemoveFriend={handleRemoveFriend} onLikeFriend={handleLikeFriend} onUpdateId={handleUpdateId} lang={lang} translations={TRANSLATIONS} />}
                     </main>
