@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>RPGMoney - Ultimate Boss Edition v3</title>
+    <title>RPGMoney - Ultimate Boss Edition v4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -199,8 +199,19 @@
             'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' },
             'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' }
         };
-const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。', boss: '首領', fight: '討伐', victory: '討伐成功！', defeat: '敗北...', cp_req: '建議戰力', boss_desc: '挑戰強大的首領獲取豐厚獎勵！(每日限3次)', reward: '獎勵', battling: '戰鬥中...' }
+
+        const TRANSLATIONS = { 
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。', boss: '首領', fight: '討伐', victory: '討伐成功！', defeat: '敗北...', cp_req: '建議戰力', boss_desc: '挑戰強大的首領獲取豐厚獎勵！(每日限3次)', reward: '獎勵', battling: '戰鬥中...', talent: '天賦', talent_tree: '天賦樹', enhance: '裝備強化', talent_points: '天賦點', enhance_success: '強化成功！', max_level: '已達最高等級' }
+        };
+
+        const TALENT_TREE = {
+            'str_up': { id: 'str_up', name: '力量強化', icon: 'Sword', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總力量', cost: 1 },
+            'vit_up': { id: 'vit_up', name: '體質強化', icon: 'Heart', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總體質', cost: 1 },
+            'agi_up': { id: 'agi_up', name: '敏捷強化', icon: 'Zap', maxLevel: 10, reqLevel: 5, reqTalent: null, desc: '每級提升 5% 總敏捷', cost: 1 },
+            'int_up': { id: 'int_up', name: '智力強化', icon: 'Gem', maxLevel: 10, reqLevel: 5, reqTalent: null, desc: '每級提升 5% 總智力', cost: 1 },
+            'combat_master': { id: 'combat_master', name: '戰鬥大師', icon: 'Crown', maxLevel: 5, reqLevel: 20, reqTalent: 'str_up', reqTalentLevel: 5, desc: '每級提升 10% 總攻擊力', cost: 2 },
+            'immortal_body': { id: 'immortal_body', name: '不滅之軀', icon: 'Shield', maxLevel: 5, reqLevel: 20, reqTalent: 'vit_up', reqTalentLevel: 5, desc: '每級提升 10% 總生命值', cost: 2 },
+            'divine_power': { id: 'divine_power', name: '神之領域', icon: 'Sun', maxLevel: 3, reqLevel: 50, reqTalent: 'combat_master', reqTalentLevel: 5, desc: '每級提升 15% 所有基礎屬性', cost: 5 }
         };
 
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
@@ -251,7 +262,7 @@ const TRANSLATIONS = {
             'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>,
             'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>,
             
-            /* 🌟 新增背飾與王之寶庫 🌟 */
+            /* 🌟 背飾與王之寶庫 🌟 */
             'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>,
             'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>,
             'b_magic_circle': () => <g style={{animation: 'spin 8s linear infinite', transformOrigin: 'center', transformBox: 'fill-box', filter:'drop-shadow(0 0 5px #38bdf8)'}}><circle cx="16" cy="16" r="14" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2"/><circle cx="16" cy="16" r="11" fill="none" stroke="#7dd3fc" strokeWidth="0.5"/><path d="M16 2 L25.9 23 L2 9.5 H30 L6.1 23 Z" fill="none" stroke="#38bdf8" strokeWidth="0.5" opacity="0.8"/></g>,
@@ -355,7 +366,7 @@ const TRANSLATIONS = {
             { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 45000, icon: 'Eye', stats: { int: 300, vit: 200, str: 100 }, desc: "掌控生死，駕馭陰陽的崇高之眼。" },
             { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 50000, icon: 'Eye', stats: { atk: 500, cri: 50 }, desc: "能看見萬物的「死之線」，一擊必殺。" },
 
-            /* 🌟 新增的傳說級背飾與王之寶庫 🌟 */
+            /* 🌟 傳說級背飾與王之寶庫 🌟 */
             { id: 'b_magic_circle', name: '全知魔法陣', type: 'back', rarity: 'epic', cost: 18000, icon: 'Sun', stats: { int: 300, vit: 100 }, desc: "不斷旋轉的奧術陣列，提供源源不絕的魔力。" },
             { id: 'b_six_wings', name: '神聖六翼', type: 'back', rarity: 'legendary', cost: 55000, icon: 'Cloud', stats: { agi: 300, int: 200, vit: 200 }, desc: "六片閃耀著神聖光芒的羽翼，翱翔於天際。" },
             { id: 'w_gate_of_babylon', name: '王之寶庫', type: 'mainHand', rarity: 'legendary', cost: 150000, icon: 'Key', stats: { str: 999, agi: 200, int: 500 }, desc: "連通黃金之都的鑰匙，能無盡地射出寶具！" },
@@ -370,16 +381,20 @@ const TRANSLATIONS = {
             { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！" }
         ];
 
-        // 🌟 提升難度的 BOSS 列表
+        // 🌟 提升難度的 BOSS 列表 (新增極限強敵)
         const BOSS_LIST = [
             { id: 'boss_slime', name: '巨型史萊姆', cpReq: 500, hp: 5000, icon: 'Cloud', color: '#60a5fa', exp: 300, gold: 150, dropRate: 0.2, dropItem: 's2', rewardDesc: '300 EXP / 150 G / 掉落: 紅蓮兜帽', desc: '在平原上稱霸的巨大史萊姆，動作緩慢但極具彈性。' },
             { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', rewardDesc: '1200 EXP / 800 G / 掉落: 戰斧', desc: '帶領著無數哥布林的國王，手持生鏽卻致命的巨斧。' },
             { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Ghost', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', rewardDesc: '5000 EXP / 4000 G / 掉落: 不滅龍甲', desc: '沉睡於深淵的古老魔龍，擁有毀滅天地的吐息。' },
-            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', rewardDesc: '15000 EXP / 12000 G / 掉落: 直死之魔眼', desc: '企圖毀滅世界的終極存在，散發出令人絕望的氣息。' },
-            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', rewardDesc: '5萬 EXP / 5萬 G / 掉落: 王之寶庫', desc: '掌握世間一切財寶的絕對王者，散發著無法直視的黃金光芒。' }
+            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', rewardDesc: '1.5萬 EXP / 1.2萬 G / 掉落: 直死之魔眼', desc: '企圖毀滅世界的終極存在，散發出令人絕望的氣息。' },
+            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', rewardDesc: '5萬 EXP / 5萬 G / 掉落: 王之寶庫', desc: '掌握世間一切財寶的絕對王者，散發著無法直視的黃金光芒。' },
+            
+            /* 新增挑戰極限首領 */
+            { id: 'boss_titan', name: '遠古泰坦', cpReq: 1500000, hp: 5000000, icon: 'Shield', color: '#78350f', exp: 100000, gold: 80000, dropRate: 0.05, dropItem: 'r6', rewardDesc: '10萬 EXP / 8萬 G / 掉落: 凶獸魂環', desc: '支撐天地的遠古巨人，擁有無法撼動的絕對防禦。' },
+            { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 10000000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', rewardDesc: '25萬 EXP / 15萬 G / 掉落: 百萬年魂環', desc: '潛伏在無底深淵的巨獸，能掀起吞噬一切的滅世海嘯。' },
+            { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 30000000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', rewardDesc: '80萬 EXP / 50萬 G / 掉落: 神級魂環', desc: '掌控殺戮法則的神明，其劍意可斬斷星辰，非凡人可敵。' }
         ];
-
-        const ACHIEVEMENTS_LIST = [
+const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -459,7 +474,8 @@ const TRANSLATIONS = {
             };
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
-const PixelAvatar = ({ gender, colors, equipped, className }) => {
+
+        const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
             
@@ -481,7 +497,7 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                         </g>
                     ))}
                     
-                    {/* 特別處理王之寶庫特效 (放在角色後方) */}
+                    {/* 王之寶庫特效 */}
                     {mainHand?.id === 'w_gate_of_babylon' && (
                         <g className="origin-center z-0 animate-float-fast" style={{transformBox: 'fill-box'}}>
                             {GEAR_VISUALS['w_gate_of_babylon']()}
@@ -529,7 +545,7 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                             {offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}
                         </g>
 
-                        {/* 王之寶庫特殊處理: 不拿在手上，拿著一把金色小鑰匙 */}
+                        {/* 武器 */}
                         <g transform={gender==='male' ? "scale(1.3) translate(-4, -4)" : "scale(1.3) translate(-4, -3)"} className="animate-weapon-sway origin-bottom-left" style={{ transformBox: 'fill-box' }}>
                             {!mainHand ? (<><path fill="#5d4037" d="M23 18h4v2h-4z" /><path fill="#ffb300" d="M24 17h2v4h-2z" /><path fill="#e0e0e0" d="M26 18h6v2h-6z" /></>) : (mainHand.id === 'w_gate_of_babylon' ? <path fill="#fbbf24" d="M24 16h2v4h-2z" /> : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 17h4v10h-4z" />))}
                         </g>
@@ -576,11 +592,12 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                             {availableItems.map(item => { 
                                 const VisualIcon = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; 
                                 const eqStatus = isEquipped(item);
+                                const displayName = item.enhanceLevel > 0 ? `${item.name} +${item.enhanceLevel}` : item.name;
                                 return (
                                     <button key={item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 transition-all hover:bg-theme-card rarity-${item.rarity} ${eqStatus ? 'border-theme-accent shadow-md scale-[1.02]' : 'bg-theme-bg border-transparent'}`}>
                                         <div className="flex items-center gap-3">
                                             <div className="w-12 h-12 rounded-xl bg-white/50 shadow-sm flex items-center justify-center border border-white/30 overflow-hidden">{VisualIcon ? <svg viewBox="0 0 32 32" className="w-10 h-10 pixel-icon"><VisualIcon/></svg> : <Icon name={item.icon} className="pixel-icon"/>}</div>
-                                            <div className="text-left"><div className="font-bold text-theme-text">{item.name}</div><div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div></div>
+                                            <div className="text-left"><div className="font-bold text-theme-text">{displayName}</div><div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div></div>
                                         </div>
                                         {eqStatus && <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><Icon name="Check" size={10} /> 裝著中</div>}
                                     </button>
@@ -835,7 +852,255 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
             );
         };
 
-        const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp }) => {
+        const ForgeView = ({ gold, inventory, onEnhance, lang, translations }) => {
+            const t = (key) => translations[lang]?.[key] || key;
+            const [selectedItem, setSelectedItem] = useState(null);
+            const [isEnhancing, setIsEnhancing] = useState(false);
+            const [enhanceSuccess, setEnhanceSuccess] = useState(false);
+
+            const getEnhanceCost = (item) => {
+                const baseRarityCost = { 'common': 100, 'rare': 500, 'epic': 2000, 'legendary': 10000 };
+                const currentLvl = item.enhanceLevel || 0;
+                const base = baseRarityCost[item.rarity] || 100;
+                return Math.floor(base * Math.pow(1.5, currentLvl));
+            };
+
+            const handleEnhance = () => {
+                if (!selectedItem) return;
+                const cost = getEnhanceCost(selectedItem);
+                if (gold < cost) return alert(t('not_enough_gold'));
+                
+                setIsEnhancing(true);
+                setEnhanceSuccess(false);
+
+                // 模擬鍛造動畫與狀態更新
+                setTimeout(() => {
+                    onEnhance(selectedItem, cost);
+                    // 本地預覽也同步升級
+                    setSelectedItem(prev => ({...prev, enhanceLevel: (prev.enhanceLevel || 0) + 1}));
+                    setIsEnhancing(false);
+                    setEnhanceSuccess(true);
+                    setTimeout(() => setEnhanceSuccess(false), 2000);
+                }, 1500);
+            };
+
+            // 修正編譯錯誤的渲染函式
+            const renderVisual = (item, isLarge) => {
+                if (!item) return null;
+                const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id];
+                if (Visual) {
+                    return <svg viewBox="0 0 32 32" className={`${isLarge ? 'w-16 h-16' : 'w-8 h-8'} pixel-icon`}><Visual/></svg>;
+                }
+                return <Icon name={item.icon} size={isLarge ? 40 : 20}/>;
+            };
+
+            return (
+                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col bg-theme-bg relative overflow-hidden">
+                    <div className="p-4 bg-theme-card border-b border-theme-border flex justify-between items-center shadow-sm z-10 shrink-0">
+                        <h2 className="text-xl font-bold font-pixel flex items-center gap-2 text-theme-text"><Icon name="Hammer" className="text-theme-accent"/> {t('forge')}</h2>
+                        <div className="flex items-center gap-2 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-200"><Icon name="Coin" size={14} className="text-yellow-600"/><span className="font-bold text-yellow-800 font-mono text-sm">{gold.toLocaleString()}</span></div>
+                    </div>
+                    
+                    <div className="flex-1 overflow-y-auto p-4 pb-24 custom-scrollbar smooth-scroll flex flex-col md:flex-row gap-4">
+                        {/* 左側：背包列表 */}
+                        <div className="w-full md:w-1/2 bg-theme-card rounded-2xl shadow-sm border border-theme-border p-3 flex flex-col">
+                            <h3 className="text-xs font-bold text-theme-sub uppercase mb-2 px-1">選擇裝備</h3>
+                            <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
+                                {inventory.length === 0 && <div className="text-center py-10 opacity-50 text-xs">背包空空如也</div>}
+                                {inventory.map(item => {
+                                    const isSelected = selectedItem?.uniqueId ? selectedItem.uniqueId === item.uniqueId : selectedItem?.id === item.id;
+                                    const eLvl = item.enhanceLevel || 0;
+                                    return (
+                                        <button key={item.uniqueId || item.id} onClick={() => setSelectedItem(item)} className={`w-full p-2 rounded-xl flex items-center gap-3 border-2 transition-all ${isSelected ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent hover:bg-theme-bg'}`}>
+                                            <div className="w-10 h-10 bg-theme-bg rounded-lg flex items-center justify-center border border-theme-border">
+                                                {renderVisual(item, false)}
+                                            </div>
+                                            <div className="text-left flex-1 min-w-0">
+                                                <div className="font-bold text-sm text-theme-text truncate flex items-center gap-1">
+                                                    {item.name} {eLvl > 0 && <span className="text-theme-accent text-[10px] bg-theme-accent/10 px-1 rounded">+{eLvl}</span>}
+                                                </div>
+                                                <div className={`text-[9px] uppercase rarity-text-${item.rarity}`}>{item.rarity}</div>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* 右側：鍛造面板 */}
+                        <div className="w-full md:w-1/2 bg-theme-card rounded-2xl shadow-sm border border-theme-border p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[300px]">
+                            {!selectedItem ? (
+                                <div className="text-center opacity-50"><Icon name="Hammer" size={48} className="mx-auto mb-2 text-theme-sub"/><span className="text-sm font-bold text-theme-sub">請選擇要強化的裝備</span></div>
+                            ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-between relative z-10">
+                                    <div className="text-center w-full">
+                                        <div className="text-sm font-bold text-theme-sub mb-1">{selectedItem.name} {selectedItem.enhanceLevel ? `+${selectedItem.enhanceLevel}` : ''}</div>
+                                        <div className="flex items-center justify-center gap-4 my-6">
+                                            <div className={`w-20 h-20 rounded-2xl bg-theme-bg flex items-center justify-center border-4 rarity-${selectedItem.rarity} shadow-lg relative ${isEnhancing ? 'animate-shake' : ''}`}>
+                                                {renderVisual(selectedItem, true)}
+                                                {isEnhancing && <div className="absolute inset-0 bg-yellow-400/30 animate-ping rounded-xl"></div>}
+                                            </div>
+                                            <Icon name="ArrowDown" className="-rotate-90 text-theme-sub opacity-50" size={24}/>
+                                            <div className="w-20 h-20 rounded-2xl bg-theme-bg flex items-center justify-center border-4 border-theme-accent shadow-[0_0_15px_rgba(var(--accent-color),0.5)] relative">
+                                                <div className="drop-shadow-glow">{renderVisual(selectedItem, true)}</div>
+                                                <div className="absolute -top-2 -right-2 bg-theme-accent text-white text-[10px] font-bold px-1.5 rounded-full shadow">+{(selectedItem.enhanceLevel || 0) + 1}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="w-full bg-theme-bg rounded-xl p-4 border border-theme-border mb-4">
+                                        <h4 className="text-[10px] font-bold text-theme-sub uppercase mb-2 text-center">能力提升預覽 (提升 10%)</h4>
+                                        <div className="grid grid-cols-2 gap-2 text-sm font-mono font-bold">
+                                            {Object.entries(selectedItem.stats || {}).map(([s, val]) => {
+                                                const currentVal = Math.floor(val * Math.pow(1.1, selectedItem.enhanceLevel || 0));
+                                                const nextVal = Math.floor(val * Math.pow(1.1, (selectedItem.enhanceLevel || 0) + 1));
+                                                return (
+                                                    <div key={s} className="flex justify-between items-center bg-white p-2 rounded shadow-sm border border-theme-border/50">
+                                                        <span className="text-theme-sub">{s.toUpperCase()}</span>
+                                                        <div className="flex items-center gap-1"><span>{currentVal}</span><Icon name="ArrowDown" className="-rotate-90 text-theme-accent" size={10}/><span className="text-theme-accent">{nextVal}</span></div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {selectedItem.enhanceLevel >= 15 ? (
+                                        <div className="w-full py-4 text-center text-theme-accent font-bold bg-theme-accent/10 rounded-2xl border-2 border-theme-accent">{t('max_level')}</div>
+                                    ) : (
+                                        <button onClick={handleEnhance} disabled={isEnhancing || gold < getEnhanceCost(selectedItem)} className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg flex flex-col items-center justify-center transition-all ${gold >= getEnhanceCost(selectedItem) && !isEnhancing ? 'bg-theme-accent text-white active:scale-95 hover:brightness-110' : 'bg-gray-300 text-gray-500 cursor-not-allowed border-none'}`}>
+                                            <span>{isEnhancing ? '鍛造中...' : '進行強化'}</span>
+                                            {!isEnhancing && <span className="text-[10px] font-mono bg-black/20 px-2 rounded mt-1">{getEnhanceCost(selectedItem)} G</span>}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                            {isEnhancing && <div className="absolute inset-0 bg-black/50 z-20 flex items-center justify-center backdrop-blur-sm"><Icon name="Hammer" size={64} className="text-white animate-bounce drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]"/></div>}
+                            {enhanceSuccess && <div className="absolute inset-0 bg-theme-accent/20 z-20 flex items-center justify-center backdrop-blur-sm animate-[fadeOut_2s]"><div className="bg-theme-card p-4 rounded-2xl shadow-2xl border-2 border-theme-accent flex items-center gap-2 text-theme-accent font-bold animate-pop-in"><Icon name="CheckCircle" size={24}/> {t('enhance_success')}</div></div>}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const TalentView = ({ user, onUpgradeTalent, lang, translations }) => {
+            const t = (key) => translations[lang]?.[key] || key;
+            const [selectedTalent, setSelectedTalent] = useState(null);
+            
+            // 計算天賦點
+            const totalTP = Math.max(0, user.level - 1);
+            const userTalents = user.talents || {};
+            const usedTP = Object.entries(userTalents).reduce((sum, [id, lvl]) => {
+                const def = TALENT_TREE[id];
+                return sum + (lvl * (def ? def.cost : 1));
+            }, 0);
+            const availableTP = totalTP - usedTP;
+
+            const checkCanUpgrade = (def) => {
+                if (user.level < def.reqLevel) return false;
+                if (def.reqTalent && (userTalents[def.reqTalent] || 0) < def.reqTalentLevel) return false;
+                const currentLvl = userTalents[def.id] || 0;
+                if (currentLvl >= def.maxLevel) return false;
+                if (availableTP < def.cost) return false;
+                return true;
+            };
+
+            return (
+                <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col bg-theme-bg relative overflow-hidden">
+                    <div className="p-4 bg-theme-glass backdrop-blur-md border-b border-theme-border z-10 shrink-0 shadow-sm flex justify-between items-center">
+                        <h2 className="text-xl font-bold font-pixel flex items-center gap-2 text-theme-text"><Icon name="Sun" className="text-theme-accent"/> {t('talent_tree')}</h2>
+                        <div className="bg-theme-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">可用 TP: {availableTP}</div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-4 pb-24 smooth-scroll relative">
+                        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none"></div>
+                        <div className="flex flex-col items-center gap-8 relative z-10 pt-4">
+                            {/* 第一層 */}
+                            <div className="flex gap-4 sm:gap-10">
+                                {['str_up', 'vit_up'].map(id => {
+                                    const def = TALENT_TREE[id]; const lvl = userTalents[id] || 0; const canUp = checkCanUpgrade(def);
+                                    return (
+                                        <div key={id} onClick={() => setSelectedTalent(def)} className={`relative flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${selectedTalent?.id === id ? 'scale-110 drop-shadow-[0_0_15px_rgba(var(--accent-color),0.5)]' : ''}`}>
+                                            <div className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg relative z-10 transition-colors ${lvl > 0 ? 'bg-theme-accent border-theme-accent text-white' : canUp ? 'bg-theme-card border-theme-accent text-theme-accent animate-pulse-slow' : 'bg-theme-bg border-theme-sub/50 text-theme-sub/50 grayscale'}`}>
+                                                <Icon name={def.icon} size={28}/>
+                                                <div className="absolute -bottom-2 bg-theme-card text-theme-text text-[10px] font-bold px-2 py-0.5 rounded-full border border-theme-border shadow">{lvl}/{def.maxLevel}</div>
+                                            </div>
+                                            <span className="text-[10px] font-bold mt-3 bg-theme-bg/80 px-1 rounded">{def.name}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* 箭頭連線 */}
+                            <div className="w-full flex justify-center opacity-30"><Icon name="ArrowDown" size={32} /></div>
+
+                            {/* 第二層 */}
+                            <div className="flex gap-4 sm:gap-10">
+                                {['agi_up', 'int_up', 'combat_master', 'immortal_body'].map(id => {
+                                    const def = TALENT_TREE[id]; const lvl = userTalents[id] || 0; const canUp = checkCanUpgrade(def);
+                                    return (
+                                        <div key={id} onClick={() => setSelectedTalent(def)} className={`relative flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${selectedTalent?.id === id ? 'scale-110 drop-shadow-[0_0_15px_rgba(var(--accent-color),0.5)]' : ''}`}>
+                                            <div className={`w-14 h-14 rounded-full border-4 flex items-center justify-center shadow-lg relative z-10 transition-colors ${lvl > 0 ? 'bg-theme-accent border-theme-accent text-white' : canUp ? 'bg-theme-card border-theme-accent text-theme-accent animate-pulse-slow' : 'bg-theme-bg border-theme-sub/50 text-theme-sub/50 grayscale'}`}>
+                                                <Icon name={def.icon} size={24}/>
+                                                <div className="absolute -bottom-2 bg-theme-card text-theme-text text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-theme-border shadow">{lvl}/{def.maxLevel}</div>
+                                            </div>
+                                            <span className="text-[9px] font-bold mt-3 bg-theme-bg/80 px-1 rounded max-w-[60px] text-center">{def.name}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* 箭頭連線 */}
+                            <div className="w-full flex justify-center opacity-30"><Icon name="ArrowDown" size={32} /></div>
+
+                            {/* 頂點天賦 */}
+                            <div className="flex gap-10">
+                                {['divine_power'].map(id => {
+                                    const def = TALENT_TREE[id]; const lvl = userTalents[id] || 0; const canUp = checkCanUpgrade(def);
+                                    return (
+                                        <div key={id} onClick={() => setSelectedTalent(def)} className={`relative flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${selectedTalent?.id === id ? 'scale-110 drop-shadow-[0_0_20px_rgba(250,204,21,0.8)]' : ''}`}>
+                                            <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center shadow-2xl relative z-10 transition-colors ${lvl > 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 border-yellow-200 text-white' : canUp ? 'bg-theme-card border-yellow-400 text-yellow-500 animate-pulse' : 'bg-theme-bg border-theme-sub/50 text-theme-sub/50 grayscale'}`}>
+                                                <Icon name={def.icon} size={36}/>
+                                                <div className="absolute -bottom-2 bg-theme-card text-theme-text text-xs font-bold px-3 py-0.5 rounded-full border border-theme-border shadow-md">{lvl}/{def.maxLevel}</div>
+                                            </div>
+                                            <span className="text-xs font-bold mt-4 text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full border border-yellow-300 shadow-sm">{def.name}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+
+                    {selectedTalent && (
+                        <div className="absolute bottom-[80px] left-4 right-4 bg-theme-card rounded-2xl shadow-2xl border-2 border-theme-accent p-4 animate-[slideUp_0.3s] z-30">
+                            <button onClick={() => setSelectedTalent(null)} className="absolute top-2 right-2 text-theme-sub hover:text-theme-text"><Icon name="X" size={16}/></button>
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-theme-accent/10 text-theme-accent flex items-center justify-center shrink-0 border border-theme-accent/30"><Icon name={selectedTalent.icon} size={24}/></div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-lg text-theme-text">{selectedTalent.name}</h3>
+                                    <p className="text-xs text-theme-sub mt-1">{selectedTalent.desc}</p>
+                                    
+                                    <div className="mt-3 space-y-1">
+                                        <div className={`text-[10px] font-bold ${user.level >= selectedTalent.reqLevel ? 'text-green-500' : 'text-red-500'}`}>需求角色等級: {selectedTalent.reqLevel} (目前 {user.level})</div>
+                                        {selectedTalent.reqTalent && (
+                                            <div className={`text-[10px] font-bold ${(userTalents[selectedTalent.reqTalent] || 0) >= selectedTalent.reqTalentLevel ? 'text-green-500' : 'text-red-500'}`}>前置天賦: {TALENT_TREE[selectedTalent.reqTalent].name} Lv.{selectedTalent.reqTalentLevel}</div>
+                                        )}
+                                        <div className="text-[10px] font-bold text-blue-500">消耗 TP: {selectedTalent.cost}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={() => { if(checkCanUpgrade(selectedTalent)) onUpgradeTalent(selectedTalent.id, selectedTalent.cost); }} 
+                                disabled={!checkCanUpgrade(selectedTalent)} 
+                                className={`w-full mt-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${checkCanUpgrade(selectedTalent) ? 'bg-theme-accent text-white shadow-md active:scale-95' : 'bg-theme-bg text-theme-sub border border-theme-border cursor-not-allowed'}`}
+                            >
+                                <Icon name="ArrowUp" size={16}/> {(userTalents[selectedTalent.id] || 0) >= selectedTalent.maxLevel ? '已達最高等級' : '升級天賦'}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [isEditing, setIsEditing] = useState(false);
             
@@ -844,13 +1109,14 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                 const isMulti = (slotData.slot === 'back' || slotData.slot === 'spiritRing') && Array.isArray(equipped[slotData.slot]) && equipped[slotData.slot].length > 1;
                 
                 if (!item) { return ( <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 border-dashed border-theme-sub/40 bg-black/5 flex flex-col items-center justify-center relative transition-all cursor-pointer hover:bg-black/10 active:scale-95" onClick={() => onEquipSlot(slotData.slot)}><div className="absolute text-xl text-theme-sub/30 font-mono top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">+</div><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm">{t(slotData.name)}</div></div> ); }
-                return ( <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all cursor-pointer hover:scale-105 active:scale-95 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}><Icon name={item.icon} size={16} className="text-theme-text pixel-icon sm:w-5 sm:h-5"/><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm flex items-center">{item.name.substring(0,4)}{isMulti && <span className="bg-theme-accent text-white px-0.5 ml-0.5 rounded text-[6px]">+{equipped[slotData.slot].length}</span>}</div></div> );
+                const eLvl = item.enhanceLevel || 0;
+                return ( <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 bg-theme-card flex flex-col items-center justify-center shadow-md relative transition-all cursor-pointer hover:scale-105 active:scale-95 rarity-${item.rarity}`} onClick={() => onEquipSlot(slotData.slot)}><Icon name={item.icon} size={16} className="text-theme-text pixel-icon sm:w-5 sm:h-5"/><div className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 text-[8px] sm:text-[9px] font-bold text-theme-sub whitespace-nowrap bg-theme-bg/90 px-1 rounded-sm shadow-sm flex items-center gap-0.5">{item.name.substring(0,4)}{eLvl > 0 && <span className="text-theme-accent text-[8px]">+{eLvl}</span>}{isMulti && <span className="bg-theme-accent text-white px-0.5 ml-0.5 rounded text-[6px]">+{equipped[slotData.slot].length}</span>}</div></div> );
             };
             const ProgressBar = ({ val, max, color }) => (<div className="h-1.5 w-full bg-black/10 rounded-full overflow-hidden mt-1"><div className={`h-full ${color}`} style={{ width: `${Math.min((val / max) * 100, 100)}%` }}></div></div>);
 
             return (
                 <div className="animate-[fadeIn_0.5s] flex flex-col p-4 pb-24 h-full overflow-hidden gap-3 smooth-scroll">
-                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border"><div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{cp.toLocaleString()}</span></div></div><div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div></div>
+                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border"><div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{Math.floor(cp).toLocaleString()}</span></div></div><div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div></div>
                     
                     <div className="flex-1 min-h-0 relative w-full flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-4 w-[120px] h-[20px] rounded-full bg-theme-accent/20 animate-pulse blur-xl"></div>
@@ -871,8 +1137,8 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
 
                     <div className="shrink-0 bg-theme-card p-4 rounded-3xl border border-theme-border shadow-sm relative z-40">
                         <h3 className="font-bold opacity-60 text-xs sm:text-sm flex items-center gap-1 text-theme-text mb-3"><Icon name="Sword" size={12}/> {t('character_stats')}</h3>
-                        <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{stat.val > 9999 ? '9999+' : stat.val}</span></div>))}</div>
-                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{derivedStats.hp}</span></div><ProgressBar val={derivedStats.hp} max={Math.max(2000, derivedStats.hp)} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{derivedStats.mp}</span></div><ProgressBar val={derivedStats.mp} max={Math.max(1000, derivedStats.mp)} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div></div>
+                        <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{Math.floor(stat.val)}</span></div>))}</div>
+                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{Math.floor(derivedStats.hp)}</span></div><ProgressBar val={derivedStats.hp} max={Math.max(2000, derivedStats.hp)} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{Math.floor(derivedStats.mp)}</span></div><ProgressBar val={derivedStats.mp} max={Math.max(1000, derivedStats.mp)} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.atk)}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.def)}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.cri)}%</div></div></div></div>
                     </div>
                     {isEditing && <AvatarEditor appearanceData={appearance} onSave={(newAppearanceData) => { onUpdateAppearance(newAppearanceData); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
@@ -1242,7 +1508,7 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const [authLoading, setAuthLoading] = useState(true);
 
             const [data, setData] = useState({
-                user: { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '', isIdChanged: false, bossAttempts: { date: '', count: 0 } },
+                user: { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '', isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {} },
                 inventory: [], equipped: {}, transactions: [], accounts: [{ id: 1, name: '錢包', currency: 'TWD', balance: 0, type: 'cash' }], logs: [], categories: DEFAULT_CATEGORIES, claimedQuests: [], purchaseHistory: [], friends: []
             });
             const [view, setView] = useState('home');
@@ -1278,7 +1544,7 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const [cloudSyncing, setCloudSyncing] = useState(false);
 
             const safeData = useMemo(() => {
-                const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false, bossAttempts: { date: '', count: 0 } };
+                const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {} };
                 const currentUser = data.user || defaultUser;
                 return {
                     ...data,
@@ -1290,7 +1556,8 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                         level: currentUser.level || 1,
                         exp: currentUser.exp || 0,
                         gold: currentUser.gold || 0,
-                        bossAttempts: currentUser.bossAttempts || { date: '', count: 0 }
+                        bossAttempts: currentUser.bossAttempts || { date: '', count: 0 },
+                        talents: currentUser.talents || {}
                     },
                     friends: Array.isArray(data.friends) ? data.friends : [],
                     categories: data.categories || DEFAULT_CATEGORIES,
@@ -1303,31 +1570,62 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                 };
             }, [data]);
 
-            // CP 計算包含多裝備疊加
+            // CP 計算包含多裝備疊加、裝備強化、與天賦樹加成
             const calculatedStats = useMemo(() => {
                 const level = safeData.user.level || 1;
-                const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
-                const totalStats = { ...baseStats };
+                const talents = safeData.user.talents || {};
                 
-                const calculateStats = (item) => {
+                // 1. 基礎屬性 (受到天賦影響)
+                const baseStr = 5 + level * 2;
+                const baseInt = 5 + level * 2;
+                const baseVit = 10 + level * 5;
+                const baseAgi = 5 + level * 2;
+                
+                let totalStats = { str: baseStr, int: baseInt, vit: baseVit, agi: baseAgi };
+                
+                // 2. 裝備加成 (受到鍛造等級影響)
+                const calculateItemStats = (item) => {
                     if(item && item.stats) { 
-                        if(item.stats.str) totalStats.str += item.stats.str; 
-                        if(item.stats.int) totalStats.int += item.stats.int; 
-                        if(item.stats.vit) totalStats.vit += item.stats.vit; 
-                        if(item.stats.agi) totalStats.agi += item.stats.agi; 
-                        if(item.stats.atk) totalStats.str += Math.floor(item.stats.atk / 5); 
-                        if(item.stats.cri) totalStats.agi += item.stats.cri * 5; 
+                        // 強化倍率：每級+10%
+                        const multi = Math.pow(1.1, item.enhanceLevel || 0);
+                        if(item.stats.str) totalStats.str += item.stats.str * multi; 
+                        if(item.stats.int) totalStats.int += item.stats.int * multi; 
+                        if(item.stats.vit) totalStats.vit += item.stats.vit * multi; 
+                        if(item.stats.agi) totalStats.agi += item.stats.agi * multi; 
+                        if(item.stats.atk) totalStats.str += Math.floor((item.stats.atk * multi) / 5); 
+                        if(item.stats.cri) totalStats.agi += (item.stats.cri * multi) * 5; 
                     }
                 };
                 Object.values(safeData.equipped || {}).forEach(val => { 
-                    if (Array.isArray(val)) { val.forEach(calculateStats); } else { calculateStats(val); }
+                    if (Array.isArray(val)) { val.forEach(calculateItemStats); } else { calculateItemStats(val); }
                 });
+
+                // 3. 天賦百分比加成
+                const strMulti = 1 + (talents['str_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
+                const vitMulti = 1 + (talents['vit_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
+                const agiMulti = 1 + (talents['agi_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
+                const intMulti = 1 + (talents['int_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
                 
-                const derivedStats = { hp: totalStats.vit * 20, mp: totalStats.int * 10, atk: totalStats.str * 5, def: totalStats.vit * 2, spd: totalStats.agi * 2, cri: Math.floor(totalStats.agi * 0.2) };
+                totalStats.str *= strMulti;
+                totalStats.vit *= vitMulti;
+                totalStats.agi *= agiMulti;
+                totalStats.int *= intMulti;
+
+                // 衍生屬性
+                const combatMasterMulti = 1 + (talents['combat_master'] || 0) * 0.10;
+                const immortalBodyMulti = 1 + (talents['immortal_body'] || 0) * 0.10;
+
+                const derivedStats = { 
+                    hp: (totalStats.vit * 20) * immortalBodyMulti, 
+                    mp: totalStats.int * 10, 
+                    atk: (totalStats.str * 5) * combatMasterMulti, 
+                    def: totalStats.vit * 2, 
+                    spd: totalStats.agi * 2, 
+                    cri: Math.floor(totalStats.agi * 0.2) 
+                };
                 const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
                 return { totalStats, derivedStats, cp };
-            }, [safeData.user.level, safeData.equipped]);
-
+            }, [safeData.user.level, safeData.user.talents, safeData.equipped]);
 
             useEffect(() => {
                 const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -1463,8 +1761,12 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const handleRenamePet = (newName) => { if (!safeData.user.pet) return; setData(prev => ({ ...prev, user: { ...prev.user, pet: { ...prev.user.pet, name: newName } } })); };
             const handleSetTitle = (titleId) => { setData(prev => ({ ...prev, user: { ...prev.user, title: titleId } })); };
             
+            // 修復購買物品的獨立識別碼 (避免多個同名物品在背包內共用參考)
             const handleBuyItem = (item) => {
-                const newGold = safeData.user.gold - item.cost; const newInventory = [...safeData.inventory, item]; const newLogs = addLog('system', `Bought: ${item.name}`, safeData.logs);
+                const newGold = safeData.user.gold - item.cost; 
+                const newItemInstance = { ...item, uniqueId: Date.now().toString() + Math.floor(Math.random()*1000), enhanceLevel: 0 };
+                const newInventory = [...safeData.inventory, newItemInstance]; 
+                const newLogs = addLog('system', `Bought: ${item.name}`, safeData.logs);
                 const newPurchase = { id: Date.now().toString(), itemId: item.id, itemName: item.name, cost: item.cost, date: new Date().toISOString() };
                 setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...safeData.purchaseHistory] }));
             };
@@ -1474,8 +1776,8 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                 if (item) { 
                     if (slot === 'back' || slot === 'spiritRing') {
                         const currentArray = Array.isArray(newEquipped[slot]) ? newEquipped[slot] : (newEquipped[slot] ? [newEquipped[slot]] : []);
-                        if (currentArray.some(i => i.id === item.id)) {
-                            newEquipped[slot] = currentArray.filter(i => i.id !== item.id);
+                        if (currentArray.some(i => i.uniqueId ? i.uniqueId === item.uniqueId : i.id === item.id)) {
+                            newEquipped[slot] = currentArray.filter(i => i.uniqueId ? i.uniqueId !== item.uniqueId : i.id !== item.id);
                         } else {
                             newEquipped[slot] = [...currentArray, item];
                         }
@@ -1489,6 +1791,38 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                 if ((slot !== 'back' && slot !== 'spiritRing') || !item) {
                     setEquipModalOpen(false); 
                 }
+            };
+
+            const handleEnhanceItem = (item, cost) => {
+                let newUser = { ...safeData.user, gold: safeData.user.gold - cost };
+                let updatedItem = null;
+                const newInventory = safeData.inventory.map(i => {
+                    if ((i.uniqueId && i.uniqueId === item.uniqueId) || (!i.uniqueId && i.id === item.id)) {
+                        updatedItem = { ...i, enhanceLevel: (i.enhanceLevel || 0) + 1 };
+                        return updatedItem;
+                    }
+                    return i;
+                });
+                
+                // 若裝備正在身上，同步更新身上的裝備狀態
+                let newEquipped = { ...safeData.equipped };
+                if (updatedItem) {
+                    for (const [slot, eqItem] of Object.entries(newEquipped)) {
+                        if (Array.isArray(eqItem)) {
+                            newEquipped[slot] = eqItem.map(ei => ((ei.uniqueId && ei.uniqueId === item.uniqueId) || (!ei.uniqueId && ei.id === item.id)) ? updatedItem : ei);
+                        } else if (eqItem && ((eqItem.uniqueId && eqItem.uniqueId === item.uniqueId) || (!eqItem.uniqueId && eqItem.id === item.id))) {
+                            newEquipped[slot] = updatedItem;
+                        }
+                    }
+                }
+
+                setData(prev => ({ ...prev, user: newUser, inventory: newInventory, equipped: newEquipped }));
+            };
+
+            const handleUpgradeTalent = (talentId, cost) => {
+                const newTalents = { ...safeData.user.talents };
+                newTalents[talentId] = (newTalents[talentId] || 0) + 1;
+                setData(prev => ({ ...prev, user: { ...prev.user, talents: newTalents } }));
             };
             
             const handleSaveTransaction = (tData) => {
@@ -1597,7 +1931,10 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                 if (isWin) {
                     newUser.exp += boss.exp;
                     newUser.gold += boss.gold;
-                    if (droppedItem) newInventory.push(droppedItem);
+                    if (droppedItem) {
+                        const newDrop = { ...droppedItem, uniqueId: Date.now().toString() + Math.floor(Math.random()*1000), enhanceLevel: 0 };
+                        newInventory.push(newDrop);
+                    }
                     newLogs = addLog('system', `Defeated ${boss.name}! +${boss.exp}EXP +${boss.gold}G`, newLogs);
                     
                     let leveledUp = false; 
@@ -1713,6 +2050,8 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                     <main className="flex-1 overflow-hidden relative z-10">
                         {view === 'home' && <HomeView user={safeData.user} equipped={safeData.equipped} accounts={safeData.accounts} onOpenAdd={() => setShowAddModal(true)} onOpenAsset={(acc) => { setEditingAccount(acc || null); setTempAccountName(acc?.name || ''); setTempAccountBalance(acc?.balance?.toString() || ''); setTempAccountCurrency(acc?.currency || mainCurrency); setTempAccountType(acc?.type || 'cash'); setAssetModalOpen(true); }} lang={lang} translations={TRANSLATIONS} onRenamePet={handleRenamePet} />}
                         {view === 'shop' && <ShopView gold={safeData.user.gold} inventory={safeData.inventory} equipped={safeData.equipped} user={safeData.user} onBuy={handleBuyItem} lang={lang} translations={TRANSLATIONS} purchaseHistory={safeData.purchaseHistory} />}
+                        {view === 'forge' && <ForgeView gold={safeData.user.gold} inventory={safeData.inventory} onEnhance={handleEnhanceItem} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'talent' && <TalentView user={safeData.user} onUpgradeTalent={handleUpgradeTalent} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} lang={lang} translations={TRANSLATIONS} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} cp={calculatedStats.cp} />}
                         {view === 'boss' && <BossView cp={calculatedStats.cp} onBattleEnd={handleBossBattleEnd} user={safeData.user} lang={lang} translations={TRANSLATIONS} inventory={safeData.inventory} />}
                         {view === 'journal' && <JournalView logs={safeData.logs} transactions={safeData.transactions} categories={safeData.categories} accounts={safeData.accounts} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
@@ -1721,16 +2060,18 @@ const PixelAvatar = ({ gender, colors, equipped, className }) => {
                         {view === 'social' && <SocialView user={safeData.user} equipped={safeData.equipped} friends={safeData.friends} onAddFriend={handleAddFriend} onRemoveFriend={handleRemoveFriend} onLikeFriend={handleLikeFriend} onUpdateId={handleUpdateId} lang={lang} translations={TRANSLATIONS} />}
                     </main>
                     
-                    <nav className="fixed bottom-0 w-full glass border-t border-theme-border px-0.5 sm:px-2 flex items-center z-30 h-20 rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.05)] shrink-0 pb-1 overflow-x-auto no-scrollbar">
+                    <nav className="fixed bottom-0 w-full glass border-t border-theme-border px-0.5 sm:px-2 flex items-center z-30 h-20 rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.05)] shrink-0 pb-1 overflow-x-auto custom-scrollbar">
                         {[{ id: 'home', icon: 'Home', label: t('adventure') },
                           { id: 'quests', icon: 'Scroll', label: t('quests'), badge: pendingQuestCount },
                           { id: 'shop', icon: 'Shop', label: t('shop') },
+                          { id: 'forge', icon: 'Hammer', label: t('forge') },
+                          { id: 'talent', icon: 'Sun', label: t('talent') },
                           { id: 'character', icon: 'Sword', label: t('character') },
                           { id: 'boss', icon: 'Ghost', label: t('boss') }, 
                           { id: 'social', icon: 'Users', label: t('social') },
                           { id: 'achievements', icon: 'Trophy', label: t('achievements') },
                           { id: 'journal', icon: 'Book', label: t('journal') }].map(nav => (
-                            <button key={nav.id} onClick={() => setView(nav.id)} className={`flex flex-col items-center justify-center gap-0.5 min-w-[42px] sm:min-w-[50px] flex-1 h-12 rounded-2xl transition-all duration-300 relative ${view === nav.id ? 'text-theme-accent -translate-y-4 bg-theme-card shadow-lg border border-theme-border scale-110 z-10' : 'text-theme-sub hover:text-theme-text opacity-70'}`}><Icon name={nav.icon} size={20} strokeWidth={view === nav.id ? 2.5 : 2} /><span className={`text-[8px] sm:text-[9px] font-bold transition-all duration-300 ${view === nav.id ? 'text-theme-accent scale-105' : 'text-theme-sub opacity-80 whitespace-nowrap'}`}>{nav.label}</span>{nav.badge ? <span className="absolute top-0 right-2 sm:right-3 w-3 h-3 bg-red-500 rounded-full border border-white animate-bounce"></span> : null}</button>
+                            <button key={nav.id} onClick={() => setView(nav.id)} className={`flex flex-col items-center justify-center gap-0.5 min-w-[50px] sm:min-w-[55px] flex-1 h-12 rounded-2xl transition-all duration-300 relative ${view === nav.id ? 'text-theme-accent -translate-y-4 bg-theme-card shadow-lg border border-theme-border scale-110 z-10' : 'text-theme-sub hover:text-theme-text opacity-70'}`}><Icon name={nav.icon} size={20} strokeWidth={view === nav.id ? 2.5 : 2} /><span className={`text-[8px] sm:text-[9px] font-bold transition-all duration-300 ${view === nav.id ? 'text-theme-accent scale-105' : 'text-theme-sub opacity-80 whitespace-nowrap'}`}>{nav.label}</span>{nav.badge ? <span className="absolute top-0 right-2 sm:right-3 w-3 h-3 bg-red-500 rounded-full border border-white animate-bounce"></span> : null}</button>
                         ))}
                     </nav>
 
