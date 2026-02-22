@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>RPGMoney - Ultimate Boss Edition v2</title>
+    <title>RPGMoney - Ultimate Boss Edition v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -27,6 +27,9 @@
                 'shimmer': 'shimmer 2s linear infinite', 'glow': 'glow 2s ease-in-out infinite alternate',
                 'spin-slow': 'spin 12s linear infinite', 'bounce-gentle': 'bounceGentle 2s infinite',
                 'badge-shine': 'badgeShine 3s infinite', 'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                'spin-reverse-slow': 'spinReverse 10s linear infinite',
+                'float-fast': 'float 2s ease-in-out infinite alternate',
+                'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
@@ -35,7 +38,8 @@
                 glow: { '0%': { filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.5))' }, '100%': { filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.9))' } },
                 bounceGentle: { '0%, 100%': { transform: 'translateY(0) scaleY(1)' }, '50%': { transform: 'translateY(-2px) scaleY(0.95)' } },
                 badgeShine: { '0%': { backgroundPosition: '200% center' }, '100%': { backgroundPosition: '-200% center' } },
-                shake: { '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' }, '20%, 80%': { transform: 'translate3d(2px, 0, 0)' }, '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' }, '40%, 60%': { transform: 'translate3d(4px, 0, 0)' } }
+                shake: { '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' }, '20%, 80%': { transform: 'translate3d(2px, 0, 0)' }, '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' }, '40%, 60%': { transform: 'translate3d(4px, 0, 0)' } },
+                spinReverse: { 'from': { transform: 'rotate(360deg)' }, 'to': { transform: 'rotate(0deg)' } }
             }
           }
         }
@@ -195,8 +199,7 @@
             'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' },
             'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' }
         };
-
-        const TRANSLATIONS = { 
+const TRANSLATIONS = { 
             zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。', boss: '首領', fight: '討伐', victory: '討伐成功！', defeat: '敗北...', cp_req: '建議戰力', boss_desc: '挑戰強大的首領獲取豐厚獎勵！(每日限3次)', reward: '獎勵', battling: '戰鬥中...' }
         };
 
@@ -247,8 +250,14 @@
             
             'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>,
             'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>,
+            
+            /* 🌟 新增背飾與王之寶庫 🌟 */
             'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>,
             'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>,
+            'b_magic_circle': () => <g style={{animation: 'spin 8s linear infinite', transformOrigin: 'center', transformBox: 'fill-box', filter:'drop-shadow(0 0 5px #38bdf8)'}}><circle cx="16" cy="16" r="14" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2"/><circle cx="16" cy="16" r="11" fill="none" stroke="#7dd3fc" strokeWidth="0.5"/><path d="M16 2 L25.9 23 L2 9.5 H30 L6.1 23 Z" fill="none" stroke="#38bdf8" strokeWidth="0.5" opacity="0.8"/></g>,
+            'b_six_wings': () => <g style={{animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite', transformOrigin: 'center', transformBox: 'fill-box', filter:'drop-shadow(0 0 8px #fef08a)'}}><path fill="#fef08a" d="M14 16 Q8 4 0 6 Q6 10 12 18 Z"/><path fill="#fef08a" d="M18 16 Q24 4 32 6 Q26 10 20 18 Z"/><path fill="#fde047" d="M12 18 Q2 12 -4 18 Q4 20 12 22 Z"/><path fill="#fde047" d="M20 18 Q30 12 36 18 Q28 20 20 22 Z"/><path fill="#fef08a" d="M12 22 Q4 24 2 32 Q8 26 14 24 Z"/><path fill="#fef08a" d="M20 22 Q28 24 30 32 Q24 26 18 24 Z"/></g>,
+            'w_gate_of_babylon': () => <g transform="translate(16, -10) scale(1.5)" style={{pointerEvents: 'none'}}><g style={{animation: 'pulse 3s infinite'}} transform="translate(0, 0)"><circle cx="0" cy="0" r="10" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="8" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 2"/><circle cx="0" cy="0" r="5" fill="#000" opacity="0.9"/><path d="M-12 0 L6 -2 L10 0 L6 2 Z" fill="#cbd5e1"/><path d="M-6 -3 L-4 -3 L-4 3 L-6 3 Z" fill="#b45309"/></g><g style={{animation: 'pulse 2.5s infinite'}} transform="translate(18, 15)"><circle cx="0" cy="0" r="8" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="6" fill="none" stroke="#fbbf24" strokeWidth="1.5"/><circle cx="0" cy="0" r="4" fill="#000" opacity="0.9"/><path d="M-10 0 L4 -1.5 L7 0 L4 1.5 Z" fill="#fecaca"/></g><g style={{animation: 'pulse 2s infinite'}} transform="translate(5, 25)"><circle cx="0" cy="0" r="12" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="10" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="2 4"/><circle cx="0" cy="0" r="6" fill="#000" opacity="0.9"/><path d="M-15 0 L8 -2.5 L12 0 L8 2.5 Z" fill="#a7f3d0"/></g></g>,
+
             'o_fire': () => <g className="animate-bounce" transform="translate(-2, 0)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>,
             'o_bluegrass': () => <g className="animate-float" transform="translate(0, 4)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>,
             
@@ -288,6 +297,12 @@
 
             'w_xuan': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M12 4 H20 V24 H12 Z" stroke="#374151" strokeWidth="1"/><path fill="#fbbf24" d="M14 6 H18 V8 H14 Z M14 20 H18 V22 H14 Z"/><path fill="#ef4444" d="M16 10 V18" stroke="#ef4444" strokeWidth="1"/></g>,
             'w_haotian': () => <g transform="rotate(45, 16, 16)"><path fill="#1f2937" d="M14 12 H18 V28 H14 Z"/><path fill="#4b5563" d="M8 4 H24 V12 H8 Z"/><path fill="#3b82f6" d="M10 6 H22 V10 H10 Z"/></g>,
+            
+            /* 王之寶庫圖示 */
+            'w_gate_of_babylon': () => <g><circle cx="16" cy="16" r="12" fill="#fef08a" opacity="0.3"/><circle cx="16" cy="16" r="8" fill="none" stroke="#fbbf24" strokeWidth="2"/><circle cx="16" cy="16" r="4" fill="#000"/><path d="M10 16 h12" stroke="#fff" strokeWidth="1"/></g>,
+            'b_magic_circle': () => <g><circle cx="16" cy="16" r="12" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2"/><path d="M16 4 L26 22 H6 Z" fill="none" stroke="#7dd3fc" strokeWidth="1"/></g>,
+            'b_six_wings': () => <g><path fill="#fef08a" d="M16 16 Q8 4 2 10 Q8 12 14 18 Z"/><path fill="#fef08a" d="M16 16 Q24 4 30 10 Q24 12 18 18 Z"/><path fill="#fde047" d="M16 16 Q4 12 2 18 Q8 20 14 22 Z"/><path fill="#fde047" d="M16 16 Q28 12 30 18 Q24 20 18 22 Z"/></g>,
+            
             'b_spider': () => <g><path fill="none" stroke="#7e22ce" strokeWidth="2" d="M16 16 Q6 8 4 16 M16 16 Q26 8 28 16 M16 18 Q6 14 2 22 M16 18 Q26 14 30 22 M16 20 Q8 20 6 28 M16 20 Q24 20 26 28"/></g>,
             'b_purplewings': () => <g><path fill="#a855f7" d="M16 16 Q8 4 2 12 Q8 12 12 20 Z"/><path fill="#a855f7" d="M16 16 Q24 4 30 12 Q24 12 20 20 Z"/><path fill="#c084fc" d="M16 16 Q10 8 6 12 Q10 12 13 18 Z"/><path fill="#c084fc" d="M16 16 Q22 8 26 12 Q22 12 19 18 Z"/></g>,
             'o_fire': () => <g><path fill="#34d399" d="M16 8 Q8 20 16 28 Q24 20 16 8 Z"/><path fill="#6ee7b7" d="M16 14 Q12 22 16 26 Q20 22 16 14 Z"/></g>,
@@ -340,6 +355,11 @@
             { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 45000, icon: 'Eye', stats: { int: 300, vit: 200, str: 100 }, desc: "掌控生死，駕馭陰陽的崇高之眼。" },
             { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 50000, icon: 'Eye', stats: { atk: 500, cri: 50 }, desc: "能看見萬物的「死之線」，一擊必殺。" },
 
+            /* 🌟 新增的傳說級背飾與王之寶庫 🌟 */
+            { id: 'b_magic_circle', name: '全知魔法陣', type: 'back', rarity: 'epic', cost: 18000, icon: 'Sun', stats: { int: 300, vit: 100 }, desc: "不斷旋轉的奧術陣列，提供源源不絕的魔力。" },
+            { id: 'b_six_wings', name: '神聖六翼', type: 'back', rarity: 'legendary', cost: 55000, icon: 'Cloud', stats: { agi: 300, int: 200, vit: 200 }, desc: "六片閃耀著神聖光芒的羽翼，翱翔於天際。" },
+            { id: 'w_gate_of_babylon', name: '王之寶庫', type: 'mainHand', rarity: 'legendary', cost: 150000, icon: 'Key', stats: { str: 999, agi: 200, int: 500 }, desc: "連通黃金之都的鑰匙，能無盡地射出寶具！" },
+
             { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。" },
             { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。" },
             { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。" },
@@ -350,13 +370,16 @@
             { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！" }
         ];
 
+        // 🌟 提升難度的 BOSS 列表
         const BOSS_LIST = [
-            { id: 'boss_slime', name: '巨型史萊姆', cpReq: 100, hp: 5000, icon: 'Cloud', color: '#60a5fa', exp: 300, gold: 150, dropRate: 0.2, dropItem: 's2', rewardDesc: '300 EXP / 150 G / 機率掉落: 紅蓮兜帽', desc: '在平原上稱霸的巨大史萊姆，動作緩慢但極具彈性。' },
-            { id: 'boss_goblin', name: '哥布林國王', cpReq: 500, hp: 15000, icon: 'Crown', color: '#166534', exp: 800, gold: 500, dropRate: 0.1, dropItem: 's14', rewardDesc: '800 EXP / 500 G / 機率掉落: 戰斧', desc: '帶領著無數哥布林的國王，手持生鏽卻致命的巨斧。' },
-            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 2000, hp: 80000, icon: 'Ghost', color: '#7e22ce', exp: 3000, gold: 2000, dropRate: 0.05, dropItem: 'a_body_dragon', rewardDesc: '3000 EXP / 2000 G / 機率掉落: 不滅龍甲', desc: '沉睡於深淵的古老魔龍，擁有毀滅天地的吐息。' },
-            { id: 'boss_demon', name: '滅世魔神', cpReq: 10000, hp: 300000, icon: 'Flame', color: '#ef4444', exp: 10000, gold: 8000, dropRate: 0.02, dropItem: 'e_mystic', rewardDesc: '10000 EXP / 8000 G / 機率掉落: 直死之魔眼', desc: '企圖毀滅世界的終極存在，散發出令人絕望的氣息。' }
+            { id: 'boss_slime', name: '巨型史萊姆', cpReq: 500, hp: 5000, icon: 'Cloud', color: '#60a5fa', exp: 300, gold: 150, dropRate: 0.2, dropItem: 's2', rewardDesc: '300 EXP / 150 G / 掉落: 紅蓮兜帽', desc: '在平原上稱霸的巨大史萊姆，動作緩慢但極具彈性。' },
+            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', rewardDesc: '1200 EXP / 800 G / 掉落: 戰斧', desc: '帶領著無數哥布林的國王，手持生鏽卻致命的巨斧。' },
+            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Ghost', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', rewardDesc: '5000 EXP / 4000 G / 掉落: 不滅龍甲', desc: '沉睡於深淵的古老魔龍，擁有毀滅天地的吐息。' },
+            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', rewardDesc: '15000 EXP / 12000 G / 掉落: 直死之魔眼', desc: '企圖毀滅世界的終極存在，散發出令人絕望的氣息。' },
+            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', rewardDesc: '5萬 EXP / 5萬 G / 掉落: 王之寶庫', desc: '掌握世間一切財寶的絕對王者，散發著無法直視的黃金光芒。' }
         ];
-const ACHIEVEMENTS_LIST = [
+
+        const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -389,7 +412,6 @@ const ACHIEVEMENTS_LIST = [
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
         ];
 
-        // 🌟 新增：稱號徽章展示組件 (帶有稀有度特效)
         const TitleBadge = ({ titleId, className = "" }) => {
             const titleDef = TITLES_LIST.find(t => t.id === titleId) || TITLES_LIST[0];
             return (
@@ -437,8 +459,7 @@ const ACHIEVEMENTS_LIST = [
             };
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
-
-        const PixelAvatar = ({ gender, colors, equipped, className }) => {
+const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
             
@@ -460,6 +481,13 @@ const ACHIEVEMENTS_LIST = [
                         </g>
                     ))}
                     
+                    {/* 特別處理王之寶庫特效 (放在角色後方) */}
+                    {mainHand?.id === 'w_gate_of_babylon' && (
+                        <g className="origin-center z-0 animate-float-fast" style={{transformBox: 'fill-box'}}>
+                            {GEAR_VISUALS['w_gate_of_babylon']()}
+                        </g>
+                    )}
+
                     <ellipse cx="16" cy="30" rx="10" ry="2" fill="rgba(0,0,0,0.15)" />
                     
                     <g className="animate-idle-breathe origin-bottom relative z-10">
@@ -500,8 +528,10 @@ const ACHIEVEMENTS_LIST = [
                         <g className="animate-weapon-sway origin-bottom-right" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
                             {offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}
                         </g>
+
+                        {/* 王之寶庫特殊處理: 不拿在手上，拿著一把金色小鑰匙 */}
                         <g transform={gender==='male' ? "scale(1.3) translate(-4, -4)" : "scale(1.3) translate(-4, -3)"} className="animate-weapon-sway origin-bottom-left" style={{ transformBox: 'fill-box' }}>
-                            {!mainHand ? (<><path fill="#5d4037" d="M23 18h4v2h-4z" /><path fill="#ffb300" d="M24 17h2v4h-2z" /><path fill="#e0e0e0" d="M26 18h6v2h-6z" /></>) : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 17h4v10h-4z" />)}
+                            {!mainHand ? (<><path fill="#5d4037" d="M23 18h4v2h-4z" /><path fill="#ffb300" d="M24 17h2v4h-2z" /><path fill="#e0e0e0" d="M26 18h6v2h-6z" /></>) : (mainHand.id === 'w_gate_of_babylon' ? <path fill="#fbbf24" d="M24 16h2v4h-2z" /> : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 17h4v10h-4z" />))}
                         </g>
                     </g>
                 </svg>
@@ -626,7 +656,8 @@ const ACHIEVEMENTS_LIST = [
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">選擇您的夥伴</h3><p className="text-xs text-theme-sub">這將是您冒險旅途的開始</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">未來進化路線預覽</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> 確定選擇</button></div></div></div>
             );
         };
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
+
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
@@ -768,7 +799,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                     {!showHistory && (<div className="relative shrink-0 h-48 bg-[#000000] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden"><div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-red-900/20 blur-[60px] rounded-full pointer-events-none"></div><div className="relative z-10 scale-[1.5] transform translate-y-2 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={currentPreviewEquipped} className="w-32 h-32"/></div>{previewItem && ( <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s] shadow-[0_0_10px_rgba(0,0,0,0.5)]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity}`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-2 font-pixel">{previewItem.name}</div></div> )}</div>)}
                     {!showHistory && (<div className="bg-[#2d1b1e] border-b-4 border-[#1a1012] px-2 pt-2 flex items-end gap-1 overflow-x-auto no-scrollbar shrink-0">{categories.map(cat => ( <button key={cat.id} onClick={() => setFilter(cat.id)} className={`group relative flex flex-col items-center justify-center min-w-[60px] h-12 pb-1 rounded-t-lg border-t-2 border-x-2 transition-all duration-200 ${filter === cat.id ? 'bg-[#1a1012] border-[#5d4037] text-[#ffca28] translate-y-[4px] z-10' : 'bg-[#3e2723] border-[#2d1b1e] text-[#a1887f] hover:bg-[#4e342e] hover:text-[#efebe9] mb-[4px]'}`}><Icon name={cat.icon} size={14} className={filter === cat.id ? 'drop-shadow-glow' : ''}/><span className="text-[9px] font-bold mt-0.5">{cat.label}</span></button> ))}</div>)}
                     
-                    {/* 加入 smooth-scroll 與 pb-32 以確保手機體驗極佳 */}
                     <div className="flex-1 overflow-y-auto smooth-scroll custom-scrollbar bg-[#1a1012] relative pb-32 pt-2 px-2">
                         {showHistory ? (<div className="p-2 space-y-3 bg-[#efebe9] min-h-full rounded-xl"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{item.cost} G</div></div></div>); })}</div>)}
                     </div>
@@ -869,7 +899,8 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 setRewardModal(null);
                 
                 setTimeout(() => {
-                    const winChance = Math.min(0.95, Math.max(0.05, cp / (boss.cpReq * 1.2)));
+                    // CP 差過大則無勝算，同等約 50% 勝率，壓倒性高則 95%
+                    const winChance = Math.min(0.95, Math.max(0.01, (cp / boss.cpReq) * 0.5));
                     const isWin = Math.random() < winChance;
                     
                     setIsBattling(false);
@@ -1272,7 +1303,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 };
             }, [data]);
 
-            // CP & Stat Calculation (Lifted up to App for sharing between CharacterView & BossView)
+            // CP 計算包含多裝備疊加
             const calculatedStats = useMemo(() => {
                 const level = safeData.user.level || 1;
                 const baseStats = { str: 5 + level * 2, int: 5 + level * 2, vit: 10 + level * 5, agi: 5 + level * 2 };
