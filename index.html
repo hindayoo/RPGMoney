@@ -71,7 +71,7 @@
         @keyframes glow-gold { 0% { border-color: #eab308; box-shadow: 0 0 10px #eab308; } 100% { border-color: #fde047; box-shadow: 0 0 25px #eab308, inset 0 0 10px #fde047; } }
         .aura-lv10 { filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5)); } .aura-lv30 { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); animation: glow 2s infinite alternate; } .aura-lv50 { filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.8)); animation: pulse-slow 2s infinite; }
 
-        /* 🌟 新增：魂環流光特效與脈衝動畫 */
+        /* 魂環流光特效與脈衝動畫 */
         @keyframes dash-flow { to { stroke-dashoffset: -30; } }
         .ring-flow { animation: dash-flow 0.8s linear infinite; }
         .ring-flow-reverse { animation: dash-flow 0.8s linear infinite reverse; }
@@ -84,7 +84,6 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // 🌟 請替換為您的 Firebase 參數
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -96,7 +95,6 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const auth = firebase.auth(); const db = firebase.firestore();
 
-        // 🌟 等級徽章元件
         const LevelBadge = ({ level, className = "" }) => {
             const safeLevel = level || 1;
             let style = "bg-gradient-to-br from-gray-400 to-gray-500 text-white border-gray-300 shadow-sm";
@@ -156,7 +154,8 @@
             Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
         };
         const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
-const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
+
+        const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
         const EXCHANGE_RATES = { 'TWD': 1, 'HKD': 0.24, 'JPY': 4.6 };
 
@@ -202,22 +201,15 @@ const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
             { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
 
-        // 🌟 輔助函數：產生斗羅大陸風格的立體流光魂環
-        // rx, ry 控制橢圓視角(3D感)，dasharray 控制流光斷點，duration 控制轉速
         const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle="") => (
             <g transform={`translate(0, ${cyOffset})`} className="ring-container" style={{...zIndexStyle}}>
-                {/* 淡淡的底色環 */}
                 <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} opacity="0.2" />
-                {/* 主流光 */}
                 <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} strokeDasharray={dash1} className="ring-flow" style={{ animationDuration: dur, filter: `drop-shadow(0 0 ${width*3}px ${color})` }} />
-                {/* 點綴逆向流光 */}
                 <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke="#ffffff" strokeWidth={width*0.6} strokeDasharray={dash2} className="ring-flow-reverse" style={{ animationDuration: `${parseFloat(dur)*1.5}s`, opacity: 0.8 }} />
             </g>
         );
 
-        // 🌟 3D 裝備視覺特效 (擴充斗羅、斗破、眼睛與多層次魂環)
         const GEAR_VISUALS = {
-            // -- 基礎裝備 --
             's1': () => <g transform="translate(-2, 2)"><path fill="#cfd8dc" d="M10 10 L14 6 L18 10 L14 26 Z" style={{filter:'drop-shadow(1px 1px 1px #94a3b8)'}}/><path fill="#5d4037" d="M12 24 H16 V28 H12 Z" /></g>, 
             's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
             's3': () => <g><path fill="#5d4037" d="M12 28h3v4h-3z M17 28h3v4h-3z" /><path fill="#78350f" d="M12 30h3v2h-3z M17 30h3v2h-3z"/></g>,
@@ -227,36 +219,44 @@ const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
             's14': () => <g transform="translate(-4, 0)"><path fill="#78350f" d="M14 10 h2 v16 h-2 z" style={{filter:'drop-shadow(2px 2px 1px rgba(0,0,0,0.5))'}}/><path fill="#94a3b8" d="M15 12 l6 -4 l2 6 l-8 2 z" /><path fill="#cbd5e1" d="M21 10 l2 2 l-2 -2 z"/></g>,
             's23': () => <g transform="translate(-4, -2)"><path fill="#fbcfe8" d="M14 2 H16 V20 H14 Z" style={{filter:'drop-shadow(0 0 4px #f9a8d4)'}}/><path fill="#1f2937" d="M12 20 H18 V22 H12 Z"/><path fill="#be185d" d="M13 22 H17 V28 H13 Z"/></g>,
             
-            // -- 斗羅、斗破、特殊武器與裝備 --
-            'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>, // 玄重尺
-            'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>, // 昊天錘
-            'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>, // 八蛛矛
-            'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>, // 紫雲翼
-            'o_fire': () => <g className="animate-bounce" transform="translate(-2, 0)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>, // 骨靈冷火(青色)
-            'o_bluegrass': () => <g className="animate-float" transform="translate(0, 4)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>, // 藍銀皇
+            'a_head_frost': () => <g transform="translate(-2, -4)"><path fill="#cffafe" d="M12 12 l2 -6 l2 4 l2 -6 l2 4 l2 -6 l2 12 Z" stroke="#06b6d4" strokeWidth="1" style={{filter:'drop-shadow(0 0 5px #67e8f9)'}}/></g>,
+            'a_body_dragon': () => <g><path fill="#991b1b" d="M10 14 h12 v12 h-12 z" /><path fill="#f59e0b" d="M12 16 h8 v2 h-8 z M12 20 h8 v2 h-8 z M14 24 h4 v2 h-4 z" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/></g>,
+            'a_body_star': () => <g><path fill="#1e1b4b" d="M10 14 h12 v14 h-12 z" /><circle cx="12" cy="18" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="18" cy="22" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="15" cy="26" r="0.5" fill="#fef08a" className="animate-pulse"/></g>,
+            'a_feet_lava': () => <g><path fill="#451a03" d="M10 28 h4 v4 h-4 z M18 28 h4 v4 h-4 z"/><path fill="#ea580c" d="M10 30 h4 v2 h-4 z M18 30 h4 v2 h-4 z" className="animate-pulse"/></g>,
+            'a_off_aegis': () => <g transform="translate(-4, 0)"><path fill="#fef08a" d="M16 12 l6 -2 v8 l-6 6 l-6 -6 v-8 z" stroke="#ca8a04" strokeWidth="1" style={{filter:'drop-shadow(0 0 8px #facc15)'}}/><path fill="#ffffff" d="M16 14 l4 -1 v6 l-4 4 l-4 -4 v-6 z" /><circle cx="16" cy="18" r="1.5" fill="#60a5fa"/></g>,
             
-            // -- 眼睛特效 (繪製於臉部 cx:12~20, cy:10~12) --
-            // 寫輪眼 (紅底黑勾玉)
+            'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>,
+            'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>,
+            'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>,
+            'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>,
+            'o_fire': () => <g className="animate-bounce" transform="translate(-2, 0)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>,
+            'o_bluegrass': () => <g className="animate-float" transform="translate(0, 4)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>,
+            
             'e_sharingan': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#000"/><circle cx="19" cy="11.5" r="0.5" fill="#000"/></g>,
-            // 輪迴眼 (紫色波紋)
             'e_rinnegan': () => <g><circle cx="13" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="13" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/><circle cx="19" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="19" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/></g>,
-            // 直死之魔眼 (冰藍+粉紅輝光)
             'e_mystic': () => <g className="animate-glow"><circle cx="13" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/></g>,
 
-            // -- 🌟 魂環流光特效 (立體環繞) --
-            // 透過 cyOffset 控制高低層次，使多個魂環可以疊加顯示不衝突
-            'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),             // 十年(白) - 最底層
-            'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),            // 百年(黃)
-            'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),            // 千年(紫)
-            'r4': () => makeRing(-9, '#111827', 26, 8, '60 15', '25 30', '1.5s', 3),            // 萬年(黑)
-            'r5': () => makeRing(-12, '#ef4444', 28, 9, '80 10', '30 20', '1.2s', 3.5),         // 十萬年(紅)
-            'r6': () => makeRing(-15, '#f97316', 30, 10, '100 5', '40 10', '1s', 4),            // 凶獸(橙金)
-            'r7': () => makeRing(-18, '#fbbf24', 32, 11, '120 0', '50 5', '0.8s', 4.5),         // 百萬年(耀金)
-            'r8': () => makeRing(-21, '#38bdf8', 34, 12, '150 0', '60 0', '0.6s', 5)            // 神級(璀璨藍金)
+            'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),             
+            'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),            
+            'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),            
+            'r4': () => makeRing(-9, '#111827', 26, 8, '60 15', '25 30', '1.5s', 3),            
+            'r5': () => makeRing(-12, '#ef4444', 28, 9, '80 10', '30 20', '1.2s', 3.5),         
+            'r6': () => makeRing(-15, '#f97316', 30, 10, '100 5', '40 10', '1s', 4),            
+            'r7': () => makeRing(-18, '#fbbf24', 32, 11, '120 0', '50 5', '0.8s', 4.5),         
+            'r8': () => makeRing(-21, '#38bdf8', 34, 12, '150 0', '60 0', '0.6s', 5)            
         };
 
-        // 🌟 物品圖示 (背包與商店清單專用平面圖標)
         const ITEM_ICONS = {
+            's2': () => <g><path fill="#8d1d1d" d="M10 6 H22 V18 H20 V20 H12 V18 H10 Z" /><path fill="#eab308" d="M14 6 H18 V8 H14 Z M16 4 V6 H16 Z" /><path fill="#b91c1c" d="M11 7 H21 V17 H11 Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18 H12 V20 H10 Z M20 18 H22 V20 H20 Z" /></g>,
+            's14': () => <g transform="rotate(-15, 16, 16)"><path fill="#5d4037" d="M14 26 L18 26 L18 6 L14 6 Z" /><path fill="#43a047" d="M18 8 L24 6 L26 10 L18 12 Z" /><path fill="#2e7d32" d="M18 12 L26 14 L24 18 L18 16 Z" /><rect x="14" y="20" width="4" height="4" fill="#8d6e63" /></g>,
+            's23': () => <g transform="rotate(45, 16, 16)"><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z" /><path fill="#1f2937" d="M13 20 H19 V22 H13 Z" /><path fill="#b91c1c" d="M14 22 H18 V28 H14 Z" /></g>,
+            
+            'a_head_frost': () => <g><path fill="#a5f3fc" d="M8 16 l4 -8 l4 6 l4 -6 l4 8 v4 h-16 z" stroke="#0891b2" strokeWidth="1"/></g>,
+            'a_body_dragon': () => <g><path fill="#7f1d1d" d="M8 10 h16 v14 h-16 z"/><path fill="#fbbf24" d="M12 10 v14 M20 10 v14" stroke="#f59e0b" strokeWidth="1"/></g>,
+            'a_body_star': () => <g><path fill="#1e1b4b" d="M8 8 h16 v16 h-16 z"/><circle cx="12" cy="12" r="1" fill="#fef08a"/><circle cx="20" cy="16" r="1" fill="#fef08a"/><circle cx="14" cy="20" r="1" fill="#fef08a"/></g>,
+            'a_feet_lava': () => <g><path fill="#451a03" d="M10 16 h4 v10 h-4 z M18 16 h4 v10 h-4 z"/><path fill="#ea580c" d="M10 24 h4 v2 h-4 z M18 24 h4 v2 h-4 z"/></g>,
+            'a_off_aegis': () => <g><path fill="#fef08a" d="M10 6 h12 v10 l-6 8 l-6 -8 z" stroke="#ca8a04" strokeWidth="2"/><circle cx="16" cy="14" r="3" fill="#60a5fa"/></g>,
+
             'w_xuan': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M12 4 H20 V24 H12 Z" stroke="#374151" strokeWidth="1"/><path fill="#fbbf24" d="M14 6 H18 V8 H14 Z M14 20 H18 V22 H14 Z"/><path fill="#ef4444" d="M16 10 V18" stroke="#ef4444" strokeWidth="1"/></g>,
             'w_haotian': () => <g transform="rotate(45, 16, 16)"><path fill="#1f2937" d="M14 12 H18 V28 H14 Z"/><path fill="#4b5563" d="M8 4 H24 V12 H8 Z"/><path fill="#3b82f6" d="M10 6 H22 V10 H10 Z"/></g>,
             'b_spider': () => <g><path fill="none" stroke="#7e22ce" strokeWidth="2" d="M16 16 Q6 8 4 16 M16 16 Q26 8 28 16 M16 18 Q6 14 2 22 M16 18 Q26 14 30 22 M16 20 Q8 20 6 28 M16 20 Q24 20 26 28"/></g>,
@@ -267,7 +267,6 @@ const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
             'e_rinnegan': () => <g><circle cx="16" cy="16" r="10" fill="#d8b4fe" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="7" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="4" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="1" fill="#581c87"/></g>,
             'e_mystic': () => <g><circle cx="16" cy="16" r="10" fill="#67e8f9" stroke="#0891b2" strokeWidth="2"/><circle cx="16" cy="16" r="4" fill="#f472b6" style={{filter:'blur(2px)'}}/></g>,
             
-            // 魂環平面圖標 (店鋪用)
             'r1': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#ffffff" strokeWidth="4" style={{filter:'drop-shadow(0 0 2px #fff)'}}/>,
             'r2': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#facc15" strokeWidth="4" style={{filter:'drop-shadow(0 0 4px #facc15)'}}/>,
             'r3': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#a855f7" strokeWidth="4" style={{filter:'drop-shadow(0 0 6px #a855f7)'}}/>,
@@ -279,27 +278,28 @@ const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         };
 
         const SHOP_ITEMS = [
-            // --- 一般裝備 ---
             { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'common', cost: 150, icon: 'Crown', stats: { vit: 5, int: 5 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。" },
             { id: 's14', name: '戰斧', type: 'mainHand', rarity: 'epic', cost: 1500, icon: 'Hammer', stats: { str: 40 }, desc: "沉重而鋒利的戰斧，破壞力驚人。" },
             { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 6000, icon: 'Sword', stats: { str: 40, agi: 30 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。" },
             
-            // --- 斗破蒼穹 系列 ---
+            { id: 'a_head_frost', name: '冰霜王冠', type: 'head', rarity: 'epic', cost: 8000, icon: 'Crown', stats: { int: 80, vit: 40 }, desc: "散發著極寒之氣的王冠，能抵禦精神攻擊。" },
+            { id: 'a_body_dragon', name: '不滅龍甲', type: 'body', rarity: 'legendary', cost: 35000, icon: 'Shield', stats: { vit: 300, str: 50 }, desc: "以太古巨龍之鱗鍛造的重甲，擁有絕對的物理防禦。" },
+            { id: 'a_body_star', name: '星辰法袍', type: 'body', rarity: 'epic', cost: 12000, icon: 'Briefcase', stats: { int: 150, agi: 30 }, desc: "編織了星光之力的法袍，能大幅提升魔力與迴避。" },
+            { id: 'a_feet_lava', name: '熔岩戰靴', type: 'feet', rarity: 'epic', cost: 9500, icon: 'Zap', stats: { str: 40, agi: 60, vit: 20 }, desc: "踏過火山之巔的戰靴，每一步都帶有爆發力。" },
+            { id: 'a_off_aegis', name: '聖盾·埃癸斯', type: 'offHand', rarity: 'legendary', cost: 42000, icon: 'Shield', stats: { vit: 400, int: 100 }, desc: "傳說中能抵擋諸神黃昏的絕對防禦聖盾。" },
+
             { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 15000, icon: 'Sword', stats: { str: 150, agi: -20, vit: 50 }, desc: "極度沉重的黑色巨尺，可壓制體內鬥氣。" },
             { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 8500, icon: 'Briefcase', stats: { agi: 100, str: 20 }, desc: "五階飛行魔獸之翼煉化而成，速度極快。" },
             { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 25000, icon: 'Zap', stats: { int: 200, str: 80 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。" },
 
-            // --- 斗羅大陸 系列 ---
             { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 20000, icon: 'Hammer', stats: { str: 250, vit: 100, agi: -30 }, desc: "天下第一器武魂，重達萬斤，無堅不摧。" },
             { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 30000, icon: 'Briefcase', stats: { str: 120, agi: 150, vit: 80 }, desc: "極為罕見的外附魂骨，含有劇毒與強大穿透力。" },
             { id: 'o_bluegrass', name: '藍銀皇', type: 'offHand', rarity: 'epic', cost: 12000, icon: 'Shield', stats: { vit: 150, int: 100 }, desc: "植物系魂獸皇者，生生不息，擁有強大控制與治癒力。" },
 
-            // --- 眼睛/瞳術 系列 (裝備於 eye 槽位) ---
             { id: 'e_sharingan', name: '寫輪眼', type: 'eye', rarity: 'epic', cost: 18000, icon: 'Eye', stats: { int: 120, agi: 80, cri: 15 }, desc: "洞察眼與催眠眼，能看穿一切幻術與體術。" },
             { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 45000, icon: 'Eye', stats: { int: 300, vit: 200, str: 100 }, desc: "掌控生死，駕馭陰陽的崇高之眼。" },
             { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 50000, icon: 'Eye', stats: { atk: 500, cri: 50 }, desc: "能看見萬物的「死之線」，一擊必殺。" },
 
-            // --- 🌟 魂環列表 (支援多選疊加，特效為立體流光) ---
             { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。" },
             { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。" },
             { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。" },
@@ -309,7 +309,8 @@ const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
             { id: 'r7', name: '百萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 1500000, icon: 'Sun', stats: { vit: 5000, str: 3000, int: 3000 }, desc: "傳說中的百萬年魂環，耀眼金光，成神之基。" },
             { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！" }
         ];
-const ACHIEVEMENTS_LIST = [
+
+        const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -341,10 +342,6 @@ const ACHIEVEMENTS_LIST = [
             { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50, getProgress: (s) => `${s.questCount} / 50` },
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
         ];
-
-        // ==========================================
-        // ⬇️ 共用元件與模態框 ⬇️
-        // ==========================================
 
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
             <div className="fixed inset-0 z-[120] flex flex-col justify-end animate-[fadeIn_0.2s] select-none">
@@ -385,7 +382,6 @@ const ACHIEVEMENTS_LIST = [
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
 
-        // 🌟 核心引擎升級：支援瞳術與多重魂環立體環繞渲染
         const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
@@ -395,15 +391,13 @@ const ACHIEVEMENTS_LIST = [
             const mainHand = equipped?.mainHand; 
             const offHand = equipped?.offHand; 
             const feetGear = equipped?.feet;
-            const eyeGear = equipped?.eye; // 新增眼睛部位
+            const eyeGear = equipped?.eye;
 
-            // 背飾與魂環的多件疊加渲染陣列化處理
             const backGears = Array.isArray(equipped?.back) ? equipped.back : (equipped?.back ? [equipped.back] : []);
             const spiritRings = Array.isArray(equipped?.spiritRing) ? equipped.spiritRing : (equipped?.spiritRing ? [equipped.spiritRing] : []);
             
             return (
                 <svg viewBox="0 0 32 32" overflow="visible" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
-                    {/* 🌟 魂環特效疊加層 (以立體形式在腳底環繞) */}
                     {spiritRings.map((ring, index) => (
                         <g key={ring.id + index} className="origin-center z-0" style={{transformBox: 'fill-box'}}>
                             {GEAR_VISUALS[ring.id] ? GEAR_VISUALS[ring.id]() : null}
@@ -415,7 +409,6 @@ const ACHIEVEMENTS_LIST = [
                     <g className="animate-idle-breathe origin-bottom relative z-10">
                         {!headGear && gender === 'female' && <path fill={hair} d="M8 9h16v12H8z" opacity="0.9" />}
                         
-                        {/* 疊加渲染背飾 */}
                         <g className="origin-top-center animate-cape-flow">
                             {backGears.length === 0 && <path fill={cape} d={gender === 'male' ? "M7 16h18v16H7z M9 16h14v14H9z" : "M8 16h16v16H8z M10 16h12v14H10z"} opacity="0.95" />}
                             {backGears.map((bg, index) => (
@@ -428,13 +421,14 @@ const ACHIEVEMENTS_LIST = [
                         <path fill={'#3e2723'} d={gender === 'male' ? "M11 24h3v6h-3zM18 24h3v6h-3z" : "M12 25h3v5h-3zM17 25h3v5h-3z"} />
                         {feetGear && GEAR_VISUALS[feetGear.id] && GEAR_VISUALS[feetGear.id]()}
                         {!feetGear && <path fill={feetGear ? '#546e7a' : 'transparent'} d={gender === 'male' ? "M10 29h4v3h-4zM18 29h4v3h-4z" : "M11 30h4v2h-4zM17 30h4v2h-4z"} opacity="0.5"/>}
+                        
                         <g>
                             {!bodyGear ? (<><path fill={armor} d={gender === 'male' ? "M10 14h12v10H10z M12 15h8v8h-8z" : "M11 14h10v11H11z M13 15h6v9h-6z"} />{gender === 'female' && <path fill="#1565c0" d="M10 24h12v3H10z" style={{fill: armor, filter: 'brightness(1.2)'}} />}<path fill="#ffb300" d={gender === 'male' ? "M10 14h12v1H10zM10 23h12v1H10zM15 15h2v8h-2z" : "M11 14h10v1H11zM11 23h10v1H11z"} /><path fill="#ffca28" d={gender === 'male' ? "M7 13h4v4H7zM21 13h4v4h-4z" : "M9 14h3v3H9zM20 14h3v3h-3z"} /></>) : (GEAR_VISUALS[bodyGear.id] ? GEAR_VISUALS[bodyGear.id]() : (<><path fill="#90a4ae" d="M10 14h12v10H10z" /><path fill="#cfd8dc" d="M12 15h8v8h-8z" /><path fill="#607d8b" d="M7 13h4v4H7zM21 13h4v4h-4z" /></>))}
                         </g>
+
                         <g className="animate-head-bob">
                             <path fill={skin} d={gender === 'male' ? "M10 7h12v7H10z" : "M11 8h10v6H11z"} />
                             
-                            {/* 🌟 瞳術/眼睛 裝備渲染 */}
                             {eyeGear && GEAR_VISUALS[eyeGear.id] ? GEAR_VISUALS[eyeGear.id]() : (
                                 <g className="animate-blink">
                                     <path fill="#1a237e" d={gender === 'male' ? "M12 10h2v2h-2zM18 10h2v2h-2z" : "M12 11h2v2h-2zM18 11h2v2h-2z"} />
@@ -446,6 +440,7 @@ const ACHIEVEMENTS_LIST = [
                             {headGear && (GEAR_VISUALS[headGear.id] ? GEAR_VISUALS[headGear.id]() : <path fill="#546e7a" d="M9 4h14v7H9z M11 5h2v2h-2z M19 5h2v2h-2z" />)}
                             {!headGear && (<><path fill="#ffb300" d={gender === 'male' ? "M9 5h14v2H9z" : "M10 6h12v2H10z"} /><path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 4h2v3h-2z" : "M15 5h2v3h-2z"} /></>)}
                         </g>
+
                         <g className="animate-weapon-sway origin-bottom-right" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
                             {offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}
                         </g>
@@ -456,8 +451,7 @@ const ACHIEVEMENTS_LIST = [
                 </svg>
             );
         };
-
-        const BackgroundIllustrations = ({ theme }) => {
+const BackgroundIllustrations = ({ theme }) => {
             const getIcon = () => { if (theme === 'sky') return 'Cloud'; if (theme === 'magic') return 'Moon'; if (theme === 'midnight') return 'Moon'; return 'Sun'; };
             return (<div className="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div className="absolute top-1/4 -left-10 opacity-5 transform rotate-12 scale-[10] text-theme-text"><Icon name="Sword" /></div><div className="absolute bottom-1/4 -right-20 opacity-5 transform -rotate-12 scale-[15] text-theme-text"><Icon name="Shield" /></div><div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 scale-[20] text-theme-accent"><Icon name={getIcon()} /></div></div>);
         };
@@ -577,7 +571,8 @@ const ACHIEVEMENTS_LIST = [
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">選擇您的夥伴</h3><p className="text-xs text-theme-sub">這將是您冒險旅途的開始</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">未來進化路線預覽</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> 確定選擇</button></div></div></div>
             );
         };
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
+
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
@@ -792,7 +787,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
 
             return (
                 <div className="animate-[fadeIn_0.5s] flex flex-col p-4 pb-24 h-full overflow-hidden gap-3">
-                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border"><div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{cp}</span></div></div><div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div></div>
+                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border"><div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{cp.toLocaleString()}</span></div></div><div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div></div>
                     
                     <div className="flex-1 min-h-0 relative w-full flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-4 w-[120px] h-[20px] rounded-full bg-theme-accent/20 animate-pulse blur-xl"></div>
@@ -813,8 +808,8 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
 
                     <div className="shrink-0 bg-theme-card p-4 rounded-3xl border border-theme-border shadow-sm relative z-40">
                         <h3 className="font-bold opacity-60 text-xs sm:text-sm flex items-center gap-1 text-theme-text mb-3"><Icon name="Sword" size={12}/> {t('character_stats')}</h3>
-                        <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{stat.val}</span></div>))}</div>
-                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{derivedStats.hp}</span></div><ProgressBar val={derivedStats.hp} max={derivedStats.hp*1.5} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{derivedStats.mp}</span></div><ProgressBar val={derivedStats.mp} max={derivedStats.mp*1.5} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div></div>
+                        <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{stat.val > 9999 ? '9999+' : stat.val}</span></div>))}</div>
+                        <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{derivedStats.hp}</span></div><ProgressBar val={derivedStats.hp} max={Math.max(2000, derivedStats.hp)} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{derivedStats.mp}</span></div><ProgressBar val={derivedStats.mp} max={Math.max(1000, derivedStats.mp)} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.atk}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.def}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{derivedStats.cri}%</div></div></div></div>
                     </div>
                     {isEditing && <AvatarEditor appearanceData={appearance} onSave={(newAppearanceData) => { onUpdateAppearance(newAppearanceData); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
@@ -1243,14 +1238,11 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 setData(prev => ({ ...prev, user: { ...prev.user, gold: newGold }, inventory: newInventory, logs: newLogs, purchaseHistory: [newPurchase, ...safeData.purchaseHistory] }));
             };
             
-            // 🌟 裝備切換邏輯 (支援背飾與魂環的多選疊加)
             const handleEquipItem = (slot, item) => { 
                 const newEquipped = { ...data.equipped }; 
                 if (item) { 
                     if (slot === 'back' || slot === 'spiritRing') {
-                        // 確保當前是陣列
                         const currentArray = Array.isArray(newEquipped[slot]) ? newEquipped[slot] : (newEquipped[slot] ? [newEquipped[slot]] : []);
-                        // Toggle邏輯：如果有就拿掉，沒有就加上
                         if (currentArray.some(i => i.id === item.id)) {
                             newEquipped[slot] = currentArray.filter(i => i.id !== item.id);
                         } else {
@@ -1263,7 +1255,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                     delete newEquipped[slot]; 
                 } 
                 setData(prev => ({ ...prev, equipped: newEquipped })); 
-                // 若不是可疊加槽位，裝備後自動關閉彈窗；若是疊加槽位，保留彈窗讓玩家繼續選
                 if ((slot !== 'back' && slot !== 'spiritRing') || !item) {
                     setEquipModalOpen(false); 
                 }
@@ -1384,12 +1375,10 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 const targetC3 = Math.floor(200000 * rate);
                 
                 const rawQuests = [
-                    // Daily
                     { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 150, coins: 50, progress: 1, target: 1 }, 
                     { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 100, coins: 50, progress: dailyTxCount, target: 1 }, 
                     { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 200, coins: 100, progress: dailyTxCount, target: 3 },
                     { id: `d5_${todayStr}`, type: 'daily', title: '財務總管', desc: '今日記帳 5 次', exp: 400, coins: 200, progress: dailyTxCount, target: 5 },
-                    // Main
                     { id: 'm1_tx', type: 'main', title: '初次記帳', desc: '記錄第 1 筆消費', exp: 200, coins: 100, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, 
                     { id: 'm10_tx', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 400, coins: 200, progress: totalTxCount, target: 10 }, 
                     { id: 'm50_tx', type: 'main', title: '專業會計', desc: '記錄 50 筆消費', exp: 800, coins: 500, progress: totalTxCount, target: 50 }, 
@@ -1399,7 +1388,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                     { id: 'm_fr1', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 200, coins: 100, progress: safeData.friends.length, target: 1 }, 
                     { id: 'm_fr5', type: 'main', title: '萬人迷', desc: '新增 5 位好友', exp: 800, coins: 500, progress: safeData.friends.length, target: 5 }, 
                     { id: 'm_lv10', type: 'main', title: '嶄露頭角', desc: '角色等級達到 10', exp: 500, coins: 500, progress: safeData.user.level, target: 10 }, 
-                    // Challenge
                     { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 500, coins: 300, progress: totalAssetVal, target: targetC1 }, 
                     { id: 'c2', type: 'challenge', title: '財務自由', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 500, progress: totalAssetVal, target: targetC2 },
                     { id: 'c3', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC3.toLocaleString()} ${mainCurrency}`, exp: 3000, coins: 1500, progress: totalAssetVal, target: targetC3 },
@@ -1472,7 +1460,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                         ))}
                     </nav>
 
-                    {/* 全局模態框區 */}
                     {showCategoryManager && <CategoryManagerModal categories={safeData.categories} onClose={() => setShowCategoryManager(false)} onSave={(newCats) => { setData(prev => ({...prev, categories: newCats})); setShowCategoryManager(false); }} />}
                     
                     {showRenameModal && (
