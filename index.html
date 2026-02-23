@@ -326,8 +326,7 @@ const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2
             'r7': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#fbbf24" strokeWidth="8" style={{filter:'drop-shadow(0 0 15px #fde047)'}}/><path d="M16 2 L16 30 M2 16 L30 16" stroke="#fff" strokeWidth="2" opacity="0.5"/></g>,
             'r8': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#38bdf8" strokeWidth="8" style={{filter:'drop-shadow(0 0 20px #7dd3fc)'}}/><circle cx="16" cy="16" r="5" fill="#fde047" style={{filter:'blur(2px)'}}/></g>
         };
-
-        const SHOP_ITEMS = [
+const SHOP_ITEMS = [
             { id: 'w_wood', name: '木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword', stats: { str: 5 }, desc: "新手必備的基礎木劍。" },
             { id: 'w_iron', name: '鐵劍', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword', stats: { str: 15, agi: 5 }, desc: "標準的鐵製長劍，還算鋒利。" },
             { id: 'h_cloth', name: '粗布帽', type: 'head', rarity: 'common', cost: 30, icon: 'Crown', stats: { vit: 2 }, desc: "稍微抵擋風寒的帽子。" },
@@ -560,8 +559,7 @@ const TitleBadge = ({ titleId, className = "" }) => {
                 </svg>
             );
         };
-
-        const BackgroundIllustrations = ({ theme }) => {
+const BackgroundIllustrations = ({ theme }) => {
             const getIcon = () => { if (theme === 'sky') return 'Cloud'; if (theme === 'magic') return 'Moon'; if (theme === 'midnight') return 'Moon'; return 'Sun'; };
             return (<div className="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div className="absolute top-1/4 -left-10 opacity-5 transform rotate-12 scale-[10] text-theme-text"><Icon name="Sword" /></div><div className="absolute bottom-1/4 -right-20 opacity-5 transform -rotate-12 scale-[15] text-theme-text"><Icon name="Shield" /></div><div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 scale-[20] text-theme-accent"><Icon name={getIcon()} /></div></div>);
         };
@@ -680,7 +678,7 @@ const TitleBadge = ({ titleId, className = "" }) => {
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">選擇您的夥伴</h3><p className="text-xs text-theme-sub">這將是您冒險旅途的開始</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">未來進化路線預覽</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> 確定選擇</button></div></div></div>
             );
         };
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet, onNavigate }) => {
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
@@ -872,8 +870,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 </div>
             );
         };
-
-        const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
+const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const gold = user.gold || 0;
             const stones = user.stones || 0;
@@ -883,9 +880,9 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
             const [isEnhancing, setIsEnhancing] = useState(false);
             const [enhanceResult, setEnhanceResult] = useState(null); // 'success' or 'fail'
 
-            // 計算花費與成功率
+            // 計算花費與成功率 (已依照要求大幅減少高稀有度裝備的基礎金幣花費)
             const getEnhanceCost = (item) => {
-                const baseRarityCost = { 'common': 100, 'rare': 500, 'epic': 2000, 'legendary': 10000 };
+                const baseRarityCost = { 'common': 100, 'rare': 250, 'epic': 800, 'legendary': 2500 }; // 降低金幣需求
                 const currentLvl = item.enhanceLevel || 0;
                 const goldCost = Math.floor((baseRarityCost[item.rarity] || 100) * Math.pow(1.5, currentLvl));
                 const stoneCost = Math.floor(currentLvl / 3) + 1;
@@ -1207,7 +1204,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, tran
                 </div>
             );
         };
-const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp }) => {
+        const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [isEditing, setIsEditing] = useState(false);
             
@@ -1251,8 +1248,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 </div>
             );
         };
-
-        const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
+const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selectedBoss, setSelectedBoss] = useState(null);
             const [isBattling, setIsBattling] = useState(false);
@@ -1262,7 +1258,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
             // 每日 5 次限制邏輯
             const todayStr = new Date().toDateString();
             const attempts = (user.bossAttempts?.date === todayStr) ? (user.bossAttempts?.count || 0) : 0;
-            const remaining = Math.max(0, 5 - attempts); // 修改為 5 次
+            const remaining = Math.max(0, 5 - attempts);
             
             const handleFight = (boss) => {
                 if (remaining <= 0) return;
@@ -1539,8 +1535,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 </div>
             );
         };
-
-        const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLikeFriend, onUpdateId, lang, translations }) => {
+const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLikeFriend, onUpdateId, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [searchId, setSearchId] = useState(''); const [selectedFriend, setSelectedFriend] = useState(null); const [copied, setCopied] = useState(false); const [showIdModal, setShowIdModal] = useState(false); const [newIdInput, setNewIdInput] = useState(''); const [idError, setIdError] = useState('');
             const handleAdd = () => { if (!searchId.trim()) return; onAddFriend(searchId); setSearchId(''); };
@@ -1690,8 +1685,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                     purchaseHistory: Array.isArray(data.purchaseHistory) ? data.purchaseHistory : []
                 };
             }, [data]);
-
-            // CP 計算包含多裝備疊加、裝備強化、與天賦樹加成
+// CP 計算包含多裝備疊加、裝備強化、與天賦樹加成
             const calculatedStats = useMemo(() => {
                 const level = safeData.user.level || 1;
                 const talents = safeData.user.talents || {};
@@ -2041,6 +2035,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 }
             };
             
+            // 失敗不扣除次數
             const handleBossBattleEnd = ({ isWin, boss, droppedItem }) => {
                 const todayStr = new Date().toDateString();
                 let newAttempts = { ...safeData.user.bossAttempts };
@@ -2048,13 +2043,15 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 if (newAttempts.date !== todayStr) {
                     newAttempts = { date: todayStr, count: 0 };
                 }
-                newAttempts.count += 1;
                 
-                let newUser = { ...safeData.user, bossAttempts: newAttempts };
+                let newUser = { ...safeData.user };
                 let newInventory = [...safeData.inventory];
                 let newLogs = [...safeData.logs];
                 
                 if (isWin) {
+                    newAttempts.count += 1; // 討伐成功才扣除次數
+                    newUser.bossAttempts = newAttempts;
+
                     const goldTalent = newUser.talents?.gold_bonus || 0;
                     const goldEarned = Math.floor(boss.gold * (1 + goldTalent * 0.05));
                     const stoneEarned = boss.stoneDrop || 0;
@@ -2075,7 +2072,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                     
                     if (leveledUp) setShowLevelUp({ show: true, level: newUser.level });
                 } else {
-                    newLogs = addLog('system', `Defeated by ${boss.name}...`, newLogs);
+                    newLogs = addLog('system', `Defeated by ${boss.name}... 討伐失敗，不扣除次數！`, newLogs);
                 }
                 
                 const newData = { ...safeData, user: newUser, inventory: newInventory, logs: newLogs };
@@ -2083,6 +2080,7 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 checkUnlockables(newData);
             };
 
+            // 大幅提升任務獎勵
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString(); 
                 const totalTxCount = safeData.transactions.length; 
@@ -2109,23 +2107,23 @@ const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearan
                 const targetC3 = Math.floor(200000 * rate);
                 
                 const rawQuests = [
-                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 150, coins: 50, progress: 1, target: 1 }, 
-                    { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 100, coins: 50, progress: dailyTxCount, target: 1 }, 
-                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 200, coins: 100, progress: dailyTxCount, target: 3 },
-                    { id: `d5_${todayStr}`, type: 'daily', title: '財務總管', desc: '今日記帳 5 次', exp: 400, coins: 200, progress: dailyTxCount, target: 5 },
-                    { id: 'm1_tx', type: 'main', title: '初次記帳', desc: '記錄第 1 筆消費', exp: 200, coins: 100, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, 
-                    { id: 'm10_tx', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 400, coins: 200, progress: totalTxCount, target: 10 }, 
-                    { id: 'm50_tx', type: 'main', title: '專業會計', desc: '記錄 50 筆消費', exp: 800, coins: 500, progress: totalTxCount, target: 50 }, 
-                    { id: 'm_exp1', type: 'main', title: '財務起步', desc: `累積消費 ${targetM1.toLocaleString()} ${mainCurrency}`, exp: 300, coins: 150, progress: totalExpenseVal, target: targetM1 }, 
-                    { id: 'm_exp2', type: 'main', title: '消費習慣', desc: `累積消費 ${targetM2.toLocaleString()} ${mainCurrency}`, exp: 600, coins: 300, progress: totalExpenseVal, target: targetM2 }, 
-                    { id: 'm_exp3', type: 'main', title: '花錢如流水', desc: `累積消費 ${targetM3.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 800, progress: totalExpenseVal, target: targetM3 }, 
-                    { id: 'm_fr1', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 200, coins: 100, progress: safeData.friends.length, target: 1 }, 
-                    { id: 'm_fr5', type: 'main', title: '萬人迷', desc: '新增 5 位好友', exp: 800, coins: 500, progress: safeData.friends.length, target: 5 }, 
-                    { id: 'm_lv10', type: 'main', title: '嶄露頭角', desc: '角色等級達到 10', exp: 500, coins: 500, progress: safeData.user.level, target: 10 }, 
-                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 500, coins: 300, progress: totalAssetVal, target: targetC1 }, 
-                    { id: 'c2', type: 'challenge', title: '財務自由', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 1000, coins: 500, progress: totalAssetVal, target: targetC2 },
-                    { id: 'c3', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC3.toLocaleString()} ${mainCurrency}`, exp: 3000, coins: 1500, progress: totalAssetVal, target: targetC3 },
-                    { id: 'c_it10', type: 'challenge', title: '裝備大師', desc: '收集 10 件裝備(含魂環)', exp: 1000, coins: 1000, progress: safeData.inventory.length, target: 10 }
+                    { id: `d0_${todayStr}`, type: 'daily', title: '公會簽到', desc: '每日登入領取補給', exp: 1500, coins: 1500, progress: 1, target: 1 }, 
+                    { id: `d1_${todayStr}`, type: 'daily', title: '勤奮冒險者', desc: '今日記帳 1 次', exp: 1000, coins: 1000, progress: dailyTxCount, target: 1 }, 
+                    { id: `d3_${todayStr}`, type: 'daily', title: '記帳達人', desc: '今日記帳 3 次', exp: 2000, coins: 2000, progress: dailyTxCount, target: 3 },
+                    { id: `d5_${todayStr}`, type: 'daily', title: '財務總管', desc: '今日記帳 5 次', exp: 4000, coins: 4000, progress: dailyTxCount, target: 5 },
+                    { id: 'm1_tx', type: 'main', title: '初次記帳', desc: '記錄第 1 筆消費', exp: 2000, coins: 2000, progress: totalTxCount > 0 ? 1 : 0, target: 1 }, 
+                    { id: 'm10_tx', type: 'main', title: '見習理財家', desc: '記錄 10 筆消費', exp: 4000, coins: 4000, progress: totalTxCount, target: 10 }, 
+                    { id: 'm50_tx', type: 'main', title: '專業會計', desc: '記錄 50 筆消費', exp: 8000, coins: 8000, progress: totalTxCount, target: 50 }, 
+                    { id: 'm_exp1', type: 'main', title: '財務起步', desc: `累積消費 ${targetM1.toLocaleString()} ${mainCurrency}`, exp: 3000, coins: 3000, progress: totalExpenseVal, target: targetM1 }, 
+                    { id: 'm_exp2', type: 'main', title: '消費習慣', desc: `累積消費 ${targetM2.toLocaleString()} ${mainCurrency}`, exp: 6000, coins: 6000, progress: totalExpenseVal, target: targetM2 }, 
+                    { id: 'm_exp3', type: 'main', title: '花錢如流水', desc: `累積消費 ${targetM3.toLocaleString()} ${mainCurrency}`, exp: 10000, coins: 10000, progress: totalExpenseVal, target: targetM3 }, 
+                    { id: 'm_fr1', type: 'main', title: '交友廣闊', desc: '新增 1 位好友', exp: 2000, coins: 2000, progress: safeData.friends.length, target: 1 }, 
+                    { id: 'm_fr5', type: 'main', title: '萬人迷', desc: '新增 5 位好友', exp: 8000, coins: 8000, progress: safeData.friends.length, target: 5 }, 
+                    { id: 'm_lv10', type: 'main', title: '嶄露頭角', desc: '角色等級達到 10', exp: 5000, coins: 5000, progress: safeData.user.level, target: 10 }, 
+                    { id: 'c1', type: 'challenge', title: '儲蓄大師', desc: `總資產 ${targetC1.toLocaleString()} ${mainCurrency}`, exp: 5000, coins: 5000, progress: totalAssetVal, target: targetC1 }, 
+                    { id: 'c2', type: 'challenge', title: '財務自由', desc: `總資產 ${targetC2.toLocaleString()} ${mainCurrency}`, exp: 10000, coins: 10000, progress: totalAssetVal, target: targetC2 },
+                    { id: 'c3', type: 'challenge', title: '百萬富翁', desc: `總資產 ${targetC3.toLocaleString()} ${mainCurrency}`, exp: 30000, coins: 30000, progress: totalAssetVal, target: targetC3 },
+                    { id: 'c_it10', type: 'challenge', title: '裝備大師', desc: '收集 10 件裝備(含魂環)', exp: 10000, coins: 10000, progress: safeData.inventory.length, target: 10 }
                 ];
                 return rawQuests.map(q => ({ ...q, uniqueId: q.id, isClaimed: safeData.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target })).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [safeData.transactions, safeData.accounts, safeData.claimedQuests, mainCurrency, safeData.friends, safeData.inventory, safeData.user.level]);
