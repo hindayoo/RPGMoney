@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>RPGMoney - Ultimate Boss Edition v4.2</title>
+    <title>RPGMoney - Ultimate Boss Edition v5.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -103,6 +103,7 @@
     <script type="text/babel" data-presets="env,react">
         const { useState, useEffect, useMemo, useRef } = React;
 
+        // Firebase Setup
         const firebaseConfig = {
             apiKey: "AIzaSyAIvvMiQEjrVvEH_TKeaEbv1tWZS2LNAaI",
             authDomain: "rpgmoney-73cfd.firebaseapp.com",
@@ -173,14 +174,16 @@
             Grip:"M9 12a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm6-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z",
             Flame:"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
             ArrowRight:"M5 12h14 M12 5l7 7-7 7",
-            RotateCcw: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8 M3 3v5h5"
+            RotateCcw: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8 M3 3v5h5",
+            Heart:"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+            Clock:"M12 2v10l4.28 4.28 M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10z",
+            Smile:"M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z M8 14s1.5 2 4 2 4-2 4-2 M9 9h.01 M15 9h.01"
         };
-const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
+        const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2.5 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={ICON_PATHS[name]||ICON_PATHS['Star']}/></svg>;
 
         const MAIN_CURRENCIES = ['TWD', 'HKD', 'JPY'];
         const ID_CHANGE_COST = 2000;
         const EXCHANGE_RATES = { 'TWD': 1, 'HKD': 0.24, 'JPY': 4.6 };
-
         const DEFAULT_CATEGORIES = {
             bf: { label: '早餐', icon: 'Utensils', color: '#fca5a5', order: 1 }, lunch: { label: '午餐', icon: 'Utensils', color: '#f87171', order: 2 },
             dinner: { label: '晚餐', icon: 'Utensils', color: '#ef4444', order: 3 }, drink: { label: '飲料', icon: 'Coffee', color: '#93c5fd', order: 4 },
@@ -210,7 +213,7 @@ const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2
         };
 
         const TRANSLATIONS = { 
-            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。', boss: '首領', fight: '討伐', victory: '討伐成功！', defeat: '敗北...', cp_req: '建議戰力', boss_desc: '挑戰強大的首領獲取豐厚獎勵！(每日限5次)', reward: '獎勵', battling: '戰鬥中...', talent: '天賦', talent_tree: '天賦樹', enhance: '裝備強化', talent_points: '天賦點', enhance_success: '強化成功！', max_level: '已達最高等級', stone: '強化石', success_rate: '成功率', forge_fail: '強化失敗...', forge_success: '強化成功！', reset_talent: '重置天賦', reset_talent_desc: '重置所有天賦並返還 TP。首次免費，之後需 10,000 G。', free: '免費', reset_success: '天賦已重置！' }
+            zh: { adventure: '冒險', character: '角色', quests: '任務', achievements: '成就', upgrade: '角色', exchange: '貨幣', journal: '日誌', shop: '商店', main: '主線', daily: '每日', challenge: '挑戰', level: '等級', exp: '經驗', assets: '資產', forge: '鍛造', save: '保存', delete: '刪除', confirmDelete: '確定要銷毀此紀錄嗎？', logout: '登出', theme: '外觀', lang: '語言', guardian: '寵物', settings: '設定', total_wealth: '總資產', no_assets: '無資產', add: '新增', wallet: '錢包', bank: '銀行', card: '卡片', invest: '投資', equipment_shop: '萬界商會', gold: '金幣', search: '搜尋...', sort: '排序', filter: '篩選', all: '全部', mainHand: '武器', head: '頭部', body: '身軀', feet: '足部', back: '背飾', spiritRing: '魂環', offHand: '副手', eye: '瞳術', price: '價格', rarity: '稀有度', name: '名稱', owned: '已擁有', equipped: '裝備中', buy: '購買', not_enough_gold: '金幣不足', buy_success: '購買成功！', character_stats: '角色狀態', dressing_room: '更衣室', male: '男', female: '女', equipment_manager: '裝備管理', bag: '背包', equip: '裝備', unequip: '卸下', empty_bag: '背包空空如也！', transaction_scroll: '收支卷軸', no_records: '暫無紀錄', income: '收入', expense: '支出', mana_flow: '魔力流動', today: '今日', month: '本月', daily_view: '每日', in: '收入', out: '支出', financial: '財務變動', system: '系統事件', no_logs: '無相關紀錄', record_action: '紀錄行動', category: '分類', note: '備註 (選填)', select_account: '選擇帳戶', confirm: '確認', cancel: '取消', edit_account: '編輯帳戶', new_account: '新增帳戶', log_income: '收入', log_expense: '支出', log_sys_title: '獲得稱號', log_sys_quest: '任務獎勵', claimed: '已領取', claim: '領取', theme_ink: '水墨', theme_sakura: '櫻花', theme_sky: '天空', theme_magic: '秘法', theme_matcha: '抹茶', theme_latte: '拿鐵', theme_peach: '蜜桃', theme_lavender: '薰衣草', theme_midnight: '午夜', change_stats: '能力變化', confirm_buy_title: '確認購買', confirm_buy_msg: '花費 {cost} G 購買 {item}？', social: '公會', guild: '冒險公會', friend_list: '好友', add_friend: '招募同伴', visit: '查看', online: '在線', offline: '離線', enter_id: '輸入 ID', my_card: '冒險者名片', copy_id: '複製 ID', copied: '已複製', remove_friend: '解除好友', send_like: '送出讚', like_success: '已按讚！', edit_id: '更改 ID', change_id_title: '更改冒險者 ID', change_id_cost: '更改費用', change_id_free: '首次免費', enter_new_id: '輸入新 ID', id_too_short: 'ID 太短', id_taken: 'ID 已使用', purchase_history: '購買紀錄', equipment: '裝備', upload_avatar: '上傳頭像', choose_pet: '選擇初始寵物', relic_name: '聖器名稱', mana_reserve: '魔力存量', container_type: '容器類型', currency_type: '貨幣', cash: '現金', cannot_add_self: '無法加自己喔！', user_not_found: '找不到該冒險者。', boss: '首領', fight: '討伐', victory: '討伐成功！', defeat: '敗北...', cp_req: '建議戰力', boss_desc: '挑戰強大的首領獲取豐厚獎勵！(每日限5次)', reward: '獎勵', battling: '戰鬥中...', talent: '天賦', talent_tree: '天賦樹', enhance: '裝備強化', talent_points: '天賦點', enhance_success: '強化成功！', max_level: '已達最高等級', stone: '強化石', success_rate: '成功率', forge_fail: '強化失敗...', forge_success: '強化成功！', reset_talent: '重置天賦', reset_talent_desc: '重置所有天賦並返還 TP。首次免費，之後需 10,000 G。', free: '免費', reset_success: '天賦已重置！', stats_req_not_met: '屬性不足以裝備此物品', class_system: '轉職系統', class_novice: '初心者', class_warrior: '狂戰士', class_mage: '大魔導', class_rogue: '暗影刺客', change_class: '進行轉職', class_locked: 'Lv.10 解鎖轉職' }
         };
 
         const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
@@ -232,46 +235,83 @@ const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2
         );
 
         const GEAR_VISUALS = {
-            'w_wood': () => <g transform="rotate(45, 16, 16)"><path fill="#8b5a2b" d="M14 8 H18 V24 H14 Z"/><path fill="#a0522d" d="M12 20 H20 V22 H12 Z"/></g>,
+            /* === 新增/舊有 武器 (MainHand) === */
             'w_iron': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M14 6 H18 V22 H14 Z"/><path fill="#94a3b8" d="M12 18 H20 V20 H12 Z"/><path fill="#475569" d="M15 22 H17 V26 H15 Z"/></g>,
-            'h_cloth': () => <g transform="translate(0, -2)"><path fill="#d1d5db" d="M10 8 Q16 2 22 8 V12 H10 Z"/></g>,
-            'h_iron': () => <g transform="translate(0, -2)"><path fill="#94a3b8" d="M10 6 Q16 0 22 6 V12 H10 Z"/><rect x="15" y="4" width="2" height="6" fill="#cbd5e1"/></g>,
-            'b_cloth': () => <g><path fill="#d1d5db" d="M10 14 h12 v10 h-12 z"/><path fill="#9ca3af" d="M10 14 h4 v4 h-4 z M18 14 h4 v4 h-4 z"/></g>,
-            'b_chain': () => <g><path fill="#94a3b8" d="M10 14 h12 v10 h-12 z"/><path fill="none" stroke="#cbd5e1" strokeWidth="1" d="M10 16 h12 M10 20 h12 M14 14 v10 M18 14 v10"/></g>,
-            'f_straw': () => <g><path fill="#d97706" d="M10 28 h4 v2 h-4 z M18 28 h4 v2 h-4 z"/></g>,
-            'f_leather': () => <g><path fill="#78350f" d="M10 26 h4 v6 h-4 z M18 26 h4 v6 h-4 z"/></g>,
-
-            's1': () => <g transform="translate(-2, 2)"><path fill="#cfd8dc" d="M10 10 L14 6 L18 10 L14 26 Z" style={{filter:'drop-shadow(1px 1px 1px #94a3b8)'}}/><path fill="#5d4037" d="M12 24 H16 V28 H12 Z" /></g>, 
-            's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
-            's3': () => <g><path fill="#5d4037" d="M12 28h3v4h-3z M17 28h3v4h-3z" /><path fill="#78350f" d="M12 30h3v2h-3z M17 30h3v2h-3z"/></g>,
-            's4': () => <g transform="translate(-4, 0)"><path fill="none" stroke="#65a30d" strokeWidth="2.5" d="M20 10 C 12 16, 12 22, 20 28" style={{filter:'drop-shadow(1px 1px 2px #84cc16)'}}/><path fill="#4d7c0f" d="M16 18 h4 v2 h-4 z"/></g>, 
-            's5': () => <g><path fill="#64748b" d="M11 14h10v10H11z" style={{filter:'drop-shadow(0 2px 2px rgba(0,0,0,0.3))'}}/><rect x="13" y="16" width="2" height="2" fill="#334155"/><rect x="17" y="16" width="2" height="2" fill="#334155"/><rect x="13" y="20" width="2" height="2" fill="#334155"/><rect x="17" y="20" width="2" height="2" fill="#334155"/></g>,
-            's6': () => <g><path fill="#7c2d12" d="M8 14h16v14H8z" opacity="0.95"/><path fill="#f59e0b" d="M16 14v14" stroke="#f59e0b" strokeWidth="0.5"/></g>,
+            'w_steel': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M14 4 H18 V22 H14 Z"/><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z"/><path fill="#475569" d="M11 18 H21 V20 H11 Z"/><path fill="#1e293b" d="M15 22 H17 V28 H15 Z"/></g>,
+            'w_mithril': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M14 2 H18 V22 H14 Z"/><path fill="#60a5fa" d="M15 2 H17 V20 H15 Z"/><path fill="#1e3a8a" d="M10 18 H22 V20 H10 Z"/><path fill="#0f172a" d="M15 22 H17 V28 H15 Z"/><circle cx="16" cy="20" r="1" fill="#38bdf8"/></g>,
+            'w_wood_staff': () => <g transform="rotate(45, 16, 16)"><path fill="#8B4513" d="M15 4 H17 V26 H15 Z"/><circle cx="16" cy="4" r="2" fill="#5D4037"/></g>,
+            'w_apprentice_wand': () => <g transform="rotate(45, 16, 16)"><path fill="#6D4C41" d="M15 6 H17 V24 H15 Z"/><circle cx="16" cy="4" r="2.5" fill="#4FC3F7"/></g>,
+            'w_ruby_staff': () => <g transform="rotate(45, 16, 16)"><path fill="#d4af37" d="M15 6 H17 V26 H15 Z"/><circle cx="16" cy="4" r="3" fill="#e53935" className="animate-pulse"/></g>,
+            'w_dagger': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M15 10 H17 V20 H15 Z"/><path fill="#1e293b" d="M13 20 H19 V22 H13 Z"/><path fill="#333" d="M15 22 H17 V24 H15 Z"/></g>,
+            'w_shadow_blade': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M15 8 H17 V22 H15 Z" style={{filter:'drop-shadow(0 0 3px #4c1d95)'}}/><path fill="#4c1d95" d="M14 22 H18 V24 H14 Z"/><path fill="#000" d="M15 24 H17 V28 H15 Z"/></g>,
+            'w_void_scythe': () => <g transform="rotate(15, 16, 16)"><path fill="#2d3748" d="M15 6 H17 V28 H15 Z"/><path fill="#6b21a8" d="M17 6 Q 26 2 24 14 Q 22 8 17 8 Z" style={{filter:'drop-shadow(0 0 4px #9333ea)'}}/></g>,
+            'w_excalibur': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M14 2 H18 V20 H14 Z" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#fbbf24" d="M10 20 H22 V22 H10 Z"/><path fill="#1e3a8a" d="M15 22 H17 V28 H15 Z"/><circle cx="16" cy="21" r="1.5" fill="#ef4444"/></g>,
             's14': () => <g transform="translate(-4, 0)"><path fill="#78350f" d="M14 10 h2 v16 h-2 z" style={{filter:'drop-shadow(2px 2px 1px rgba(0,0,0,0.5))'}}/><path fill="#94a3b8" d="M15 12 l6 -4 l2 6 l-8 2 z" /><path fill="#cbd5e1" d="M21 10 l2 2 l-2 -2 z"/></g>,
             's23': () => <g transform="translate(-4, -2)"><path fill="#fbcfe8" d="M14 2 H16 V20 H14 Z" style={{filter:'drop-shadow(0 0 4px #f9a8d4)'}}/><path fill="#1f2937" d="M12 20 H18 V22 H12 Z"/><path fill="#be185d" d="M13 22 H17 V28 H13 Z"/></g>,
-            
-            'a_head_frost': () => <g transform="translate(-2, -4)"><path fill="#cffafe" d="M12 12 l2 -6 l2 4 l2 -6 l2 4 l2 -6 l2 12 Z" stroke="#06b6d4" strokeWidth="1" style={{filter:'drop-shadow(0 0 5px #67e8f9)'}}/></g>,
-            'a_body_dragon': () => <g><path fill="#991b1b" d="M10 14 h12 v12 h-12 z" /><path fill="#f59e0b" d="M12 16 h8 v2 h-8 z M12 20 h8 v2 h-8 z M14 24 h4 v2 h-4 z" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/></g>,
-            'a_body_star': () => <g><path fill="#1e1b4b" d="M10 14 h12 v14 h-12 z" /><circle cx="12" cy="18" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="18" cy="22" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="15" cy="26" r="0.5" fill="#fef08a" className="animate-pulse"/></g>,
-            'a_feet_lava': () => <g><path fill="#451a03" d="M10 28 h4 v4 h-4 z M18 28 h4 v4 h-4 z"/><path fill="#ea580c" d="M10 30 h4 v2 h-4 z M18 30 h4 v2 h-4 z" className="animate-pulse"/></g>,
-            'a_off_aegis': () => <g transform="translate(-4, 0)"><path fill="#fef08a" d="M16 12 l6 -2 v8 l-6 6 l-6 -6 v-8 z" stroke="#ca8a04" strokeWidth="1" style={{filter:'drop-shadow(0 0 8px #facc15)'}}/><path fill="#ffffff" d="M16 14 l4 -1 v6 l-4 4 l-4 -4 v-6 z" /><circle cx="16" cy="18" r="1.5" fill="#60a5fa"/></g>,
-            
             'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>,
             'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>,
+            'w_gate_of_babylon': () => <g transform="translate(16, -10) scale(1.5)" style={{pointerEvents: 'none'}}><g style={{animation: 'pulse 3s infinite'}} transform="translate(0, 0)"><circle cx="0" cy="0" r="10" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="8" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 2"/><circle cx="0" cy="0" r="5" fill="#000" opacity="0.9"/><path d="M-12 0 L6 -2 L10 0 L6 2 Z" fill="#cbd5e1"/><path d="M-6 -3 L-4 -3 L-4 3 L-6 3 Z" fill="#b45309"/></g><g style={{animation: 'pulse 2.5s infinite'}} transform="translate(18, 15)"><circle cx="0" cy="0" r="8" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="6" fill="none" stroke="#fbbf24" strokeWidth="1.5"/><circle cx="0" cy="0" r="4" fill="#000" opacity="0.9"/><path d="M-10 0 L4 -1.5 L7 0 L4 1.5 Z" fill="#fecaca"/></g><g style={{animation: 'pulse 2s infinite'}} transform="translate(5, 25)"><circle cx="0" cy="0" r="12" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="10" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="2 4"/><circle cx="0" cy="0" r="6" fill="#000" opacity="0.9"/><path d="M-15 0 L8 -2.5 L12 0 L8 2.5 Z" fill="#a7f3d0"/></g></g>,
+
+            /* === 防具頭部 (Head) === */
+            'h_cloth': () => <g transform="translate(0, -2)"><path fill="#d1d5db" d="M10 8 Q16 2 22 8 V12 H10 Z"/></g>,
+            'h_leather_cap': () => <g transform="translate(0, -2)"><path fill="#8B4513" d="M10 8 Q16 0 22 8 V11 H10 Z"/><path fill="#5D4037" d="M10 11 H22 V13 H10 Z"/></g>,
+            'h_iron': () => <g transform="translate(0, -2)"><path fill="#94a3b8" d="M10 6 Q16 0 22 6 V12 H10 Z"/><rect x="15" y="4" width="2" height="6" fill="#cbd5e1"/></g>,
+            'h_knight': () => <g transform="translate(0, -3)"><path fill="#cbd5e1" d="M9 8 Q16 -2 23 8 V14 H9 Z"/><path fill="#64748b" d="M16 0 V8 M12 4 L20 4" stroke="#64748b" strokeWidth="1"/></g>,
+            'h_mage_hat': () => <g transform="translate(0, -5)"><path fill="#312e81" d="M8 12 H24 L16 0 Z"/><path fill="#4c1d95" d="M6 12 H26 V14 H6 Z"/></g>,
+            'h_thief_hood': () => <g transform="translate(0, -2)"><path fill="#1f2937" d="M10 8 Q16 0 22 8 V14 H10 Z"/><path fill="#111827" d="M12 8 Q16 4 20 8 V10 H12 Z"/></g>,
+            'h_valkyrie': () => <g transform="translate(0, -4)"><path fill="#fbbf24" d="M10 8 Q16 0 22 8 V12 H10 Z"/><path fill="#fef08a" d="M8 4 L11 8 L8 12 Z M24 4 L21 8 L24 12 Z"/></g>,
+            's2': () => <g><path fill="#991b1b" d="M10 4 h12 v8 h-12 z" /><path fill="#fbbf24" d="M12 4 h8 v2 h-8 z" /><path fill="#7f1d1d" d="M10 10 h12 v2 h-12 z"/></g>, 
+            'a_head_frost': () => <g transform="translate(-2, -4)"><path fill="#cffafe" d="M12 12 l2 -6 l2 4 l2 -6 l2 4 l2 -6 l2 12 Z" stroke="#06b6d4" strokeWidth="1" style={{filter:'drop-shadow(0 0 5px #67e8f9)'}}/></g>,
+
+            /* === 防具身軀 (Body) === */
+            'b_cloth': () => <g><path fill="#d1d5db" d="M10 14 h12 v10 h-12 z"/><path fill="#9ca3af" d="M10 14 h4 v4 h-4 z M18 14 h4 v4 h-4 z"/></g>,
+            'b_leather_tunic': () => <g><path fill="#8B4513" d="M10 14 h12 v10 h-12 z"/><path fill="#5D4037" d="M14 14 h4 v10 h-4 z"/></g>,
+            'b_robe': () => <g><path fill="#1e3a8a" d="M9 14 h14 v12 h-14 z"/><path fill="#fbbf24" d="M15 14 h2 v12 h-2 z"/></g>,
+            'b_assassin': () => <g><path fill="#111827" d="M10 14 h12 v10 h-12 z"/><path fill="#374151" d="M10 14 l6 4 l6 -4 v2 l-6 4 l-6 -4 z"/></g>,
+            'b_chain': () => <g><path fill="#94a3b8" d="M10 14 h12 v10 h-12 z"/><path fill="none" stroke="#cbd5e1" strokeWidth="1" d="M10 16 h12 M10 20 h12 M14 14 v10 M18 14 v10"/></g>,
+            'b_plate': () => <g><path fill="#cbd5e1" d="M9 13 h14 v12 h-14 z"/><path fill="#94a3b8" d="M12 15 h8 v8 h-8 z"/><path fill="#64748b" d="M16 15 v8 M12 19 h8" stroke="#64748b" strokeWidth="1"/></g>,
+            'b_paladin': () => <g><path fill="#fef08a" d="M9 13 h14 v12 h-14 z"/><path fill="#ffffff" d="M12 15 h8 v8 h-8 z"/><path fill="#fbbf24" d="M16 15 v8 M12 19 h8" stroke="#f59e0b" strokeWidth="1"/></g>,
+            'a_body_dragon': () => <g><path fill="#991b1b" d="M10 14 h12 v12 h-12 z" /><path fill="#f59e0b" d="M12 16 h8 v2 h-8 z M12 20 h8 v2 h-8 z M14 24 h4 v2 h-4 z" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/></g>,
+            'a_body_star': () => <g><path fill="#1e1b4b" d="M10 14 h12 v14 h-12 z" /><circle cx="12" cy="18" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="18" cy="22" r="0.5" fill="#fef08a" className="animate-pulse"/><circle cx="15" cy="26" r="0.5" fill="#fef08a" className="animate-pulse"/></g>,
+
+            /* === 防具足部 (Feet) === */
+            'f_cloth_shoes': () => <g><path fill="#9ca3af" d="M10 26 h4 v4 h-4 z M18 26 h4 v4 h-4 z"/></g>,
+            'f_leather': () => <g><path fill="#78350f" d="M10 26 h4 v6 h-4 z M18 26 h4 v6 h-4 z"/></g>,
+            'f_iron': () => <g><path fill="#94a3b8" d="M10 26 h4 v6 h-4 z M18 26 h4 v6 h-4 z"/><path fill="#cbd5e1" d="M10 26 h4 v2 h-4 z M18 26 h4 v2 h-4 z"/></g>,
+            'f_knight': () => <g><path fill="#cbd5e1" d="M9 25 h5 v7 h-5 z M18 25 h5 v7 h-5 z"/><path fill="#64748b" d="M9 28 h5 M18 28 h5" stroke="#64748b" strokeWidth="1"/></g>,
+            'f_mage_boots': () => <g><path fill="#312e81" d="M10 26 h4 v6 h-4 z M18 26 h4 v6 h-4 z"/><path fill="#fbbf24" d="M10 26 h4 v1 h-4 z M18 26 h4 v1 h-4 z"/></g>,
+            'f_swift_boots': () => <g><path fill="#15803d" d="M10 26 h4 v5 h-4 z M18 26 h4 v5 h-4 z"/><path fill="#86efac" d="M8 28 h2 v2 h-2 z M22 28 h2 v2 h-2 z"/></g>,
+            'f_pegasus': () => <g><path fill="#fef08a" d="M9 25 h5 v7 h-5 z M18 25 h5 v7 h-5 z"/><path fill="#ffffff" d="M7 26 l2 -2 v4 z M25 26 l-2 -2 v4 z"/></g>,
+            'a_feet_lava': () => <g><path fill="#451a03" d="M10 28 h4 v4 h-4 z M18 28 h4 v4 h-4 z"/><path fill="#ea580c" d="M10 30 h4 v2 h-4 z M18 30 h4 v2 h-4 z" className="animate-pulse"/></g>,
+
+            /* === 副手 (OffHand) === */
+            'o_wood_shield': () => <g transform="translate(-4, 0)"><path fill="#8B4513" d="M14 12 h4 v8 l-2 2 l-2 -2 z" stroke="#5D4037" strokeWidth="1"/></g>,
+            'o_magic_tome': () => <g transform="translate(-4, 2)"><path fill="#1e3a8a" d="M14 12 h4 v6 h-4 z"/><path fill="#ffffff" d="M17 13 h1 v4 h-1 z"/><circle cx="16" cy="15" r="1" fill="#fbbf24"/></g>,
+            'o_crystal_orb': () => <g transform="translate(-4, 2)"><circle cx="16" cy="14" r="4" fill="#a5f3fc" style={{filter:'drop-shadow(0 0 4px #06b6d4)'}}/><circle cx="15" cy="13" r="1" fill="#ffffff"/></g>,
+            'a_off_aegis': () => <g transform="translate(-4, 0)"><path fill="#fef08a" d="M16 12 l6 -2 v8 l-6 6 l-6 -6 v-8 z" stroke="#ca8a04" strokeWidth="1" style={{filter:'drop-shadow(0 0 8px #facc15)'}}/><path fill="#ffffff" d="M16 14 l4 -1 v6 l-4 4 l-4 -4 v-6 z" /><circle cx="16" cy="18" r="1.5" fill="#60a5fa"/></g>,
             
+            /* 【重要修復】將骨靈冷火顯示在人物左邊 (Offhand) */
+            'o_fire': () => <g className="animate-bounce origin-center" transform="translate(-16, 4)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>,
+            
+            /* === 背飾 (Back) === */
+            /* 【重要修復】將藍銀皇改為背飾，並顯示在人物右後方 */
+            'o_bluegrass': () => <g className="animate-float origin-center" transform="translate(12, -4) scale(1.2)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>,
+            
+            'b_traveler_cloak': () => <g><path fill="#78350f" d="M8 12 Q16 8 24 12 L26 24 H6 Z" opacity="0.9"/></g>,
+            'b_elven_cape': () => <g><path fill="#15803d" d="M10 12 Q16 10 22 12 L24 26 H8 Z" opacity="0.9"/><path fill="#86efac" d="M16 12 v14" stroke="#86efac" strokeWidth="0.5"/></g>,
+            'b_demon_wings': () => <g className="animate-pulse-slow"><path fill="#991b1b" d="M12 14 L2 6 L6 16 Z M20 14 L30 6 L26 16 Z" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/></g>,
+
             'b_spider': () => <g className="animate-idle-breathe origin-center" style={{transformBox: 'fill-box'}}><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M12 16 Q2 8 0 16 M12 18 Q2 14 0 22 M12 20 Q4 20 2 28 M12 22 Q6 26 4 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/><path fill="none" stroke="#7e22ce" strokeWidth="1.5" d="M20 16 Q30 8 32 16 M20 18 Q30 14 32 22 M20 20 Q28 20 30 28 M20 22 Q26 26 28 32" style={{filter:'drop-shadow(0 0 3px #a855f7)'}}/></g>,
             'b_purplewings': () => <g className="animate-float origin-center"><path fill="#a855f7" d="M12 16 Q4 0 -4 10 Q4 12 10 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#a855f7" d="M20 16 Q28 0 36 10 Q28 12 22 20 Z" opacity="0.8" style={{filter:'drop-shadow(0 0 8px #d8b4fe)'}}/><path fill="#c084fc" d="M12 16 Q6 6 0 10 Q6 12 11 18 Z" opacity="0.9"/><path fill="#c084fc" d="M20 16 Q26 6 32 10 Q26 12 21 18 Z" opacity="0.9"/></g>,
             'b_magic_circle': () => <g style={{animation: 'spin 8s linear infinite', transformOrigin: 'center', transformBox: 'fill-box', filter:'drop-shadow(0 0 5px #38bdf8)'}}><circle cx="16" cy="16" r="14" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2"/><circle cx="16" cy="16" r="11" fill="none" stroke="#7dd3fc" strokeWidth="0.5"/><path d="M16 2 L25.9 23 L2 9.5 H30 L6.1 23 Z" fill="none" stroke="#38bdf8" strokeWidth="0.5" opacity="0.8"/></g>,
             'b_six_wings': () => <g style={{animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite', transformOrigin: 'center', transformBox: 'fill-box', filter:'drop-shadow(0 0 8px #fef08a)'}}><path fill="#fef08a" d="M14 16 Q8 4 0 6 Q6 10 12 18 Z"/><path fill="#fef08a" d="M18 16 Q24 4 32 6 Q26 10 20 18 Z"/><path fill="#fde047" d="M12 18 Q2 12 -4 18 Q4 20 12 22 Z"/><path fill="#fde047" d="M20 18 Q30 12 36 18 Q28 20 20 22 Z"/><path fill="#fef08a" d="M12 22 Q4 24 2 32 Q8 26 14 24 Z"/><path fill="#fef08a" d="M20 22 Q28 24 30 32 Q24 26 18 24 Z"/></g>,
-            'w_gate_of_babylon': () => <g transform="translate(16, -10) scale(1.5)" style={{pointerEvents: 'none'}}><g style={{animation: 'pulse 3s infinite'}} transform="translate(0, 0)"><circle cx="0" cy="0" r="10" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="8" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 2"/><circle cx="0" cy="0" r="5" fill="#000" opacity="0.9"/><path d="M-12 0 L6 -2 L10 0 L6 2 Z" fill="#cbd5e1"/><path d="M-6 -3 L-4 -3 L-4 3 L-6 3 Z" fill="#b45309"/></g><g style={{animation: 'pulse 2.5s infinite'}} transform="translate(18, 15)"><circle cx="0" cy="0" r="8" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="6" fill="none" stroke="#fbbf24" strokeWidth="1.5"/><circle cx="0" cy="0" r="4" fill="#000" opacity="0.9"/><path d="M-10 0 L4 -1.5 L7 0 L4 1.5 Z" fill="#fecaca"/></g><g style={{animation: 'pulse 2s infinite'}} transform="translate(5, 25)"><circle cx="0" cy="0" r="12" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="10" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="2 4"/><circle cx="0" cy="0" r="6" fill="#000" opacity="0.9"/><path d="M-15 0 L8 -2.5 L12 0 L8 2.5 Z" fill="#a7f3d0"/></g></g>,
 
-            'o_fire': () => <g className="animate-bounce" transform="translate(-2, 0)"><path fill="#34d399" d="M16 16 Q12 24 16 28 Q20 24 16 16 Z" style={{filter:'drop-shadow(0 0 10px #10b981)'}}/><path fill="#6ee7b7" d="M16 18 Q14 24 16 26 Q18 24 16 18 Z"/><circle cx="16" cy="24" r="1.5" fill="#ffffff" className="animate-pulse"/></g>,
-            'o_bluegrass': () => <g className="animate-float" transform="translate(0, 4)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>,
-            
+            /* === 特殊眼部 (Eye) === */
             'e_sharingan': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#000"/><circle cx="19" cy="11.5" r="0.5" fill="#000"/></g>,
             'e_rinnegan': () => <g><circle cx="13" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="13" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/><circle cx="19" cy="11.5" r="1.5" fill="#d8b4fe" style={{filter:'drop-shadow(0 0 2px #a855f7)'}}/><circle cx="19" cy="11.5" r="0.8" fill="none" stroke="#581c87" strokeWidth="0.3"/></g>,
             'e_mystic': () => <g className="animate-glow"><circle cx="13" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#67e8f9" style={{filter:'drop-shadow(0 0 3px #c084fc)'}}/></g>,
 
+            /* === 魂環 (Spirit Ring) === */
             'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),             
             'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),            
             'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),            
@@ -283,40 +323,78 @@ const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2
         };
 
         const ITEM_ICONS = {
-            'w_wood': () => <g transform="rotate(45, 16, 16)"><path fill="#8b5a2b" d="M12 6 H20 V22 H12 Z" /><path fill="#a0522d" d="M10 20 H22 V24 H10 Z" /></g>,
+            /* === 新增/舊有武器 Icons === */
             'w_iron': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M12 4 H20 V20 H12 Z" /><path fill="#94a3b8" d="M10 18 H22 V22 H10 Z" /></g>,
-            'h_cloth': () => <g><path fill="#d1d5db" d="M8 10 Q16 2 24 10 V14 H8 Z"/></g>,
-            'h_iron': () => <g><path fill="#94a3b8" d="M8 8 Q16 0 24 8 V16 H8 Z"/><rect x="14" y="6" width="4" height="8" fill="#cbd5e1"/></g>,
-            'b_cloth': () => <g><path fill="#d1d5db" d="M8 10 h16 v16 h-16 z"/></g>,
-            'b_chain': () => <g><path fill="#94a3b8" d="M8 10 h16 v16 h-16 z"/><path fill="none" stroke="#cbd5e1" strokeWidth="2" d="M8 14 h16 M8 20 h16 M12 10 v16 M20 10 v16"/></g>,
-            'f_straw': () => <g><path fill="#d97706" d="M10 20 h4 v4 h-4 z M18 20 h4 v4 h-4 z"/></g>,
-            'f_leather': () => <g><path fill="#78350f" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/></g>,
-
-            's2': () => <g><path fill="#8d1d1d" d="M10 6 H22 V18 H20 V20 H12 V18 H10 Z" /><path fill="#eab308" d="M14 6 H18 V8 H14 Z M16 4 V6 H16 Z" /><path fill="#b91c1c" d="M11 7 H21 V17 H11 Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18 H12 V20 H10 Z M20 18 H22 V20 H20 Z" /></g>,
+            'w_steel': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M12 2 H20 V22 H12 Z" /><path fill="#1e2937" d="M10 18 H22 V22 H10 Z" /></g>,
+            'w_mithril': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M12 0 H20 V24 H12 Z" /><path fill="#1e3a8a" d="M10 18 H22 V22 H10 Z" /></g>,
+            'w_wood_staff': () => <g transform="rotate(45, 16, 16)"><path fill="#8B4513" d="M12 4 H20 V28 H12 Z" /><circle cx="16" cy="6" r="3" fill="#5D4037" /></g>,
+            'w_apprentice_wand': () => <g transform="rotate(45, 16, 16)"><path fill="#6D4C41" d="M13 6 H19 V26 H13 Z" /><circle cx="16" cy="6" r="4" fill="#4FC3F7" /></g>,
+            'w_ruby_staff': () => <g transform="rotate(45, 16, 16)"><path fill="#d4af37" d="M13 6 H19 V26 H13 Z" /><circle cx="16" cy="6" r="4" fill="#e53935" /></g>,
+            'w_dagger': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M13 10 H19 V20 H13 Z" /><path fill="#1e293b" d="M10 20 H22 V22 H10 Z" /></g>,
+            'w_shadow_blade': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M13 6 H19 V22 H13 Z" /><path fill="#4c1d95" d="M10 22 H22 V24 H10 Z" /></g>,
+            'w_void_scythe': () => <g transform="rotate(15, 16, 16)"><path fill="#2d3748" d="M14 6 H18 V28 H14 Z" /><path fill="#6b21a8" d="M18 6 Q 28 0 26 16 Q 22 8 18 8 Z" /></g>,
+            'w_excalibur': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M12 2 H20 V20 H12 Z" /><path fill="#fbbf24" d="M8 20 H24 V24 H8 Z" /><circle cx="16" cy="22" r="2" fill="#ef4444" /></g>,
             's14': () => <g transform="rotate(-15, 16, 16)"><path fill="#5d4037" d="M14 26 L18 26 L18 6 L14 6 Z" /><path fill="#43a047" d="M18 8 L24 6 L26 10 L18 12 Z" /><path fill="#2e7d32" d="M18 12 L26 14 L24 18 L18 16 Z" /><rect x="14" y="20" width="4" height="4" fill="#8d6e63" /></g>,
             's23': () => <g transform="rotate(45, 16, 16)"><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z" /><path fill="#1f2937" d="M13 20 H19 V22 H13 Z" /><path fill="#b91c1c" d="M14 22 H18 V28 H14 Z" /></g>,
-            
-            'a_head_frost': () => <g><path fill="#a5f3fc" d="M8 16 l4 -8 l4 6 l4 -6 l4 8 v4 h-16 z" stroke="#0891b2" strokeWidth="1"/></g>,
-            'a_body_dragon': () => <g><path fill="#7f1d1d" d="M8 10 h16 v14 h-16 z"/><path fill="#fbbf24" d="M12 10 v14 M20 10 v14" stroke="#f59e0b" strokeWidth="1"/></g>,
-            'a_body_star': () => <g><path fill="#1e1b4b" d="M8 8 h16 v16 h-16 z"/><circle cx="12" cy="12" r="1" fill="#fef08a"/><circle cx="20" cy="16" r="1" fill="#fef08a"/><circle cx="14" cy="20" r="1" fill="#fef08a"/></g>,
-            'a_feet_lava': () => <g><path fill="#451a03" d="M10 16 h4 v10 h-4 z M18 16 h4 v10 h-4 z"/><path fill="#ea580c" d="M10 24 h4 v2 h-4 z M18 24 h4 v2 h-4 z"/></g>,
-            'a_off_aegis': () => <g><path fill="#fef08a" d="M10 6 h12 v10 l-6 8 l-6 -8 z" stroke="#ca8a04" strokeWidth="2"/><circle cx="16" cy="14" r="3" fill="#60a5fa"/></g>,
-
             'w_xuan': () => <g transform="rotate(45, 16, 16)"><path fill="#111827" d="M12 4 H20 V24 H12 Z" stroke="#374151" strokeWidth="1"/><path fill="#fbbf24" d="M14 6 H18 V8 H14 Z M14 20 H18 V22 H14 Z"/><path fill="#ef4444" d="M16 10 V18" stroke="#ef4444" strokeWidth="1"/></g>,
             'w_haotian': () => <g transform="rotate(45, 16, 16)"><path fill="#1f2937" d="M14 12 H18 V28 H14 Z"/><path fill="#4b5563" d="M8 4 H24 V12 H8 Z"/><path fill="#3b82f6" d="M10 6 H22 V10 H10 Z"/></g>,
-            
             'w_gate_of_babylon': () => <g><circle cx="16" cy="16" r="12" fill="#fef08a" opacity="0.3"/><circle cx="16" cy="16" r="8" fill="none" stroke="#fbbf24" strokeWidth="2"/><circle cx="16" cy="16" r="4" fill="#000"/><path d="M10 16 h12" stroke="#fff" strokeWidth="1"/></g>,
+
+            /* === 新增/舊有防具頭部 Icons === */
+            'h_cloth': () => <g><path fill="#d1d5db" d="M8 10 Q16 2 24 10 V14 H8 Z"/></g>,
+            'h_leather_cap': () => <g><path fill="#8B4513" d="M8 10 Q16 0 24 10 V14 H8 Z"/></g>,
+            'h_iron': () => <g><path fill="#94a3b8" d="M8 8 Q16 0 24 8 V16 H8 Z"/><rect x="14" y="6" width="4" height="8" fill="#cbd5e1"/></g>,
+            'h_knight': () => <g><path fill="#cbd5e1" d="M6 8 Q16 -4 26 8 V18 H6 Z"/></g>,
+            'h_mage_hat': () => <g><path fill="#312e81" d="M6 14 H26 L16 0 Z"/><path fill="#4c1d95" d="M4 14 H28 V18 H4 Z"/></g>,
+            'h_thief_hood': () => <g><path fill="#1f2937" d="M8 10 Q16 0 24 10 V18 H8 Z"/></g>,
+            'h_valkyrie': () => <g><path fill="#fbbf24" d="M8 10 Q16 0 24 10 V16 H8 Z"/><path fill="#fef08a" d="M6 6 L10 10 L6 16 Z M26 6 L22 10 L26 16 Z"/></g>,
+            's2': () => <g><path fill="#8d1d1d" d="M10 6 H22 V18 H20 V20 H12 V18 H10 Z" /><path fill="#eab308" d="M14 6 H18 V8 H14 Z M16 4 V6 H16 Z" /><path fill="#b91c1c" d="M11 7 H21 V17 H11 Z" opacity="0.5"/><path fill="#fbbf24" d="M10 18 H12 V20 H10 Z M20 18 H22 V20 H20 Z" /></g>,
+            'a_head_frost': () => <g><path fill="#a5f3fc" d="M8 16 l4 -8 l4 6 l4 -6 l4 8 v4 h-16 z" stroke="#0891b2" strokeWidth="1"/></g>,
+
+            /* === 新增/舊有防具身軀 Icons === */
+            'b_cloth': () => <g><path fill="#d1d5db" d="M8 10 h16 v16 h-16 z"/></g>,
+            'b_leather_tunic': () => <g><path fill="#8B4513" d="M8 10 h16 v16 h-16 z"/></g>,
+            'b_robe': () => <g><path fill="#1e3a8a" d="M6 10 h20 v18 h-20 z"/></g>,
+            'b_assassin': () => <g><path fill="#111827" d="M8 10 h16 v16 h-16 z"/></g>,
+            'b_chain': () => <g><path fill="#94a3b8" d="M8 10 h16 v16 h-16 z"/><path fill="none" stroke="#cbd5e1" strokeWidth="2" d="M8 14 h16 M8 20 h16 M12 10 v16 M20 10 v16"/></g>,
+            'b_plate': () => <g><path fill="#cbd5e1" d="M6 10 h20 v16 h-20 z"/><path fill="#94a3b8" d="M10 12 h12 v12 h-12 z"/></g>,
+            'b_paladin': () => <g><path fill="#fef08a" d="M6 10 h20 v16 h-20 z"/><path fill="#ffffff" d="M10 12 h12 v12 h-12 z"/></g>,
+            'a_body_dragon': () => <g><path fill="#7f1d1d" d="M8 10 h16 v14 h-16 z"/><path fill="#fbbf24" d="M12 10 v14 M20 10 v14" stroke="#f59e0b" strokeWidth="1"/></g>,
+            'a_body_star': () => <g><path fill="#1e1b4b" d="M8 8 h16 v16 h-16 z"/><circle cx="12" cy="12" r="1" fill="#fef08a"/><circle cx="20" cy="16" r="1" fill="#fef08a"/><circle cx="14" cy="20" r="1" fill="#fef08a"/></g>,
+
+            /* === 新增/舊有防具足部 Icons === */
+            'f_cloth_shoes': () => <g><path fill="#9ca3af" d="M8 18 h6 v6 h-6 z M18 18 h6 v6 h-6 z"/></g>,
+            'f_leather': () => <g><path fill="#78350f" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/></g>,
+            'f_iron': () => <g><path fill="#94a3b8" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/></g>,
+            'f_knight': () => <g><path fill="#cbd5e1" d="M6 18 h8 v8 h-8 z M18 18 h8 v8 h-8 z"/></g>,
+            'f_mage_boots': () => <g><path fill="#312e81" d="M8 16 h6 v10 h-6 z M18 16 h6 v10 h-6 z"/></g>,
+            'f_swift_boots': () => <g><path fill="#15803d" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/><path fill="#86efac" d="M6 22 h2 v2 h-2 z M24 22 h2 v2 h-2 z"/></g>,
+            'f_pegasus': () => <g><path fill="#fef08a" d="M6 18 h8 v8 h-8 z M18 18 h8 v8 h-8 z"/><path fill="#ffffff" d="M4 20 l4 -4 v8 z M28 20 l-4 -4 v8 z"/></g>,
+            'a_feet_lava': () => <g><path fill="#451a03" d="M10 16 h4 v10 h-4 z M18 16 h4 v10 h-4 z"/><path fill="#ea580c" d="M10 24 h4 v2 h-4 z M18 24 h4 v2 h-4 z"/></g>,
+
+            /* === 新增/舊有副手 Icons === */
+            'o_wood_shield': () => <g><path fill="#8B4513" d="M8 6 h16 v12 l-8 8 l-8 -8 z" stroke="#5D4037" strokeWidth="2"/></g>,
+            'o_magic_tome': () => <g><path fill="#1e3a8a" d="M8 6 h16 v20 h-16 z"/><path fill="#ffffff" d="M14 8 h2 v16 h-2 z"/><circle cx="15" cy="16" r="3" fill="#fbbf24"/></g>,
+            'o_crystal_orb': () => <g><circle cx="16" cy="16" r="10" fill="#a5f3fc" style={{filter:'drop-shadow(0 0 6px #06b6d4)'}}/><circle cx="12" cy="12" r="3" fill="#ffffff"/></g>,
+            'a_off_aegis': () => <g><path fill="#fef08a" d="M10 6 h12 v10 l-6 8 l-6 -8 z" stroke="#ca8a04" strokeWidth="2"/><circle cx="16" cy="14" r="3" fill="#60a5fa"/></g>,
+            'o_fire': () => <g><path fill="#34d399" d="M16 8 Q8 20 16 28 Q24 20 16 8 Z"/><path fill="#6ee7b7" d="M16 14 Q12 22 16 26 Q20 22 16 14 Z"/></g>,
+
+            /* === 新增/舊有背飾 Icons === */
+            'o_bluegrass': () => <g><path fill="none" stroke="#3b82f6" strokeWidth="2" d="M12 26 Q8 16 12 8 M16 26 Q16 12 20 6 M20 26 Q26 18 22 10"/><circle cx="12" cy="8" r="2" fill="#bfdbfe"/><circle cx="20" cy="6" r="2" fill="#bfdbfe"/><circle cx="22" cy="10" r="2" fill="#bfdbfe"/></g>,
+            'b_traveler_cloak': () => <g><path fill="#78350f" d="M8 8 Q16 4 24 8 L28 26 H4 Z"/></g>,
+            'b_elven_cape': () => <g><path fill="#15803d" d="M10 8 Q16 6 22 8 L26 28 H6 Z"/></g>,
+            'b_demon_wings': () => <g><path fill="#991b1b" d="M16 16 L2 4 L8 20 Z M16 16 L30 4 L24 20 Z"/></g>,
             'b_magic_circle': () => <g><circle cx="16" cy="16" r="12" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2"/><path d="M16 4 L26 22 H6 Z" fill="none" stroke="#7dd3fc" strokeWidth="1"/></g>,
             'b_six_wings': () => <g><path fill="#fef08a" d="M16 16 Q8 4 2 10 Q8 12 14 18 Z"/><path fill="#fef08a" d="M16 16 Q24 4 30 10 Q24 12 18 18 Z"/><path fill="#fde047" d="M16 16 Q4 12 2 18 Q8 20 14 22 Z"/><path fill="#fde047" d="M16 16 Q28 12 30 18 Q24 20 18 22 Z"/></g>,
-            
             'b_spider': () => <g><path fill="none" stroke="#7e22ce" strokeWidth="2" d="M16 16 Q6 8 4 16 M16 16 Q26 8 28 16 M16 18 Q6 14 2 22 M16 18 Q26 14 30 22 M16 20 Q8 20 6 28 M16 20 Q24 20 26 28"/></g>,
             'b_purplewings': () => <g><path fill="#a855f7" d="M16 16 Q8 4 2 12 Q8 12 12 20 Z"/><path fill="#a855f7" d="M16 16 Q24 4 30 12 Q24 12 20 20 Z"/><path fill="#c084fc" d="M16 16 Q10 8 6 12 Q10 12 13 18 Z"/><path fill="#c084fc" d="M16 16 Q22 8 26 12 Q22 12 19 18 Z"/></g>,
-            'o_fire': () => <g><path fill="#34d399" d="M16 8 Q8 20 16 28 Q24 20 16 8 Z"/><path fill="#6ee7b7" d="M16 14 Q12 22 16 26 Q20 22 16 14 Z"/></g>,
-            'o_bluegrass': () => <g><path fill="none" stroke="#3b82f6" strokeWidth="2" d="M12 26 Q8 16 12 8 M16 26 Q16 12 20 6 M20 26 Q26 18 22 10"/><circle cx="12" cy="8" r="2" fill="#bfdbfe"/><circle cx="20" cy="6" r="2" fill="#bfdbfe"/><circle cx="22" cy="10" r="2" fill="#bfdbfe"/></g>,
+
+            /* === 特殊眼部 Icons === */
             'e_sharingan': () => <g><circle cx="16" cy="16" r="10" fill="#ef4444" stroke="#7f1d1d" strokeWidth="2"/><circle cx="16" cy="16" r="2" fill="#000"/><circle cx="16" cy="10" r="1.5" fill="#000"/><circle cx="10.5" cy="19" r="1.5" fill="#000"/><circle cx="21.5" cy="19" r="1.5" fill="#000"/></g>,
             'e_rinnegan': () => <g><circle cx="16" cy="16" r="10" fill="#d8b4fe" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="7" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="4" fill="none" stroke="#581c87" strokeWidth="1"/><circle cx="16" cy="16" r="1" fill="#581c87"/></g>,
             'e_mystic': () => <g><circle cx="16" cy="16" r="10" fill="#67e8f9" stroke="#0891b2" strokeWidth="2"/><circle cx="16" cy="16" r="4" fill="#f472b6" style={{filter:'blur(2px)'}}/></g>,
             
+            /* === 魂環 Icons === */
             'r1': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#ffffff" strokeWidth="4" style={{filter:'drop-shadow(0 0 2px #fff)'}}/>,
             'r2': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#facc15" strokeWidth="4" style={{filter:'drop-shadow(0 0 4px #facc15)'}}/>,
             'r3': () => <circle cx="16" cy="16" r="10" fill="none" stroke="#a855f7" strokeWidth="4" style={{filter:'drop-shadow(0 0 6px #a855f7)'}}/>,
@@ -327,63 +405,121 @@ const Icon = ({ name, size=20, className="", color="currentColor", strokeWidth=2
             'r8': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#38bdf8" strokeWidth="8" style={{filter:'drop-shadow(0 0 20px #7dd3fc)'}}/><circle cx="16" cy="16" r="5" fill="#fde047" style={{filter:'blur(2px)'}}/></g>
         };
 const SHOP_ITEMS = [
-            { id: 'w_wood', name: '木劍', type: 'mainHand', rarity: 'common', cost: 50, icon: 'Sword', stats: { str: 5 }, desc: "新手必備的基礎木劍。" },
-            { id: 'w_iron', name: '鐵劍', type: 'mainHand', rarity: 'rare', cost: 300, icon: 'Sword', stats: { str: 15, agi: 5 }, desc: "標準的鐵製長劍，還算鋒利。" },
-            { id: 'h_cloth', name: '粗布帽', type: 'head', rarity: 'common', cost: 30, icon: 'Crown', stats: { vit: 2 }, desc: "稍微抵擋風寒的帽子。" },
-            { id: 'h_iron', name: '鐵製頭盔', type: 'head', rarity: 'rare', cost: 250, icon: 'Crown', stats: { vit: 10, str: 2 }, desc: "堅固的頭盔，保護頭部。" },
-            { id: 'b_cloth', name: '布衣', type: 'body', rarity: 'common', cost: 60, icon: 'Shield', stats: { vit: 5 }, desc: "普通的衣服，沒什麼防禦力。" },
-            { id: 'b_chain', name: '鎖子甲', type: 'body', rarity: 'rare', cost: 400, icon: 'Shield', stats: { vit: 20, agi: -2 }, desc: "雖然沉重，但能有效防禦利器。" },
-            { id: 'f_straw', name: '草鞋', type: 'feet', rarity: 'common', cost: 20, icon: 'Zap', stats: { agi: 2 }, desc: "編織粗糙的鞋子。" },
-            { id: 'f_leather', name: '皮靴', type: 'feet', rarity: 'rare', cost: 200, icon: 'Zap', stats: { agi: 10, vit: 5 }, desc: "適合長途跋涉的堅固皮靴。" },
-
-            { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'rare', cost: 150, icon: 'Crown', stats: { vit: 5, int: 5 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。" },
-            { id: 's14', name: '戰斧', type: 'mainHand', rarity: 'epic', cost: 1500, icon: 'Hammer', stats: { str: 40 }, desc: "沉重而鋒利的戰斧，破壞力驚人。" },
-            { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 6000, icon: 'Sword', stats: { str: 40, agi: 30 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。" },
+            /* --- 武器 (MainHand) --- */
+            { id: 'w_wood_staff', name: '木製法杖', type: 'mainHand', rarity: 'common', cost: 150, icon: 'Zap', stats: { int: 10 }, desc: "新手魔法師的練習杖。", reqStats: { int: 10 } },
+            { id: 'w_iron', name: '鐵劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的鐵製長劍，還算鋒利。", reqStats: { str: 15 } },
+            { id: 'w_dagger', name: '鐵製匕首', type: 'mainHand', rarity: 'common', cost: 250, icon: 'Sword', stats: { agi: 12, str: 5 }, desc: "輕巧的匕首，適合快速攻擊。", reqStats: { agi: 15 } },
             
-            { id: 'a_head_frost', name: '冰霜王冠', type: 'head', rarity: 'epic', cost: 8000, icon: 'Crown', stats: { int: 80, vit: 40 }, desc: "散發著極寒之氣的王冠，能抵禦精神攻擊。" },
-            { id: 'a_body_dragon', name: '不滅龍甲', type: 'body', rarity: 'legendary', cost: 35000, icon: 'Shield', stats: { vit: 300, str: 50 }, desc: "以太古巨龍之鱗鍛造的重甲，擁有絕對的物理防禦。" },
-            { id: 'a_body_star', name: '星辰法袍', type: 'body', rarity: 'epic', cost: 12000, icon: 'Briefcase', stats: { int: 150, agi: 30 }, desc: "編織了星光之力的法袍，能大幅提升魔力與迴避。" },
-            { id: 'a_feet_lava', name: '熔岩戰靴', type: 'feet', rarity: 'epic', cost: 9500, icon: 'Zap', stats: { str: 40, agi: 60, vit: 20 }, desc: "踏過火山之巔的戰靴，每一步都帶有爆發力。" },
-            { id: 'a_off_aegis', name: '聖盾·埃癸斯', type: 'offHand', rarity: 'legendary', cost: 42000, icon: 'Shield', stats: { vit: 400, int: 100 }, desc: "傳說中能抵擋諸神黃昏的絕對防禦聖盾。" },
+            { id: 'w_steel', name: '鋼鐵大劍', type: 'mainHand', rarity: 'rare', cost: 800, icon: 'Sword', stats: { str: 25, agi: -5 }, desc: "沉重但破壞力強大的鋼鐵劍。", reqStats: { str: 30 } },
+            { id: 'w_apprentice_wand', name: '學徒魔杖', type: 'mainHand', rarity: 'rare', cost: 900, icon: 'Zap', stats: { int: 28 }, desc: "杖尖鑲嵌著微光的水晶。", reqStats: { int: 35 } },
+            { id: 'w_shadow_blade', name: '影襲短刃', type: 'mainHand', rarity: 'rare', cost: 1100, icon: 'Sword', stats: { agi: 30, cri: 5 }, desc: "塗有暗影毒藥的致命短刃。", reqStats: { agi: 40 } },
+            
+            { id: 'w_mithril', name: '秘銀細劍', type: 'mainHand', rarity: 'epic', cost: 3500, icon: 'Sword', stats: { str: 45, agi: 20 }, desc: "輕盈且無比鋒利的秘銀劍。", reqStats: { str: 50, agi: 30 } },
+            { id: 's14', name: '狂戰士之斧', type: 'mainHand', rarity: 'epic', cost: 5000, icon: 'Hammer', stats: { str: 60, vit: 10 }, desc: "沉重而鋒利的戰斧，破壞力驚人。", reqStats: { str: 80 } },
+            { id: 'w_ruby_staff', name: '紅寶石權杖', type: 'mainHand', rarity: 'epic', cost: 5500, icon: 'Zap', stats: { int: 70, maxMp: 50 }, desc: "匯聚強大火屬性魔力的法杖。", reqStats: { int: 80 } },
+            { id: 'w_void_scythe', name: '虛空鐮刀', type: 'mainHand', rarity: 'epic', cost: 6500, icon: 'Ghost', stats: { str: 40, agi: 50, cri: 15 }, desc: "收割靈魂的詭異鐮刀。", reqStats: { str: 60, agi: 70 } },
+            
+            { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Sword', stats: { str: 80, agi: 50, cri: 10 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。", reqStats: { str: 100, agi: 80 } },
+            { id: 'w_excalibur', name: '誓約勝利之劍', type: 'mainHand', rarity: 'legendary', cost: 28000, icon: 'Sword', stats: { str: 150, vit: 50, int: 50 }, desc: "傳說中的聖劍，閃耀著神聖光芒。", reqStats: { str: 200, vit: 100 } },
+            { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 35000, icon: 'Sword', stats: { str: 250, agi: -30, vit: 80 }, desc: "極度沉重的黑色巨尺，可壓制體內鬥氣。", reqStats: { str: 400 } },
+            { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 40000, icon: 'Hammer', stats: { str: 350, vit: 150, agi: -40 }, desc: "天下第一器武魂，重達萬斤，無堅不摧。", reqStats: { str: 500, vit: 200 } },
+            { id: 'w_gate_of_babylon', name: '王之寶庫', type: 'mainHand', rarity: 'legendary', cost: 250000, icon: 'Key', stats: { str: 1500, agi: 500, int: 800 }, desc: "連通黃金之都的鑰匙，能無盡地射出寶具！", reqStats: { str: 1000, int: 1000 } },
 
-            { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 15000, icon: 'Sword', stats: { str: 150, agi: -20, vit: 50 }, desc: "極度沉重的黑色巨尺，可壓制體內鬥氣。" },
-            { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 8500, icon: 'Briefcase', stats: { agi: 100, str: 20 }, desc: "五階飛行魔獸之翼煉化而成，速度極快。" },
-            { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 25000, icon: 'Zap', stats: { int: 200, str: 80 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。" },
+            /* --- 頭部 (Head) --- */
+            { id: 'h_cloth', name: '粗布帽', type: 'head', rarity: 'common', cost: 80, icon: 'Crown', stats: { vit: 3, int: 2 }, desc: "簡單的布帽，保暖為主。", reqStats: {} },
+            { id: 'h_leather_cap', name: '皮帽', type: 'head', rarity: 'common', cost: 150, icon: 'Crown', stats: { vit: 6, agi: 3 }, desc: "有一定防護力的硬皮帽。", reqStats: { vit: 10 } },
+            { id: 'h_iron', name: '鐵製頭盔', type: 'head', rarity: 'common', cost: 300, icon: 'Crown', stats: { vit: 12 }, desc: "堅固的頭盔，保護頭部。", reqStats: { vit: 15 } },
+            
+            { id: 'h_knight', name: '騎士頭盔', type: 'head', rarity: 'rare', cost: 800, icon: 'Crown', stats: { vit: 25, str: 5 }, desc: "正規騎士使用的頭盔。", reqStats: { vit: 30 } },
+            { id: 's2', name: '紅蓮兜帽', type: 'head', rarity: 'rare', cost: 900, icon: 'Crown', stats: { vit: 10, int: 20 }, desc: "鮮紅色的兜帽，帶有金色的裝飾。", reqStats: { int: 20 } },
+            { id: 'h_mage_hat', name: '尖頂法師帽', type: 'head', rarity: 'rare', cost: 1000, icon: 'Crown', stats: { int: 25, maxMp: 20 }, desc: "典型的法師裝扮，能集中精神。", reqStats: { int: 35 } },
+            { id: 'h_thief_hood', name: '夜行者面罩', type: 'head', rarity: 'rare', cost: 1100, icon: 'Ghost', stats: { agi: 20, vit: 8 }, desc: "隱藏在陰影中的暗殺者專用。", reqStats: { agi: 30 } },
 
-            { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 20000, icon: 'Hammer', stats: { str: 250, vit: 100, agi: -30 }, desc: "天下第一器武魂，重達萬斤，無堅不摧。" },
-            { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 30000, icon: 'Briefcase', stats: { str: 120, agi: 150, vit: 80 }, desc: "極為罕見的外附魂骨，含有劇毒與強大穿透力。" },
-            { id: 'o_bluegrass', name: '藍銀皇', type: 'offHand', rarity: 'epic', cost: 12000, icon: 'Shield', stats: { vit: 150, int: 100 }, desc: "植物系魂獸皇者，生生不息，擁有強大控制與治癒力。" },
+            { id: 'h_valkyrie', name: '女武神頭飾', type: 'head', rarity: 'epic', cost: 6000, icon: 'Crown', stats: { vit: 40, str: 30, agi: 20 }, desc: "帶有羽翼裝飾的神聖頭飾。", reqStats: { str: 60, vit: 60 } },
+            { id: 'a_head_frost', name: '冰霜王冠', type: 'head', rarity: 'epic', cost: 18000, icon: 'Crown', stats: { int: 120, vit: 60 }, desc: "散發著極寒之氣的王冠，能抵禦精神攻擊。", reqStats: { int: 200 } },
 
-            { id: 'e_sharingan', name: '寫輪眼', type: 'eye', rarity: 'epic', cost: 18000, icon: 'Eye', stats: { int: 120, agi: 80, cri: 15 }, desc: "洞察眼與催眠眼，能看穿一切幻術與體術。" },
-            { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 45000, icon: 'Eye', stats: { int: 300, vit: 200, str: 100 }, desc: "掌控生死，駕馭陰陽的崇高之眼。" },
-            { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 50000, icon: 'Eye', stats: { atk: 500, cri: 50 }, desc: "能看見萬物的「死之線」，一擊必殺。" },
+            /* --- 身軀 (Body) --- */
+            { id: 'b_cloth', name: '粗布衣', type: 'body', rarity: 'common', cost: 100, icon: 'Shield', stats: { vit: 5 }, desc: "最基礎的衣物。", reqStats: {} },
+            { id: 'b_leather_tunic', name: '皮製皮甲', type: 'body', rarity: 'common', cost: 250, icon: 'Shield', stats: { vit: 12, agi: 5 }, desc: "輕便且有防護力的皮甲。", reqStats: { agi: 15 } },
+            { id: 'b_chain', name: '鎖子甲', type: 'body', rarity: 'common', cost: 400, icon: 'Shield', stats: { vit: 20 }, desc: "能有效防禦利器切割。", reqStats: { vit: 25 } },
 
-            { id: 'b_magic_circle', name: '全知魔法陣', type: 'back', rarity: 'epic', cost: 18000, icon: 'Sun', stats: { int: 300, vit: 100 }, desc: "不斷旋轉的奧術陣列，提供源源不絕的魔力。" },
-            { id: 'b_six_wings', name: '神聖六翼', type: 'back', rarity: 'legendary', cost: 55000, icon: 'Cloud', stats: { agi: 300, int: 200, vit: 200 }, desc: "六片閃耀著神聖光芒的羽翼，翱翔於天際。" },
-            { id: 'w_gate_of_babylon', name: '王之寶庫', type: 'mainHand', rarity: 'legendary', cost: 150000, icon: 'Key', stats: { str: 999, agi: 200, int: 500 }, desc: "連通黃金之都的鑰匙，能無盡地射出寶具！" },
+            { id: 'b_plate', name: '重型板甲', type: 'body', rarity: 'rare', cost: 1500, icon: 'Shield', stats: { vit: 45, str: 10, agi: -10 }, desc: "防禦力極高的重型板甲。", reqStats: { str: 40, vit: 50 } },
+            { id: 'b_robe', name: '學者法袍', type: 'body', rarity: 'rare', cost: 1300, icon: 'Briefcase', stats: { int: 30, vit: 10 }, desc: "用魔力絲線編織的長袍。", reqStats: { int: 40 } },
+            { id: 'b_assassin', name: '暗影夜行衣', type: 'body', rarity: 'rare', cost: 1600, icon: 'Ghost', stats: { agi: 35, vit: 15 }, desc: "輕若無物，完全融入黑夜。", reqStats: { agi: 45 } },
 
-            { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。" },
-            { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。" },
-            { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。" },
-            { id: 'r4', name: '萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 50000, icon: 'Sun', stats: { vit: 200, str: 200, agi: 50 }, desc: "黑色的萬年魂環。漆黑如墨，隱隱散發強大威壓。" },
-            { id: 'r5', name: '十萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 200000, icon: 'Sun', stats: { vit: 800, str: 500, int: 500 }, desc: "血紅色的十萬年魂環。猩紅流光護體，宛如殺神降臨！" },
-            { id: 'r6', name: '凶獸魂環', type: 'spiritRing', rarity: 'legendary', cost: 500000, icon: 'Sun', stats: { vit: 2000, str: 1200, agi: 800 }, desc: "超越二十萬年的凶獸所化，橙金光芒撕裂空間。" },
-            { id: 'r7', name: '百萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 1500000, icon: 'Sun', stats: { vit: 5000, str: 3000, int: 3000 }, desc: "傳說中的百萬年魂環，耀眼金光，成神之基。" },
-            { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！" }
+            { id: 'b_paladin', name: '聖騎士鎧甲', type: 'body', rarity: 'epic', cost: 8000, icon: 'Shield', stats: { vit: 80, str: 40, int: 20 }, desc: "受到神聖祝福的光輝鎧甲。", reqStats: { vit: 100, str: 80 } },
+            { id: 'a_body_star', name: '星辰法袍', type: 'body', rarity: 'epic', cost: 22000, icon: 'Briefcase', stats: { int: 200, agi: 50 }, desc: "編織了星光之力的法袍，能大幅提升魔力與迴避。", reqStats: { int: 250 } },
+            { id: 'a_body_dragon', name: '不滅龍甲', type: 'body', rarity: 'legendary', cost: 45000, icon: 'Shield', stats: { vit: 400, str: 100 }, desc: "以太古巨龍之鱗鍛造的重甲，擁有絕對的物理防禦。", reqStats: { str: 300, vit: 300 } },
+
+            /* --- 足部 (Feet) --- */
+            { id: 'f_cloth_shoes', name: '布鞋', type: 'feet', rarity: 'common', cost: 50, icon: 'Zap', stats: { agi: 3 }, desc: "普通的鞋子。", reqStats: {} },
+            { id: 'f_leather', name: '硬皮靴', type: 'feet', rarity: 'common', cost: 150, icon: 'Zap', stats: { agi: 8, vit: 3 }, desc: "適合長途跋涉的堅固皮靴。", reqStats: { agi: 15 } },
+            { id: 'f_iron', name: '鐵鞋', type: 'feet', rarity: 'rare', cost: 500, icon: 'Zap', stats: { vit: 15, agi: 5 }, desc: "稍微沉重但保護性好。", reqStats: { str: 20 } },
+            
+            { id: 'f_mage_boots', name: '聚能短靴', type: 'feet', rarity: 'rare', cost: 800, icon: 'Zap', stats: { int: 15, agi: 10 }, desc: "鞋底刻有微型法陣。", reqStats: { int: 25 } },
+            { id: 'f_knight', name: '騎士戰靴', type: 'feet', rarity: 'epic', cost: 2500, icon: 'Zap', stats: { vit: 35, str: 15 }, desc: "保護腳部的騎士重靴。", reqStats: { str: 40, vit: 40 } },
+            { id: 'f_swift_boots', name: '疾風之靴', type: 'feet', rarity: 'epic', cost: 3000, icon: 'Zap', stats: { agi: 45, cri: 5 }, desc: "穿上後感覺身體變輕了。", reqStats: { agi: 60 } },
+            
+            { id: 'f_pegasus', name: '天馬之靴', type: 'feet', rarity: 'legendary', cost: 12000, icon: 'Zap', stats: { agi: 100, vit: 20, int: 30 }, desc: "如同長了翅膀一般，能在空中短暫停留。", reqStats: { agi: 150 } },
+            { id: 'a_feet_lava', name: '熔岩戰靴', type: 'feet', rarity: 'epic', cost: 15000, icon: 'Zap', stats: { str: 60, agi: 80, vit: 30 }, desc: "踏過火山之巔的戰靴，每一步都帶有爆發力。", reqStats: { str: 150, agi: 100 } },
+
+            /* --- 副手 (OffHand) --- */
+            { id: 'o_wood_shield', name: '木製圓盾', type: 'offHand', rarity: 'common', cost: 200, icon: 'Shield', stats: { vit: 10 }, desc: "用結實的木板製成，能抵擋輕度攻擊。", reqStats: { str: 15 } },
+            { id: 'o_magic_tome', name: '初級魔法書', type: 'offHand', rarity: 'rare', cost: 1200, icon: 'Book', stats: { int: 20, maxMp: 30 }, desc: "記載著基礎魔法理論的書本。", reqStats: { int: 30 } },
+            { id: 'o_crystal_orb', name: '占卜水晶球', type: 'offHand', rarity: 'epic', cost: 4500, icon: 'Sun', stats: { int: 45, agi: 15 }, desc: "純淨的水晶，能放大魔力波動。", reqStats: { int: 60 } },
+            { id: 'a_off_aegis', name: '聖盾·埃癸斯', type: 'offHand', rarity: 'legendary', cost: 55000, icon: 'Shield', stats: { vit: 600, int: 150 }, desc: "傳說中能抵擋諸神黃昏的絕對防禦聖盾。", reqStats: { vit: 500, int: 200 } },
+            { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 45000, icon: 'Flame', stats: { int: 350, str: 100 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。", reqStats: { int: 400 } },
+
+            /* --- 背飾 (Back) --- */
+            // 修正：將藍銀皇改為背飾 (Back)，使其與骨靈冷火(副手)不衝突
+            { id: 'b_traveler_cloak', name: '旅人披風', type: 'back', rarity: 'common', cost: 300, icon: 'Cloud', stats: { agi: 5, vit: 5 }, desc: "擋風遮雨的防塵披風。", reqStats: {} },
+            { id: 'b_elven_cape', name: '精靈斗篷', type: 'back', rarity: 'rare', cost: 1500, icon: 'Cloud', stats: { agi: 25, int: 10 }, desc: "精靈族編織的斗篷，能稍微融入自然。", reqStats: { agi: 30 } },
+            { id: 'b_demon_wings', name: '惡魔小翼', type: 'back', rarity: 'epic', cost: 5500, icon: 'Ghost', stats: { str: 30, agi: 30, int: -10 }, desc: "長出小小的惡魔肉翼，提供短距離滑翔。", reqStats: { str: 50, agi: 50 } },
+            
+            { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 18500, icon: 'Briefcase', stats: { agi: 150, str: 30 }, desc: "五階飛行魔獸之翼煉化而成，速度極快。", reqStats: { agi: 200 } },
+            { id: 'o_bluegrass', name: '藍銀皇', type: 'back', rarity: 'epic', cost: 25000, icon: 'Shield', stats: { vit: 250, int: 150 }, desc: "植物系魂獸皇者，生生不息，擁有強大控制與治癒力。", reqStats: { int: 300, vit: 200 } },
+            { id: 'b_magic_circle', name: '全知魔法陣', type: 'back', rarity: 'epic', cost: 38000, icon: 'Sun', stats: { int: 400, vit: 150 }, desc: "不斷旋轉的奧術陣列，提供源源不絕的魔力。", reqStats: { int: 500 } },
+            { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 50000, icon: 'Briefcase', stats: { str: 180, agi: 200, vit: 100 }, desc: "極為罕見的外附魂骨，含有劇毒與強大穿透力。", reqStats: { str: 300, agi: 300 } },
+            { id: 'b_six_wings', name: '神聖六翼', type: 'back', rarity: 'legendary', cost: 85000, icon: 'Cloud', stats: { agi: 400, int: 300, vit: 300 }, desc: "六片閃耀著神聖光芒的羽翼，翱翔於天際。", reqStats: { int: 400, agi: 400, vit: 400 } },
+
+            /* --- 特殊眼部 (Eye) --- */
+            { id: 'e_sharingan', name: '寫輪眼', type: 'eye', rarity: 'epic', cost: 28000, icon: 'Eye', stats: { int: 180, agi: 120, cri: 20 }, desc: "洞察眼與催眠眼，能看穿一切幻術與體術。", reqStats: { int: 250, agi: 150 } },
+            { id: 'e_rinnegan', name: '輪迴眼', type: 'eye', rarity: 'legendary', cost: 65000, icon: 'Eye', stats: { int: 450, vit: 300, str: 150 }, desc: "掌控生死，駕馭陰陽的崇高之眼。", reqStats: { int: 600, vit: 400 } },
+            { id: 'e_mystic', name: '直死之魔眼', type: 'eye', rarity: 'legendary', cost: 80000, icon: 'Eye', stats: { atk: 800, cri: 60 }, desc: "能看見萬物的「死之線」，一擊必殺。", reqStats: { str: 500, agi: 500 } },
+
+            /* --- 魂環 (SpiritRing) --- */
+            { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。", reqStats: {} },
+            { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。", reqStats: { vit: 50 } },
+            { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。", reqStats: { str: 150, vit: 150 } },
+            { id: 'r4', name: '萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 50000, icon: 'Sun', stats: { vit: 200, str: 200, agi: 50 }, desc: "黑色的萬年魂環。漆黑如墨，隱隱散發強大威壓。", reqStats: { str: 400, vit: 400 } },
+            { id: 'r5', name: '十萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 200000, icon: 'Sun', stats: { vit: 800, str: 500, int: 500 }, desc: "血紅色的十萬年魂環。猩紅流光護體，宛如殺神降臨！", reqStats: { str: 1000, vit: 1000 } },
+            { id: 'r6', name: '凶獸魂環', type: 'spiritRing', rarity: 'legendary', cost: 500000, icon: 'Sun', stats: { vit: 2000, str: 1200, agi: 800 }, desc: "超越二十萬年的凶獸所化，橙金光芒撕裂空間。", reqStats: { str: 2500, vit: 2500 } },
+            { id: 'r7', name: '百萬年魂環', type: 'spiritRing', rarity: 'legendary', cost: 1500000, icon: 'Sun', stats: { vit: 5000, str: 3000, int: 3000 }, desc: "傳說中的百萬年魂環，耀眼金光，成神之基。", reqStats: { str: 6000, vit: 6000, int: 6000 } },
+            { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！", reqStats: { str: 15000, vit: 15000, int: 15000 } }
         ];
 
+        /* === 擴充 Boss 列表 === */
         const BOSS_LIST = [
-            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_wood', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。(每日限5次)' },
-            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。(每日限5次)' },
-            { id: 'boss_goblin_scout', name: '哥布林斥候', cpReq: 300, hp: 3000, icon: 'Eye', color: '#65a30d', exp: 250, gold: 150, dropRate: 0.2, dropItem: 'b_cloth', stoneDrop: 3, rewardDesc: '250 EXP / 150 G / 3 強化石', desc: '狡猾的哥布林先鋒部隊。(每日限5次)' },
-            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 8000, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。(每日限5次)' },
-            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。(每日限5次)' },
-            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Ghost', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。(每日限5次)' },
-            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。(每日限5次)' },
-            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 100 強化石', desc: '掌握世間一切財寶的絕對王者。(每日限5次)' },
-            { id: 'boss_titan', name: '遠古泰坦', cpReq: 1500000, hp: 5000000, icon: 'Shield', color: '#78350f', exp: 100000, gold: 80000, dropRate: 0.05, dropItem: 'r6', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 200 強化石', desc: '擁有無法撼動絕對防禦的巨人。(每日限5次)' },
-            { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 10000000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 400 強化石', desc: '能掀起吞噬一切滅世海嘯的巨獸。(每日限5次)' },
-            { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 30000000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', stoneDrop: 1000, rewardDesc: '80萬 EXP / 50萬 G / 1000 強化石', desc: '掌控殺戮法則的神明，非凡人可敵。(每日限5次)' }
+            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
+            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
+            { id: 'boss_goblin_scout', name: '哥布林斥候', cpReq: 300, hp: 3000, icon: 'Eye', color: '#65a30d', exp: 250, gold: 150, dropRate: 0.2, dropItem: 'b_cloth', stoneDrop: 3, rewardDesc: '250 EXP / 150 G / 3 強化石', desc: '狡猾的哥布林先鋒部隊。' },
+            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 8000, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。' },
+            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。' },
+            
+            // 新增 1萬戰力以上過渡期 Boss
+            { id: 'boss_orc', name: '狂暴獸人酋長', cpReq: 12000, hp: 50000, icon: 'UserPlus', color: '#b45309', exp: 2500, gold: 1500, dropRate: 0.08, dropItem: 'w_steel', stoneDrop: 15, rewardDesc: '2500 EXP / 1500 G / 15 強化石', desc: '統治獸人部落的野蠻酋長，力大無窮。' },
+            { id: 'boss_skeleton', name: '不朽骸骨大帝', cpReq: 25000, hp: 90000, icon: 'Ghost', color: '#d1d5db', exp: 3500, gold: 2500, dropRate: 0.08, dropItem: 'w_void_scythe', stoneDrop: 20, rewardDesc: '3500 EXP / 2500 G / 20 強化石', desc: '從遠古墓穴中甦醒的君王。' },
+            
+            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Flame', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。' },
+            
+            // 新增 近10萬戰力 Boss
+            { id: 'boss_lich', name: '災厄巫妖', cpReq: 90000, hp: 250000, icon: 'Eye', color: '#4c1d95', exp: 8000, gold: 7000, dropRate: 0.05, dropItem: 'a_head_frost', stoneDrop: 35, rewardDesc: '8000 EXP / 7000 G / 35 強化石', desc: '掌握死亡與寒冰魔法的終極法師。' },
+            
+            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。' },
+            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 100 強化石', desc: '掌握世間一切財寶的絕對王者。' },
+            { id: 'boss_titan', name: '遠古泰坦', cpReq: 1500000, hp: 5000000, icon: 'Shield', color: '#78350f', exp: 100000, gold: 80000, dropRate: 0.05, dropItem: 'r6', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 200 強化石', desc: '擁有無法撼動絕對防禦的巨人。' },
+            { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 10000000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 400 強化石', desc: '能掀起吞噬一切滅世海嘯的巨獸。' },
+            { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 30000000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', stoneDrop: 1000, rewardDesc: '80萬 EXP / 50萬 G / 1000 強化石', desc: '掌控殺戮法則的神明，非凡人可敵。' }
         ];
 
         const ACHIEVEMENTS_LIST = [
@@ -419,23 +555,41 @@ const SHOP_ITEMS = [
             { id: 'Legend', name: '傳說中的勇者', desc: '頂點的存在', rarity: 'legendary', condition: '等級達到 50', check: (d) => d.level >= 50, getProgress: (s) => `${s.level} / 50` },
         ];
 
+        /* === 轉職系統定義 === */
+        const CLASS_DEFINITIONS = {
+            'novice': { id: 'novice', name: '初心者', icon: 'Smile', color: '#94a3b8', bonuses: { str: 0, int: 0, vit: 0, agi: 0 }, desc: '全屬性均衡發展，適合適應各種狀況。' },
+            'warrior': { id: 'warrior', name: '狂戰士', icon: 'Sword', color: '#ef4444', bonuses: { str: 0.20, int: -0.10, vit: 0.10, agi: 0 }, desc: '力量增幅 20%，體質增幅 10%，但智力下降 10%。' },
+            'mage': { id: 'mage', name: '大魔導', icon: 'Zap', color: '#3b82f6', bonuses: { str: -0.10, int: 0.30, vit: -0.10, agi: 0 }, desc: '智力巨幅提升 30%，但力量與體質各下降 10%。' },
+            'rogue': { id: 'rogue', name: '暗影刺客', icon: 'Ghost', color: '#8b5cf6', bonuses: { str: 0.10, int: 0, vit: -0.10, agi: 0.30 }, desc: '敏捷巨幅提升 30%，力量提升 10%，體質下降 10%。' }
+        };
+
         const TALENT_TREE = {
             'str_up': { id: 'str_up', name: '力量強化', icon: 'Sword', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總力量', cost: 1, tier: 1 },
             'vit_up': { id: 'vit_up', name: '體質強化', icon: 'Heart', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總體質', cost: 1, tier: 1 },
-            'agi_up': { id: 'agi_up', name: '敏捷強化', icon: 'Zap', maxLevel: 10, reqLevel: 5, reqTalent: null, desc: '每級提升 5% 總敏捷', cost: 1, tier: 2 },
-            'int_up': { id: 'int_up', name: '智力強化', icon: 'Gem', maxLevel: 10, reqLevel: 5, reqTalent: null, desc: '每級提升 5% 總智力', cost: 1, tier: 2 },
+            'agi_up': { id: 'agi_up', name: '敏捷強化', icon: 'Zap', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總敏捷', cost: 1, tier: 1 },
+            'int_up': { id: 'int_up', name: '智力強化', icon: 'Gem', maxLevel: 10, reqLevel: 1, reqTalent: null, desc: '每級提升 5% 總智力', cost: 1, tier: 1 },
+            
+            'hp_regen': { id: 'hp_regen', name: '生生不息', icon: 'Pill', maxLevel: 5, reqLevel: 5, reqTalent: 'vit_up', reqTalentLevel: 3, desc: '每級提升 2% 額外生命值上限', cost: 1, tier: 2 },
+            'crit_rate_up': { id: 'crit_rate_up', name: '會心一擊', icon: 'Eye', maxLevel: 5, reqLevel: 5, reqTalent: 'agi_up', reqTalentLevel: 3, desc: '每級提升 3% 暴擊率', cost: 1, tier: 2 },
+            'mana_pool': { id: 'mana_pool', name: '魔力湧動', icon: 'Cloud', maxLevel: 5, reqLevel: 5, reqTalent: 'int_up', reqTalentLevel: 3, desc: '每級提升 5% 魔力上限', cost: 1, tier: 2 },
             
             'forge_master': { id: 'forge_master', name: '鍛造大師', icon: 'Hammer', maxLevel: 5, reqLevel: 10, reqTalent: null, desc: '每級提升強化成功率 3%', cost: 2, tier: 3 },
             'luck_up': { id: 'luck_up', name: '幸運眷顧', icon: 'Star', maxLevel: 5, reqLevel: 10, reqTalent: null, desc: '每級提升掉落率 2%', cost: 2, tier: 3 },
-            'gold_bonus': { id: 'gold_bonus', name: '財富密碼', icon: 'Coin', maxLevel: 5, reqLevel: 15, reqTalent: 'luck_up', reqTalentLevel: 2, desc: '每級提升 Boss 金幣掉落 5%', cost: 2, tier: 3 },
+            'shop_discount': { id: 'shop_discount', name: '商會貴賓', icon: 'Wallet', maxLevel: 5, reqLevel: 10, reqTalent: null, desc: '每級降低商店價格 2%', cost: 2, tier: 3 },
             
             'combat_master': { id: 'combat_master', name: '戰鬥大師', icon: 'Crown', maxLevel: 5, reqLevel: 20, reqTalent: 'str_up', reqTalentLevel: 5, desc: '每級提升 10% 總攻擊力', cost: 3, tier: 4 },
-            'immortal_body': { id: 'immortal_body', name: '不滅之軀', icon: 'Shield', maxLevel: 5, reqLevel: 20, reqTalent: 'vit_up', reqTalentLevel: 5, desc: '每級提升 10% 總生命值', cost: 3, tier: 4 },
-            'dodge_master': { id: 'dodge_master', name: '幻影步伐', icon: 'Ghost', maxLevel: 5, reqLevel: 25, reqTalent: 'agi_up', reqTalentLevel: 5, desc: '每級提升 2% 閃避率', cost: 3, tier: 4 },
+            'immortal_body': { id: 'immortal_body', name: '不滅之軀', icon: 'Shield', maxLevel: 5, reqLevel: 20, reqTalent: 'hp_regen', reqTalentLevel: 5, desc: '每級提升 10% 總防禦力', cost: 3, tier: 4 },
+            'dodge_master': { id: 'dodge_master', name: '幻影步伐', icon: 'Ghost', maxLevel: 5, reqLevel: 25, reqTalent: 'crit_rate_up', reqTalentLevel: 5, desc: '大幅提升速度與閃避能力', cost: 3, tier: 4 },
+            'gold_bonus': { id: 'gold_bonus', name: '財富密碼', icon: 'Coin', maxLevel: 5, reqLevel: 25, reqTalent: 'luck_up', reqTalentLevel: 5, desc: '每級提升 Boss 金幣掉落 5%', cost: 3, tier: 4 },
+
+            'god_of_war': { id: 'god_of_war', name: '戰神降臨', icon: 'Flame', maxLevel: 3, reqLevel: 40, reqTalent: 'combat_master', reqTalentLevel: 5, desc: '每級提升 15% 力量與暴擊傷害', cost: 4, tier: 5 },
+            'archmage': { id: 'archmage', name: '法神之眼', icon: 'Eye', maxLevel: 3, reqLevel: 40, reqTalent: 'mana_pool', reqTalentLevel: 5, desc: '每級提升 15% 智力與技能威力', cost: 4, tier: 5 },
             
-            'divine_power': { id: 'divine_power', name: '神之領域', icon: 'Sun', maxLevel: 3, reqLevel: 50, reqTalent: 'combat_master', reqTalentLevel: 5, desc: '每級提升 15% 所有基礎屬性', cost: 5, tier: 5 }
+            'divine_power': { id: 'divine_power', name: '神之領域', icon: 'Sun', maxLevel: 3, reqLevel: 60, reqTalent: null, desc: '每級提升 15% 所有基礎屬性', cost: 5, tier: 6 },
+            'limit_breaker': { id: 'limit_breaker', name: '極限突破', icon: 'Zap', maxLevel: 1, reqLevel: 80, reqTalent: 'divine_power', reqTalentLevel: 3, desc: '無視凡人極限，全屬性激增 50%', cost: 10, tier: 7 }
         };
-const TitleBadge = ({ titleId, className = "" }) => {
+
+        const TitleBadge = ({ titleId, className = "" }) => {
             const titleDef = TITLES_LIST.find(t => t.id === titleId) || TITLES_LIST[0];
             return (
                 <div className={`inline-flex items-center justify-center px-2 py-0.5 rounded border border-theme-border bg-theme-bg shadow-inner ${className}`}>
@@ -499,6 +653,7 @@ const TitleBadge = ({ titleId, className = "" }) => {
             
             return (
                 <svg viewBox="0 0 32 32" overflow="visible" shapeRendering="crispEdges" className={className} xmlns="http://www.w3.org/2000/svg">
+                    {/* 背景層（魂環等） */}
                     {spiritRings.map((ring, index) => (
                         <g key={ring.id + index} className="origin-center z-0" style={{transformBox: 'fill-box'}}>
                             {GEAR_VISUALS[ring.id] ? GEAR_VISUALS[ring.id]() : null}
@@ -511,6 +666,13 @@ const TitleBadge = ({ titleId, className = "" }) => {
                         </g>
                     )}
 
+                    {/* 【修復】將 o_fire 的渲染層級拉到角色後方，並調整大小 */}
+                    {offHand && (offHand.id === 'o_fire') && (
+                        <g className="animate-weapon-sway origin-bottom-right z-0" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
+                            {GEAR_VISUALS[offHand.id]()}
+                        </g>
+                    )}
+
                     <ellipse cx="16" cy="30" rx="10" ry="2" fill="rgba(0,0,0,0.15)" />
                     
                     <g className="animate-idle-breathe origin-bottom relative z-10">
@@ -518,6 +680,7 @@ const TitleBadge = ({ titleId, className = "" }) => {
                         
                         <g className="origin-top-center animate-cape-flow">
                             {backGears.length === 0 && <path fill={cape} d={gender === 'male' ? "M7 16h18v16H7z M9 16h14v14H9z" : "M8 16h16v16H8z M10 16h12v14H10z"} opacity="0.95" />}
+                            {/* 【修復】原本的 o_bluegrass 已轉移至 backGears 陣列中，會在此處正確繪製在人物後方 */}
                             {backGears.map((bg, index) => (
                                 <g key={bg.id + index}>
                                     {GEAR_VISUALS[bg.id] ? GEAR_VISUALS[bg.id]() : null}
@@ -548,11 +711,14 @@ const TitleBadge = ({ titleId, className = "" }) => {
                             {!headGear && (<><path fill="#ffb300" d={gender === 'male' ? "M9 5h14v2H9z" : "M10 6h12v2H10z"} /><path fill={gender==='male'?"#29b6f6":"#f06292"} d={gender === 'male' ? "M15 4h2v3h-2z" : "M15 5h2v3h-2z"} /></>)}
                         </g>
 
-                        <g className="animate-weapon-sway origin-bottom-right" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
-                            {offHand && (GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>)}
-                        </g>
+                        {/* 一般副手（排除已移至後方的 o_fire） */}
+                        {offHand && offHand.id !== 'o_fire' && (
+                            <g className="animate-weapon-sway origin-bottom-right z-20" style={{ animationDelay: '0.5s', transformBox: 'fill-box' }}>
+                                {GEAR_VISUALS[offHand.id] ? GEAR_VISUALS[offHand.id]() : <circle cx="8" cy="22" r="3" fill="#9e9e9e" stroke="#333" strokeWidth="0.5"/>}
+                            </g>
+                        )}
 
-                        <g transform={gender==='male' ? "scale(1.3) translate(-4, -4)" : "scale(1.3) translate(-4, -3)"} className="animate-weapon-sway origin-bottom-left" style={{ transformBox: 'fill-box' }}>
+                        <g transform={gender==='male' ? "scale(1.3) translate(-4, -4)" : "scale(1.3) translate(-4, -3)"} className="animate-weapon-sway origin-bottom-left z-20" style={{ transformBox: 'fill-box' }}>
                             {!mainHand ? (<><path fill="#5d4037" d="M23 18h4v2h-4z" /><path fill="#ffb300" d="M24 17h2v4h-2z" /><path fill="#e0e0e0" d="M26 18h6v2h-6z" /></>) : (mainHand.id === 'w_gate_of_babylon' ? <path fill="#fbbf24" d="M24 16h2v4h-2z" /> : (GEAR_VISUALS[mainHand.id] ? GEAR_VISUALS[mainHand.id]() : <path fill="#cfd8dc" d="M23 17h4v10h-4z" />))}
                         </g>
                     </g>
@@ -568,7 +734,8 @@ const BackgroundIllustrations = ({ theme }) => {
             <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div><div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[70vh] flex flex-col border-t-4 border-theme-accent/20"><div className="w-12 h-1 bg-theme-sub/20 rounded-full mx-auto mb-6 shrink-0"></div><h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">{title}</h3><div className="grid gap-3 overflow-y-auto custom-scrollbar">{options.map(opt => (<button key={opt.value} onClick={() => { if(opt.locked && onLockedClick) { onLockedClick(opt); } else if (!opt.locked) { onSelect(opt.value); onClose(); } }} className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all active:scale-95 border-2 ${current === opt.value ? 'border-theme-accent bg-theme-accent/5' : 'border-transparent bg-theme-bg'} ${opt.locked ? 'opacity-70 grayscale' : ''}`}><div className="flex items-center gap-3">{opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}<div className="flex flex-col items-start"><span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>{opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}{opt.locked && opt.condition && <span className="text-[9px] text-red-400 mt-1 font-mono bg-red-50 px-1 rounded border border-red-100">🔒 {opt.condition}</span>}</div></div>{current === opt.value && <Icon name="Check" className="text-theme-accent"/>}{opt.locked && <Icon name="Lock" className="text-theme-sub"/>}</button>))}</div><button onClick={onClose} className="w-full mt-6 py-4 text-theme-sub font-bold active:scale-95 shrink-0">取消</button></div></div>
         );
 
-        const InventoryModal = ({ slot, inventory, equipped, onClose, onEquip }) => {
+        const InventoryModal = ({ slot, inventory, equipped, onClose, onEquip, totalStats, lang, translations }) => {
+            const t = (key) => translations[lang]?.[key] || key;
             if (!slot) return null; const availableItems = inventory.filter(i => i.type === slot);
             
             const isEquipped = (item) => {
@@ -580,12 +747,22 @@ const BackgroundIllustrations = ({ theme }) => {
 
             const isMultiSlot = slot === 'back' || slot === 'spiritRing';
 
+            // 檢查裝備需求屬性
+            const checkReq = (item) => {
+                if (!item.reqStats || !totalStats) return { met: true, missing: [] };
+                let missing = [];
+                for (const [stat, req] of Object.entries(item.reqStats)) {
+                    if ((totalStats[stat] || 0) < req) missing.push(`${stat.toUpperCase()} ≥ ${req}`);
+                }
+                return { met: missing.length === 0, missing };
+            };
+
             return (
                 <div className="fixed inset-0 z-[80] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
                     <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 border-t-4 border-theme-accent/20 max-h-[60vh] flex flex-col">
                         <h3 className="text-center font-bold text-xl text-theme-text mb-6 font-pixel tracking-widest shrink-0">
-                            選擇裝備 ({slot}) 
+                            選擇裝備 ({t(slot) || slot}) 
                             {isMultiSlot && <span className="text-[10px] text-theme-sub ml-2 bg-theme-bg px-2 py-1 rounded-full border border-theme-border">支援疊加</span>}
                         </h3>
                         <div className="grid gap-3 overflow-y-auto pb-4 custom-scrollbar smooth-scroll">
@@ -598,13 +775,30 @@ const BackgroundIllustrations = ({ theme }) => {
                                 const VisualIcon = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; 
                                 const eqStatus = isEquipped(item);
                                 const displayName = item.enhanceLevel > 0 ? `${item.name} +${item.enhanceLevel}` : item.name;
+                                const reqStatus = checkReq(item);
+
                                 return (
-                                    <button key={item.uniqueId || item.id} onClick={() => onEquip(slot, item)} className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 transition-all hover:bg-theme-card rarity-${item.rarity} ${eqStatus ? 'border-theme-accent shadow-md scale-[1.02]' : 'bg-theme-bg border-transparent'}`}>
+                                    <button 
+                                        key={item.uniqueId || item.id} 
+                                        onClick={() => {
+                                            if (reqStatus.met || eqStatus) onEquip(slot, item);
+                                        }} 
+                                        className={`w-full p-3 rounded-2xl flex items-center justify-between border-2 transition-all ${!reqStatus.met && !eqStatus ? 'opacity-50 grayscale bg-theme-bg border-transparent cursor-not-allowed' : 'hover:bg-theme-card rarity-' + item.rarity} ${eqStatus ? 'border-theme-accent shadow-md scale-[1.02]' : 'bg-theme-bg border-transparent'}`}
+                                    >
                                         <div className="flex items-center gap-3">
                                             <div className="w-12 h-12 rounded-xl bg-white/50 shadow-sm flex items-center justify-center border border-white/30 overflow-hidden">{VisualIcon ? <svg viewBox="0 0 32 32" className="w-10 h-10 pixel-icon"><VisualIcon/></svg> : <Icon name={item.icon} className="pixel-icon"/>}</div>
-                                            <div className="text-left"><div className="font-bold text-theme-text">{displayName}</div><div className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</div></div>
+                                            <div className="text-left flex flex-col gap-0.5">
+                                                <div className="font-bold text-theme-text">{displayName}</div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-[10px] text-theme-sub uppercase bg-white/40 px-1 rounded inline-block">{item.rarity}</span>
+                                                    {!reqStatus.met && !eqStatus && (
+                                                        <span className="text-[9px] text-red-500 bg-red-50 px-1 rounded border border-red-200 font-mono">需求: {reqStatus.missing.join(', ')}</span>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                         {eqStatus && <div className="bg-theme-accent text-white text-[10px] px-2 py-1 rounded flex items-center gap-1"><Icon name="Check" size={10} /> 裝著中</div>}
+                                        {!reqStatus.met && !eqStatus && <Icon name="Lock" className="text-theme-sub"/>}
                                     </button>
                                 ); 
                             })}
@@ -678,6 +872,79 @@ const BackgroundIllustrations = ({ theme }) => {
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">選擇您的夥伴</h3><p className="text-xs text-theme-sub">這將是您冒險旅途的開始</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">未來進化路線預覽</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> 確定選擇</button></div></div></div>
             );
         };
+
+        /* === 新增：轉職系統面板 === */
+        const ClassSelectorModal = ({ currentClass, level, onSelect, onClose, lang, translations }) => {
+            const t = (key) => translations[lang]?.[key] || key;
+            const [selected, setSelected] = useState(currentClass || 'novice');
+            
+            return (
+                <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
+                    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
+                    <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20">
+                        <div className="p-6 pb-2 shrink-0 flex justify-between items-center">
+                            <button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X"/></button>
+                            <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">{t('class_system')}</h3>
+                            <div className="w-6"></div>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll space-y-3">
+                            <p className="text-xs text-theme-sub text-center mb-4">選擇職業以獲得專屬的屬性加成與減益。角色到達 Lv.10 即可轉職。</p>
+                            
+                            {Object.values(CLASS_DEFINITIONS).map(cls => {
+                                const isCurrent = currentClass === cls.id;
+                                const isSelected = selected === cls.id;
+                                const locked = level < 10 && cls.id !== 'novice';
+                                
+                                return (
+                                    <div 
+                                        key={cls.id} 
+                                        onClick={() => !locked && setSelected(cls.id)}
+                                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer relative overflow-hidden ${isSelected ? 'border-theme-accent shadow-md bg-theme-accent/5' : 'border-theme-border bg-theme-bg'} ${locked ? 'opacity-50 grayscale cursor-not-allowed' : 'active:scale-[0.98]'}`}
+                                    >
+                                        <div className="flex items-center gap-4 relative z-10">
+                                            <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm border border-white/20 text-white" style={{backgroundColor: cls.color}}>
+                                                {locked ? <Icon name="Lock"/> : <Icon name={cls.icon} size={24}/>}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex justify-between items-center">
+                                                    <h4 className="font-bold text-theme-text text-lg">{cls.name}</h4>
+                                                    {isCurrent && <span className="text-[10px] bg-theme-accent text-white px-2 py-0.5 rounded-full font-bold">目前職業</span>}
+                                                </div>
+                                                <p className="text-[10px] text-theme-sub mt-1">{cls.desc}</p>
+                                                
+                                                <div className="flex gap-2 mt-2 font-mono text-[9px] font-bold flex-wrap">
+                                                    {Object.entries(cls.bonuses).map(([stat, val]) => {
+                                                        if (val === 0) return null;
+                                                        return (
+                                                            <span key={stat} className={`px-1.5 py-0.5 rounded ${val > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                                                                {stat.toUpperCase()} {val > 0 ? '+' : ''}{val * 100}%
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        
+                        <div className="p-6 pt-2 shrink-0 bg-theme-card">
+                            <button 
+                                onClick={() => { if(selected !== currentClass) onSelect(selected); onClose(); }} 
+                                disabled={selected === currentClass || (level < 10 && selected !== 'novice')}
+                                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2 transition-colors ${selected === currentClass || (level < 10 && selected !== 'novice') ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-theme-accent text-white hover:brightness-110'}`}
+                            >
+                                <Icon name="Check" /> 
+                                {level < 10 && selected !== 'novice' ? t('class_locked') : selected === currentClass ? '已是此職業' : t('change_class')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
@@ -689,7 +956,6 @@ const BackgroundIllustrations = ({ theme }) => {
             
             return (
                 <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden pb-24 no-scrollbar p-4 space-y-4 smooth-scroll">
-                    {/* 總資產與上方系統入口 */}
                     <div className="flex justify-between items-start mb-2 px-2">
                         <div className="flex-1 min-w-0">
                             <div className="text-[10px] text-theme-sub font-bold uppercase mb-1 flex items-center gap-2">
@@ -711,7 +977,6 @@ const BackgroundIllustrations = ({ theme }) => {
                             </div>
                         </div>
                         
-                        {/* 🌟 新增：鍛造與天賦移至此處 */}
                         <div className="flex flex-col gap-2 shrink-0 ml-2">
                             <button onClick={() => onNavigate('forge')} className="bg-theme-card border-2 border-theme-border px-3 py-2 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all group hover:border-theme-accent/50 hover:shadow-md">
                                 <Icon name="Hammer" size={16} className="text-theme-accent group-hover:animate-bounce"/>
@@ -725,7 +990,6 @@ const BackgroundIllustrations = ({ theme }) => {
                     </div>
                     
                     <div className="flex flex-col gap-4 mt-2">
-                        {/* 角色卡片 */}
                         <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-theme-accent/5 rounded-full blur-2xl -translate-y-10 translate-x-10 pointer-events-none"></div>
                             <div className="absolute top-4 right-4 z-20"><LevelBadge level={user.level} /></div>
@@ -745,7 +1009,6 @@ const BackgroundIllustrations = ({ theme }) => {
                             </div>
                         </div>
                         
-                        {/* 寵物卡片 */}
                         <div className="bg-theme-card rounded-3xl p-6 shadow-sm border border-theme-border relative overflow-hidden group hover:shadow-md transition-all">
                             <div className="absolute top-0 left-0 w-32 h-32 bg-green-400/5 rounded-full blur-2xl -translate-x-10 -translate-y-10 pointer-events-none"></div>
                             <div className="flex items-center justify-between flex-row-reverse relative z-10">
@@ -805,12 +1068,14 @@ const BackgroundIllustrations = ({ theme }) => {
                 </div>
             );
         };
-
-        const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, purchaseHistory }) => {
+const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, purchaseHistory }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const safePurchaseHistory = Array.isArray(purchaseHistory) ? purchaseHistory : [];
             const [previewItem, setPreviewItem] = useState(null); const [showConfirmModal, setShowConfirmModal] = useState(false); const [filter, setFilter] = useState('all'); const [sort, setSort] = useState('rarityDesc'); const [showHistory, setShowHistory] = useState(false); const [buySuccessId, setBuySuccessId] = useState(null);
             
+            // 計算商店折扣天賦
+            const discountRate = 1 - (user.talents?.shop_discount || 0) * 0.02;
+
             const currentPreviewEquipped = useMemo(() => { 
                 if (!previewItem) return equipped; 
                 let newEquip = { ...equipped };
@@ -824,19 +1089,30 @@ const BackgroundIllustrations = ({ theme }) => {
             }, [equipped, previewItem]);
             
             const displayedItems = useMemo(() => { let items = [...SHOP_ITEMS]; if (filter !== 'all') items = items.filter(i => i.type === filter); items.sort((a, b) => { if (sort === 'priceAsc') return a.cost - b.cost; if (sort === 'priceDesc') return b.cost - a.cost; if (sort === 'rarityDesc') { const rVal = { legendary: 4, epic: 3, rare: 2, common: 1 }; return (rVal[b.rarity] || 0) - (rVal[a.rarity] || 0); } return 0; }); return items; }, [filter, sort]);
-            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'spiritRing', label: t('spiritRing'), icon: 'Sun' }, { id: 'eye', label: t('eye'), icon: 'Eye' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }];
+            const categories = [{ id: 'all', label: t('all'), icon: 'Star' }, { id: 'mainHand', label: t('mainHand'), icon: 'Sword' }, { id: 'spiritRing', label: t('spiritRing'), icon: 'Sun' }, { id: 'eye', label: t('eye'), icon: 'Eye' }, { id: 'head', label: t('head'), icon: 'Crown' }, { id: 'body', label: t('body'), icon: 'Shield' }, { id: 'feet', label: t('feet'), icon: 'Zap' }, { id: 'back', label: t('back'), icon: 'Briefcase' }, { id: 'offHand', label: t('offHand'), icon: 'Shield' }];
             const getCardStyle = (rarity, isSelected) => { const base = "relative rounded-lg transition-all duration-200 border-[3px] overflow-hidden"; const selected = isSelected ? "ring-4 ring-white ring-offset-2 ring-offset-[#2d1b1e] scale-105 z-10" : "hover:-translate-y-1 hover:shadow-lg"; let theme = ""; switch (rarity) { case 'legendary': theme = "bg-gradient-to-br from-yellow-900 via-amber-700 to-yellow-900 border-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]"; break; case 'epic': theme = "bg-gradient-to-br from-purple-900 via-fuchsia-900 to-purple-900 border-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.2)]"; break; case 'rare': theme = "bg-gradient-to-br from-blue-900 via-cyan-900 to-blue-900 border-cyan-400"; break; default: theme = "bg-[#4e342e] border-[#8d6e63] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"; break; } return `${base} ${selected} ${theme}`; };
-            const handleBuyClick = () => { if (!previewItem || gold < previewItem.cost) return; setShowConfirmModal(true); };
-            const confirmBuy = () => { onBuy(previewItem); setBuySuccessId(previewItem.id); setShowConfirmModal(false); };
+            
+            const handleBuyClick = () => { 
+                if (!previewItem) return;
+                const finalCost = Math.floor(previewItem.cost * discountRate);
+                if (gold < finalCost) return; 
+                setShowConfirmModal(true); 
+            };
+            const confirmBuy = () => { 
+                const finalCost = Math.floor(previewItem.cost * discountRate);
+                onBuy({ ...previewItem, cost: finalCost }); 
+                setBuySuccessId(previewItem.id); 
+                setShowConfirmModal(false); 
+            };
 
             return (
                 <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative bg-[#1a1012] overflow-hidden">
                     <div className="bg-[#2d1b1e] z-30 shadow-xl border-b-4 border-[#3e2723] px-4 py-2 shrink-0 flex items-center justify-between text-[#efebe9]"><div className="flex items-center gap-3"><h3 className="font-bold text-lg text-[#ffecb3] flex items-center gap-2 font-pixel shadow-black drop-shadow-md"><Icon name="Shop" className="text-[#ffca28]" /> {t('equipment_shop')}</h3></div><div className="flex gap-2"><button onClick={() => setShowHistory(!showHistory)} className={`w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all active:scale-95 ${showHistory ? 'bg-[#ffca28] text-[#3e2723] border-[#ff6f00]' : 'bg-[#3e2723] text-[#bcaaa4] border-[#5d4037]'}`}><Icon name="Scroll" size={16} /></button><div className="flex items-center gap-2 bg-[#1a1012] px-3 py-1 rounded-full border border-[#5d4037] shadow-inner min-w-[80px] justify-center"><Icon name="Coin" size={14} className="text-[#ffca28] drop-shadow-sm"/><span className="font-bold text-[#ffecb3] font-mono text-sm">{gold.toLocaleString()}</span></div></div></div>
-                    {!showHistory && (<div className="relative shrink-0 h-48 bg-[#000000] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden"><div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-red-900/20 blur-[60px] rounded-full pointer-events-none"></div><div className="relative z-10 scale-[1.5] transform translate-y-2 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={currentPreviewEquipped} className="w-32 h-32"/></div>{previewItem && ( <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s] shadow-[0_0_10px_rgba(0,0,0,0.5)]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity}`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-2 font-pixel">{previewItem.name}</div></div> )}</div>)}
+                    {!showHistory && (<div className="relative shrink-0 h-48 bg-[#000000] border-b-4 border-[#3e2723] shadow-2xl flex items-center justify-center overflow-hidden"><div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-red-900/20 blur-[60px] rounded-full pointer-events-none"></div><div className="relative z-10 scale-[1.5] transform translate-y-2 filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={currentPreviewEquipped} className="w-32 h-32"/></div>{previewItem && ( <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-md rounded-xl p-3 border border-white/10 max-w-[140px] animate-[slideUp_0.3s] shadow-[0_0_10px_rgba(0,0,0,0.5)]"><div className={`text-[10px] font-bold uppercase mb-1 tracking-wider rarity-text-${previewItem.rarity}`}>{previewItem.rarity}</div><div className="text-sm font-bold text-white leading-tight mb-1 font-pixel">{previewItem.name}</div>{previewItem.reqStats && Object.keys(previewItem.reqStats).length > 0 && <div className="text-[8px] text-red-400 font-mono mt-1 pt-1 border-t border-white/20">需求: {Object.entries(previewItem.reqStats).map(([k,v])=>`${k.toUpperCase()}≥${v}`).join(', ')}</div>}</div> )}</div>)}
                     {!showHistory && (<div className="bg-[#2d1b1e] border-b-4 border-[#1a1012] px-2 pt-2 flex items-end gap-1 overflow-x-auto no-scrollbar shrink-0">{categories.map(cat => ( <button key={cat.id} onClick={() => setFilter(cat.id)} className={`group relative flex flex-col items-center justify-center min-w-[60px] h-12 pb-1 rounded-t-lg border-t-2 border-x-2 transition-all duration-200 ${filter === cat.id ? 'bg-[#1a1012] border-[#5d4037] text-[#ffca28] translate-y-[4px] z-10' : 'bg-[#3e2723] border-[#2d1b1e] text-[#a1887f] hover:bg-[#4e342e] hover:text-[#efebe9] mb-[4px]'}`}><Icon name={cat.icon} size={14} className={filter === cat.id ? 'drop-shadow-glow' : ''}/><span className="text-[9px] font-bold mt-0.5">{cat.label}</span></button> ))}</div>)}
                     
                     <div className="flex-1 overflow-y-auto smooth-scroll custom-scrollbar bg-[#1a1012] relative pb-32 pt-2 px-2">
-                        {showHistory ? (<div className="p-2 space-y-3 bg-[#efebe9] min-h-full rounded-xl"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{item.cost} G</div></div></div>); })}</div>)}
+                        {showHistory ? (<div className="p-2 space-y-3 bg-[#efebe9] min-h-full rounded-xl"><h3 className="font-bold text-[#3e2723] mb-2 px-1 flex items-center gap-2"><Icon name="Scroll" size={16}/> {t('purchase_history')}</h3>{safePurchaseHistory.length === 0 && <div className="text-center text-[#a1887f] opacity-50 text-xs py-10">{t('no_records')}</div>}{safePurchaseHistory.map(record => ( <div key={record.id} className="bg-white p-4 rounded-2xl border border-[#d7ccc8] shadow-sm flex items-center justify-between"><div><div className="font-bold text-sm text-[#3e2723]">{record.itemName}</div><div className="text-[10px] text-[#8d6e63] mt-1 flex items-center gap-1"><Icon name="Clock" size={10}/>{new Date(record.date).toLocaleString()}</div></div><div className="font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">-{record.cost} G</div></div> ))}</div>) : (<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">{displayedItems.map(item => { const isOwned = inventory.some(i => i.id === item.id); const isSelected = previewItem?.id === item.id; const Visual = ITEM_ICONS[item.id] || GEAR_VISUALS[item.id]; const finalCost = Math.floor(item.cost * discountRate); return (<div key={item.id} onClick={() => { setPreviewItem(item); setBuySuccessId(null); }} className="group cursor-pointer flex flex-col"><div className={getCardStyle(item.rarity, isSelected)}>{item.rarity === 'legendary' && <div className="absolute inset-0 bg-yellow-400/10 animate-pulse mix-blend-overlay"></div>}{item.rarity === 'epic' && <div className="absolute inset-0 bg-purple-500/10 mix-blend-overlay"></div>}<div className="absolute top-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute top-0 right-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 left-0 w-1 h-1 bg-white/30"></div><div className="absolute bottom-0 right-0 w-1 h-1 bg-white/30"></div><div className="w-full h-full flex items-center justify-center p-3 relative z-10">{Visual ? <svg viewBox="0 0 32 32" className="w-full h-full drop-shadow-md pixel-icon"><Visual /></svg> : <Icon name={item.icon} className="w-full h-full text-white/80 drop-shadow-md" strokeWidth={1.5} />}</div>{isOwned && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[1px]"><Icon name="Check" size={20} className="text-green-400 drop-shadow-md" strokeWidth={3} /></div>}</div><div className="mt-1.5 text-center px-1"><div className={`text-[10px] font-bold leading-tight truncate font-pixel tracking-wide ${isSelected ? 'text-[#ffca28]' : 'text-[#efebe9]/80'}`}>{item.name}</div><div className="text-[9px] font-mono text-[#a1887f]">{finalCost} G {discountRate < 1 && <span className="text-green-400">↓</span>}</div></div></div>); })}</div>)}
                     </div>
                     {!showHistory && previewItem && !inventory.some(i => i.id === previewItem.id) && (
                         <div className="absolute bottom-[80px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent z-40 animate-[slideUp_0.2s] pointer-events-none">
@@ -857,20 +1133,21 @@ const BackgroundIllustrations = ({ theme }) => {
                                             </div>
                                         )}
                                     </div>
-                                    <button onClick={handleBuyClick} disabled={gold < previewItem.cost} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] shrink-0 ${gold >= previewItem.cost ? 'bg-gradient-to-b from-[#ffca28] to-[#ff8f00] text-[#3e2723] hover:brightness-110 border-b-4 border-[#e65100]' : 'bg-[#3e2723] text-[#8d6e63] border-b-4 border-[#1a1012] cursor-not-allowed'}`}>
-                                        <span>{gold >= previewItem.cost ? t('buy') : t('not_enough_gold')}</span>
-                                        <span className="text-[10px] opacity-80 font-mono">{previewItem.cost} G</span>
+                                    <button onClick={handleBuyClick} disabled={gold < Math.floor(previewItem.cost * discountRate)} className={`relative z-10 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex flex-col items-center min-w-[100px] shrink-0 ${gold >= Math.floor(previewItem.cost * discountRate) ? 'bg-gradient-to-b from-[#ffca28] to-[#ff8f00] text-[#3e2723] hover:brightness-110 border-b-4 border-[#e65100]' : 'bg-[#3e2723] text-[#8d6e63] border-b-4 border-[#1a1012] cursor-not-allowed'}`}>
+                                        <span>{gold >= Math.floor(previewItem.cost * discountRate) ? t('buy') : t('not_enough_gold')}</span>
+                                        <span className="text-[10px] opacity-80 font-mono">{Math.floor(previewItem.cost * discountRate)} G</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     )}
-                    {showConfirmModal && previewItem && (<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]"><div className="bg-[#2d1b1e] p-6 rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.8)] w-full max-w-xs border-2 border-[#5d4037] text-center relative animate-pop-in"><div className="w-16 h-16 bg-[#ffca28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#ffca28] shadow-[0_0_15px_rgba(255,202,40,0.3)]"><Icon name="Coin" size={32} className="text-[#ffca28]"/></div><h3 className="font-bold text-lg mb-2 text-[#efebe9]">{t('confirm_buy_title')}</h3><p className="text-sm text-[#a1887f] mb-6 px-2">{t('confirm_buy_msg').replace('{cost}', previewItem.cost).replace('{item}', previewItem.name)}</p><div className="flex gap-3"><button onClick={() => setShowConfirmModal(false)} className="flex-1 py-3 rounded-xl font-bold text-[#a1887f] bg-[#1a1012] border border-[#5d4037] active:scale-95 hover:bg-[#3e2723] transition-colors">{t('cancel')}</button><button onClick={confirmBuy} className="flex-1 py-3 rounded-xl font-bold text-[#3e2723] bg-gradient-to-b from-[#ffca28] to-[#ff8f00] shadow-lg active:scale-95 border-b-4 border-[#e65100]">{t('confirm')}</button></div></div></div>)}
+                    {showConfirmModal && previewItem && (<div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]"><div className="bg-[#2d1b1e] p-6 rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.8)] w-full max-w-xs border-2 border-[#5d4037] text-center relative animate-pop-in"><div className="w-16 h-16 bg-[#ffca28]/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#ffca28] shadow-[0_0_15px_rgba(255,202,40,0.3)]"><Icon name="Coin" size={32} className="text-[#ffca28]"/></div><h3 className="font-bold text-lg mb-2 text-[#efebe9]">{t('confirm_buy_title')}</h3><p className="text-sm text-[#a1887f] mb-6 px-2">{t('confirm_buy_msg').replace('{cost}', Math.floor(previewItem.cost * discountRate)).replace('{item}', previewItem.name)}</p><div className="flex gap-3"><button onClick={() => setShowConfirmModal(false)} className="flex-1 py-3 rounded-xl font-bold text-[#a1887f] bg-[#1a1012] border border-[#5d4037] active:scale-95 hover:bg-[#3e2723] transition-colors">{t('cancel')}</button><button onClick={confirmBuy} className="flex-1 py-3 rounded-xl font-bold text-[#3e2723] bg-gradient-to-b from-[#ffca28] to-[#ff8f00] shadow-lg active:scale-95 border-b-4 border-[#e65100]">{t('confirm')}</button></div></div></div>)}
                     {buySuccessId && <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"><div className="bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(34,197,94,0.5)] animate-bounce flex items-center gap-2"><Icon name="Check" /> {t('buy_success')}</div></div>}
                 </div>
             );
         };
-const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
+
+        const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const gold = user.gold || 0;
             const stones = user.stones || 0;
@@ -878,11 +1155,10 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
             
             const [selectedItem, setSelectedItem] = useState(null);
             const [isEnhancing, setIsEnhancing] = useState(false);
-            const [enhanceResult, setEnhanceResult] = useState(null); // 'success' or 'fail'
+            const [enhanceResult, setEnhanceResult] = useState(null);
 
-            // 計算花費與成功率 (已依照要求大幅減少高稀有度裝備的基礎金幣花費)
             const getEnhanceCost = (item) => {
-                const baseRarityCost = { 'common': 100, 'rare': 250, 'epic': 800, 'legendary': 2500 }; // 降低金幣需求
+                const baseRarityCost = { 'common': 100, 'rare': 250, 'epic': 800, 'legendary': 2500 }; 
                 const currentLvl = item.enhanceLevel || 0;
                 const goldCost = Math.floor((baseRarityCost[item.rarity] || 100) * Math.pow(1.5, currentLvl));
                 const stoneCost = Math.floor(currentLvl / 3) + 1;
@@ -943,12 +1219,10 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
                         </div>
                     </div>
                     
-                    {/* 🌟 增加 pb-36 避免被下方導航列遮擋 */}
                     <div className="flex-1 overflow-y-auto p-4 pb-36 custom-scrollbar smooth-scroll flex flex-col md:flex-row gap-4 relative z-10">
                         <div className="absolute inset-0 bg-magma opacity-30 pointer-events-none"></div>
                         <div className="absolute inset-0 forge-grid pointer-events-none"></div>
                         
-                        {/* 左側背包 */}
                         <div className="w-full md:w-1/2 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-3 flex flex-col relative z-10 max-h-[30vh] md:max-h-full">
                             <h3 className="text-xs font-bold text-[#9ca3af] uppercase mb-3 px-1 border-b border-[#374151] pb-2">選擇裝備</h3>
                             <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
@@ -973,7 +1247,6 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
                             </div>
                         </div>
 
-                        {/* 右側鍛造面板 */}
                         <div className="w-full md:w-1/2 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[350px] z-10">
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-orange-600/10 blur-[50px] rounded-full pointer-events-none"></div>
 
@@ -1126,22 +1399,14 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
 
                     <div className="flex-1 overflow-y-auto p-4 pb-24 smooth-scroll relative custom-scrollbar">
                         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none"></div>
-                        <svg className="absolute inset-0 w-full h-[800px] pointer-events-none opacity-30 z-0" style={{strokeDasharray: '4 4'}}>
-                            <line x1="30%" y1="100" x2="30%" y2="220" stroke="#38bdf8" strokeWidth="2" className="animate-tree-flow"/>
-                            <line x1="70%" y1="100" x2="70%" y2="220" stroke="#38bdf8" strokeWidth="2" className="animate-tree-flow"/>
-                            <line x1="50%" y1="340" x2="50%" y2="460" stroke="#38bdf8" strokeWidth="2" className="animate-tree-flow"/>
-                            <line x1="30%" y1="460" x2="50%" y2="580" stroke="#38bdf8" strokeWidth="2" className="animate-tree-flow"/>
-                            <line x1="70%" y1="460" x2="50%" y2="580" stroke="#38bdf8" strokeWidth="2" className="animate-tree-flow"/>
-                        </svg>
-
                         <div className="flex flex-col items-center gap-12 relative z-10 pt-6 pb-20">
-                            {renderTier(1, ['str_up', 'vit_up'])}
-                            {renderTier(2, ['agi_up', 'int_up'])}
-                            {renderTier(3, ['forge_master', 'luck_up', 'gold_bonus'])}
-                            {renderTier(4, ['combat_master', 'dodge_master', 'immortal_body'])}
-                            <div className="mt-8">
-                                {renderTier(5, ['divine_power'])}
-                            </div>
+                            {renderTier(1, ['str_up', 'vit_up', 'agi_up', 'int_up'])}
+                            {renderTier(2, ['hp_regen', 'crit_rate_up', 'mana_pool'])}
+                            {renderTier(3, ['forge_master', 'luck_up', 'shop_discount'])}
+                            {renderTier(4, ['combat_master', 'immortal_body', 'dodge_master', 'gold_bonus'])}
+                            {renderTier(5, ['god_of_war', 'archmage'])}
+                            {renderTier(6, ['divine_power'])}
+                            {renderTier(7, ['limit_breaker'])}
                         </div>
                     </div>
 
@@ -1204,9 +1469,13 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
                 </div>
             );
         };
-        const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp }) => {
+
+        const CharacterView = ({ equipped, onEquipSlot, gender, onToggleGender, appearance, onUpdateAppearance, level, lang, translations, totalStats, derivedStats, cp, currentClass, onOpenClassSelector }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [isEditing, setIsEditing] = useState(false);
+            
+            // 讀取當前職業定義
+            const classDef = CLASS_DEFINITIONS[currentClass || 'novice'] || CLASS_DEFINITIONS['novice'];
             
             const renderSlot = (slotData) => {
                 const item = Array.isArray(equipped[slotData.slot]) ? equipped[slotData.slot][0] : equipped[slotData.slot]; 
@@ -1220,7 +1489,18 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
 
             return (
                 <div className="animate-[fadeIn_0.5s] flex flex-col p-4 pb-24 h-full overflow-hidden gap-3 smooth-scroll">
-                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border"><div className="flex items-center gap-2"><div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{Math.floor(cp).toLocaleString()}</span></div></div><div className="flex gap-2"><button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button><button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button></div></div>
+                    <div className="shrink-0 flex justify-between items-center bg-theme-card p-2 rounded-2xl shadow-sm border border-theme-border">
+                        <div className="flex items-center gap-2">
+                            <div className="text-xs font-bold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm animate-pulse-slow">CP: <span className="text-sm font-black">{Math.floor(cp).toLocaleString()}</span></div>
+                            <button onClick={onOpenClassSelector} className="text-xs font-bold text-white px-3 py-1 rounded-full shadow-sm flex items-center gap-1 active:scale-95 transition-transform hover:brightness-110" style={{backgroundColor: classDef.color}}>
+                                <Icon name={classDef.icon} size={12}/> {classDef.name}
+                            </button>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={onToggleGender} className="w-8 h-8 flex items-center justify-center rounded-full bg-theme-bg border border-theme-border active:scale-95 font-bold text-theme-text">{gender === 'female' ? '♀' : '♂'}</button>
+                            <button onClick={() => setIsEditing(true)} className="text-xs bg-theme-accent text-white px-3 py-1 rounded-full font-bold flex items-center gap-1 active:scale-95 shadow-md"><Icon name="Paint" size={12} /> {t('dressing_room')}</button>
+                        </div>
+                    </div>
                     
                     <div className="flex-1 min-h-0 relative w-full flex items-center justify-center overflow-visible">
                         <div className="absolute bottom-4 w-[120px] h-[20px] rounded-full bg-theme-accent/20 animate-pulse blur-xl"></div>
@@ -1248,7 +1528,8 @@ const ForgeView = ({ user, inventory, onEnhance, lang, translations }) => {
                 </div>
             );
         };
-const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
+
+        const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selectedBoss, setSelectedBoss] = useState(null);
             const [isBattling, setIsBattling] = useState(false);
@@ -1400,8 +1681,7 @@ const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
                 </div>
             );
         };
-
-        const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
+const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
             const [subView, setSubView] = useState('fin'); const [timeFilter, setTimeFilter] = useState('month'); const [calDate, setCalDate] = useState(new Date()); const [selectedDate, setSelectedDate] = useState(null); const [showMonthPicker, setShowMonthPicker] = useState(false); const [pickerYear, setPickerYear] = useState(calDate.getFullYear()); const [dailyDate, setDailyDate] = useState(new Date().toISOString().split('T')[0]); const t = (key) => translations[lang]?.[key] || key;
             
             const financialStats = useMemo(() => { 
@@ -1535,7 +1815,8 @@ const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
                 </div>
             );
         };
-const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLikeFriend, onUpdateId, lang, translations }) => {
+
+        const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLikeFriend, onUpdateId, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [searchId, setSearchId] = useState(''); const [selectedFriend, setSelectedFriend] = useState(null); const [copied, setCopied] = useState(false); const [showIdModal, setShowIdModal] = useState(false); const [newIdInput, setNewIdInput] = useState(''); const [idError, setIdError] = useState('');
             const handleAdd = () => { if (!searchId.trim()) return; onAddFriend(searchId); setSearchId(''); };
@@ -1622,9 +1903,10 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
             const [authLoading, setAuthLoading] = useState(true);
 
             const [data, setData] = useState({
-                user: { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, stones: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '', isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {}, hasResetTalent: false },
+                user: { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, stones: 0, title: 'Novice', currentClass: 'novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, photo: '', isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {}, hasResetTalent: false },
                 inventory: [], equipped: {}, transactions: [], accounts: [{ id: 1, name: '錢包', currency: 'TWD', balance: 0, type: 'cash' }], logs: [], categories: DEFAULT_CATEGORIES, claimedQuests: [], purchaseHistory: [], friends: []
             });
+            
             const [view, setView] = useState('home');
             const [theme, setTheme] = useState('ink');
             const [lang, setLang] = useState('zh');
@@ -1634,6 +1916,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
             const [showCurrencySelect, setShowCurrencySelect] = useState(false);
             const [showLevelUp, setShowLevelUp] = useState({ show: false, level: 1 });
             const [showAvatarEdit, setShowAvatarEdit] = useState(false);
+            const [showClassSelector, setShowClassSelector] = useState(false);
             const [assetModalOpen, setAssetModalOpen] = useState(false);
             const [editingAccount, setEditingAccount] = useState(null);
             const [tempAccountName, setTempAccountName] = useState('');
@@ -1658,7 +1941,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
             const [cloudSyncing, setCloudSyncing] = useState(false);
 
             const safeData = useMemo(() => {
-                const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, stones: 0, title: 'Novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {}, hasResetTalent: false };
+                const defaultUser = { uid: 'guest', name: 'Hero', gender: 'male', level: 1, exp: 0, gold: 500, stones: 0, title: 'Novice', currentClass: 'novice', unlockedTitles: ['Novice'], unlockedAchievements: [], appearance: { male: {...DEFAULT_APPEARANCE}, female: {...DEFAULT_APPEARANCE} }, isIdChanged: false, bossAttempts: { date: '', count: 0 }, talents: {}, hasResetTalent: false };
                 const currentUser = data.user || defaultUser;
                 return {
                     ...data,
@@ -1671,6 +1954,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                         exp: currentUser.exp || 0,
                         gold: currentUser.gold || 0,
                         stones: currentUser.stones || 0,
+                        currentClass: currentUser.currentClass || 'novice',
                         bossAttempts: currentUser.bossAttempts || { date: '', count: 0 },
                         talents: currentUser.talents || {},
                         hasResetTalent: currentUser.hasResetTalent || false
@@ -1685,10 +1969,13 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                     purchaseHistory: Array.isArray(data.purchaseHistory) ? data.purchaseHistory : []
                 };
             }, [data]);
-// CP 計算包含多裝備疊加、裝備強化、與天賦樹加成
+
+            // CP 計算包含多裝備疊加、裝備強化、天賦樹與轉職加成
             const calculatedStats = useMemo(() => {
                 const level = safeData.user.level || 1;
                 const talents = safeData.user.talents || {};
+                const currentClass = safeData.user.currentClass || 'novice';
+                const classBonuses = CLASS_DEFINITIONS[currentClass]?.bonuses || { str: 0, int: 0, vit: 0, agi: 0 };
                 
                 const baseStr = 5 + level * 2;
                 const baseInt = 5 + level * 2;
@@ -1712,10 +1999,14 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                     if (Array.isArray(val)) { val.forEach(calculateItemStats); } else { calculateItemStats(val); }
                 });
 
-                const strMulti = 1 + (talents['str_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
-                const vitMulti = 1 + (talents['vit_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
-                const agiMulti = 1 + (talents['agi_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
-                const intMulti = 1 + (talents['int_up'] || 0) * 0.05 + (talents['divine_power'] || 0) * 0.15;
+                // 綜合計算天賦與轉職加成
+                const limitBreak = 1 + (talents['limit_breaker'] || 0) * 0.50;
+                const divinePower = (talents['divine_power'] || 0) * 0.15;
+                
+                const strMulti = (1 + classBonuses.str + (talents['str_up'] || 0) * 0.05 + divinePower + (talents['god_of_war'] || 0) * 0.15) * limitBreak;
+                const vitMulti = (1 + classBonuses.vit + (talents['vit_up'] || 0) * 0.05 + divinePower) * limitBreak;
+                const agiMulti = (1 + classBonuses.agi + (talents['agi_up'] || 0) * 0.05 + divinePower) * limitBreak;
+                const intMulti = (1 + classBonuses.int + (talents['int_up'] || 0) * 0.05 + divinePower + (talents['archmage'] || 0) * 0.15) * limitBreak;
                 
                 totalStats.str *= strMulti;
                 totalStats.vit *= vitMulti;
@@ -1723,19 +2014,22 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                 totalStats.int *= intMulti;
 
                 const combatMasterMulti = 1 + (talents['combat_master'] || 0) * 0.10;
-                const immortalBodyMulti = 1 + (talents['immortal_body'] || 0) * 0.10;
+                const immortalBodyMulti = 1 + (talents['immortal_body'] || 0) * 0.10 + (talents['hp_regen'] || 0) * 0.02;
+                const manaPoolMulti = 1 + (talents['mana_pool'] || 0) * 0.05;
+                const dodgeMasterMulti = 1 + (talents['dodge_master'] || 0) * 0.05;
+                const critRateBonus = (talents['crit_rate_up'] || 0) * 3;
 
                 const derivedStats = { 
                     hp: (totalStats.vit * 20) * immortalBodyMulti, 
-                    mp: totalStats.int * 10, 
+                    mp: (totalStats.int * 10) * manaPoolMulti, 
                     atk: (totalStats.str * 5) * combatMasterMulti, 
                     def: totalStats.vit * 2, 
-                    spd: totalStats.agi * 2, 
-                    cri: Math.floor(totalStats.agi * 0.2) 
+                    spd: (totalStats.agi * 2) * dodgeMasterMulti, 
+                    cri: Math.min(100, Math.floor(totalStats.agi * 0.2) + critRateBonus) 
                 };
                 const cp = derivedStats.hp + derivedStats.atk + derivedStats.def + derivedStats.spd;
                 return { totalStats, derivedStats, cp };
-            }, [safeData.user.level, safeData.user.talents, safeData.equipped]);
+            }, [safeData.user.level, safeData.user.talents, safeData.user.currentClass, safeData.equipped]);
 
             useEffect(() => {
                 const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -1750,7 +2044,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                             } else {
                                 let newInitialData = { ...data };
                                 newInitialData.user = { ...newInitialData.user, uid: user.uid, name: user.displayName || 'Hero' };
-                                newInitialData.friends = [{ uid: 'mock_1', name: 'Sakura Guide', gender: 'female', level: 10, title: 'Novice', appearance: { hair: '#f472b6', skin: '#ffccbc', armor: '#fff', cape: '#ec4899' }, equipped: { head: SHOP_ITEMS[1], mainHand: SHOP_ITEMS[3] }, lastLogin: 'Online', likes: 999 }];
+                                newInitialData.friends = [{ uid: 'mock_1', name: 'Sakura Guide', gender: 'female', level: 10, title: 'Novice', appearance: { hair: '#f472b6', skin: '#ffccbc', armor: '#fff', cape: '#ec4899' }, equipped: { head: SHOP_ITEMS.find(i=>i.id==='h_mage_hat'), mainHand: SHOP_ITEMS.find(i=>i.id==='w_apprentice_wand') }, lastLogin: 'Online', likes: 999 }];
                                 setData(newInitialData);
                                 await db.collection('users').doc(user.uid).set(newInitialData);
                             }
@@ -1870,6 +2164,10 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
             const handleSelectPet = (petId) => { if (!safeData.user) return; const newPet = { id: petId, name: PET_DEFINITIONS[petId].name, exp: 0, level: 1, bond: 0 }; setData(prev => ({ ...prev, user: { ...prev.user, pet: newPet } })); setShowPetSelector(false); };
             const handleRenamePet = (newName) => { if (!safeData.user.pet) return; setData(prev => ({ ...prev, user: { ...prev.user, pet: { ...prev.user.pet, name: newName } } })); };
             const handleSetTitle = (titleId) => { setData(prev => ({ ...prev, user: { ...prev.user, title: titleId } })); };
+            const handleSelectClass = (classId) => {
+                const newLogs = addLog('system', `轉職成功: 成為了 ${CLASS_DEFINITIONS[classId].name}!`, safeData.logs);
+                setData(prev => ({ ...prev, user: { ...prev.user, currentClass: classId }, logs: newLogs }));
+            };
             
             const handleBuyItem = (item) => {
                 const newGold = safeData.user.gold - item.cost; 
@@ -2035,7 +2333,6 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                 }
             };
             
-            // 失敗不扣除次數
             const handleBossBattleEnd = ({ isWin, boss, droppedItem }) => {
                 const todayStr = new Date().toDateString();
                 let newAttempts = { ...safeData.user.bossAttempts };
@@ -2049,7 +2346,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                 let newLogs = [...safeData.logs];
                 
                 if (isWin) {
-                    newAttempts.count += 1; // 討伐成功才扣除次數
+                    newAttempts.count += 1; 
                     newUser.bossAttempts = newAttempts;
 
                     const goldTalent = newUser.talents?.gold_bonus || 0;
@@ -2080,7 +2377,6 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                 checkUnlockables(newData);
             };
 
-            // 大幅提升任務獎勵
             const activeQuests = useMemo(() => {
                 const todayStr = new Date().toDateString(); 
                 const totalTxCount = safeData.transactions.length; 
@@ -2127,7 +2423,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                 ];
                 return rawQuests.map(q => ({ ...q, uniqueId: q.id, isClaimed: safeData.claimedQuests.includes(q.id), isCompleted: q.progress >= q.target })).sort((a, b) => { if (a.isClaimed && !b.isClaimed) return 1; if (!a.isClaimed && b.isClaimed) return -1; if (a.isCompleted && !b.isCompleted) return -1; return 0; });
             }, [safeData.transactions, safeData.accounts, safeData.claimedQuests, mainCurrency, safeData.friends, safeData.inventory, safeData.user.level]);
-            
+
             const pendingQuestCount = activeQuests.filter(q => q.isCompleted && !q.isClaimed).length;
 
             if (authLoading) return <div className="h-[100dvh] w-full flex items-center justify-center bg-[#f8f9fa] text-xl font-bold font-pixel text-theme-text" data-theme={theme}>Loading...</div>;
@@ -2182,7 +2478,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                         {view === 'shop' && <ShopView gold={safeData.user.gold} inventory={safeData.inventory} equipped={safeData.equipped} user={safeData.user} onBuy={handleBuyItem} lang={lang} translations={TRANSLATIONS} purchaseHistory={safeData.purchaseHistory} />}
                         {view === 'forge' && <ForgeView user={safeData.user} inventory={safeData.inventory} onEnhance={handleEnhanceItem} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'talent' && <TalentView user={safeData.user} onUpgradeTalent={handleUpgradeTalent} onResetTalent={handleResetTalent} lang={lang} translations={TRANSLATIONS} />}
-                        {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} lang={lang} translations={TRANSLATIONS} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} cp={calculatedStats.cp} />}
+                        {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} currentClass={safeData.user.currentClass} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} onOpenClassSelector={() => setShowClassSelector(true)} lang={lang} translations={TRANSLATIONS} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} cp={calculatedStats.cp} />}
                         {view === 'boss' && <BossView cp={calculatedStats.cp} onBattleEnd={handleBossBattleEnd} user={safeData.user} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'journal' && <JournalView logs={safeData.logs} transactions={safeData.transactions} categories={safeData.categories} accounts={safeData.accounts} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
                         {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} mainCurrency={mainCurrency} />}
@@ -2199,7 +2495,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                           { id: 'social', icon: 'Users', label: t('social') },
                           { id: 'achievements', icon: 'Trophy', label: t('achievements') },
                           { id: 'journal', icon: 'Book', label: t('journal') }].map(nav => (
-                            <button key={nav.id} onClick={() => setView(nav.id)} className={`flex flex-col items-center justify-center gap-0.5 min-w-[50px] sm:minw-[55px] flex-1 h-12 rounded-2xl transition-all duration-300 relative ${view === nav.id ? 'text-theme-accent -translate-y-4 bg-theme-card shadow-lg border border-theme-border scale-110 z-10' : 'text-theme-sub hover:text-theme-text opacity-70'}`}><Icon name={nav.icon} size={20} strokeWidth={view === nav.id ? 2.5 : 2} /><span className={`text-[8px] sm:text-[9px] font-bold transition-all duration-300 ${view === nav.id ? 'text-theme-accent scale-105' : 'text-theme-sub opacity-80 whitespace-nowrap'}`}>{nav.label}</span>{nav.badge ? <span className="absolute top-0 right-2 sm:right-3 w-3 h-3 bg-red-500 rounded-full border border-white animate-bounce"></span> : null}</button>
+                            <button key={nav.id} onClick={() => setView(nav.id)} className={`flex flex-col items-center justify-center gap-0.5 min-w-[50px] sm:min-w-[55px] flex-1 h-12 rounded-2xl transition-all duration-300 relative ${view === nav.id ? 'text-theme-accent -translate-y-4 bg-theme-card shadow-lg border border-theme-border scale-110 z-10' : 'text-theme-sub hover:text-theme-text opacity-70'}`}><Icon name={nav.icon} size={20} strokeWidth={view === nav.id ? 2.5 : 2} /><span className={`text-[8px] sm:text-[9px] font-bold transition-all duration-300 ${view === nav.id ? 'text-theme-accent scale-105' : 'text-theme-sub opacity-80 whitespace-nowrap'}`}>{nav.label}</span>{nav.badge ? <span className="absolute top-0 right-2 sm:right-3 w-3 h-3 bg-red-500 rounded-full border border-white animate-bounce"></span> : null}</button>
                         ))}
                     </nav>
 
@@ -2218,6 +2514,7 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
 
                     {showAddModal && <AddTransactionModal initialData={editingTx} accounts={safeData.accounts} categories={safeData.categories} onClose={() => { setShowAddModal(false); setEditingTx(null); }} onAdd={handleSaveTransaction} onManageCategories={() => setShowCategoryManager(true)} />}
                     {showPetSelector && <PetSelectorModal onSelect={handleSelectPet} />}
+                    {showClassSelector && <ClassSelectorModal currentClass={safeData.user.currentClass} level={safeData.user.level} onSelect={handleSelectClass} onClose={() => setShowClassSelector(false)} lang={lang} translations={TRANSLATIONS} />}
                     
                     {showProfileOptions && (
                         <SelectorSheet title="頭像與外觀設定" options={[{ value: 'edit', label: '編輯角色外觀', desc: '進入更衣室' }, { value: 'upload', label: '上傳圖片', desc: '從裝置選擇' }, { value: 'remove', label: '移除圖片', desc: '使用像素角色' } ]} current="" onSelect={(val) => { if (val === 'edit') setShowAvatarEdit(true); if (val === 'upload') document.getElementById('hidden-file-input')?.click(); if (val === 'remove') setData(prev => ({...prev, user: {...prev.user, avatarImage: ''}})); setShowProfileOptions(false); }} onClose={() => setShowProfileOptions(false)} />
@@ -2234,7 +2531,8 @@ const SocialView = ({ user, equipped, friends, onAddFriend, onRemoveFriend, onLi
                     {showCurrencySelect && <SelectorSheet title={t('exchange')} options={MAIN_CURRENCIES.map(c => ({ value: c, label: c }))} current={mainCurrency} onSelect={setMainCurrency} onClose={() => setShowCurrencySelect(false)} />}
                     {showLevelUp.show && <LevelUpOverlay level={showLevelUp.level} onClose={() => setShowLevelUp({ ...showLevelUp, show: false })} />}
                     {showAvatarEdit && safeData.user && <AvatarEditor appearanceData={safeData.user.appearance} onSave={(newApp) => { setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } })); setShowAvatarEdit(false); }} onClose={() => setShowAvatarEdit(false)} />}
-                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={safeData.inventory} equipped={safeData.equipped} onClose={() => setEquipModalOpen(false)} onEquip={handleEquipItem} />}
+                    
+                    {equipModalOpen && <InventoryModal slot={selectedSlot} inventory={safeData.inventory} equipped={safeData.equipped} totalStats={calculatedStats.totalStats} onClose={() => setEquipModalOpen(false)} onEquip={handleEquipItem} lang={lang} translations={TRANSLATIONS} />}
                     
                     {assetModalOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center px-6 animate-[fadeIn_0.2s]">
