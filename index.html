@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>RPGMoney - Ultimate Boss Edition v5.0</title>
+    <title>RPGMoney - Ultimate Boss Edition v5.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -404,7 +404,8 @@
             'r7': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#fbbf24" strokeWidth="8" style={{filter:'drop-shadow(0 0 15px #fde047)'}}/><path d="M16 2 L16 30 M2 16 L30 16" stroke="#fff" strokeWidth="2" opacity="0.5"/></g>,
             'r8': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#38bdf8" strokeWidth="8" style={{filter:'drop-shadow(0 0 20px #7dd3fc)'}}/><circle cx="16" cy="16" r="5" fill="#fde047" style={{filter:'blur(2px)'}}/></g>
         };
-const SHOP_ITEMS = [
+
+        const SHOP_ITEMS = [
             /* --- 武器 (MainHand) --- */
             { id: 'w_wood_staff', name: '木製法杖', type: 'mainHand', rarity: 'common', cost: 150, icon: 'Zap', stats: { int: 10 }, desc: "新手魔法師的練習杖。", reqStats: { int: 10 } },
             { id: 'w_iron', name: '鐵劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的鐵製長劍，還算鋒利。", reqStats: { str: 15 } },
@@ -471,7 +472,6 @@ const SHOP_ITEMS = [
             { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 45000, icon: 'Flame', stats: { int: 350, str: 100 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。", reqStats: { int: 400 } },
 
             /* --- 背飾 (Back) --- */
-            // 修正：將藍銀皇改為背飾 (Back)，使其與骨靈冷火(副手)不衝突
             { id: 'b_traveler_cloak', name: '旅人披風', type: 'back', rarity: 'common', cost: 300, icon: 'Cloud', stats: { agi: 5, vit: 5 }, desc: "擋風遮雨的防塵披風。", reqStats: {} },
             { id: 'b_elven_cape', name: '精靈斗篷', type: 'back', rarity: 'rare', cost: 1500, icon: 'Cloud', stats: { agi: 25, int: 10 }, desc: "精靈族編織的斗篷，能稍微融入自然。", reqStats: { agi: 30 } },
             { id: 'b_demon_wings', name: '惡魔小翼', type: 'back', rarity: 'epic', cost: 5500, icon: 'Ghost', stats: { str: 30, agi: 30, int: -10 }, desc: "長出小小的惡魔肉翼，提供短距離滑翔。", reqStats: { str: 50, agi: 50 } },
@@ -498,7 +498,8 @@ const SHOP_ITEMS = [
             { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無盡的宇宙本源之力！", reqStats: { str: 15000, vit: 15000, int: 15000 } }
         ];
 
-        /* === 擴充 Boss 列表 === */
+// --- PART 1 END ---
+/* === 擴充 Boss 列表 === */
         const BOSS_LIST = [
             { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
             { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
@@ -637,7 +638,8 @@ const SHOP_ITEMS = [
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
 
-        const PixelAvatar = ({ gender, colors, equipped, className }) => {
+// --- PART 2 END ---
+const PixelAvatar = ({ gender, colors, equipped, className }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
             
@@ -725,7 +727,7 @@ const SHOP_ITEMS = [
                 </svg>
             );
         };
-const BackgroundIllustrations = ({ theme }) => {
+        const BackgroundIllustrations = ({ theme }) => {
             const getIcon = () => { if (theme === 'sky') return 'Cloud'; if (theme === 'magic') return 'Moon'; if (theme === 'midnight') return 'Moon'; return 'Sun'; };
             return (<div className="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div className="absolute top-1/4 -left-10 opacity-5 transform rotate-12 scale-[10] text-theme-text"><Icon name="Sword" /></div><div className="absolute bottom-1/4 -right-20 opacity-5 transform -rotate-12 scale-[15] text-theme-text"><Icon name="Shield" /></div><div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-5 scale-[20] text-theme-accent"><Icon name={getIcon()} /></div></div>);
         };
@@ -873,11 +875,23 @@ const BackgroundIllustrations = ({ theme }) => {
             );
         };
 
-        /* === 新增：轉職系統面板 === */
+// --- PART 3 END ---
+/* === 完善的轉職系統面板 (含屬性預覽) === */
         const ClassSelectorModal = ({ currentClass, level, onSelect, onClose, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selected, setSelected] = useState(currentClass || 'novice');
             
+            // 用於計算並顯示與當前職業的屬性差異
+            const getDiffText = (stat, oldVal, newVal) => {
+                const diff = Math.round((newVal - oldVal) * 100);
+                if (diff === 0) return null;
+                return (
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ml-1 ${diff > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                        {diff > 0 ? '▲' : '▼'} {Math.abs(diff)}%
+                    </span>
+                );
+            };
+
             return (
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
@@ -889,12 +903,13 @@ const BackgroundIllustrations = ({ theme }) => {
                         </div>
                         
                         <div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll space-y-3">
-                            <p className="text-xs text-theme-sub text-center mb-4">選擇職業以獲得專屬的屬性加成與減益。角色到達 Lv.10 即可轉職。</p>
+                            <p className="text-xs text-theme-sub text-center mb-4">選擇職業以獲得專屬的屬性加成與減益。角色到達 Lv.10 即可解鎖進階職業。</p>
                             
                             {Object.values(CLASS_DEFINITIONS).map(cls => {
                                 const isCurrent = currentClass === cls.id;
                                 const isSelected = selected === cls.id;
                                 const locked = level < 10 && cls.id !== 'novice';
+                                const oldBonuses = CLASS_DEFINITIONS[currentClass || 'novice'].bonuses;
                                 
                                 return (
                                     <div 
@@ -915,11 +930,14 @@ const BackgroundIllustrations = ({ theme }) => {
                                                 
                                                 <div className="flex gap-2 mt-2 font-mono text-[9px] font-bold flex-wrap">
                                                     {Object.entries(cls.bonuses).map(([stat, val]) => {
-                                                        if (val === 0) return null;
+                                                        if (val === 0 && oldBonuses[stat] === 0) return null;
                                                         return (
-                                                            <span key={stat} className={`px-1.5 py-0.5 rounded ${val > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                                                                {stat.toUpperCase()} {val > 0 ? '+' : ''}{val * 100}%
-                                                            </span>
+                                                            <div key={stat} className="flex items-center">
+                                                                <span className={`px-1.5 py-0.5 rounded ${val > 0 ? 'bg-green-100 text-green-600' : val < 0 ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-500'}`}>
+                                                                    {stat.toUpperCase()} {val > 0 ? '+' : ''}{val * 100}%
+                                                                </span>
+                                                                {isSelected && !isCurrent && getDiffText(stat, oldBonuses[stat], val)}
+                                                            </div>
                                                         );
                                                     })}
                                                 </div>
@@ -930,11 +948,16 @@ const BackgroundIllustrations = ({ theme }) => {
                             })}
                         </div>
                         
-                        <div className="p-6 pt-2 shrink-0 bg-theme-card">
+                        <div className="p-6 pt-2 shrink-0 bg-theme-card border-t border-theme-border">
+                            {selected !== currentClass && (
+                                <div className="text-[10px] text-center text-theme-sub mb-3">
+                                    確定要轉職為 <span className="font-bold text-theme-accent" style={{color: CLASS_DEFINITIONS[selected]?.color}}>{CLASS_DEFINITIONS[selected]?.name}</span> 嗎？<br/>這將會改變你的基礎屬性加成比例。
+                                </div>
+                            )}
                             <button 
                                 onClick={() => { if(selected !== currentClass) onSelect(selected); onClose(); }} 
                                 disabled={selected === currentClass || (level < 10 && selected !== 'novice')}
-                                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2 transition-colors ${selected === currentClass || (level < 10 && selected !== 'novice') ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-theme-accent text-white hover:brightness-110'}`}
+                                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2 transition-colors ${selected === currentClass || (level < 10 && selected !== 'novice') ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-b-4 border-gray-400' : 'bg-theme-accent text-white hover:brightness-110 border-b-4 border-black/30'}`}
                             >
                                 <Icon name="Check" /> 
                                 {level < 10 && selected !== 'novice' ? t('class_locked') : selected === currentClass ? '已是此職業' : t('change_class')}
@@ -951,8 +974,13 @@ const BackgroundIllustrations = ({ theme }) => {
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
             const [hideAssets, setHideAssets] = useState(true);
             
-            const petDef = user.pet ? PET_DEFINITIONS[user.pet.id] : null; const petLevel = user.pet?.level || 1; const petExp = user.pet?.exp || 0; const petExpReq = petLevel * 100;
-            const startRename = () => { if(user.pet) { setNewPetName(user.pet.name); setIsRenamingPet(true); } }; const confirmRename = () => { if (newPetName && onRenamePet) { onRenamePet(newPetName); setIsRenamingPet(false); } };
+            const petDef = user.pet && PET_DEFINITIONS[user.pet.id] ? PET_DEFINITIONS[user.pet.id] : null; 
+            const petLevel = user.pet?.level || 1; 
+            const petExp = user.pet?.exp || 0; 
+            const petExpReq = petLevel * 100;
+
+            const startRename = () => { if(user.pet) { setNewPetName(user.pet.name); setIsRenamingPet(true); } }; 
+            const confirmRename = () => { if (newPetName && onRenamePet) { onRenamePet(newPetName); setIsRenamingPet(false); } };
             
             return (
                 <div className="animate-[fadeIn_0.5s] w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden pb-24 no-scrollbar p-4 space-y-4 smooth-scroll">
@@ -1068,13 +1096,14 @@ const BackgroundIllustrations = ({ theme }) => {
                 </div>
             );
         };
-const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, purchaseHistory }) => {
+
+        const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, purchaseHistory }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const safePurchaseHistory = Array.isArray(purchaseHistory) ? purchaseHistory : [];
             const [previewItem, setPreviewItem] = useState(null); const [showConfirmModal, setShowConfirmModal] = useState(false); const [filter, setFilter] = useState('all'); const [sort, setSort] = useState('rarityDesc'); const [showHistory, setShowHistory] = useState(false); const [buySuccessId, setBuySuccessId] = useState(null);
             
             // 計算商店折扣天賦
-            const discountRate = 1 - (user.talents?.shop_discount || 0) * 0.02;
+            const discountRate = Math.max(0.1, 1 - (user.talents?.shop_discount || 0) * 0.02);
 
             const currentPreviewEquipped = useMemo(() => { 
                 if (!previewItem) return equipped; 
@@ -1363,7 +1392,7 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
 
             const handleResetConfirm = () => {
                 const resetCost = user.hasResetTalent ? 10000 : 0;
-                if (user.gold < resetCost) return alert(t('not_enough_gold'));
+                if (user.hasResetTalent && user.gold < resetCost) return alert(t('not_enough_gold'));
                 onResetTalent(resetCost);
                 setShowResetConfirm(false);
                 setSelectedTalent(null);
@@ -1536,10 +1565,13 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
             const [battleResult, setBattleResult] = useState(null); 
             const [rewardModal, setRewardModal] = useState(null); 
             
-            // 每日 5 次限制邏輯
+            // 安全防呆：避免 user 或 user.bossAttempts 缺失造成的白屏
+            const safeUser = user || {};
+            const bossAttempts = safeUser.bossAttempts || { date: '', count: 0 };
             const todayStr = new Date().toDateString();
-            const attempts = (user.bossAttempts?.date === todayStr) ? (user.bossAttempts?.count || 0) : 0;
+            const attempts = bossAttempts.date === todayStr ? (bossAttempts.count || 0) : 0;
             const remaining = Math.max(0, 5 - attempts);
+            const currentCp = cp || 0;
             
             const handleFight = (boss) => {
                 if (remaining <= 0) return;
@@ -1549,14 +1581,14 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
                 setRewardModal(null);
                 
                 setTimeout(() => {
-                    const winChance = Math.min(0.95, Math.max(0.01, (cp / boss.cpReq) * 0.5));
+                    const winChance = Math.min(0.95, Math.max(0.01, (currentCp / boss.cpReq) * 0.5));
                     const isWin = Math.random() < winChance;
                     
                     setIsBattling(false);
                     setBattleResult(isWin ? 'win' : 'lose');
                     
                     let droppedItem = null;
-                    const luckTalent = user.talents?.luck_up || 0;
+                    const luckTalent = safeUser.talents?.luck_up || 0;
                     const finalDropRate = boss.dropRate * (1 + luckTalent * 0.02);
 
                     if (isWin && boss.dropItem && Math.random() < finalDropRate) {
@@ -1567,7 +1599,7 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
                         if (isWin) { 
                             setRewardModal({ 
                                 exp: boss.exp, 
-                                gold: Math.floor(boss.gold * (1 + (user.talents?.gold_bonus || 0) * 0.05)), 
+                                gold: Math.floor(boss.gold * (1 + (safeUser.talents?.gold_bonus || 0) * 0.05)), 
                                 stones: boss.stoneDrop || 0,
                                 item: droppedItem 
                             }); 
@@ -1594,7 +1626,7 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
                     
                     <div className="grid gap-4 mt-2">
                         {BOSS_LIST.map(boss => {
-                            const isRecommended = cp >= boss.cpReq;
+                            const isRecommended = currentCp >= boss.cpReq;
                             const canFight = remaining > 0;
                             return (
                                 <div key={boss.id} className={`bg-theme-card rounded-2xl p-4 border-2 shadow-md flex items-center gap-4 relative overflow-hidden transition-all ${!canFight ? 'opacity-70 grayscale' : 'border-theme-border'}`}>
@@ -1681,6 +1713,8 @@ const ShopView = ({ gold, inventory, equipped, user, onBuy, lang, translations, 
                 </div>
             );
         };
+
+// --- PART 4 END ---
 const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
             const [subView, setSubView] = useState('fin'); const [timeFilter, setTimeFilter] = useState('month'); const [calDate, setCalDate] = useState(new Date()); const [selectedDate, setSelectedDate] = useState(null); const [showMonthPicker, setShowMonthPicker] = useState(false); const [pickerYear, setPickerYear] = useState(calDate.getFullYear()); const [dailyDate, setDailyDate] = useState(new Date().toISOString().split('T')[0]); const t = (key) => translations[lang]?.[key] || key;
             
