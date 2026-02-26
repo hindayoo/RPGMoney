@@ -33,7 +33,7 @@
                 'forge-strike': 'forgeStrike 0.4s ease-in-out',
                 'sparkle': 'sparkle 1.5s linear infinite',
                 'tree-flow': 'treeFlow 3s infinite linear',
-                /* 轉職專屬光環動畫 (擴充) */
+                /* 轉職專屬光環動畫 */
                 'aura-fire': 'auraFire 2s ease-in-out infinite alternate',
                 'aura-holy': 'auraHoly 4s linear infinite',
                 'aura-shadow': 'auraShadow 3s ease-in-out infinite alternate',
@@ -823,7 +823,6 @@ const BOSS_LIST = [
             );
         };
 
-        /* ================= 修改版魔法算盤 (支援小數點) ================= */
         const MagicAbacus = ({ value, onPadClick, onClose }) => (
             <div className="fixed inset-0 z-[120] flex flex-col justify-end animate-[fadeIn_0.2s] select-none">
                 <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
@@ -840,7 +839,6 @@ const BOSS_LIST = [
             </div>
         );
 
-        /* ================= 新增：固定支出管理 Modal ================= */
         const FixedExpenseManagerModal = ({ fixedExpenses, categories, accounts, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [expenses, setExpenses] = useState(fixedExpenses || []);
@@ -878,11 +876,24 @@ const BOSS_LIST = [
 
             const removeExp = (id) => { setExpenses(expenses.filter(e => e.id !== id)); };
 
+            // 修復：正確處理算盤輸入，確保資料為字串並正確附加
             const handlePadClick = (val) => {
-                if (val === 'C') setEditData(prev => ({...prev, amount: ''}));
-                else if (val === 'DEL') setEditData(prev => ({...prev, amount: prev.amount.length > 1 ? prev.amount.slice(0, -1) : ''}));
-                else if (val === '=') { try { const res = Function(`'use strict'; return (${editData.amount || '0'})`)(); setEditData(prev => ({...prev, amount: String(Number(res.toFixed(2)))})); } catch(e) {} }
-                else { setEditData(prev => { if (prev.amount === '' || prev.amount === '0') { if (['+','*','/'].includes(val)) return prev.amount; return val; } return prev.amount + val; }); }
+                setEditData(prev => {
+                    let currentAmt = String(prev.amount || '');
+                    if (val === 'C') return { ...prev, amount: '' };
+                    if (val === 'DEL') return { ...prev, amount: currentAmt.length > 1 ? currentAmt.slice(0, -1) : '' };
+                    if (val === '=') { 
+                        try { 
+                            const res = Function(`'use strict'; return (${currentAmt || '0'})`)(); 
+                            return { ...prev, amount: String(Number(res.toFixed(2))) }; 
+                        } catch(e) { return prev; } 
+                    }
+                    if (currentAmt === '' || currentAmt === '0') { 
+                        if (['+','*','/'].includes(val)) return prev; 
+                        return { ...prev, amount: val === '.' ? '0.' : val }; 
+                    } 
+                    return { ...prev, amount: currentAmt + val }; 
+                });
             };
 
             return (
@@ -1264,8 +1275,7 @@ const BOSS_LIST = [
             );
         };
 
-// --- PART 3 END ---
-const LevelUpOverlay = ({ level, onClose }) => (
+        const LevelUpOverlay = ({ level, onClose }) => (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-[fadeIn_0.3s]"><div className="relative text-center w-full max-w-sm"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-conic-gradient from-transparent via-yellow-400/20 to-transparent animate-spin-slow opacity-50 rounded-full"></div><div className="relative z-10 animate-pop-in"><div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]">🎉</div><h2 className="text-5xl font-pixel text-yellow-300 font-bold tracking-widest drop-shadow-md mb-2 animate-bounce">LEVEL UP!</h2><div className="text-9xl font-black text-white drop-shadow-xl my-4">{level}</div><button onClick={onClose} className="mt-8 px-8 py-3 bg-white text-black font-bold rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] active:scale-95 transition-transform">CONTINUE</button></div></div></div>
         );
 
@@ -1289,7 +1299,7 @@ const LevelUpOverlay = ({ level, onClose }) => (
             );
         };
 
-        /* ================= 升級版：轉職樹狀圖與預覽面版 (支援到三轉) ================= */
+        /* ================= 升級版：轉職樹狀圖 (修復版: 優化橫向排版) ================= */
         const ClassSelectorModal = ({ currentClass, level, onSelect, onClose, lang, translations, gender, appearance, userEquipped }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selected, setSelected] = useState(currentClass || 'novice');
@@ -1354,7 +1364,7 @@ const LevelUpOverlay = ({ level, onClose }) => (
             const selDef = CLASS_DEFINITIONS[selected] || CLASS_DEFINITIONS['novice'];
             const isSelectable = isUnlocked(selected) && selected !== currentClass;
 
-            // 用於預覽的裝備（合併當前裝備與職業特色裝備）
+            // 用於預覽的裝備
             const previewEquipped = useMemo(() => {
                 let eq = { ...userEquipped };
                 const specificEquip = selDef.previewEquip || {};
@@ -1439,36 +1449,36 @@ const LevelUpOverlay = ({ level, onClose }) => (
                                 </div>
                             </div>
 
-                            {/* Bottom: 樹狀圖區域 (加入三階) */}
-                            <div className="flex-1 overflow-y-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-6 pb-24">
-                                <div className="max-w-3xl mx-auto relative flex flex-col items-center gap-12">
+                            {/* Bottom: 樹狀圖區域 (修復排版) */}
+                            <div className="flex-1 overflow-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-4 md:p-6 pb-24">
+                                <div className="min-w-[700px] md:min-w-full mx-auto relative flex flex-col items-center gap-12 pt-4">
                                     
                                     {/* 樹狀連接線 (主幹線) */}
                                     <div className="absolute top-8 bottom-16 left-1/2 w-0.5 bg-theme-border -translate-x-1/2 z-0"></div>
 
                                     {/* Tier 0 */}
-                                    <div className="w-full flex justify-center relative">
+                                    <div className="w-full flex justify-center relative z-10">
                                         {renderClassNode('novice')}
                                     </div>
 
                                     {/* Tier 1 */}
-                                    <div className="w-full relative">
+                                    <div className="w-full relative z-10">
                                         <div className="absolute top-0 left-[12.5%] right-[12.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
                                         <div className="absolute top-0 left-[37.5%] right-[37.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
                                         <div className="grid grid-cols-4 gap-2">
-                                            {TIER_1.map(renderClassNode)}
+                                            {TIER_1.map((cls) => <div key={cls} className="flex justify-center">{renderClassNode(cls)}</div>)}
                                         </div>
                                     </div>
 
                                     {/* Tier 2 */}
-                                    <div className="w-full relative">
+                                    <div className="w-full relative z-10">
                                         <div className="grid grid-cols-4 gap-2">
                                             {TIER_1.map((parentCls, idx) => (
-                                                <div key={parentCls} className="flex flex-col items-center relative gap-6">
+                                                <div key={parentCls} className="flex flex-col items-center relative">
                                                     <div className="absolute -top-12 h-12 w-0.5 bg-theme-border z-0"></div>
-                                                    <div className="absolute top-0 w-16 h-4 border-t-2 border-x-2 border-theme-border rounded-t-lg z-0 -translate-y-4"></div>
-                                                    <div className="flex gap-2 w-[200%] justify-center z-10" style={{marginLeft: idx % 2 === 0 ? '50%' : '-50%'}}>
-                                                        {TIER_2[parentCls].map(renderClassNode)}
+                                                    <div className="absolute top-0 w-1/2 h-4 border-t-2 border-x-2 border-theme-border rounded-t-lg z-0 -translate-y-4"></div>
+                                                    <div className="flex justify-between w-full px-2 z-10">
+                                                        {TIER_2[parentCls].map(cls => <div key={cls} className="flex-1 flex justify-center">{renderClassNode(cls)}</div>)}
                                                     </div>
                                                 </div>
                                             ))}
@@ -1476,13 +1486,13 @@ const LevelUpOverlay = ({ level, onClose }) => (
                                     </div>
 
                                     {/* Tier 3 */}
-                                    <div className="w-full relative mt-4">
+                                    <div className="w-full relative z-10 mt-2">
                                         <div className="grid grid-cols-8 gap-1">
                                             {Object.keys(TIER_3).map((parent2, idx) => (
-                                                <div key={parent2} className="flex flex-col items-center relative gap-6">
-                                                    <div className="absolute -top-16 h-16 w-0.5 bg-theme-border z-0"></div>
+                                                <div key={parent2} className="flex flex-col items-center relative">
+                                                    <div className="absolute -top-14 h-14 w-0.5 bg-theme-border z-0"></div>
                                                     <div className="flex justify-center z-10 w-full">
-                                                        {TIER_3[parent2].map(renderClassNode)}
+                                                        {TIER_3[parent2].map(cls => <div key={cls} className="flex justify-center">{renderClassNode(cls)}</div>)}
                                                     </div>
                                                 </div>
                                             ))}
@@ -1510,7 +1520,7 @@ const LevelUpOverlay = ({ level, onClose }) => (
             );
         };
 
-// --- PART 4 END ---
+// --- PART 3 END ---
 const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
