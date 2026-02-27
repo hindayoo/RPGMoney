@@ -274,8 +274,8 @@
                 free: '免費', reset_success: '天賦已重置！', stats_req_not_met: '屬性不足以裝備此物品', class_system: '轉職殿堂', 
                 class_novice: '初心者', class_warrior: '狂戰士', class_mage: '大魔導', class_rogue: '暗影刺客', class_archer: '神射手', 
                 change_class: '進行轉職', class_locked: '等級不足解鎖', 
-                /* 新增語系翻譯 */
                 fixed_expense: '固定支出', fixed_manage: '管理固定', auto_deduct: '自動扣款', fixed_date: '每月扣款日', 
+                monthly_deduct: '每月固定日期', interval_deduct: '固定間隔天數', every_days: '每隔(天)', start_date: '下次扣款日',
                 abacus: '魔法算盤', destroyer: '滅世者', god_of_wealth: '財神' 
             }
         };
@@ -299,7 +299,7 @@ const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle
             </g>
         );
 
-        /* ================= 裝備外觀擴充 (新增超過30件新裝備) ================= */
+        /* ================= 裝備外觀擴充 ================= */
         const GEAR_VISUALS = {
             /* 原有武器 */
             'w_iron': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M14 6 H18 V22 H14 Z"/><path fill="#94a3b8" d="M12 18 H20 V20 H12 Z"/><path fill="#475569" d="M15 22 H17 V26 H15 Z"/></g>,
@@ -839,6 +839,7 @@ const BOSS_LIST = [
             </div>
         );
 
+        /* ================= 固定支出管理 (擴充: 支援間隔天數) ================= */
         const FixedExpenseManagerModal = ({ fixedExpenses, categories, accounts, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [expenses, setExpenses] = useState(fixedExpenses || []);
@@ -846,17 +847,35 @@ const BOSS_LIST = [
             
             const defaultCat = Object.keys(categories)[0];
             const defaultAcc = accounts[0]?.id || '';
-            const [editData, setEditData] = useState({ name: '', amount: '', category: defaultCat, accountId: defaultAcc, dayOfMonth: 1 });
+            const todayStr = new Date().toISOString().split('T')[0];
+            
+            // 新增 deductType, intervalDays, nextDeductDate 欄位
+            const [editData, setEditData] = useState({ 
+                name: '', amount: '', category: defaultCat, accountId: defaultAcc, 
+                deductType: 'monthly', // 'monthly' | 'interval'
+                dayOfMonth: 1, 
+                intervalDays: 30,
+                nextDeductDate: todayStr
+            });
             const [showCalc, setShowCalc] = useState(false);
 
             const startEdit = (exp) => {
                 setEditingId(exp.id);
-                setEditData({ ...exp, amount: exp.amount.toString() });
+                setEditData({ 
+                    ...exp, 
+                    amount: exp.amount.toString(),
+                    deductType: exp.deductType || 'monthly',
+                    intervalDays: exp.intervalDays || 30,
+                    nextDeductDate: exp.nextDeductDate || todayStr
+                });
             };
 
             const addNew = () => {
                 setEditingId('new');
-                setEditData({ name: '新固定支出', amount: '', category: defaultCat, accountId: defaultAcc, dayOfMonth: 1 });
+                setEditData({ 
+                    name: '新固定支出', amount: '', category: defaultCat, accountId: defaultAcc, 
+                    deductType: 'monthly', dayOfMonth: 1, intervalDays: 30, nextDeductDate: todayStr 
+                });
             };
 
             const saveEdit = () => {
@@ -865,10 +884,12 @@ const BOSS_LIST = [
                 if (isNaN(finalAmount) || finalAmount <= 0) return;
 
                 let newExpenses = [...expenses];
+                const dataToSave = { ...editData, amount: finalAmount };
+                
                 if (editingId === 'new') {
-                    newExpenses.push({ ...editData, id: Date.now().toString(), amount: finalAmount });
+                    newExpenses.push({ ...dataToSave, id: Date.now().toString() });
                 } else {
-                    newExpenses = newExpenses.map(e => e.id === editingId ? { ...editData, id: editingId, amount: finalAmount } : e);
+                    newExpenses = newExpenses.map(e => e.id === editingId ? { ...dataToSave, id: editingId } : e);
                 }
                 setExpenses(newExpenses);
                 setEditingId(null);
@@ -876,7 +897,6 @@ const BOSS_LIST = [
 
             const removeExp = (id) => { setExpenses(expenses.filter(e => e.id !== id)); };
 
-            // 修復：正確處理算盤輸入，確保資料為字串並正確附加
             const handlePadClick = (val) => {
                 setEditData(prev => {
                     let currentAmt = String(prev.amount || '');
@@ -899,7 +919,7 @@ const BOSS_LIST = [
             return (
                 <div className="fixed inset-0 z-[90] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[90vh] flex flex-col h-full">
+                    <div className="bg-theme-card rounded-t-[2.5rem] p-6 shadow-2xl animate-[slideUp_0.3s] pb-safe relative z-10 max-h-[90vh] flex flex-col h-full border-t-4 border-theme-accent">
                         <div className="flex justify-between items-center mb-6 shrink-0 border-b border-theme-border pb-4">
                             <button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X" size={24}/></button>
                             <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest flex items-center gap-2"><Icon name="Calendar" className="text-theme-accent"/> {t('fixed_manage')}</h3>
@@ -910,13 +930,17 @@ const BOSS_LIST = [
                             {expenses.length === 0 && <div className="text-center py-10 text-theme-sub opacity-60 text-xs border-2 border-dashed border-theme-border rounded-xl">尚未設定固定支出</div>}
                             {expenses.map(exp => {
                                 const acc = accounts.find(a => a.id == exp.accountId);
+                                const isMonthly = exp.deductType === 'monthly' || !exp.deductType;
                                 return (
                                     <div key={exp.id} className="bg-theme-bg p-4 rounded-2xl border border-theme-border shadow-sm flex items-center justify-between group transition-transform">
                                         <div className="flex items-center gap-3 min-w-0">
                                             <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm shrink-0" style={{backgroundColor: categories[exp.category]?.color || '#94a3b8'}}><Icon name={categories[exp.category]?.icon || 'Star'} size={18}/></div>
                                             <div>
                                                 <div className="font-bold text-theme-text truncate text-sm">{exp.name}</div>
-                                                <div className="text-[10px] text-theme-sub flex items-center gap-1"><Icon name="Clock" size={8}/> 每月 {exp.dayOfMonth} 日扣款</div>
+                                                <div className="text-[10px] text-theme-sub flex items-center gap-1 mt-0.5">
+                                                    <Icon name="Clock" size={10} className="text-theme-accent"/> 
+                                                    {isMonthly ? `每月 ${exp.dayOfMonth} 日` : `每 ${exp.intervalDays} 天 (下次: ${exp.nextDeductDate})`}
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end">
@@ -933,18 +957,62 @@ const BOSS_LIST = [
                         {editingId && (
                             <div className="absolute inset-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] z-20 flex flex-col">
                                 <div className="flex justify-between items-center mb-4 shrink-0 pb-2 border-b border-theme-border">
-                                    <h4 className="font-bold text-theme-text text-lg">{editingId === 'new' ? '新增固定支出' : '編輯固定支出'}</h4>
-                                    <button onClick={() => setEditingId(null)} className="text-theme-sub"><Icon name="X" size={24}/></button>
+                                    <h4 className="font-bold text-theme-text text-lg flex items-center gap-2">
+                                        {editingId === 'new' ? <><Icon name="Plus"/>新增固定支出</> : <><Icon name="Edit"/>編輯固定支出</>}
+                                    </h4>
+                                    <button onClick={() => setEditingId(null)} className="text-theme-sub hover:text-theme-text bg-theme-bg p-1 rounded-full"><Icon name="X" size={20}/></button>
                                 </div>
                                 <div className="flex-1 overflow-y-auto space-y-4 pb-20 custom-scrollbar smooth-scroll">
-                                    <div><label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">項目名稱</label><input type="text" value={editData.name} onChange={e=>setEditData({...editData, name: e.target.value})} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent"/></div>
-                                    <div onClick={() => setShowCalc(true)} className="relative w-full bg-theme-bg p-3 rounded-xl border border-theme-border flex items-center justify-between cursor-pointer group"><span className={`font-bold ${editData.amount ? 'text-theme-text' : 'text-theme-sub/50'}`}>{editData.amount || '扣除金額'}</span><div className="p-2 rounded-xl bg-theme-accent/10 text-theme-accent"><Icon name="Calculator" size={20}/></div></div>
-                                    <div><label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('fixed_date')}</label><select value={editData.dayOfMonth} onChange={e=>setEditData({...editData, dayOfMonth: parseInt(e.target.value)})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">{Array.from({length:31}, (_,i)=>i+1).map(d=><option key={d} value={d}>每月 {d} 日</option>)}</select></div>
-                                    <div><label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('category')}</label><select value={editData.category} onChange={e=>setEditData({...editData, category: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">{Object.entries(categories).map(([k,c])=><option key={k} value={k}>{c.label}</option>)}</select></div>
-                                    <div><label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('select_account')}</label><select value={editData.accountId} onChange={e=>setEditData({...editData, accountId: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">{accounts.map(a=><option key={a.id} value={a.id}>{a.name} ({a.currency})</option>)}</select></div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">項目名稱</label>
+                                        <input type="text" value={editData.name} onChange={e=>setEditData({...editData, name: e.target.value})} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent"/>
+                                    </div>
+                                    <div onClick={() => setShowCalc(true)} className="relative w-full bg-theme-bg p-3 rounded-xl border border-theme-border flex items-center justify-between cursor-pointer group">
+                                        <span className={`font-bold text-lg font-mono ${editData.amount ? 'text-red-500' : 'text-theme-sub/50'}`}>-{editData.amount || '0'}</span>
+                                        <div className="p-2 rounded-xl bg-theme-accent/10 text-theme-accent"><Icon name="Calculator" size={20}/></div>
+                                    </div>
+                                    
+                                    {/* 扣款模式切換 */}
+                                    <div className="flex bg-theme-bg p-1 rounded-xl border border-theme-border">
+                                        <button onClick={() => setEditData({...editData, deductType: 'monthly'})} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${editData.deductType === 'monthly' ? 'bg-theme-card shadow text-theme-accent border border-theme-border' : 'text-theme-sub'}`}>{t('monthly_deduct') || '每月固定'}</button>
+                                        <button onClick={() => setEditData({...editData, deductType: 'interval'})} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${editData.deductType === 'interval' ? 'bg-theme-card shadow text-theme-accent border border-theme-border' : 'text-theme-sub'}`}>{t('interval_deduct') || '間隔天數'}</button>
+                                    </div>
+
+                                    {editData.deductType === 'monthly' ? (
+                                        <div>
+                                            <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('fixed_date')}</label>
+                                            <select value={editData.dayOfMonth} onChange={e=>setEditData({...editData, dayOfMonth: parseInt(e.target.value)})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">
+                                                {Array.from({length:31}, (_,i)=>i+1).map(d=><option key={d} value={d}>每月 {d} 日</option>)}
+                                            </select>
+                                        </div>
+                                    ) : (
+                                        <div className="flex gap-2">
+                                            <div className="flex-1">
+                                                <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('every_days') || '每隔幾天'}</label>
+                                                <input type="number" min="1" value={editData.intervalDays} onChange={e=>setEditData({...editData, intervalDays: parseInt(e.target.value) || 1})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border" />
+                                            </div>
+                                            <div className="flex-[1.5]">
+                                                <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('start_date') || '下次扣款日'}</label>
+                                                <input type="date" value={editData.nextDeductDate} onChange={e=>setEditData({...editData, nextDeductDate: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border font-mono" />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div>
+                                        <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('category')}</label>
+                                        <select value={editData.category} onChange={e=>setEditData({...editData, category: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">
+                                            {Object.entries(categories).map(([k,c])=><option key={k} value={k}>{c.label}</option>)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('select_account')}</label>
+                                        <select value={editData.accountId} onChange={e=>setEditData({...editData, accountId: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">
+                                            {accounts.map(a=><option key={a.id} value={a.id}>{a.name} ({a.currency})</option>)}
+                                        </select>
+                                    </div>
                                 </div>
                                 <div className="flex gap-3 pt-4 border-t border-theme-border shrink-0 bg-theme-card pb-safe">
-                                    {editingId !== 'new' && <button onClick={() => {removeExp(editingId); setEditingId(null);}} className="py-4 px-4 bg-red-50 text-red-500 font-bold rounded-xl active:scale-95 border border-red-200"><Icon name="Trash" size={20}/></button>}
+                                    {editingId !== 'new' && <button onClick={() => {removeExp(editingId); setEditingId(null);}} className="py-4 px-4 bg-red-50 text-red-500 font-bold rounded-xl active:scale-95 border border-red-200 shadow-sm"><Icon name="Trash" size={20}/></button>}
                                     <button onClick={saveEdit} className="flex-1 py-4 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-md flex justify-center items-center gap-2"><Icon name="Check" size={20}/> 儲存設定</button>
                                 </div>
                                 {showCalc && <MagicAbacus value={editData.amount} onPadClick={handlePadClick} onClose={() => setShowCalc(false)} />}
@@ -1169,8 +1237,9 @@ const BOSS_LIST = [
                 </div>
             );
         };
-        
-        const CategoryManagerModal = ({ categories, onClose, onSave }) => {
+
+// --- PART 3 END ---
+const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
             const dragItem = useRef(null); const dragOverItem = useRef(null);
@@ -1299,7 +1368,7 @@ const BOSS_LIST = [
             );
         };
 
-        /* ================= 升級版：轉職樹狀圖 (修復版: 優化橫向排版) ================= */
+        /* ================= 升級版：轉職樹狀圖 (修復橫向排版) ================= */
         const ClassSelectorModal = ({ currentClass, level, onSelect, onClose, lang, translations, gender, appearance, userEquipped }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selected, setSelected] = useState(currentClass || 'novice');
@@ -1449,9 +1518,10 @@ const BOSS_LIST = [
                                 </div>
                             </div>
 
-                            {/* Bottom: 樹狀圖區域 (修復排版) */}
-                            <div className="flex-1 overflow-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-4 md:p-6 pb-24">
-                                <div className="min-w-[700px] md:min-w-full mx-auto relative flex flex-col items-center gap-12 pt-4">
+                            {/* Bottom: 樹狀圖區域 (修復排版，讓它能水平滾動以防擁擠) */}
+                            <div className="flex-1 overflow-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-4 pb-24 w-full">
+                                {/* 增加 min-w 來確保不會擠成一團 */}
+                                <div className="min-w-[800px] mx-auto relative flex flex-col items-center gap-12 pt-4">
                                     
                                     {/* 樹狀連接線 (主幹線) */}
                                     <div className="absolute top-8 bottom-16 left-1/2 w-0.5 bg-theme-border -translate-x-1/2 z-0"></div>
@@ -1520,12 +1590,13 @@ const BOSS_LIST = [
             );
         };
 
-// --- PART 3 END ---
+// --- PART 4 END ---
 const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
-            const [hideAssets, setHideAssets] = useState(false);
+            // 需求：資產隱藏功能預設隱藏
+            const [hideAssets, setHideAssets] = useState(true);
             
             const petDef = user.pet && PET_DEFINITIONS[user.pet.id] ? PET_DEFINITIONS[user.pet.id] : null; 
             const petLevel = user.pet?.level || 1; 
@@ -1809,20 +1880,22 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         </div>
                     </div>
                     
-                    <div className="flex-1 overflow-y-auto p-4 pb-36 custom-scrollbar smooth-scroll flex flex-col md:flex-row gap-4 relative z-10">
+                    {/* 需求：修復手機版體驗極佳，確保按鍵與列表皆可完美顯示 */}
+                    <div className="flex-1 overflow-hidden p-4 pb-24 flex flex-col md:flex-row gap-4 relative z-10">
                         <div className="absolute inset-0 bg-magma opacity-30 pointer-events-none"></div>
                         <div className="absolute inset-0 forge-grid pointer-events-none"></div>
                         
-                        <div className="w-full md:w-1/2 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-3 flex flex-col relative z-10 max-h-[30vh] md:max-h-full">
-                            <h3 className="text-xs font-bold text-[#9ca3af] uppercase mb-3 px-1 border-b border-[#374151] pb-2">選擇裝備</h3>
-                            <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
+                        {/* 上半部(手機)/左半部(電腦): 裝備列表 */}
+                        <div className="w-full md:w-1/3 h-[40%] md:h-full bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-3 flex flex-col relative z-10 shrink-0">
+                            <h3 className="text-xs font-bold text-[#9ca3af] uppercase mb-3 px-1 border-b border-[#374151] pb-2 shrink-0">選擇裝備</h3>
+                            <div className="flex-1 overflow-y-auto pr-1 space-y-2 custom-scrollbar">
                                 {inventory.length === 0 && <div className="text-center py-10 opacity-50 text-xs text-[#9ca3af]">背包空空如也</div>}
                                 {inventory.map(item => {
                                     const isSelected = selectedItem?.uniqueId ? selectedItem.uniqueId === item.uniqueId : selectedItem?.id === item.id;
                                     const eLvl = item.enhanceLevel || 0;
                                     return (
                                         <button key={item.uniqueId || item.id} onClick={() => setSelectedItem(item)} className={`w-full p-2.5 rounded-xl flex items-center gap-3 border-2 transition-all ${isSelected ? 'border-[#f87171] bg-[#7f1d1d]/30' : 'border-transparent hover:bg-[#374151]/50 bg-[#111827]/50'}`}>
-                                            <div className="w-12 h-12 bg-[#1f2937] rounded-lg flex items-center justify-center border border-[#374151] shadow-inner">
+                                            <div className="w-12 h-12 bg-[#1f2937] rounded-lg flex items-center justify-center border border-[#374151] shadow-inner shrink-0">
                                                 {renderVisual(item, false)}
                                             </div>
                                             <div className="text-left flex-1 min-w-0">
@@ -1837,17 +1910,23 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             </div>
                         </div>
 
-                        <div className="w-full md:w-1/2 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[350px] z-10">
+                        {/* 下半部(手機)/右半部(電腦): 鍛造操作區 (自適應剩餘空間) */}
+                        <div className="w-full md:w-2/3 flex-1 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-4 sm:p-6 flex flex-col items-center justify-between relative overflow-y-auto custom-scrollbar z-10">
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-orange-600/10 blur-[50px] rounded-full pointer-events-none"></div>
 
                             {!selectedItem ? (
-                                <div className="text-center opacity-50 relative z-10"><Icon name="Hammer" size={56} className="mx-auto mb-3 text-[#9ca3af]"/><span className="text-sm font-bold text-[#9ca3af] tracking-widest">將裝備放入熔爐</span></div>
+                                <div className="text-center opacity-50 relative z-10 m-auto">
+                                    <Icon name="Hammer" size={56} className="mx-auto mb-3 text-[#9ca3af]"/>
+                                    <span className="text-sm font-bold text-[#9ca3af] tracking-widest">將裝備放入熔爐</span>
+                                </div>
                             ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-between relative z-10">
-                                    <div className="text-center w-full">
-                                        <div className="text-lg font-bold text-[#f3f4f6] mb-1 font-pixel drop-shadow-md">{selectedItem.name} {selectedItem.enhanceLevel ? <span className="text-[#fca5a5]">+{selectedItem.enhanceLevel}</span> : ''}</div>
+                                <div className="w-full flex flex-col items-center relative z-10 h-full">
+                                    <div className="text-center w-full flex-1 flex flex-col justify-center min-h-[120px]">
+                                        <div className="text-lg font-bold text-[#f3f4f6] mb-1 font-pixel drop-shadow-md shrink-0">
+                                            {selectedItem.name} {selectedItem.enhanceLevel ? <span className="text-[#fca5a5]">+{selectedItem.enhanceLevel}</span> : ''}
+                                        </div>
                                         
-                                        <div className="flex items-center justify-center gap-6 my-6 relative">
+                                        <div className="flex items-center justify-center gap-4 sm:gap-6 my-2 sm:my-4 relative scale-[0.85] sm:scale-100 shrink-0">
                                             <div className={`w-24 h-24 rounded-2xl bg-[#111827] flex items-center justify-center border-4 rarity-${selectedItem.rarity} shadow-[0_0_15px_rgba(0,0,0,0.5)] relative ${isEnhancing ? 'animate-shake' : ''}`}>
                                                 {renderVisual(selectedItem, true)}
                                                 {isEnhancing && <div className="absolute inset-0 bg-orange-500/20 animate-pulse mix-blend-overlay"></div>}
@@ -1860,14 +1939,14 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                         </div>
                                     </div>
                                     
-                                    <div className="w-full bg-[#111827] rounded-xl p-4 border border-[#374151] mb-4 shadow-inner">
-                                        <div className="flex justify-between items-center mb-3">
+                                    <div className="w-full bg-[#111827] rounded-xl p-3 sm:p-4 border border-[#374151] mb-3 shadow-inner shrink-0">
+                                        <div className="flex justify-between items-center mb-2 sm:mb-3">
                                             <h4 className="text-[10px] font-bold text-[#9ca3af] uppercase">能力提升預覽</h4>
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${getSuccessRate(selectedItem) >= 80 ? 'bg-green-900/50 text-green-400' : getSuccessRate(selectedItem) >= 50 ? 'bg-yellow-900/50 text-yellow-400' : 'bg-red-900/50 text-red-400'}`}>
                                                 {t('success_rate')}: {getSuccessRate(selectedItem)}%
                                             </span>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-2 text-[11px] font-mono font-bold">
+                                        <div className="grid grid-cols-2 gap-2 text-[10px] sm:text-[11px] font-mono font-bold max-h-[80px] overflow-y-auto pr-1 custom-scrollbar">
                                             {Object.entries(selectedItem.stats || {}).map(([s, val]) => {
                                                 const currentVal = Math.floor(val * Math.pow(1.1, selectedItem.enhanceLevel || 0));
                                                 const nextVal = Math.floor(val * Math.pow(1.1, (selectedItem.enhanceLevel || 0) + 1));
@@ -1886,12 +1965,12 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                     </div>
 
                                     {selectedItem.enhanceLevel >= 15 ? (
-                                        <div className="w-full py-4 text-center text-[#fca5a5] font-bold bg-[#7f1d1d]/30 rounded-2xl border-2 border-[#b91c1c]">{t('max_level')}</div>
+                                        <div className="w-full py-3 sm:py-4 text-center text-[#fca5a5] font-bold bg-[#7f1d1d]/30 rounded-2xl border-2 border-[#b91c1c] shrink-0">{t('max_level')}</div>
                                     ) : (
                                         <button 
                                             onClick={handleEnhance} 
                                             disabled={isEnhancing || gold < getEnhanceCost(selectedItem).gold || stones < getEnhanceCost(selectedItem).stone} 
-                                            className={`w-full py-3 rounded-2xl font-bold text-sm shadow-xl flex flex-col items-center justify-center transition-all border-b-4 ${(gold >= getEnhanceCost(selectedItem).gold && stones >= getEnhanceCost(selectedItem).stone) && !isEnhancing ? 'bg-gradient-to-r from-[#b91c1c] to-[#991b1b] text-white border-[#7f1d1d] hover:brightness-110 active:border-b-0 active:translate-y-1' : 'bg-[#374151] text-[#9ca3af] border-[#1f2937] cursor-not-allowed'}`}
+                                            className={`w-full py-2 sm:py-3 rounded-2xl font-bold text-sm shadow-xl flex flex-col items-center justify-center transition-all border-b-4 shrink-0 ${(gold >= getEnhanceCost(selectedItem).gold && stones >= getEnhanceCost(selectedItem).stone) && !isEnhancing ? 'bg-gradient-to-r from-[#b91c1c] to-[#991b1b] text-white border-[#7f1d1d] hover:brightness-110 active:border-b-0 active:translate-y-1' : 'bg-[#374151] text-[#9ca3af] border-[#1f2937] cursor-not-allowed'}`}
                                         >
                                             <span className="mb-1 font-pixel tracking-wider">{isEnhancing ? '鍛造中...' : t('enhance')}</span>
                                             {!isEnhancing && (
@@ -1906,7 +1985,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             )}
 
                             {isEnhancing && (
-                                <div className="absolute inset-0 bg-black/60 z-20 flex flex-col items-center justify-center backdrop-blur-sm">
+                                <div className="absolute inset-0 bg-black/60 z-20 flex flex-col items-center justify-center backdrop-blur-sm rounded-2xl">
                                     <Icon name="Hammer" size={80} className="text-[#fca5a5] animate-forge-strike drop-shadow-[0_0_20px_rgba(248,113,113,0.8)]"/>
                                     <div className="mt-4 text-[#fca5a5] font-bold font-pixel animate-pulse tracking-widest">注入魔力中...</div>
                                     <div className="absolute w-2 h-2 bg-orange-400 rounded-full animate-sparkle" style={{top:'40%', left:'45%'}}></div>
@@ -1916,7 +1995,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             )}
 
                             {enhanceResult && (
-                                <div className={`absolute inset-0 z-30 flex items-center justify-center backdrop-blur-md animate-[fadeOut_2.5s_ease-in-out_forwards] ${enhanceResult === 'success' ? 'bg-[#166534]/40' : 'bg-[#7f1d1d]/40'}`}>
+                                <div className={`absolute inset-0 z-30 flex items-center justify-center backdrop-blur-md animate-[fadeOut_2.5s_ease-in-out_forwards] rounded-2xl ${enhanceResult === 'success' ? 'bg-[#166534]/40' : 'bg-[#7f1d1d]/40'}`}>
                                     <div className={`p-6 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.8)] border-4 flex flex-col items-center gap-3 animate-pop-in ${enhanceResult === 'success' ? 'bg-[#14532d] border-[#4ade80] text-[#86efac]' : 'bg-[#450a0a] border-[#f87171] text-[#fca5a5]'}`}>
                                         <div className="text-5xl">{enhanceResult === 'success' ? '✨' : '💥'}</div>
                                         <div className="text-xl font-bold font-pixel tracking-widest">{enhanceResult === 'success' ? t('forge_success') : t('forge_fail')}</div>
@@ -2639,17 +2718,37 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                 return { totalStats, derivedStats, cp };
             }, [safeData.user.level, safeData.user.talents, safeData.user.currentClass, safeData.equipped]);
 
-            // 自動扣除固定支出邏輯
+            // 自動扣除固定支出邏輯 (已支援間隔天數)
             useEffect(() => {
                 if (!authLoading && authUser && safeData.fixedExpenses?.length > 0) {
                     const today = new Date();
                     const currentMonthStr = `${today.getFullYear()}-${today.getMonth()}`;
                     const currentDay = today.getDate();
+                    const todayStr = today.toISOString().split('T')[0];
                     let updated = false;
                     let newData = { ...safeData };
 
                     safeData.fixedExpenses.forEach(exp => {
-                        if (currentDay >= exp.dayOfMonth && exp.lastDeductedMonth !== currentMonthStr) {
+                        let shouldDeduct = false;
+                        
+                        if (exp.deductType === 'interval') {
+                            // 間隔天數扣款
+                            if (!exp.nextDeductDate || todayStr >= exp.nextDeductDate) {
+                                shouldDeduct = true;
+                                // 計算下次扣款日
+                                const nextDate = new Date(today);
+                                nextDate.setDate(nextDate.getDate() + (exp.intervalDays || 30));
+                                exp.nextDeductDate = nextDate.toISOString().split('T')[0];
+                            }
+                        } else {
+                            // 每月固定日期扣款 (預設)
+                            if (currentDay >= exp.dayOfMonth && exp.lastDeductedMonth !== currentMonthStr) {
+                                shouldDeduct = true;
+                                exp.lastDeductedMonth = currentMonthStr;
+                            }
+                        }
+
+                        if (shouldDeduct) {
                             const txId = Date.now().toString() + Math.random().toString(36).substr(2, 5);
                             const newTx = {
                                 id: txId,
@@ -2658,7 +2757,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                 category: exp.category,
                                 accountId: exp.accountId,
                                 note: `[自動扣款] ${exp.name}`,
-                                date: new Date().toISOString().split('T')[0],
+                                date: todayStr,
                                 timestamp: Date.now()
                             };
 
@@ -2669,10 +2768,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                 newData.accounts[accIdx].balance -= exp.amount;
                             }
 
-                            newData.logs = addLog('finance_out', `固定支出已扣款: ${exp.name} (-${exp.amount})`, newData.logs);
-                            
-                            // 更新該支出的最後扣除月份
-                            exp.lastDeductedMonth = currentMonthStr;
+                            newData.logs = addLog('finance_out', `自動扣款: ${exp.name} (-${exp.amount})`, newData.logs);
                             updated = true;
                         }
                     });
