@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>RPGMoney - Ultimate Boss Edition v7.0</title>
+    <title>RPGMoney - Ultimate Boss Edition v8.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -290,8 +290,7 @@
             { id: 'midnight', name: 'midnight', color: '#0f172a' }
         ];
 
-// --- PART 1 END ---
-const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle="") => (
+        const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle="") => (
             <g transform={`translate(0, ${cyOffset})`} className="ring-container" style={{...zIndexStyle}}>
                 <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} opacity="0.2" />
                 <ellipse cx="16" cy="24" rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={width} strokeDasharray={dash1} className="ring-flow" style={{ animationDuration: dur, filter: `drop-shadow(0 0 ${width*3}px ${color})` }} />
@@ -750,23 +749,22 @@ const makeRing = (cyOffset, color, rx, ry, dash1, dash2, dur, width, zIndexStyle
             'phantom_shooter': { id: 'phantom_shooter', name: '幻影射手', icon: 'Crosshair', color: '#059669', bonuses: { str: 0.60, int: 0.20, vit: 0, agi: 0.90 }, desc: '無發不中，箭矢如同幻影。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_phantom_bow'}, eye: {id: 'e_eagle_eye'}, body: {id: 'b_hunter_vest'} } },
             'beast_master': { id: 'beast_master', name: '百獸之王', icon: 'Cloud', color: '#166534', bonuses: { str: 0.50, int: 0.40, vit: 0.50, agi: 0.50 }, desc: '與萬物合一，最強的野性呼喚。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_longbow'}, head: {id: 'h_ranger_hood'}, body: {id: 'b_dragon_scale'} } }
         };
-
-// --- PART 2 END ---
-const BOSS_LIST = [
-            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
-            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
-            { id: 'boss_goblin_scout', name: '哥布林斥候', cpReq: 300, hp: 3000, icon: 'Eye', color: '#65a30d', exp: 250, gold: 150, dropRate: 0.2, dropItem: 'b_cloth', stoneDrop: 3, rewardDesc: '250 EXP / 150 G / 3 強化石', desc: '狡猾的哥布林先鋒部隊。' },
-            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 8000, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。' },
-            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。' },
-            { id: 'boss_orc', name: '狂暴獸人酋長', cpReq: 12000, hp: 50000, icon: 'UserPlus', color: '#b45309', exp: 2500, gold: 1500, dropRate: 0.08, dropItem: 'w_steel', stoneDrop: 15, rewardDesc: '2500 EXP / 1500 G / 15 強化石', desc: '統治獸人部落的野蠻酋長，力大無窮。' },
-            { id: 'boss_skeleton', name: '不朽骸骨大帝', cpReq: 25000, hp: 90000, icon: 'Ghost', color: '#d1d5db', exp: 3500, gold: 2500, dropRate: 0.08, dropItem: 'w_void_scythe', stoneDrop: 20, rewardDesc: '3500 EXP / 2500 G / 20 強化石', desc: '從遠古墓穴中甦醒的君王。' },
-            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Flame', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。' },
-            { id: 'boss_lich', name: '災厄巫妖', cpReq: 90000, hp: 250000, icon: 'Eye', color: '#4c1d95', exp: 8000, gold: 7000, dropRate: 0.05, dropItem: 'a_head_frost', stoneDrop: 35, rewardDesc: '8000 EXP / 7000 G / 35 強化石', desc: '掌握死亡與寒冰魔法的終極法師。' },
-            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。' },
-            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 100 強化石', desc: '掌握世間一切財寶的絕對王者。' },
-            { id: 'boss_titan', name: '遠古泰坦', cpReq: 1500000, hp: 5000000, icon: 'Shield', color: '#78350f', exp: 100000, gold: 80000, dropRate: 0.05, dropItem: 'r6', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 200 強化石', desc: '擁有無法撼動絕對防禦的巨人。' },
-            { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 10000000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 400 強化石', desc: '能掀起吞噬一切滅世海嘯的巨獸。' },
-            { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 30000000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', stoneDrop: 1000, rewardDesc: '80萬 EXP / 50萬 G / 1000 強化石', desc: '掌控殺戮法則的神明，非凡人可敵。' }
+        /* ================= 擴充 Boss 列表 (加入戰鬥模擬所需屬性) ================= */
+        const BOSS_LIST = [
+            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, atk: 20, def: 10, spd: 5, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。', skills: [{ name: '黏液撞擊', type: 'attack', multiplier: 1.2, chance: 0.3 }] },
+            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, atk: 60, def: 20, spd: 30, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。', skills: [{ name: '撕咬', type: 'attack', multiplier: 1.5, chance: 0.25 }] },
+            { id: 'boss_goblin_scout', name: '哥布林斥候', cpReq: 300, hp: 3000, atk: 120, def: 50, spd: 40, icon: 'Eye', color: '#65a30d', exp: 250, gold: 150, dropRate: 0.2, dropItem: 'b_cloth', stoneDrop: 3, rewardDesc: '250 EXP / 150 G / 3 強化石', desc: '狡猾的哥布林先鋒部隊。', skills: [{ name: '淬毒匕首', type: 'poison', damage: 30, turns: 3, chance: 0.2 }] },
+            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 10000, atk: 250, def: 150, spd: 20, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。', skills: [{ name: '泰山壓頂', type: 'attack', multiplier: 2.0, chance: 0.2 }, { name: '分裂恢復', type: 'heal', amount: 500, chance: 0.1 }] },
+            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 25000, atk: 800, def: 400, spd: 100, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。', skills: [{ name: '國王號令', type: 'buff_atk', multiplier: 1.5, turns: 3, chance: 0.15 }, { name: '巨斧狂劈', type: 'attack', multiplier: 2.5, chance: 0.2 }] },
+            { id: 'boss_orc', name: '狂暴獸人酋長', cpReq: 12000, hp: 60000, atk: 2000, def: 800, spd: 150, icon: 'UserPlus', color: '#b45309', exp: 2500, gold: 1500, dropRate: 0.08, dropItem: 'w_steel', stoneDrop: 15, rewardDesc: '2500 EXP / 1500 G / 15 強化石', desc: '統治獸人部落的野蠻酋長，力大無窮。', skills: [{ name: '嗜血狂怒', type: 'buff_atk', multiplier: 2.0, turns: 2, chance: 0.2 }, { name: '撼地一擊', type: 'attack', multiplier: 3.0, chance: 0.1 }] },
+            { id: 'boss_skeleton', name: '不朽骸骨大帝', cpReq: 25000, hp: 120000, atk: 4500, def: 2000, spd: 300, icon: 'Ghost', color: '#d1d5db', exp: 3500, gold: 2500, dropRate: 0.08, dropItem: 'w_void_scythe', stoneDrop: 20, rewardDesc: '3500 EXP / 2500 G / 20 強化石', desc: '從遠古墓穴中甦醒的君王。', skills: [{ name: '死靈護盾', type: 'shield', amount: 5000, chance: 0.2 }, { name: '靈魂收割', type: 'lifesteal', multiplier: 1.8, chance: 0.15 }] },
+            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 250000, atk: 9000, def: 5000, spd: 600, icon: 'Flame', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。', skills: [{ name: '深淵吐息', type: 'attack', multiplier: 3.5, chance: 0.2 }, { name: '龍鱗硬化', type: 'buff_def', multiplier: 2.0, turns: 3, chance: 0.15 }] },
+            { id: 'boss_lich', name: '災厄巫妖', cpReq: 90000, hp: 400000, atk: 18000, def: 8000, spd: 800, icon: 'Eye', color: '#4c1d95', exp: 8000, gold: 7000, dropRate: 0.05, dropItem: 'a_head_frost', stoneDrop: 35, rewardDesc: '8000 EXP / 7000 G / 35 強化石', desc: '掌握死亡與寒冰魔法的終極法師。', skills: [{ name: '絕對零度', type: 'attack', multiplier: 4.0, chance: 0.15 }, { name: '時間扭曲', type: 'extra_turn', chance: 0.1 }] },
+            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 800000, atk: 35000, def: 15000, spd: 1200, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。', skills: [{ name: '毀滅星爆', type: 'attack', multiplier: 5.0, chance: 0.1 }, { name: '魔神威壓', type: 'debuff_atk', multiplier: 0.5, turns: 3, chance: 0.2 }] },
+            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2500000, atk: 120000, def: 50000, spd: 3000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 100 強化石', desc: '掌握世間一切財寶的絕對王者。', skills: [{ name: '天地乖離開闢之星', type: 'attack', multiplier: 8.0, chance: 0.05 }, { name: '王之財寶', type: 'multi_attack', hits: 5, multiplier: 0.8, chance: 0.25 }] },
+            { id: 'boss_titan', name: '遠古泰坦', cpReq: 1500000, hp: 8000000, atk: 300000, def: 200000, spd: 1000, icon: 'Shield', color: '#78350f', exp: 100000, gold: 80000, dropRate: 0.05, dropItem: 'r6', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 200 強化石', desc: '擁有無法撼動絕對防禦的巨人。', skills: [{ name: '泰坦之握', type: 'attack', multiplier: 3.0, chance: 0.2 }, { name: '大地護盾', type: 'shield', amount: 500000, chance: 0.15 }] },
+            { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 15000000, atk: 800000, def: 500000, spd: 4000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 400 強化石', desc: '能掀起吞噬一切滅世海嘯的巨獸。', skills: [{ name: '滅世海嘯', type: 'attack', multiplier: 6.0, chance: 0.1 }, { name: '深海旋渦', type: 'debuff_spd', multiplier: 0.3, turns: 2, chance: 0.2 }] },
+            { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 40000000, atk: 2500000, def: 1200000, spd: 10000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', stoneDrop: 1000, rewardDesc: '80萬 EXP / 50萬 G / 1000 強化石', desc: '掌控殺戮法則的神明，非凡人可敵。', skills: [{ name: '修羅血劍', type: 'attack', multiplier: 10.0, chance: 0.05 }, { name: '殺神領域', type: 'buff_all', multiplier: 1.5, turns: 99, chance: 0.01 }, { name: '無盡殺戮', type: 'lifesteal', multiplier: 3.0, chance: 0.1 }] }
         ];
 
         const ACHIEVEMENTS_LIST = [
@@ -823,23 +821,41 @@ const BOSS_LIST = [
             );
         };
 
-        const MagicAbacus = ({ value, onPadClick, onClose }) => (
-            <div className="fixed inset-0 z-[120] flex flex-col justify-end animate-[fadeIn_0.2s] select-none">
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
-                <div className="bg-theme-bg p-6 pb-safe rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.7)] border-t-4 border-theme-accent relative z-10 animate-[slideUp_0.2s]">
-                    <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2"><span className="text-theme-text font-pixel text-lg font-bold tracking-widest flex items-center gap-2"><Icon name="Calculator" size={18} className="text-theme-accent"/> 魔法算盤</span><button onClick={onClose} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X"/></button></div>
-                    <div className="bg-theme-card rounded-2xl p-4 text-right mb-6 border-2 border-theme-border shadow-inner overflow-x-auto whitespace-nowrap scrollbar-hide"><span className="text-4xl font-mono font-bold text-theme-accent drop-shadow-md">{value || '0'}</span></div>
-                    <div className="grid grid-cols-4 gap-3 mb-6">
-                        {['7','8','9','/','4','5','6','*','1','2','3','-','C','0','.','+'].map(btn => (
-                            <button key={btn} onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPadClick(btn); }} className={`h-14 rounded-xl font-bold text-2xl font-mono flex items-center justify-center border-b-4 active:border-b-0 active:translate-y-1 transition-all ${['+','-','*','/'].includes(btn) ? 'bg-theme-card text-theme-text border-theme-border hover:brightness-110' : btn === 'C' ? 'bg-red-50 text-red-500 border-red-200 hover:bg-red-100' : 'bg-theme-glass text-theme-text border-theme-border hover:bg-theme-card'}`}>{btn}</button>
-                        ))}
-                    </div>
-                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPadClick('='); onClose(); }} className="w-full py-4 bg-theme-accent text-white font-bold text-lg rounded-2xl border-b-4 border-black/20 active:border-b-0 active:translate-y-1 transition-all tracking-widest flex items-center justify-center gap-2 shadow-lg"><Icon name="Check" /> 確定</button>
-                </div>
-            </div>
-        );
+        /* ================= 修復並優化的 MagicAbacus (魔法算盤) ================= */
+        const MagicAbacus = ({ value, onPadClick, onClose }) => {
+            // 防止點擊穿透與預設行為
+            const handleBtnClick = (e, btn) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onPadClick(btn);
+            };
 
-        /* ================= 固定支出管理 (擴充: 支援間隔天數) ================= */
+            return (
+                <div className="fixed inset-0 z-[120] flex flex-col justify-end animate-[fadeIn_0.2s] select-none">
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); onClose(); }}></div>
+                    <div className="bg-theme-bg p-6 pb-safe rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.7)] border-t-4 border-theme-accent relative z-10 animate-[slideUp_0.2s]" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-4 border-b border-theme-border pb-2">
+                            <span className="text-theme-text font-pixel text-lg font-bold tracking-widest flex items-center gap-2"><Icon name="Calculator" size={18} className="text-theme-accent"/> 魔法算盤</span>
+                            <button type="button" onClick={(e) => { e.stopPropagation(); onClose(); }} className="text-theme-sub hover:text-theme-text active:scale-95"><Icon name="X"/></button>
+                        </div>
+                        <div className="bg-theme-card rounded-2xl p-4 text-right mb-6 border-2 border-theme-border shadow-inner overflow-x-auto whitespace-nowrap custom-scrollbar">
+                            <span className="text-4xl font-mono font-bold text-theme-accent drop-shadow-md">{value || '0'}</span>
+                        </div>
+                        <div className="grid grid-cols-4 gap-3 mb-6">
+                            {['7','8','9','/','4','5','6','*','1','2','3','-','C','0','.','+'].map(btn => (
+                                <button key={btn} type="button" onClick={(e) => handleBtnClick(e, btn)} className={`h-14 rounded-xl font-bold text-2xl font-mono flex items-center justify-center border-b-4 active:border-b-0 active:translate-y-1 transition-all ${['+','-','*','/'].includes(btn) ? 'bg-theme-card text-theme-text border-theme-border hover:brightness-110' : btn === 'C' ? 'bg-red-50 text-red-500 border-red-200 hover:bg-red-100' : 'bg-theme-glass text-theme-text border-theme-border hover:bg-theme-card'}`}>{btn}</button>
+                            ))}
+                        </div>
+                        <div className="flex gap-3">
+                            <button type="button" onClick={(e) => handleBtnClick(e, 'DEL')} className="w-1/3 py-4 bg-theme-card text-theme-text font-bold text-lg rounded-2xl border-b-4 border-theme-border active:border-b-0 active:translate-y-1 transition-all flex items-center justify-center gap-2 shadow-sm"><Icon name="ArrowLeft" /> 退格</button>
+                            <button type="button" onClick={(e) => { handleBtnClick(e, '='); onClose(); }} className="w-2/3 py-4 bg-theme-accent text-white font-bold text-lg rounded-2xl border-b-4 border-black/20 active:border-b-0 active:translate-y-1 transition-all tracking-widest flex items-center justify-center gap-2 shadow-lg"><Icon name="Check" /> 確定</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        /* ================= 固定支出管理 (支援間隔天數 & 整合魔法算盤修復) ================= */
         const FixedExpenseManagerModal = ({ fixedExpenses, categories, accounts, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [expenses, setExpenses] = useState(fixedExpenses || []);
@@ -849,13 +865,9 @@ const BOSS_LIST = [
             const defaultAcc = accounts[0]?.id || '';
             const todayStr = new Date().toISOString().split('T')[0];
             
-            // 新增 deductType, intervalDays, nextDeductDate 欄位
             const [editData, setEditData] = useState({ 
                 name: '', amount: '', category: defaultCat, accountId: defaultAcc, 
-                deductType: 'monthly', // 'monthly' | 'interval'
-                dayOfMonth: 1, 
-                intervalDays: 30,
-                nextDeductDate: todayStr
+                deductType: 'monthly', dayOfMonth: 1, intervalDays: 30, nextDeductDate: todayStr
             });
             const [showCalc, setShowCalc] = useState(false);
 
@@ -958,7 +970,7 @@ const BOSS_LIST = [
                             <div className="absolute inset-0 bg-theme-card p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.2)] z-20 flex flex-col">
                                 <div className="flex justify-between items-center mb-4 shrink-0 pb-2 border-b border-theme-border">
                                     <h4 className="font-bold text-theme-text text-lg flex items-center gap-2">
-                                        {editingId === 'new' ? <><Icon name="Plus"/>新增固定支出</> : <><Icon name="Edit"/>編輯固定支出</>}
+                                        {editingId === 'new' ? <><Icon name="Plus"/>新增</> : <><Icon name="Edit"/>編輯</>}固定支出
                                     </h4>
                                     <button onClick={() => setEditingId(null)} className="text-theme-sub hover:text-theme-text bg-theme-bg p-1 rounded-full"><Icon name="X" size={20}/></button>
                                 </div>
@@ -1060,7 +1072,6 @@ const BOSS_LIST = [
             const backGears = Array.isArray(equipped?.back) ? equipped.back : (equipped?.back ? [equipped.back] : []);
             const spiritRings = Array.isArray(equipped?.spiritRing) ? equipped.spiritRing : (equipped?.spiritRing ? [equipped.spiritRing] : []);
             
-            // 依據等級微調基礎大小與氣場
             const scaleOffset = Math.min(0.2, (level / 100) * 0.2);
 
             return (
@@ -1072,7 +1083,7 @@ const BOSS_LIST = [
                         </radialGradient>
                     </defs>
 
-                    {/* === 職業專屬光環 (在角色後方) === */}
+                    {/* === 職業專屬光環 === */}
                     {auraEffect === 'aura-fire' && <circle cx="16" cy="16" r="16" fill="none" stroke="#ef4444" strokeWidth="2" className="animate-aura-fire opacity-60" style={{filter:'blur(2px)'}}/>}
                     {auraEffect === 'aura-magic' && <g className="animate-spin-slow origin-center" style={{transformBox: 'fill-box'}}><circle cx="16" cy="16" r="15" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 2" opacity="0.8"/><circle cx="16" cy="16" r="12" fill="none" stroke="#818cf8" strokeWidth="0.5" opacity="0.5"/></g>}
                     {auraEffect === 'aura-holy' && <circle cx="16" cy="16" r="18" fill="url(#holyGrad)" className="animate-aura-holy"/>}
@@ -1082,7 +1093,7 @@ const BOSS_LIST = [
                     {auraEffect === 'aura-nature' && <g className="animate-aura-nature origin-center"><circle cx="16" cy="16" r="15" fill="none" stroke="#4ade80" strokeWidth="2"/><path d="M16 0 L16 32 M0 16 L32 16" stroke="#22c55e" strokeWidth="1" opacity="0.5"/></g>}
                     {auraEffect === 'aura-blood' && <circle cx="16" cy="16" r="16" fill="none" stroke="#991b1b" strokeWidth="4" className="animate-aura-blood opacity-70" style={{filter:'blur(1px)'}}/>}
 
-                    {/* 背景層（魂環等） */}
+                    {/* 背景層 */}
                     {spiritRings.map((ring, index) => (
                         <g key={ring.id + index} className="origin-center z-0" style={{transformBox: 'fill-box'}}>
                             {GEAR_VISUALS[ring.id] ? GEAR_VISUALS[ring.id]() : null}
@@ -1237,9 +1248,7 @@ const BOSS_LIST = [
                 </div>
             );
         };
-
-// --- PART 3 END ---
-const CategoryManagerModal = ({ categories, onClose, onSave }) => {
+        const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
             const dragItem = useRef(null); const dragOverItem = useRef(null);
@@ -1260,6 +1269,7 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             );
         };
 
+        /* ================= 修改後的 AddTransactionModal (整合修正版算盤) ================= */
         const AddTransactionModal = ({ accounts, categories, onClose, onAdd, initialData, onManageCategories }) => {
             const [type, setType] = useState(initialData?.type || 'expense');
             const [amountStr, setAmountStr] = useState(initialData?.amount?.toString() || '');
@@ -1368,32 +1378,15 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             );
         };
 
-        /* ================= 升級版：轉職樹狀圖 (修復橫向排版) ================= */
         const ClassSelectorModal = ({ currentClass, level, onSelect, onClose, lang, translations, gender, appearance, userEquipped }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selected, setSelected] = useState(currentClass || 'novice');
             
-            // 定義職業層級結構 (加入三階)
             const TIER_0 = ['novice'];
             const TIER_1 = ['warrior', 'mage', 'rogue', 'archer'];
-            const TIER_2 = {
-                warrior: ['paladin', 'berserker'],
-                mage: ['archmage', 'necromancer'],
-                rogue: ['assassin', 'ninja'],
-                archer: ['sniper', 'ranger']
-            };
-            const TIER_3 = {
-                paladin: ['divine_knight'],
-                berserker: ['warlord'],
-                archmage: ['grand_magus'],
-                necromancer: ['lich_king'],
-                assassin: ['shadow_walker'],
-                ninja: ['shinobi'],
-                sniper: ['phantom_shooter'],
-                ranger: ['beast_master']
-            };
+            const TIER_2 = { warrior: ['paladin', 'berserker'], mage: ['archmage', 'necromancer'], rogue: ['assassin', 'ninja'], archer: ['sniper', 'ranger'] };
+            const TIER_3 = { paladin: ['divine_knight'], berserker: ['warlord'], archmage: ['grand_magus'], necromancer: ['lich_king'], assassin: ['shadow_walker'], ninja: ['shinobi'], sniper: ['phantom_shooter'], ranger: ['beast_master'] };
 
-            // 輔助函式：尋找父職業
             const getParentClass = (clsId, tierDict) => {
                 for (const [parent, children] of Object.entries(tierDict)) {
                     if (children.includes(clsId)) return parent;
@@ -1401,21 +1394,17 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                 return null;
             };
 
-            // 檢查是否可解鎖該職業
             const isUnlocked = (clsId) => {
                 if (clsId === 'novice') return true;
                 const def = CLASS_DEFINITIONS[clsId];
                 if (!def || level < def.reqLevel) return false;
                 
-                // 檢查路徑
                 if (def.tier === 1 && currentClass === 'novice') return true;
                 if (def.tier === 2 && TIER_2[currentClass] && TIER_2[currentClass].includes(clsId)) return true;
                 if (def.tier === 3 && TIER_3[currentClass] && TIER_3[currentClass].includes(clsId)) return true;
                 
-                // 如果已經是該職業或其進階分支，則允許查看
                 if (currentClass === clsId) return true;
                 
-                // 允許查看自己的下級/上級分支
                 const parent2 = getParentClass(clsId, TIER_2);
                 if (def.tier === 2 && parent2 === currentClass) return true;
                 if (def.tier === 1 && TIER_2[clsId] && TIER_2[clsId].includes(currentClass)) return true;
@@ -1424,7 +1413,6 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                 if (def.tier === 3 && parent3 === currentClass) return true;
                 if (def.tier === 2 && TIER_3[clsId] && TIER_3[clsId].includes(currentClass)) return true;
                 
-                // 允許三階查看一階 (溯源)
                 if (def.tier === 1 && parent3 && getParentClass(parent3, TIER_2) === clsId) return true;
 
                 return false; 
@@ -1433,7 +1421,6 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             const selDef = CLASS_DEFINITIONS[selected] || CLASS_DEFINITIONS['novice'];
             const isSelectable = isUnlocked(selected) && selected !== currentClass;
 
-            // 用於預覽的裝備
             const previewEquipped = useMemo(() => {
                 let eq = { ...userEquipped };
                 const specificEquip = selDef.previewEquip || {};
@@ -1470,30 +1457,22 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                 <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]">
                     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose}></div>
                     <div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full h-[95vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/50">
-                        
-                        {/* Header */}
                         <div className="p-4 shrink-0 flex justify-between items-center border-b border-theme-border bg-theme-bg">
                             <button onClick={onClose} className="w-10 h-10 flex items-center justify-center bg-theme-card rounded-full text-theme-sub hover:text-theme-text active:scale-95 shadow-sm border border-theme-border"><Icon name="X"/></button>
                             <h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest">{t('class_system')}</h3>
                             <div className="w-10"></div>
                         </div>
                         
-                        {/* Body Container */}
                         <div className="flex-1 flex flex-col overflow-hidden">
-                            
-                            {/* Top: 預覽區域 */}
                             <div className="relative h-[40%] bg-[#0f172a] shrink-0 border-b-4 border-theme-border overflow-hidden flex items-center justify-center">
-                                {/* 動態背景 */}
                                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 blur-[80px] rounded-full opacity-30 transition-colors duration-500 pointer-events-none" style={{backgroundColor: selDef.color}}></div>
                                 
-                                {/* 角色渲染 (傳入光環) */}
                                 <div className="relative z-10 scale-[1.5] transform translate-y-4">
                                     <PixelAvatar gender={gender} colors={appearance} equipped={previewEquipped} auraEffect={selDef.aura} className="w-32 h-32 drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)] filter contrast-110"/>
                                 </div>
 
-                                {/* 預覽職業資訊 */}
                                 <div className="absolute top-4 left-4 z-20">
                                     <div className="flex items-center gap-2 mb-1">
                                         <div className="w-8 h-8 rounded bg-black/50 border border-white/20 flex items-center justify-center" style={{color: selDef.color}}><Icon name={selDef.icon} size={16}/></div>
@@ -1505,7 +1484,6 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                                     <p className="text-xs text-gray-300 max-w-[200px] leading-tight drop-shadow">{selDef.desc}</p>
                                 </div>
 
-                                {/* 屬性加成預覽 */}
                                 <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-1">
                                     <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">屬性補正</div>
                                     <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono font-bold text-right">
@@ -1518,20 +1496,10 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                                 </div>
                             </div>
 
-                            {/* Bottom: 樹狀圖區域 (修復排版，讓它能水平滾動以防擁擠) */}
                             <div className="flex-1 overflow-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-4 pb-24 w-full">
-                                {/* 增加 min-w 來確保不會擠成一團 */}
                                 <div className="min-w-[800px] mx-auto relative flex flex-col items-center gap-12 pt-4">
-                                    
-                                    {/* 樹狀連接線 (主幹線) */}
                                     <div className="absolute top-8 bottom-16 left-1/2 w-0.5 bg-theme-border -translate-x-1/2 z-0"></div>
-
-                                    {/* Tier 0 */}
-                                    <div className="w-full flex justify-center relative z-10">
-                                        {renderClassNode('novice')}
-                                    </div>
-
-                                    {/* Tier 1 */}
+                                    <div className="w-full flex justify-center relative z-10">{renderClassNode('novice')}</div>
                                     <div className="w-full relative z-10">
                                         <div className="absolute top-0 left-[12.5%] right-[12.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
                                         <div className="absolute top-0 left-[37.5%] right-[37.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
@@ -1539,8 +1507,6 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                                             {TIER_1.map((cls) => <div key={cls} className="flex justify-center">{renderClassNode(cls)}</div>)}
                                         </div>
                                     </div>
-
-                                    {/* Tier 2 */}
                                     <div className="w-full relative z-10">
                                         <div className="grid grid-cols-4 gap-2">
                                             {TIER_1.map((parentCls, idx) => (
@@ -1554,8 +1520,6 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                                             ))}
                                         </div>
                                     </div>
-
-                                    {/* Tier 3 */}
                                     <div className="w-full relative z-10 mt-2">
                                         <div className="grid grid-cols-8 gap-1">
                                             {Object.keys(TIER_3).map((parent2, idx) => (
@@ -1568,12 +1532,10 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
                                             ))}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
 
-                        {/* Footer Action */}
                         <div className="p-4 bg-theme-card border-t border-theme-border shrink-0 pb-safe">
                             <button 
                                 onClick={() => { if(isSelectable) onSelect(selected); onClose(); }} 
@@ -1590,12 +1552,10 @@ const CategoryManagerModal = ({ categories, onClose, onSave }) => {
             );
         };
 
-// --- PART 4 END ---
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
-            // 需求：資產隱藏功能預設隱藏
             const [hideAssets, setHideAssets] = useState(true);
             
             const petDef = user.pet && PET_DEFINITIONS[user.pet.id] ? PET_DEFINITIONS[user.pet.id] : null; 
@@ -1880,12 +1840,10 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         </div>
                     </div>
                     
-                    {/* 需求：修復手機版體驗極佳，確保按鍵與列表皆可完美顯示 */}
                     <div className="flex-1 overflow-hidden p-4 pb-24 flex flex-col md:flex-row gap-4 relative z-10">
                         <div className="absolute inset-0 bg-magma opacity-30 pointer-events-none"></div>
                         <div className="absolute inset-0 forge-grid pointer-events-none"></div>
                         
-                        {/* 上半部(手機)/左半部(電腦): 裝備列表 */}
                         <div className="w-full md:w-1/3 h-[40%] md:h-full bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-3 flex flex-col relative z-10 shrink-0">
                             <h3 className="text-xs font-bold text-[#9ca3af] uppercase mb-3 px-1 border-b border-[#374151] pb-2 shrink-0">選擇裝備</h3>
                             <div className="flex-1 overflow-y-auto pr-1 space-y-2 custom-scrollbar">
@@ -1910,7 +1868,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             </div>
                         </div>
 
-                        {/* 下半部(手機)/右半部(電腦): 鍛造操作區 (自適應剩餘空間) */}
                         <div className="w-full md:w-2/3 flex-1 bg-[#1f2937]/90 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-[#374151] p-4 sm:p-6 flex flex-col items-center justify-between relative overflow-y-auto custom-scrollbar z-10">
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-orange-600/10 blur-[50px] rounded-full pointer-events-none"></div>
 
@@ -2007,7 +1964,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                 </div>
             );
         };
-
         const TalentView = ({ user, onUpgradeTalent, onResetTalent, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selectedTalent, setSelectedTalent] = useState(null);
@@ -2192,17 +2148,20 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         <div className="grid grid-cols-4 gap-2 mb-4">{[{ label: 'STR', val: totalStats.str, icon: 'Sword', color: 'text-red-500', bg: 'bg-red-100' },{ label: 'INT', val: totalStats.int, icon: 'Gem', color: 'text-blue-500', bg: 'bg-blue-100' },{ label: 'VIT', val: totalStats.vit, icon: 'Heart', color: 'text-green-500', bg: 'bg-green-100' },{ label: 'AGI', val: totalStats.agi, icon: 'Zap', color: 'text-yellow-500', bg: 'bg-yellow-100' }].map(stat => (<div key={stat.label} className="flex flex-col items-center p-1.5 sm:p-2 rounded-xl bg-theme-bg border border-theme-border shadow-sm"><div className={`p-1 sm:p-1.5 rounded-full mb-0.5 sm:mb-1 ${stat.bg}`}><Icon name={stat.icon} size={10} className={stat.color}/></div><span className="text-[8px] sm:text-[9px] font-bold text-theme-sub opacity-70">{stat.label}</span><span className="font-mono font-bold text-sm sm:text-lg leading-none text-theme-text">{Math.floor(stat.val)}</span></div>))}</div>
                         <div className="space-y-3"><div className="flex gap-3"><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-green-600 flex items-center gap-1"><Icon name="Heart" size={8}/> HP</span><span>{Math.floor(derivedStats.hp)}</span></div><ProgressBar val={derivedStats.hp} max={Math.max(2000, derivedStats.hp)} color="bg-green-500" /></div><div className="flex-1"><div className="flex justify-between text-[10px] sm:text-xs font-bold mb-0.5"><span className="text-blue-600 flex items-center gap-1"><Icon name="Zap" size={8}/> MP</span><span>{Math.floor(derivedStats.mp)}</span></div><ProgressBar val={derivedStats.mp} max={Math.max(1000, derivedStats.mp)} color="bg-blue-500" /></div></div><div className="grid grid-cols-3 gap-2 pt-2 sm:pt-3 border-t border-dashed border-theme-border"><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Attack</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.atk)}</div></div><div className="text-center border-l border-r border-theme-border"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Defense</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.def)}</div></div><div className="text-center"><div className="text-[9px] sm:text-[10px] text-theme-sub uppercase font-bold mb-0.5">Crit Rate</div><div className="text-sm sm:text-xl font-mono font-bold text-theme-text">{Math.floor(derivedStats.cri)}%</div></div></div></div>
                     </div>
-                    {isEditing && <AvatarEditor appearanceData={appearance} onSave={(newAppearanceData) => { onUpdateAppearance(newAppearanceData); setIsEditing(false); }} onClose={() => setIsEditing(false)} />}
                 </div>
             );
         };
 
-        const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
+        /* ================= 擴充: 帶有文字模擬戰鬥的 BossView ================= */
+        const BossView = ({ cp, derivedStats, user, onBattleEnd, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selectedBoss, setSelectedBoss] = useState(null);
-            const [isBattling, setIsBattling] = useState(false);
+            const [combatState, setCombatState] = useState(null); // null, 'battling', 'result', 'reward'
+            const [battleLogs, setBattleLogs] = useState([]);
             const [battleResult, setBattleResult] = useState(null); 
             const [rewardModal, setRewardModal] = useState(null); 
+            
+            const logEndRef = useRef(null);
             
             const safeUser = user || {};
             const bossAttempts = safeUser.bossAttempts || { date: '', count: 0 };
@@ -2210,41 +2169,106 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
             const attempts = bossAttempts.date === todayStr ? (bossAttempts.count || 0) : 0;
             const remaining = Math.max(0, 5 - attempts);
             const currentCp = cp || 0;
-            
+
+            // 戰鬥日誌自動滾動
+            useEffect(() => {
+                if(logEndRef.current) logEndRef.current.scrollIntoView({ behavior: 'smooth' });
+            }, [battleLogs]);
+
             const handleFight = (boss) => {
                 if (remaining <= 0) return;
                 setSelectedBoss(boss);
-                setIsBattling(true);
-                setBattleResult(null);
-                setRewardModal(null);
+                setCombatState('battling');
+                setBattleLogs([`【系統】 開始與 ⚡${boss.name} 的史詩戰鬥！`]);
+
+                // 決定勝負
+                const winChance = Math.min(0.95, Math.max(0.01, (currentCp / boss.cpReq) * 0.5));
+                const isWin = Math.random() < winChance;
+
+                // 準備職業專屬台詞與技能
+                const pClass = safeUser.currentClass || 'novice';
+                let pSkill = "普通攻擊", pFlavor = "奮力一擊", classStyle = "均衡";
+                
+                if (pClass.includes('mage') || pClass.includes('lich') || pClass.includes('magus')) { pSkill = "🌟 星塵爆破"; pFlavor = "極限魔力共鳴"; classStyle = "法師"; }
+                else if (pClass.includes('archer') || pClass.includes('sniper') || pClass.includes('shooter')) { pSkill = "🎯 幻影穿甲箭"; pFlavor = "致命精準暴擊"; classStyle = "射手"; }
+                else if (pClass.includes('rogue') || pClass.includes('ninja') || pClass.includes('shadow')) { pSkill = "🗡️ 瞬獄殺"; pFlavor = "看破死之線"; classStyle = "刺客"; }
+                else if (pClass.includes('warrior') || pClass.includes('berserker') || pClass.includes('warlord')) { pSkill = "💥 崩星重斬"; pFlavor = "狂暴力量爆發"; classStyle = "狂戰士"; }
+                else if (pClass.includes('paladin') || pClass.includes('knight')) { pSkill = "🛡️ 聖光制裁"; pFlavor = "神聖意志"; classStyle = "聖騎士"; }
+
+                let bSkill = boss.skills ? boss.skills[0].name : "狂暴猛擊";
+
+                // 生成模擬劇本
+                const simLogs = [];
+                let pDmgBase = Math.floor(derivedStats.atk * 1.5);
                 
                 setTimeout(() => {
-                    const winChance = Math.min(0.95, Math.max(0.01, (currentCp / boss.cpReq) * 0.5));
-                    const isWin = Math.random() < winChance;
-                    
-                    setIsBattling(false);
-                    setBattleResult(isWin ? 'win' : 'lose');
-                    
-                    let droppedItem = null;
-                    const luckTalent = safeUser.talents?.luck_up || 0;
-                    const finalDropRate = boss.dropRate * (1 + luckTalent * 0.02);
-
-                    if (isWin && boss.dropItem && Math.random() < finalDropRate) {
-                        droppedItem = SHOP_ITEMS.find(i => i.id === boss.dropItem);
+                    let logQueue = [];
+                    if (isWin) {
+                        logQueue = [
+                            `[第 1 回合] ${boss.name} 咆哮著衝來，發動了 【${bSkill}】！`,
+                            classStyle === "聖騎士" || classStyle === "狂戰士" 
+                                ? `>> 你舉起武器硬抗了這擊！(受到 ${Math.floor(derivedStats.hp * 0.1).toLocaleString()} 點傷害)` 
+                                : `>> 你利用靈巧的走位閃避了致命傷害！(受到 ${Math.floor(derivedStats.hp * 0.2).toLocaleString()} 點傷害)`,
+                            `[第 2 回合] 你尋找到了破綻，開始詠唱/蓄力...`,
+                            `>> 觸發職業天賦：【${pFlavor}】！`,
+                            `你發動了終極技能：【${pSkill}】！！！`,
+                            classStyle === "射手" || classStyle === "刺客" 
+                                ? `>> 💥 弱點擊破！造成了不可思議的 ${Math.floor(boss.hp * 0.8).toLocaleString()} 點暴擊傷害！`
+                                : `>> 🔥 轟隆！造成了 ${Math.floor(boss.hp * 0.75).toLocaleString()} 點毀滅性傷害！`,
+                            `[第 3 回合] ${boss.name} 身受重傷，企圖做最後的垂死掙扎！`,
+                            `>> 你不給他任何機會，追加了一次普通攻擊！(造成 ${Math.floor(boss.hp * 0.3).toLocaleString()} 傷害)`,
+                            `>> 🏆 【${boss.name}】 轟然倒下！討伐大成功！`
+                        ];
+                    } else {
+                        logQueue = [
+                            `[第 1 回合] 你率先發起攻擊，發動了 【${pSkill}】！`,
+                            `>> 攻擊打在 ${boss.name} 堅硬的外殼上，僅造成 ${Math.floor(boss.hp * 0.05).toLocaleString()} 點傷害...`,
+                            `[第 2 回合] ${boss.name} 被激怒了，雙眼散發出紅光！`,
+                            `>> ${boss.name} 進入了狂暴狀態！`,
+                            `${boss.name} 發動了毀滅性的 【${bSkill}】！！！`,
+                            `>> 💥 防禦被完全瓦解！受到了 ${Math.floor(derivedStats.hp * 1.5).toLocaleString()} 點致命傷害！`,
+                            `>> 💀 你眼前一黑，失去了意識...討伐失敗。`
+                        ];
                     }
-                    
-                    setTimeout(() => {
-                        if (isWin) { 
-                            setRewardModal({ 
-                                exp: boss.exp, 
-                                gold: Math.floor(boss.gold * (1 + (safeUser.talents?.gold_bonus || 0) * 0.05)), 
-                                stones: boss.stoneDrop || 0,
-                                item: droppedItem 
-                            }); 
+
+                    // 逐步顯示日誌
+                    let index = 0;
+                    const logInterval = setInterval(() => {
+                        if (index < logQueue.length) {
+                            setBattleLogs(prev => [...prev, logQueue[index]]);
+                            index++;
+                        } else {
+                            clearInterval(logInterval);
+                            setTimeout(() => finishBattle(isWin, boss), 1500);
                         }
-                        onBattleEnd({ isWin, boss, droppedItem });
-                    }, 1000);
-                }, 2500); 
+                    }, 800); // 每 0.8 秒彈出一行
+                }, 500);
+            };
+
+            const finishBattle = (isWin, boss) => {
+                setCombatState('result');
+                setBattleResult(isWin ? 'win' : 'lose');
+                
+                let droppedItem = null;
+                const luckTalent = safeUser.talents?.luck_up || 0;
+                const finalDropRate = boss.dropRate * (1 + luckTalent * 0.02);
+
+                if (isWin && boss.dropItem && Math.random() < finalDropRate) {
+                    droppedItem = SHOP_ITEMS.find(i => i.id === boss.dropItem);
+                }
+                
+                setTimeout(() => {
+                    if (isWin) { 
+                        setRewardModal({ 
+                            exp: boss.exp, 
+                            gold: Math.floor(boss.gold * (1 + (safeUser.talents?.gold_bonus || 0) * 0.05)), 
+                            stones: boss.stoneDrop || 0,
+                            item: droppedItem 
+                        }); 
+                        setCombatState('reward');
+                    }
+                    onBattleEnd({ isWin, boss, droppedItem });
+                }, 2000);
             };
 
             return (
@@ -2267,7 +2291,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             const isRecommended = currentCp >= boss.cpReq;
                             const canFight = remaining > 0;
                             return (
-                                <div key={boss.id} className={`bg-theme-card rounded-2xl p-4 border-2 shadow-md flex items-center gap-4 relative overflow-hidden transition-all ${!canFight ? 'opacity-70 grayscale' : 'border-theme-border'}`}>
+                                <div key={boss.id} className={`bg-theme-card rounded-2xl p-4 border-2 shadow-md flex items-center gap-4 relative overflow-hidden transition-all ${!canFight ? 'opacity-70 grayscale' : 'border-theme-border hover:border-theme-accent/50'}`}>
                                     <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20" style={{backgroundColor: boss.color}}></div>
                                     <div className="w-16 h-16 rounded-xl flex items-center justify-center shadow-inner relative z-10 border-2" style={{backgroundColor: `${boss.color}20`, borderColor: boss.color}}>
                                         <Icon name={boss.icon} size={32} color={boss.color} className="drop-shadow-md animate-float"/>
@@ -2295,21 +2319,43 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         })}
                     </div>
 
-                    {isBattling && selectedBoss && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
-                            <div className="text-center animate-pulse">
-                                <div className="w-32 h-32 mx-auto bg-red-900/30 rounded-full flex items-center justify-center border-4 border-red-500 animate-shake shadow-[0_0_30px_rgba(239,68,68,0.5)] relative overflow-hidden">
-                                    <Icon name="Sword" size={64} className="text-red-500 drop-shadow-[0_0_10px_rgba(255,0,0,1)]"/>
-                                    <div className="absolute inset-0 bg-white/20 animate-ping"></div>
+                    {/* 戰鬥模擬文字 Modal */}
+                    {combatState === 'battling' && selectedBoss && (
+                        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-md px-4 py-10 animate-[fadeIn_0.3s]">
+                            
+                            {/* 頂部對戰雙方 */}
+                            <div className="flex items-center justify-between w-full max-w-md mb-8">
+                                <div className="flex flex-col items-center gap-2">
+                                    <div className="w-16 h-16 rounded-full bg-theme-bg border-2 border-blue-400 flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(96,165,250,0.5)]">
+                                        <div className="scale-125 translate-y-1"><PixelAvatar gender={user.gender} colors={user.appearance} equipped={{}} auraEffect={null} className="w-16 h-16" level={user.level}/></div>
+                                    </div>
+                                    <span className="text-white font-bold text-xs">{user.name}</span>
                                 </div>
-                                <h2 className="text-2xl font-bold text-white mt-6 font-pixel tracking-widest">{t('battling')}</h2>
-                                <p className="text-red-300 text-sm mt-2">VS {selectedBoss.name}</p>
+                                <div className="text-4xl font-black font-pixel text-yellow-500 animate-pulse drop-shadow-[0_0_10px_rgba(234,179,8,1)] italic">VS</div>
+                                <div className="flex flex-col items-center gap-2">
+                                    <div className="w-16 h-16 rounded-full bg-red-900/30 border-2 border-red-500 flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                                        <Icon name={selectedBoss.icon} size={32} className="text-red-500 animate-shake drop-shadow-[0_0_8px_rgba(239,68,68,1)]"/>
+                                    </div>
+                                    <span className="text-red-400 font-bold text-xs">{selectedBoss.name}</span>
+                                </div>
+                            </div>
+
+                            {/* 滾動文字日誌區 */}
+                            <div className="w-full max-w-md bg-gray-900/80 border-2 border-gray-700 rounded-2xl h-72 overflow-y-auto p-4 custom-scrollbar flex flex-col gap-3 font-mono text-sm shadow-inner relative">
+                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none"></div>
+                                {battleLogs.map((log, i) => (
+                                    <div key={i} className={`animate-[slideUp_0.3s] leading-relaxed tracking-wide z-10 ${log.includes('>>') ? 'pl-4 text-yellow-300' : 'font-bold text-blue-200'} ${log.includes('失敗') || log.includes('重創') || log.includes('致命') ? 'text-red-400 font-bold' : ''} ${log.includes('大成功') || log.includes('擊敗') ? 'text-green-400 text-lg drop-shadow-md' : ''}`}>
+                                        {log}
+                                    </div>
+                                ))}
+                                <div ref={logEndRef} />
                             </div>
                         </div>
                     )}
 
-                    {battleResult && !rewardModal && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]" onClick={() => setBattleResult(null)}>
+                    {/* 戰鬥結果 (無掉落物時的短暫提示) */}
+                    {combatState === 'result' && !rewardModal && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]">
                             <div className="bg-theme-card p-8 rounded-3xl shadow-2xl text-center border-4 animate-[popIn_0.3s]" style={{borderColor: battleResult === 'win' ? '#22c55e' : '#ef4444'}}>
                                 <div className="text-6xl mb-4">{battleResult === 'win' ? '🎉' : '💀'}</div>
                                 <h2 className={`text-3xl font-bold font-pixel tracking-widest ${battleResult === 'win' ? 'text-green-500' : 'text-red-500'}`}>
@@ -2319,7 +2365,8 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         </div>
                     )}
 
-                    {rewardModal && (
+                    {/* 勝利結算與掉落物 Modal */}
+                    {combatState === 'reward' && rewardModal && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]">
                             <div className="bg-theme-card p-6 rounded-3xl shadow-2xl w-11/12 max-w-xs border-2 border-yellow-400 text-center relative animate-[popIn_0.3s]">
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.6)] border-4 border-theme-card">
@@ -2344,14 +2391,13 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                         </div>
                                     )}
                                 </div>
-                                <button onClick={() => setRewardModal(null)} className="w-full py-3 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-lg">確認</button>
+                                <button onClick={() => {setRewardModal(null); setCombatState(null);}} className="w-full py-3 bg-theme-accent text-white font-bold rounded-xl active:scale-95 shadow-lg">收下戰利品</button>
                             </div>
                         </div>
                     )}
                 </div>
             );
         };
-
         const JournalView = ({ logs, transactions, categories, accounts, lang, translations, onEditTx, onDeleteTx }) => {
             const [subView, setSubView] = useState('fin'); const [timeFilter, setTimeFilter] = useState('month'); const [calDate, setCalDate] = useState(new Date()); const [selectedDate, setSelectedDate] = useState(null); const [showMonthPicker, setShowMonthPicker] = useState(false); const [pickerYear, setPickerYear] = useState(calDate.getFullYear()); const [dailyDate, setDailyDate] = useState(new Date().toISOString().split('T')[0]); const t = (key) => translations[lang]?.[key] || key;
             
@@ -2842,8 +2888,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
             useEffect(() => { localStorage.setItem('gw_lang', lang); }, [lang]);
             useEffect(() => { localStorage.setItem('gw_curr', mainCurrency); }, [mainCurrency]);
 
-            const t = (key) => TRANSLATIONS[lang]?.[key] || key;
-            
             const currentStats = useMemo(() => {
                 const rate = EXCHANGE_RATES[mainCurrency] || 1;
                 const convertedExpense = safeData.transactions.filter(t => t.type === 'expense').reduce((a,c) => {
@@ -3248,7 +3292,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         {view === 'forge' && <ForgeView user={safeData.user} inventory={safeData.inventory} onEnhance={handleEnhanceItem} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'talent' && <TalentView user={safeData.user} onUpgradeTalent={handleUpgradeTalent} onResetTalent={handleResetTalent} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} currentClass={safeData.user.currentClass} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} onOpenClassSelector={() => setShowClassSelector(true)} lang={lang} translations={TRANSLATIONS} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} cp={calculatedStats.cp} />}
-                        {view === 'boss' && <BossView cp={calculatedStats.cp} onBattleEnd={handleBossBattleEnd} user={safeData.user} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'boss' && <BossView cp={calculatedStats.cp} derivedStats={calculatedStats.derivedStats} onBattleEnd={handleBossBattleEnd} user={safeData.user} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'journal' && <JournalView logs={safeData.logs} transactions={safeData.transactions} categories={safeData.categories} accounts={safeData.accounts} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
                         {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} mainCurrency={mainCurrency} />}
                         {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={safeData.user.unlockedAchievements} currentStats={currentStats} lang={lang} translations={TRANSLATIONS} />}
