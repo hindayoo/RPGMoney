@@ -92,14 +92,12 @@
         .title-rare { color: #60a5fa; text-shadow: 0 0 4px rgba(96, 165, 250, 0.6); }
         .title-epic { color: #c084fc; text-shadow: 0 0 6px rgba(192, 132, 252, 0.8); animation: pulse-purple 2s infinite alternate; font-weight: bold; }
         .title-legendary { color: #fbbf24; text-shadow: 0 0 8px #fde047; animation: glow-gold 2s infinite alternate; font-weight: 900; letter-spacing: 1px; }
-        /* 新增神話稱號樣式 */
         .title-mythic { color: #ef4444; text-shadow: 0 0 10px #dc2626, 0 0 5px #fca5a5; animation: pulse-red 2s infinite alternate; font-weight: 900; letter-spacing: 2px; }
 
         .rarity-common { border-color: #cbd5e1; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
         .rarity-rare { border-color: #3b82f6; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent), linear-gradient(135deg, #eff6ff, #dbeafe); }
         .rarity-epic { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); animation: pulse-purple 3s infinite alternate; }
         .rarity-legendary { border-color: #eab308; background: linear-gradient(135deg, #fffbeb, #fff7ed); animation: glow-gold 2s infinite alternate; }
-        /* 新增神話稀有度樣式 */
         .rarity-mythic { border-color: #ef4444; background: linear-gradient(135deg, #2a0a0a, #450a0a); animation: glow-red 2s infinite alternate; }
         
         .rarity-text-mythic { color: #fca5a5; text-shadow: 0 0 8px rgba(239, 68, 68, 0.9); font-weight: 900;}
@@ -240,7 +238,13 @@
             'cat_witch': { id: 'cat_witch', name: '魔法喵', stage: 2, emoji: '🔮', color: '#a855f7', desc: '精通魔法的猫' },
             'cat_lion': { id: 'cat_lion', name: '獅子王', stage: 2, emoji: '🦁', color: '#f59e0b', desc: '森林之王' },
             'dino_rex': { id: 'dino_rex', name: '暴龍', stage: 2, emoji: '🍖', color: '#166534', desc: '霸氣外露' },
-            'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' }
+            'dino_dragon': { id: 'dino_dragon', name: '噴火龍', stage: 2, emoji: '🐲', color: '#ef4444', desc: '傳說中的龍' },
+            // 新增寵物
+            'marten_dark': { id: 'marten_dark', name: '天妖貂', stage: 1, emoji: '🐾', color: '#4c1d95', desc: '神秘的紫黑色小獸', nextEvolution: {'10': 'marten_human'} },
+            'marten_human': { id: 'marten_human', name: '小貂(化形)', stage: 2, emoji: '👤', color: '#581c87', desc: '俊美妖異的男子', nextEvolution: {'30': 'marten_ancestor'} },
+            'marten_ancestor': { id: 'marten_ancestor', name: '天妖貂族長', stage: 3, emoji: '🦇', color: '#3b0764', desc: '稱霸妖域的頂尖強者' },
+            'flame_spirit': { id: 'flame_spirit', name: '小火靈', stage: 1, emoji: '🔥', color: '#ef4444', desc: '誕生於異火中的靈智', nextEvolution: {'15': 'lotus_flame'} },
+            'lotus_flame': { id: 'lotus_flame', name: '佛怒火蓮', stage: 2, emoji: '🌸', color: '#f59e0b', desc: '毀滅性的異火融合體' }
         };
 
         const TRANSLATIONS = { 
@@ -281,7 +285,7 @@
                 fixed_expense: '固定支出', fixed_manage: '管理固定', auto_deduct: '自動扣款', fixed_date: '每月扣款日', 
                 abacus: '魔法算盤', destroyer: '滅世者', god_of_wealth: '財神',
                 fixed_type: '扣款模式', fixed_monthly: '每月固定日期', fixed_interval30: '每 30 天',
-                mythic: '神話',
+                mythic: '神話', legendary: '傳說', epic: '史詩', rare: '稀有', common: '普通',
                 q_daily_login_title: '公會簽到', q_daily_login_desc: '每日登入獎勵',
                 q_daily_tx1_title: '勤奮冒險者', q_daily_tx1_desc: '今日記錄 1 筆收支',
                 q_daily_tx3_title: '記帳達人', q_daily_tx3_desc: '今日記錄 3 筆收支',
@@ -337,7 +341,7 @@
                 fixed_expense: '固定支出', fixed_manage: '固定支出を管理', auto_deduct: '自動引き落とし', fixed_date: '毎月の引き落とし日', 
                 abacus: '魔法の算盤', destroyer: '滅世者', god_of_wealth: '財神',
                 fixed_type: '引き落としモード', fixed_monthly: '毎月指定日', fixed_interval30: '30日ごと',
-                mythic: '神話',
+                mythic: '神話', legendary: '伝説', epic: '叙事詩', rare: 'レア', common: 'ノーマル',
                 q_daily_login_title: 'ギルドサインイン', q_daily_login_desc: '毎日のログイン報酬',
                 q_daily_tx1_title: '熱心な冒険者', q_daily_tx1_desc: '今日1件の記録をつける',
                 q_daily_tx3_title: '記録の達人', q_daily_tx3_desc: '今日3件の記録をつける',
@@ -393,7 +397,7 @@
                 fixed_expense: 'Fixed Expenses', fixed_manage: 'Manage Fixed', auto_deduct: 'Auto Deduct', fixed_date: 'Monthly Date', 
                 abacus: 'Magic Abacus', destroyer: 'Destroyer', god_of_wealth: 'God of Wealth',
                 fixed_type: 'Deduct Type', fixed_monthly: 'Monthly Date', fixed_interval30: 'Every 30 Days',
-                mythic: 'Mythic',
+                mythic: 'Mythic', legendary: 'Legendary', epic: 'Epic', rare: 'Rare', common: 'Common',
                 q_daily_login_title: 'Guild Check-in', q_daily_login_desc: 'Daily login bonus',
                 q_daily_tx1_title: 'Diligent Adventurer', q_daily_tx1_desc: 'Record 1 transaction today',
                 q_daily_tx3_title: 'Accounting Master', q_daily_tx3_desc: 'Record 3 transactions today',
@@ -413,8 +417,7 @@
                 q_chal_eq10_title: 'Equipment Master', q_chal_eq10_desc: 'Collect 10 equipments'
             }
         };
-
-        const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
+const DEFAULT_APPEARANCE = { hair: '#8d6e63', armor: '#0d47a1', cape: '#c62828', skin: '#ffccbc' };
 
         const THEMES = [
             { id: 'ink', name: 'ink', color: '#343a40' }, { id: 'sakura', name: 'sakura', color: '#db2777' },
@@ -432,7 +435,7 @@
             </g>
         );
 
-        /* ================= 裝備外觀擴充 (含神話裝備) ================= */
+        /* ================= 裝備外觀擴充 (含神話裝備、各部小說元素) ================= */
         const GEAR_VISUALS = {
             'w_iron': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M14 6 H18 V22 H14 Z"/><path fill="#94a3b8" d="M12 18 H20 V20 H12 Z"/><path fill="#475569" d="M15 22 H17 V26 H15 Z"/></g>,
             'w_steel': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M14 4 H18 V22 H14 Z"/><path fill="#e2e8f0" d="M15 4 H17 V20 H15 Z"/><path fill="#475569" d="M11 18 H21 V20 H11 Z"/><path fill="#1e293b" d="M15 22 H17 V28 H15 Z"/></g>,
@@ -446,7 +449,10 @@
             'w_excalibur': () => <g transform="rotate(45, 16, 16)"><path fill="#fef08a" d="M14 2 H18 V20 H14 Z" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><path fill="#fbbf24" d="M10 20 H22 V22 H10 Z"/><path fill="#1e3a8a" d="M15 22 H17 V28 H15 Z"/><circle cx="16" cy="21" r="1.5" fill="#ef4444"/></g>,
             's14': () => <g transform="translate(-4, 0)"><path fill="#78350f" d="M14 10 h2 v16 h-2 z" style={{filter:'drop-shadow(2px 2px 1px rgba(0,0,0,0.5))'}}/><path fill="#94a3b8" d="M15 12 l6 -4 l2 6 l-8 2 z" /><path fill="#cbd5e1" d="M21 10 l2 2 l-2 -2 z"/></g>,
             's23': () => <g transform="translate(-4, -2)"><path fill="#fbcfe8" d="M14 2 H16 V20 H14 Z" style={{filter:'drop-shadow(0 0 4px #f9a8d4)'}}/><path fill="#1f2937" d="M12 20 H18 V22 H12 Z"/><path fill="#be185d" d="M13 22 H17 V28 H13 Z"/></g>,
+            
+            // 斗破蒼穹 - 玄重尺
             'w_xuan': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#111827" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 5px #111827)'}}/><path fill="#fbbf24" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z" opacity="0.8"/><path fill="#ef4444" d="M16 12 V20" stroke="#ef4444" strokeWidth="1" className="animate-pulse"/></g>,
+            // 斗羅大陸 - 昊天錘
             'w_haotian': () => <g transform="rotate(-15, 16, 16) translate(0, 4)"><path fill="#1f2937" d="M15 12 H17 V28 H15 Z"/><path fill="#4b5563" d="M10 4 H22 V12 H10 Z" style={{filter:'drop-shadow(0 0 6px #3b82f6)'}}/><path fill="#3b82f6" d="M12 6 H20 V10 H12 Z"/><circle cx="12" cy="8" r="1" fill="#60a5fa" className="animate-ping"/><circle cx="20" cy="8" r="1" fill="#60a5fa" className="animate-ping"/></g>,
             'w_gate_of_babylon': () => <g transform="translate(16, -10) scale(1.5)" style={{pointerEvents: 'none'}}><g style={{animation: 'pulse 3s infinite'}} transform="translate(0, 0)"><circle cx="0" cy="0" r="10" fill="#fef08a" opacity="0.2"/><circle cx="0" cy="0" r="8" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 2"/><circle cx="0" cy="0" r="5" fill="#000" opacity="0.9"/><path d="M-12 0 L6 -2 L10 0 L6 2 Z" fill="#cbd5e1"/><path d="M-6 -3 L-4 -3 L-4 3 L-6 3 Z" fill="#b45309"/></g></g>,
             'w_bow': () => <g transform="rotate(45, 16, 16)"><path fill="none" stroke="#8B4513" strokeWidth="2" d="M16 4 Q24 16 16 28" /><path fill="none" stroke="#e2e8f0" strokeWidth="0.5" d="M16 4 L16 28" /></g>,
@@ -463,9 +469,11 @@
             'w_crossbow': () => <g transform="rotate(45, 16, 16)"><path fill="#475569" d="M14 6 H18 V26 H14 Z"/><path fill="#334155" d="M6 10 Q16 6 26 10" stroke="#334155" strokeWidth="3"/><path fill="none" stroke="#94a3b8" strokeWidth="0.5" d="M6 10 L16 20 L26 10"/></g>,
             'w_phantom_bow': () => <g transform="rotate(45, 16, 16)"><path fill="none" stroke="#c084fc" strokeWidth="2" d="M16 2 Q26 16 16 30" style={{filter:'drop-shadow(0 0 6px #a855f7)'}} className="animate-pulse"/><path fill="none" stroke="#f3e8ff" strokeWidth="1" d="M16 2 L16 30" opacity="0.8"/></g>,
             
-            // 神話武器
+            // 神話武器 - 武動乾坤天鱗古戟、斗羅大陸觀音淚等
+            'w_tianlin': () => <g transform="rotate(45, 16, 16)"><path fill="#064e3b" d="M15 6 H17 V30 H15 Z"/><path fill="#fbbf24" d="M12 2 L16 0 L20 2 V10 L16 8 L12 10 Z" style={{filter:'drop-shadow(0 0 6px #f59e0b)'}}/><path fill="#fbbf24" d="M18 4 L24 6 V8 L18 10 Z"/><path fill="#fcd34d" d="M16 2 V8" stroke="#fcd34d" strokeWidth="0.5"/><circle cx="16" cy="14" r="1.5" fill="#ef4444"/></g>,
             'w_guanyin': () => <g className="animate-pulse-fast"><path fill="#fef08a" d="M16 2 Q20 16 16 30 Q12 16 16 2 Z" style={{filter:'drop-shadow(0 0 10px #fbbf24)'}}/><circle cx="16" cy="22" r="2" fill="#fff"/></g>,
             'w_morning_dew': () => <g transform="rotate(45, 16, 16)"><path fill="#e0f2fe" d="M15 2 H17 V26 H15 Z" style={{filter:'drop-shadow(0 0 8px #7dd3fc)'}}/><path fill="#bae6fd" d="M12 20 H20 V22 H12 Z"/><path fill="#0284c7" d="M15 22 H17 V28 H15 Z"/></g>,
+            'w_heavens_ruler': () => <g transform="scale(1.1) translate(-2, -2)"><path fill="#fbbf24" d="M12 6 H20 V26 H12 Z" style={{filter:'drop-shadow(0 0 8px #ef4444)'}}/><path fill="#ea580c" d="M14 8 H18 V10 H14 Z M14 22 H18 V24 H14 Z"/><path fill="#ffffff" d="M16 12 V20" stroke="#ffffff" strokeWidth="1" className="animate-pulse"/></g>,
 
             'h_cloth': () => <g transform="translate(0, -2)"><path fill="#d1d5db" d="M10 8 Q16 2 22 8 V12 H10 Z"/></g>,
             'h_leather_cap': () => <g transform="translate(0, -2)"><path fill="#8B4513" d="M10 8 Q16 0 22 8 V11 H10 Z"/><path fill="#5D4037" d="M10 11 H22 V13 H10 Z"/></g>,
@@ -481,6 +489,9 @@
             'h_ninja_mask': () => <g transform="translate(0, 0)"><path fill="#0f172a" d="M10 10 H22 V14 H10 Z"/><path fill="#334155" d="M10 12 H22 V13 H10 Z"/></g>,
             'h_ranger_hood': () => <g transform="translate(0, -3)"><path fill="#064e3b" d="M9 8 Q16 0 23 8 V14 H9 Z"/><path fill="#14532d" d="M11 8 Q16 4 21 8 V10 H11 Z"/></g>,
             'h_crown_of_kings': () => <g transform="translate(0, -5)"><path fill="#fbbf24" d="M8 12 L10 4 L13 10 L16 2 L19 10 L22 4 L24 12 Z" style={{filter:'drop-shadow(0 0 6px #fde047)'}}/><circle cx="16" cy="8" r="1.5" fill="#ef4444"/><circle cx="10" cy="10" r="1" fill="#3b82f6"/><circle cx="22" cy="10" r="1" fill="#3b82f6"/></g>,
+            
+            // X龍時代、斗羅大陸神骨
+            'h_x_dragon': () => <g transform="translate(0, -4)"><path fill="#10b981" d="M10 12 L12 4 L16 8 L20 4 L22 12 Z" style={{filter:'drop-shadow(0 0 5px #34d399)'}}/><path fill="#059669" d="M12 12 L16 6 L20 12 Z"/><circle cx="16" cy="10" r="1.5" fill="#fef08a"/></g>,
 
             'b_cloth': () => <g><path fill="#d1d5db" d="M10 14 h12 v10 h-12 z"/><path fill="#9ca3af" d="M10 14 h4 v4 h-4 z M18 14 h4 v4 h-4 z"/></g>,
             'b_leather_tunic': () => <g><path fill="#8B4513" d="M10 14 h12 v10 h-12 z"/><path fill="#5D4037" d="M14 14 h4 v10 h-4 z"/></g>,
@@ -497,7 +508,8 @@
             'b_hunter_vest': () => <g><path fill="#78350f" d="M10 14 h12 v10 h-12 z"/><path fill="#14532d" d="M10 14 h4 v10 h-4 z M18 14 h4 v10 h-4 z"/><path fill="#fef08a" d="M14 18 h4 M14 22 h4" stroke="#fef08a" strokeWidth="0.5"/></g>,
             'b_dragon_scale': () => <g><path fill="#064e3b" d="M9 13 h14 v13 h-14 z"/><path fill="#166534" d="M10 15 l2 2 l2 -2 M14 15 l2 2 l2 -2 M18 15 l2 2 l2 -2 M10 19 l2 2 l2 -2 M14 19 l2 2 l2 -2 M18 19 l2 2 l2 -2" stroke="#4ade80" strokeWidth="0.5" style={{filter:'drop-shadow(0 0 2px #22c55e)'}}/></g>,
             
-            // 神話身軀
+            // X龍戰甲, 冰碧蠍骨
+            'b_x_dragon': () => <g><path fill="#10b981" d="M9 13 h14 v13 h-14 z" style={{filter:'drop-shadow(0 0 5px #047857)'}}/><path fill="#059669" d="M10 15 l6 4 l6 -4 M10 20 l6 4 l6 -4" stroke="#34d399" strokeWidth="1"/></g>,
             'b_ice_scorpion': () => <g><path fill="#4ade80" d="M10 12 H22 V24 H10 Z" style={{filter:'drop-shadow(0 0 6px #22c55e)'}}/><path fill="#166534" d="M12 14 H20 V22 H12 Z"/><circle cx="16" cy="18" r="2" fill="#fff"/></g>,
 
             'f_cloth_shoes': () => <g><path fill="#9ca3af" d="M10 26 h4 v4 h-4 z M18 26 h4 v4 h-4 z"/></g>,
@@ -513,7 +525,8 @@
             'f_stealth_tabi': () => <g><path fill="#0f172a" d="M10 26 h4 v6 h-4 z M18 26 h4 v6 h-4 z"/><path fill="#1e293b" d="M12 26 h2 v6 h-2 z M18 26 h2 v6 h-2 z"/></g>,
             'f_tracker_boots': () => <g><path fill="#422006" d="M9 25 h4 v7 h-4 z M19 25 h4 v7 h-4 z"/><path fill="#84cc16" d="M9 27 h4 M19 27 h4" stroke="#84cc16" strokeWidth="0.5"/></g>,
             
-            // 神話足部
+            // X龍鞋, 雪帝鞋
+            'f_x_dragon': () => <g><path fill="#10b981" d="M9 26 h5 v5 h-5 z M18 26 h5 v5 h-5 z" style={{filter:'drop-shadow(0 0 4px #34d399)'}}/><path fill="#059669" d="M8 29 h2 v2 h-2 z M22 29 h2 v2 h-2 z"/></g>,
             'f_snow_empress': () => <g><path fill="#bae6fd" d="M10 26 H14 V31 H10 Z M18 26 H22 V31 H18 Z" style={{filter:'drop-shadow(0 0 5px #7dd3fc)'}}/><path fill="#e0f2fe" d="M9 24 H15 V27 H9 Z M17 24 H23 V27 H17 Z"/></g>,
 
             'o_wood_shield': () => <g transform="translate(-4, 0)"><path fill="#8B4513" d="M14 12 h4 v8 l-2 2 l-2 -2 z" stroke="#5D4037" strokeWidth="1"/></g>,
@@ -526,7 +539,9 @@
             'o_smoke_bomb': () => <g transform="translate(-4, 4)"><circle cx="16" cy="14" r="3" fill="#334155"/><path fill="#94a3b8" d="M15 10 h2 v2 h-2 z"/><path fill="none" stroke="#64748b" strokeWidth="0.5" d="M16 10 Q18 8 16 6" className="animate-pulse"/></g>,
             'o_quiver': () => <g transform="translate(-4, 2)"><path fill="#78350f" d="M14 12 h4 v8 h-4 z"/><path fill="#e2e8f0" d="M15 8 L15 12 M17 9 L17 12 M16 7 L16 12" stroke="#e2e8f0" strokeWidth="0.5"/></g>,
             
-            // 神話副手
+            // 萬獸鼎, 佛怒火蓮
+            'o_beast_cauldron': () => <g transform="translate(-4, 0)"><path fill="#78350f" d="M12 14 h8 v8 q0 4 -4 4 q-4 0 -4 -4 z" style={{filter:'drop-shadow(0 0 4px #b45309)'}}/><path fill="#fef08a" d="M11 12 h10 v2 h-10 z"/><rect x="14" y="18" width="1" height="1" fill="#ef4444" className="animate-pulse"/><rect x="17" y="18" width="1" height="1" fill="#ef4444" className="animate-pulse"/></g>,
+            'o_buddha_lotus': () => <g className="animate-spin-slow origin-center" transform="translate(-4, 2)"><path fill="#ef4444" d="M16 8 Q20 14 16 20 Q12 14 16 8 Z" style={{filter:'drop-shadow(0 0 6px #ef4444)'}}/><path fill="#fef08a" d="M10 14 Q16 16 22 14 Q16 12 10 14 Z" opacity="0.9"/><path fill="#3b82f6" d="M12 12 Q16 16 20 20 Q16 16 12 12 Z" stroke="#3b82f6" strokeWidth="1" opacity="0.9"/><circle cx="16" cy="14" r="1.5" fill="#fff" className="animate-pulse"/></g>,
             'o_life_gold': () => <g className="animate-bounce" transform="translate(-4, 0)"><path fill="#4ade80" d="M16 10 L20 16 L16 22 L12 16 Z" style={{filter:'drop-shadow(0 0 12px #22c55e)'}}/><path fill="#bbf7d0" d="M16 12 L18 16 L16 20 L14 16 Z"/></g>,
 
             'o_bluegrass': () => <g className="animate-float origin-center" transform="translate(12, -4) scale(1.2)"><path fill="none" stroke="#3b82f6" strokeWidth="1.5" d="M12 24 Q8 16 10 12 M14 24 Q14 14 16 8 M16 24 Q22 18 20 10" style={{filter:'drop-shadow(0 0 4px #93c5fd)'}}/><circle cx="10" cy="12" r="1" fill="#bfdbfe"/><circle cx="16" cy="8" r="1" fill="#bfdbfe"/><circle cx="20" cy="10" r="1" fill="#bfdbfe"/></g>,
@@ -541,7 +556,8 @@
             'b_bat_wings': () => <g className="animate-bounce-gentle origin-center"><path fill="#1c1917" d="M14 14 Q8 2 0 6 Q6 10 4 16 Q10 14 12 18 Z" style={{filter:'drop-shadow(0 0 2px #000)'}}/><path fill="#1c1917" d="M18 14 Q24 2 32 6 Q26 10 28 16 Q22 14 20 18 Z" style={{filter:'drop-shadow(0 0 2px #000)'}}/></g>,
             'b_fairy_wings': () => <g className="animate-pulse-fast origin-center"><path fill="#a7f3d0" opacity="0.7" d="M14 14 Q6 0 -2 8 Q8 12 12 18 Z" style={{filter:'drop-shadow(0 0 4px #34d399)'}}/><path fill="#a7f3d0" opacity="0.7" d="M18 14 Q26 0 34 8 Q24 12 20 18 Z" style={{filter:'drop-shadow(0 0 4px #34d399)'}}/></g>,
             
-            // 神話背飾
+            // 海神八翼, 光明龍神蝶雙翼
+            'b_sea_god': () => <g className="animate-float origin-center"><path fill="#3b82f6" opacity="0.8" d="M12 14 Q0 0 -4 12 Q6 16 10 20 Z" style={{filter:'drop-shadow(0 0 6px #60a5fa)'}}/><path fill="#3b82f6" opacity="0.8" d="M20 14 Q32 0 36 12 Q26 16 22 20 Z" style={{filter:'drop-shadow(0 0 6px #60a5fa)'}}/><path fill="#fbbf24" d="M12 16 Q4 8 0 16 Q8 20 12 22 Z"/><path fill="#fbbf24" d="M20 16 Q28 8 32 16 Q24 20 20 22 Z"/><path fill="#60a5fa" d="M12 18 Q2 14 -2 22 Q6 24 12 24 Z"/><path fill="#60a5fa" d="M20 18 Q30 14 34 22 Q26 24 20 24 Z"/><path fill="#38bdf8" d="M14 20 Q6 20 4 28 Q10 28 14 26 Z"/><path fill="#38bdf8" d="M18 20 Q26 20 28 28 Q22 28 18 26 Z"/></g>,
             'b_dragon_butterfly': () => <g className="animate-float origin-center"><path fill="#38bdf8" d="M16 16 Q0 0 -4 14 Q8 16 14 20 Z" style={{filter:'drop-shadow(0 0 10px #fbbf24)'}} opacity="0.9"/><path fill="#38bdf8" d="M16 16 Q32 0 36 14 Q24 16 18 20 Z" style={{filter:'drop-shadow(0 0 10px #fbbf24)'}} opacity="0.9"/><path fill="#fbbf24" d="M16 16 Q6 8 0 16 Q8 20 14 24 Z"/><path fill="#fbbf24" d="M16 16 Q26 8 32 16 Q24 20 18 24 Z"/></g>,
 
             'e_sharingan': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#000"/><circle cx="19" cy="11.5" r="0.5" fill="#000"/></g>,
@@ -551,20 +567,19 @@
             'e_demon_eye': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#000" stroke="#dc2626" strokeWidth="0.5" style={{filter:'drop-shadow(0 0 3px #ef4444)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#000" stroke="#dc2626" strokeWidth="0.5" style={{filter:'drop-shadow(0 0 3px #ef4444)'}}/></g>,
             'e_eagle_eye': () => <g><circle cx="13" cy="11.5" r="1.5" fill="#86efac" style={{filter:'drop-shadow(0 0 2px #22c55e)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#14532d"/><circle cx="19" cy="11.5" r="1.5" fill="#86efac" style={{filter:'drop-shadow(0 0 2px #22c55e)'}}/><circle cx="19" cy="11.5" r="0.5" fill="#14532d"/></g>,
             
-            // 神話瞳術
+            // 靈眸
             'e_spirit_eye': () => <g className="animate-pulse"><circle cx="13" cy="11.5" r="1.5" fill="#fef08a" style={{filter:'drop-shadow(0 0 4px #fbbf24)'}}/><circle cx="19" cy="11.5" r="1.5" fill="#fef08a" style={{filter:'drop-shadow(0 0 4px #fbbf24)'}}/><circle cx="13" cy="11.5" r="0.5" fill="#581c87"/><circle cx="19" cy="11.5" r="0.5" fill="#581c87"/></g>,
 
-// --- 第一部分結束，請輸入「繼續」以獲取第二部分 ---
-'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),              
-            'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),            
-            'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),            
-            'r4': () => makeRing(-9, '#111827', 26, 8, '60 15', '25 30', '1.5s', 3),            
-            'r5': () => makeRing(-12, '#ef4444', 28, 9, '80 10', '30 20', '1.2s', 3.5),         
-            'r6': () => makeRing(-15, '#f97316', 30, 10, '100 5', '40 10', '1s', 4),            
-            'r7': () => makeRing(-18, '#fbbf24', 32, 11, '120 0', '50 5', '0.8s', 4.5),         
+            'r1': () => makeRing(0, '#ffffff', 20, 5, '30 40', '10 60', '3s', 1.5),              
+            'r2': () => makeRing(-3, '#fde047', 22, 6, '40 30', '15 50', '2.5s', 2),             
+            'r3': () => makeRing(-6, '#c084fc', 24, 7, '50 20', '20 40', '2s', 2.5),             
+            'r4': () => makeRing(-9, '#111827', 26, 8, '60 15', '25 30', '1.5s', 3),             
+            'r5': () => makeRing(-12, '#ef4444', 28, 9, '80 10', '30 20', '1.2s', 3.5),          
+            'r6': () => makeRing(-15, '#f97316', 30, 10, '100 5', '40 10', '1s', 4),             
+            'r7': () => makeRing(-18, '#fbbf24', 32, 11, '120 0', '50 5', '0.8s', 4.5),          
             'r8': () => makeRing(-21, '#38bdf8', 34, 12, '150 0', '60 0', '0.6s', 5),
             
-            // 神話魂環與頭骨
+            // 天夢冰蠶百萬年魂環與命運之眼頭骨
             'h_destiny': () => <g transform="translate(0, -4)"><path fill="#fef08a" d="M10 8 Q16 -2 22 8 V14 H10 Z" style={{filter:'drop-shadow(0 0 8px #fbbf24)'}}/><circle cx="16" cy="6" r="2" fill="#ef4444" className="animate-pulse"/></g>,
             'r9': () => makeRing(-24, '#ffffff', 36, 13, '200 10', '40 10', '0.4s', 6, {filter: 'drop-shadow(0 0 15px #fde047)'})
         };
@@ -599,9 +614,11 @@
             'w_crossbow': () => <g transform="rotate(45, 16, 16)"><path fill="#475569" d="M12 6 H20 V26 H12 Z"/><path fill="#334155" d="M4 10 Q16 4 28 10" stroke="#334155" strokeWidth="4"/></g>,
             'w_phantom_bow': () => <g transform="rotate(45, 16, 16)"><path fill="none" stroke="#c084fc" strokeWidth="3" d="M16 2 Q26 16 16 30"/><path fill="none" stroke="#f3e8ff" strokeWidth="1" d="M16 2 L16 30"/></g>,
             
-            // 神話武器圖標
+            // 神話裝備 Icons
+            'w_tianlin': () => <g transform="rotate(45, 16, 16)"><path fill="#064e3b" d="M14 6 H18 V28 H14 Z"/><path fill="#fbbf24" d="M10 2 L16 0 L22 2 V10 L16 8 L10 10 Z"/><path fill="#ef4444" d="M15 12 H17 V14 H15 Z"/></g>,
             'w_guanyin': () => <g><path fill="#fef08a" d="M16 2 Q24 16 16 30 Q8 16 16 2 Z"/><circle cx="16" cy="22" r="3" fill="#fff"/></g>,
             'w_morning_dew': () => <g transform="rotate(45, 16, 16)"><path fill="#e0f2fe" d="M12 2 H20 V22 H12 Z"/><path fill="#0284c7" d="M8 22 H24 V26 H8 Z"/></g>,
+            'w_heavens_ruler': () => <g transform="rotate(45, 16, 16)"><path fill="#fbbf24" d="M10 4 H22 V24 H10 Z" stroke="#ea580c" strokeWidth="1"/><path fill="#ffffff" d="M15 8 V20" stroke="#ffffff" strokeWidth="2"/></g>,
 
             'h_cloth': () => <g><path fill="#d1d5db" d="M8 10 Q16 2 24 10 V14 H8 Z"/></g>,
             'h_leather_cap': () => <g><path fill="#8B4513" d="M8 10 Q16 0 24 10 V14 H8 Z"/></g>,
@@ -617,6 +634,7 @@
             'h_ninja_mask': () => <g><path fill="#0f172a" d="M8 12 H24 V18 H8 Z"/><path fill="#334155" d="M8 14 H24 V16 H8 Z"/></g>,
             'h_ranger_hood': () => <g><path fill="#064e3b" d="M6 10 Q16 0 26 10 V18 H6 Z"/></g>,
             'h_crown_of_kings': () => <g><path fill="#fbbf24" d="M6 14 L8 4 L12 12 L16 2 L20 12 L24 4 L26 14 Z"/></g>,
+            'h_x_dragon': () => <g><path fill="#10b981" d="M8 14 L12 2 L16 8 L20 2 L24 14 Z"/><path fill="#059669" d="M12 14 L16 6 L20 14 Z"/></g>,
             'h_destiny': () => <g><path fill="#fef08a" d="M6 10 Q16 -6 26 10 V18 H6 Z"/><circle cx="16" cy="6" r="3" fill="#ef4444"/></g>,
 
             'b_cloth': () => <g><path fill="#d1d5db" d="M8 10 h16 v16 h-16 z"/></g>,
@@ -633,6 +651,7 @@
             'b_shadow_garb': () => <g><path fill="#0f172a" d="M8 10 h16 v16 h-16 z"/><path fill="#1e293b" d="M8 10 l8 8 l8 -8 z"/></g>,
             'b_hunter_vest': () => <g><path fill="#78350f" d="M8 10 h16 v14 h-16 z"/><path fill="#14532d" d="M8 10 h6 v14 h-6 z M18 10 h6 v14 h-6 z"/></g>,
             'b_dragon_scale': () => <g><path fill="#064e3b" d="M8 10 h16 v16 h-16 z"/><path fill="#166534" d="M10 12 l2 2 l2 -2 M14 12 l2 2 l2 -2 M18 12 l2 2 l2 -2" stroke="#4ade80" strokeWidth="1"/></g>,
+            'b_x_dragon': () => <g><path fill="#10b981" d="M6 8 h20 v18 h-20 z"/><path fill="#059669" d="M8 12 l8 6 l8 -6 M8 18 l8 6 l8 -6" stroke="#34d399" strokeWidth="2"/></g>,
             'b_ice_scorpion': () => <g><path fill="#4ade80" d="M6 8 H26 V24 H6 Z"/><path fill="#166534" d="M10 10 H22 V22 H10 Z"/></g>,
 
             'f_cloth_shoes': () => <g><path fill="#9ca3af" d="M8 18 h6 v6 h-6 z M18 18 h6 v6 h-6 z"/></g>,
@@ -647,6 +666,7 @@
             'f_levitation_boots': () => <g><path fill="#1e3a8a" d="M8 18 h6 v6 h-6 z M18 18 h6 v6 h-6 z"/><path fill="#60a5fa" d="M8 24 h6 v2 h-6 z M18 24 h6 v2 h-6 z"/></g>,
             'f_stealth_tabi': () => <g><path fill="#0f172a" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/><path fill="#1e293b" d="M10 18 h2 v8 h-2 z M20 18 h2 v8 h-2 z"/></g>,
             'f_tracker_boots': () => <g><path fill="#422006" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/></g>,
+            'f_x_dragon': () => <g><path fill="#10b981" d="M8 18 h6 v8 h-6 z M18 18 h6 v8 h-6 z"/><path fill="#059669" d="M6 22 h2 v4 h-2 z M24 22 h2 v4 h-2 z"/></g>,
             'f_snow_empress': () => <g><path fill="#bae6fd" d="M8 16 H14 V26 H8 Z M18 16 H24 V26 H18 Z"/><path fill="#e0f2fe" d="M6 24 H16 V28 H6 Z M16 24 H26 V28 H16 Z"/></g>,
 
             'o_wood_shield': () => <g><path fill="#8B4513" d="M8 6 h16 v12 l-8 8 l-8 -8 z" stroke="#5D4037" strokeWidth="2"/></g>,
@@ -658,6 +678,8 @@
             'o_skull_orb': () => <g><circle cx="16" cy="16" r="10" fill="#e2e8f0"/><circle cx="12" cy="12" r="2" fill="#000"/><circle cx="20" cy="12" r="2" fill="#000"/><path fill="#000" d="M14 20 h4 v2 h-4 z"/></g>,
             'o_smoke_bomb': () => <g><circle cx="16" cy="16" r="8" fill="#334155"/><path fill="#94a3b8" d="M14 6 h4 v4 h-4 z"/></g>,
             'o_quiver': () => <g><path fill="#78350f" d="M10 10 h12 v16 h-12 z"/><path fill="#e2e8f0" d="M12 4 v6 M16 6 v4 M20 4 v6" stroke="#e2e8f0" strokeWidth="1"/></g>,
+            'o_beast_cauldron': () => <g><path fill="#78350f" d="M6 10 h20 v14 q0 6 -10 6 q-10 0 -10 -6 z"/><path fill="#fef08a" d="M4 6 h24 v4 h-24 z"/><circle cx="16" cy="18" r="3" fill="#ef4444"/></g>,
+            'o_buddha_lotus': () => <g><path fill="#ef4444" d="M16 4 Q24 16 16 28 Q8 16 16 4 Z"/><path fill="#fef08a" d="M4 16 Q16 24 28 16 Q16 8 4 16 Z"/><path fill="#3b82f6" d="M8 8 Q16 16 24 24 M8 24 Q16 16 24 8" stroke="#3b82f6" strokeWidth="4"/></g>,
             'o_life_gold': () => <g><path fill="#4ade80" d="M16 4 L26 16 L16 28 L6 16 Z"/><path fill="#bbf7d0" d="M16 8 L20 16 L16 24 L12 16 Z"/></g>,
 
             'o_bluegrass': () => <g><path fill="none" stroke="#3b82f6" strokeWidth="2" d="M12 26 Q8 16 12 8 M16 26 Q16 12 20 6 M20 26 Q26 18 22 10"/><circle cx="12" cy="8" r="2" fill="#bfdbfe"/><circle cx="20" cy="6" r="2" fill="#bfdbfe"/><circle cx="22" cy="10" r="2" fill="#bfdbfe"/></g>,
@@ -671,6 +693,7 @@
             'b_angel_wings': () => <g><path fill="#ffffff" d="M16 16 Q6 0 2 10 Q8 14 12 22 Z"/><path fill="#ffffff" d="M16 16 Q26 0 30 10 Q24 14 20 22 Z"/></g>,
             'b_bat_wings': () => <g><path fill="#1c1917" d="M16 16 Q6 0 2 8 Q10 12 12 20 Z"/><path fill="#1c1917" d="M16 16 Q26 0 30 8 Q22 12 20 20 Z"/></g>,
             'b_fairy_wings': () => <g><path fill="#a7f3d0" d="M16 16 Q8 0 2 8 Q10 12 12 18 Z"/><path fill="#a7f3d0" d="M16 16 Q24 0 30 8 Q22 12 20 18 Z"/></g>,
+            'b_sea_god': () => <g><path fill="#3b82f6" d="M16 16 Q4 4 0 16 Q8 20 12 24 Z"/><path fill="#3b82f6" d="M16 16 Q28 4 32 16 Q24 20 20 24 Z"/><path fill="#60a5fa" d="M16 16 Q2 12 0 22 Q8 24 14 28 Z"/><path fill="#60a5fa" d="M16 16 Q30 12 32 22 Q24 24 18 28 Z"/></g>,
             'b_dragon_butterfly': () => <g><path fill="#38bdf8" d="M16 16 Q2 2 0 14 Q10 16 14 22 Z"/><path fill="#38bdf8" d="M16 16 Q30 2 32 14 Q22 16 18 22 Z"/><path fill="#fbbf24" d="M16 16 Q8 10 4 16 Q10 20 14 24 Z"/><path fill="#fbbf24" d="M16 16 Q24 10 28 16 Q22 20 18 24 Z"/></g>,
 
             'e_sharingan': () => <g><circle cx="16" cy="16" r="10" fill="#ef4444" stroke="#7f1d1d" strokeWidth="2"/><circle cx="16" cy="16" r="2" fill="#000"/><circle cx="16" cy="10" r="1.5" fill="#000"/><circle cx="10.5" cy="19" r="1.5" fill="#000"/><circle cx="21.5" cy="19" r="1.5" fill="#000"/></g>,
@@ -691,8 +714,7 @@
             'r8': () => <g><circle cx="16" cy="16" r="10" fill="none" stroke="#38bdf8" strokeWidth="8" style={{filter:'drop-shadow(0 0 20px #7dd3fc)'}}/><circle cx="16" cy="16" r="5" fill="#fde047" style={{filter:'blur(2px)'}}/></g>,
             'r9': () => <g><circle cx="16" cy="16" r="12" fill="none" stroke="#ffffff" strokeWidth="8" style={{filter:'drop-shadow(0 0 25px #fde047)'}}/><circle cx="16" cy="16" r="14" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="6 3"/></g>
         };
-
-        const SHOP_ITEMS = [
+const SHOP_ITEMS = [
             /* --- 武器 --- */
             { id: 'w_wood_staff', name: '木製法杖', type: 'mainHand', rarity: 'common', cost: 150, icon: 'Zap', stats: { int: 10 }, desc: "新手魔法師的練習杖。", reqStats: { int: 10 } },
             { id: 'w_iron', name: '鐵劍', type: 'mainHand', rarity: 'common', cost: 200, icon: 'Sword', stats: { str: 10 }, desc: "標準的鐵製長劍，還算鋒利。", reqStats: { str: 15 } },
@@ -718,8 +740,8 @@
 
             { id: 's23', name: '名刀·櫻吹雪', type: 'mainHand', rarity: 'legendary', cost: 12000, icon: 'Sword', stats: { str: 80, agi: 50, cri: 10 }, desc: "揮舞時如同櫻花飛舞的傳說名刀。", reqStats: { str: 100, agi: 80 } },
             { id: 'w_excalibur', name: '誓約勝利之劍', type: 'mainHand', rarity: 'legendary', cost: 28000, icon: 'Sword', stats: { str: 150, vit: 50, int: 50 }, desc: "傳說中的聖劍，閃耀著神聖光芒。", reqStats: { str: 200, vit: 100 } },
-            { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 35000, icon: 'Sword', stats: { str: 250, agi: -30, vit: 80 }, desc: "極度沉重的黑色巨尺，可壓制體內鬥氣。", reqStats: { str: 400 } },
-            { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 40000, icon: 'Hammer', stats: { str: 350, vit: 150, agi: -40 }, desc: "天下第一器武魂，重達萬斤，無堅不摧。", reqStats: { str: 500, vit: 200 } },
+            { id: 'w_xuan', name: '玄重尺', type: 'mainHand', rarity: 'legendary', cost: 35000, icon: 'Sword', stats: { str: 250, agi: -30, vit: 80 }, desc: "斗破蒼穹：極度沉重的黑色巨尺，可壓制體內鬥氣。", reqStats: { str: 400 } },
+            { id: 'w_haotian', name: '昊天錘', type: 'mainHand', rarity: 'legendary', cost: 40000, icon: 'Hammer', stats: { str: 350, vit: 150, agi: -40 }, desc: "斗羅大陸：天下第一器武魂，重達萬斤，無堅不摧。", reqStats: { str: 500, vit: 200 } },
             { id: 'w_dragon_slayer', name: '屠龍巨劍', type: 'mainHand', rarity: 'legendary', cost: 45000, icon: 'Sword', stats: { str: 300, vit: 100, cri: 20 }, desc: "曾斬殺過太古巨龍的恐怖大劍。", reqStats: { str: 450 } },
             { id: 'w_elder_wand', name: '接骨木魔杖', type: 'mainHand', rarity: 'legendary', cost: 50000, icon: 'Zap', stats: { int: 400, maxMp: 500 }, desc: "據說由死神親手製作，最強的法杖。", reqStats: { int: 550 } },
             { id: 'w_dual_blades', name: '雙子刃·阿修羅', type: 'mainHand', rarity: 'legendary', cost: 42000, icon: 'Sword', stats: { str: 150, agi: 300, cri: 35 }, desc: "一對傳說中的神兵，攻速快若閃電。", reqStats: { str: 200, agi: 400 } },
@@ -727,8 +749,10 @@
             { id: 'w_gate_of_babylon', name: '王之寶庫', type: 'mainHand', rarity: 'legendary', cost: 250000, icon: 'Key', stats: { str: 1500, agi: 500, int: 800 }, desc: "連通黃金之都的鑰匙，能無盡地射出寶具！", reqStats: { str: 1000, int: 1000 } },
             
             // 神話武器
-            { id: 'w_morning_dew', name: '晨露暗金', type: 'mainHand', rarity: 'mythic', cost: 800000, icon: 'Sword', stats: { str: 5000, agi: 3000, vit: 1000 }, desc: "融合暗金恐爪熊特性的神兵，撕裂虛空。", reqStats: { str: 1500 } },
-            { id: 'w_guanyin', name: '觀音淚', type: 'mainHand', rarity: 'mythic', cost: 1500000, icon: 'Crosshair', stats: { str: 9999, agi: 9999, cri: 100 }, desc: "唐門第一暗器，無視防禦，弒神之擊。", reqStats: { str: 3000, agi: 3000 } },
+            { id: 'w_tianlin', name: '天鱗古戟', type: 'mainHand', rarity: 'mythic', cost: 800000, icon: 'Sword', stats: { str: 5500, agi: 2000, vit: 1500 }, desc: "武動乾坤：遠古天鱷骨骸所鑄，高級靈寶，蘊含天鱗之靈！", reqStats: { str: 1500 } },
+            { id: 'w_morning_dew', name: '晨露暗金', type: 'mainHand', rarity: 'mythic', cost: 850000, icon: 'Sword', stats: { str: 5000, agi: 3000, vit: 1000 }, desc: "斗羅大陸：融合暗金恐爪熊特性的神兵，撕裂虛空。", reqStats: { str: 1500 } },
+            { id: 'w_guanyin', name: '觀音淚', type: 'mainHand', rarity: 'mythic', cost: 1500000, icon: 'Crosshair', stats: { str: 9999, agi: 9999, cri: 100 }, desc: "斗羅大陸：唐門第一暗器，無視防禦，弒神之擊。", reqStats: { str: 3000, agi: 3000 } },
+            { id: 'w_heavens_ruler', name: '異火恆古尺', type: 'mainHand', rarity: 'mythic', cost: 2000000, icon: 'Flame', stats: { str: 12000, int: 8000, cri: 50 }, desc: "斗破蒼穹：融合二十二種異火的無上神兵，一擊焚天！", reqStats: { str: 4000, int: 3000 } },
 
             /* --- 頭部 --- */
             { id: 'h_cloth', name: '粗布帽', type: 'head', rarity: 'common', cost: 80, icon: 'Crown', stats: { vit: 3, int: 2 }, desc: "簡單的布帽，保暖為主。", reqStats: {} },
@@ -750,7 +774,8 @@
             { id: 'h_crown_of_kings', name: '王者之冠', type: 'head', rarity: 'legendary', cost: 50000, icon: 'Crown', stats: { all: 100, str: 150, int: 150 }, desc: "象徵絕對統治權的無上王冠。", reqStats: { level: 80 } },
             
             // 神話頭部
-            { id: 'h_destiny', name: '命運之眼頭骨', type: 'head', rarity: 'mythic', cost: 850000, icon: 'Eye', stats: { int: 8000, vit: 2000 }, desc: "帝皇瑞獸三眼金猊產出的命運頭骨，掌控氣運。", reqStats: { int: 2000 } },
+            { id: 'h_x_dragon', name: 'X龍神冠', type: 'head', rarity: 'mythic', cost: 600000, icon: 'Crown', stats: { str: 3000, vit: 4000, all: 1000 }, desc: "X龍時代：龍族始祖傳承的王冠，萬龍臣服。", reqStats: { str: 2000, vit: 2000 } },
+            { id: 'h_destiny', name: '命運之眼頭骨', type: 'head', rarity: 'mythic', cost: 850000, icon: 'Eye', stats: { int: 8000, vit: 2000 }, desc: "斗羅大陸：帝皇瑞獸三眼金猊產出的命運頭骨，掌控氣運。", reqStats: { int: 2000 } },
 
             /* --- 身軀 --- */
             { id: 'b_cloth', name: '粗布衣', type: 'body', rarity: 'common', cost: 100, icon: 'Shield', stats: { vit: 5 }, desc: "最基礎的衣物。", reqStats: {} },
@@ -772,7 +797,8 @@
             { id: 'b_dragon_scale', name: '翠綠龍鱗衣', type: 'body', rarity: 'legendary', cost: 48000, icon: 'Shield', stats: { agi: 350, vit: 250 }, desc: "用風屬性巨龍鱗片製成的輕甲，速度極快。", reqStats: { agi: 450, vit: 200 } },
             
             // 神話身軀
-            { id: 'b_ice_scorpion', name: '冰碧帝皇蠍軀幹骨', type: 'body', rarity: 'mythic', cost: 1200000, icon: 'Shield', stats: { vit: 12000, str: 4000, int: 2000 }, desc: "極致之冰的防禦，幾乎免疫一切物理攻擊。", reqStats: { vit: 3000 } },
+            { id: 'b_x_dragon', name: '始祖龍皇甲', type: 'body', rarity: 'mythic', cost: 950000, icon: 'Shield', stats: { vit: 9000, str: 4000, all: 1000 }, desc: "X龍時代：始祖龍皇的逆鱗所化，萬法不侵。", reqStats: { vit: 2000, level: 90 } },
+            { id: 'b_ice_scorpion', name: '冰碧帝皇蠍軀幹骨', type: 'body', rarity: 'mythic', cost: 1200000, icon: 'Shield', stats: { vit: 12000, str: 4000, int: 2000 }, desc: "斗羅大陸：極致之冰的防禦，幾乎免疫一切物理攻擊。", reqStats: { vit: 3000 } },
 
             /* --- 足部 --- */
             { id: 'f_cloth_shoes', name: '布鞋', type: 'feet', rarity: 'common', cost: 50, icon: 'Zap', stats: { agi: 3 }, desc: "普通的鞋子。", reqStats: {} },
@@ -792,7 +818,8 @@
             { id: 'f_levitation_boots', name: '虛空懸浮靴', type: 'feet', rarity: 'legendary', cost: 20000, icon: 'Zap', stats: { int: 150, agi: 150 }, desc: "讓人永遠懸浮於地面之上的魔法靴。", reqStats: { int: 250 } },
             
             // 神話足部
-            { id: 'f_snow_empress', name: '雪帝三絕·帝寒天', type: 'feet', rarity: 'mythic', cost: 950000, icon: 'Zap', stats: { agi: 8000, int: 5000 }, desc: "雪舞耀陽，踏雪無痕，極寒之域的絕對主宰。", reqStats: { agi: 2500 } },
+            { id: 'f_x_dragon', name: '天龍遊步', type: 'feet', rarity: 'mythic', cost: 650000, icon: 'Zap', stats: { agi: 5000, vit: 3000 }, desc: "X龍時代：施展時如天龍游空，無視地形阻礙。", reqStats: { agi: 1500 } },
+            { id: 'f_snow_empress', name: '雪帝三絕·帝寒天', type: 'feet', rarity: 'mythic', cost: 950000, icon: 'Zap', stats: { agi: 8000, int: 5000 }, desc: "斗羅大陸：雪舞耀陽，踏雪無痕，極寒之域的絕對主宰。", reqStats: { agi: 2500 } },
 
             /* --- 副手 --- */
             { id: 'o_wood_shield', name: '木製圓盾', type: 'offHand', rarity: 'common', cost: 200, icon: 'Shield', stats: { vit: 10 }, desc: "用結實的木板製成，能抵擋輕度攻擊。", reqStats: { str: 15 } },
@@ -806,10 +833,12 @@
             { id: 'o_skull_orb', name: '死靈頭骨', type: 'offHand', rarity: 'epic', cost: 6500, icon: 'Ghost', stats: { int: 80, maxMp: 100 }, desc: "散發著不詳氣息的法器。", reqStats: { int: 100 } },
 
             { id: 'a_off_aegis', name: '聖盾·埃癸斯', type: 'offHand', rarity: 'legendary', cost: 55000, icon: 'Shield', stats: { vit: 600, int: 150 }, desc: "傳說中能抵擋諸神黃昏的絕對防禦聖盾。", reqStats: { vit: 500, int: 200 } },
-            { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 45000, icon: 'Flame', stats: { int: 350, str: 100 }, desc: "極寒與極熱交替的奇特異火，呈現青白色。", reqStats: { int: 400 } },
+            { id: 'o_fire', name: '骨靈冷火', type: 'offHand', rarity: 'legendary', cost: 45000, icon: 'Flame', stats: { int: 350, str: 100 }, desc: "斗破蒼穹：極寒與極熱交替的奇特異火，呈現青白色。", reqStats: { int: 400 } },
             
             // 神話副手
-            { id: 'o_life_gold', name: '生靈之金', type: 'offHand', rarity: 'mythic', cost: 1800000, icon: 'Sun', stats: { vit: 20000, int: 8000 }, desc: "蘊含龐大生命力的神物，生生不息，不死不滅。", reqStats: { vit: 4000, int: 2000 } },
+            { id: 'o_beast_cauldron', name: '萬獸鼎', type: 'offHand', rarity: 'mythic', cost: 1100000, icon: 'Shield', stats: { vit: 15000, int: 5000 }, desc: "武動乾坤：遠古神物，內蘊萬獸之靈，可煉化萬物！", reqStats: { vit: 4000 } },
+            { id: 'o_buddha_lotus', name: '佛怒火蓮', type: 'offHand', rarity: 'mythic', cost: 1600000, icon: 'Flame', stats: { int: 20000, cri: 50, all: -1000 }, desc: "斗破蒼穹：異火相融產生的毀滅火蓮，威力足以滅世（扣除部分全屬性換取極致魔攻）。", reqStats: { int: 6000 } },
+            { id: 'o_life_gold', name: '生靈之金', type: 'offHand', rarity: 'mythic', cost: 1800000, icon: 'Sun', stats: { vit: 20000, int: 8000 }, desc: "斗羅大陸：蘊含龐大生命力的神物，生生不息，不死不滅。", reqStats: { vit: 4000, int: 2000 } },
 
             /* --- 背飾 --- */
             { id: 'b_traveler_cloak', name: '旅人披風', type: 'back', rarity: 'common', cost: 300, icon: 'Cloud', stats: { agi: 5, vit: 5 }, desc: "擋風遮雨的防塵披風。", reqStats: {} },
@@ -817,18 +846,19 @@
             { id: 'b_elven_cape', name: '精靈斗篷', type: 'back', rarity: 'rare', cost: 1500, icon: 'Cloud', stats: { agi: 25, int: 10 }, desc: "精靈族編織的斗篷，能稍微融入自然。", reqStats: { agi: 30 } },
 
             { id: 'b_demon_wings', name: '惡魔小翼', type: 'back', rarity: 'epic', cost: 5500, icon: 'Ghost', stats: { str: 30, agi: 30, int: -10 }, desc: "長出小小的惡魔肉翼，提供短距離滑翔。", reqStats: { str: 50, agi: 50 } },
-            { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 18500, icon: 'Briefcase', stats: { agi: 150, str: 30 }, desc: "五階飛行魔獸之翼煉化而成，速度極快。", reqStats: { agi: 200 } },
-            { id: 'o_bluegrass', name: '藍銀皇', type: 'back', rarity: 'epic', cost: 25000, icon: 'Shield', stats: { vit: 250, int: 150 }, desc: "植物系魂獸皇者，生生不息，擁有強大控制與治癒力。", reqStats: { int: 300, vit: 200 } },
+            { id: 'b_purplewings', name: '紫雲翼', type: 'back', rarity: 'epic', cost: 18500, icon: 'Briefcase', stats: { agi: 150, str: 30 }, desc: "斗破蒼穹：五階飛行魔獸之翼煉化而成，速度極快。", reqStats: { agi: 200 } },
+            { id: 'o_bluegrass', name: '藍銀皇', type: 'back', rarity: 'epic', cost: 25000, icon: 'Shield', stats: { vit: 250, int: 150 }, desc: "斗羅大陸：植物系魂獸皇者，生生不息，擁有強大控制與治癒力。", reqStats: { int: 300, vit: 200 } },
             { id: 'b_magic_circle', name: '全知魔法陣', type: 'back', rarity: 'epic', cost: 38000, icon: 'Sun', stats: { int: 400, vit: 150 }, desc: "不斷旋轉的奧術陣列，提供源源不絕的魔力。", reqStats: { int: 500 } },
             { id: 'b_bat_wings', name: '真祖之翼', type: 'back', rarity: 'epic', cost: 22000, icon: 'Ghost', stats: { agi: 120, vit: 100 }, desc: "吸血鬼真祖的翅膀，擁有吸血特性。", reqStats: { agi: 150, vit: 100 } },
             
-            { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 50000, icon: 'Briefcase', stats: { str: 180, agi: 200, vit: 100 }, desc: "極為罕見的外附魂骨，含有劇毒與強大穿透力。", reqStats: { str: 300, agi: 300 } },
+            { id: 'b_spider', name: '外附魂骨·八蛛矛', type: 'back', rarity: 'legendary', cost: 50000, icon: 'Briefcase', stats: { str: 180, agi: 200, vit: 100 }, desc: "斗羅大陸：極為罕見的外附魂骨，含有劇毒與強大穿透力。", reqStats: { str: 300, agi: 300 } },
             { id: 'b_six_wings', name: '神聖六翼', type: 'back', rarity: 'legendary', cost: 85000, icon: 'Cloud', stats: { agi: 400, int: 300, vit: 300 }, desc: "六片閃耀著神聖光芒的羽翼，翱翔於天際。", reqStats: { int: 400, agi: 400, vit: 400 } },
             { id: 'b_angel_wings', name: '大天使之翼', type: 'back', rarity: 'legendary', cost: 75000, icon: 'Cloud', stats: { vit: 500, int: 300 }, desc: "純白無瑕的天使羽翼，帶來終極的庇護。", reqStats: { vit: 600, int: 400 } },
             { id: 'b_fairy_wings', name: '妖精王薄翼', type: 'back', rarity: 'legendary', cost: 68000, icon: 'Cloud', stats: { agi: 600, int: 200 }, desc: "透明的靈動雙翼，速度冠絕天下。", reqStats: { agi: 700 } },
             
             // 神話背飾
-            { id: 'b_dragon_butterfly', name: '光明龍神蝶雙翼', type: 'back', rarity: 'mythic', cost: 1300000, icon: 'Cloud', stats: { int: 7000, agi: 6000, str: 2000 }, desc: "絕世罕見的光明龍神蝶雙翼，閃耀奪目。", reqStats: { int: 1500, agi: 1500 } },
+            { id: 'b_sea_god', name: '海神八翼', type: 'back', rarity: 'mythic', cost: 1200000, icon: 'Cloud', stats: { agi: 8000, vit: 5000, str: 2000 }, desc: "斗羅大陸：海神的專屬神級羽翼，掌控大海之力，速度無雙。", reqStats: { agi: 3000, level: 95 } },
+            { id: 'b_dragon_butterfly', name: '光明龍神蝶雙翼', type: 'back', rarity: 'mythic', cost: 1300000, icon: 'Cloud', stats: { int: 7000, agi: 6000, str: 2000 }, desc: "斗羅大陸：絕世罕見的光明龍神蝶雙翼，閃耀奪目。", reqStats: { int: 1500, agi: 1500 } },
 
             /* --- 瞳術 --- */
             { id: 'e_sharingan', name: '寫輪眼', type: 'eye', rarity: 'epic', cost: 28000, icon: 'Eye', stats: { int: 180, agi: 120, cri: 20 }, desc: "洞察眼與催眠眼，能看穿一切幻術與體術。", reqStats: { int: 250, agi: 150 } },
@@ -840,9 +870,9 @@
             { id: 'e_demon_eye', name: '深淵魔眼', type: 'eye', rarity: 'legendary', cost: 70000, icon: 'Eye', stats: { int: 600, str: 300 }, desc: "直通無盡深淵的魔眼，吞噬一切光明。", reqStats: { int: 800 } },
             
             // 神話瞳術
-            { id: 'e_spirit_eye', name: '靈眸', type: 'eye', rarity: 'mythic', cost: 2200000, icon: 'Eye', stats: { int: 18000, cri: 80 }, desc: "本體武魂，精神力極致具象化，發動靈魂衝擊。", reqStats: { int: 5000 } },
+            { id: 'e_spirit_eye', name: '靈眸', type: 'eye', rarity: 'mythic', cost: 2200000, icon: 'Eye', stats: { int: 18000, cri: 80 }, desc: "斗羅大陸：本體武魂，精神力極致具象化，發動靈魂衝擊。", reqStats: { int: 5000 } },
 
-            /* --- 魂環 --- */
+            /* --- 魂環 (斗羅大陸特色，允許多重裝備) --- */
             { id: 'r1', name: '十年魂環', type: 'spiritRing', rarity: 'common', cost: 1000, icon: 'Sun', stats: { vit: 10, str: 10 }, desc: "白色的十年魂環。賦予微弱的基礎屬性。", reqStats: {} },
             { id: 'r2', name: '百年魂環', type: 'spiritRing', rarity: 'rare', cost: 5000, icon: 'Sun', stats: { vit: 30, str: 30 }, desc: "黃色的百年魂環。雙層流光加持，力量明顯提升。", reqStats: { vit: 50 } },
             { id: 'r3', name: '千年魂環', type: 'spiritRing', rarity: 'epic', cost: 15000, icon: 'Sun', stats: { vit: 80, str: 80, agi: 20 }, desc: "紫色的千年魂環。深邃紫光環繞，速度與力量的象徵。", reqStats: { str: 150, vit: 150 } },
@@ -853,24 +883,28 @@
             { id: 'r8', name: '神級魂環', type: 'spiritRing', rarity: 'legendary', cost: 5000000, icon: 'Sun', stats: { vit: 9999, str: 9999, int: 9999, agi: 9999 }, desc: "專屬於神明的璀璨魂環，散發無尽的宇宙本源之力！", reqStats: { str: 15000, vit: 15000, int: 15000 } },
             
             // 神話魂環
-            { id: 'r9', name: '天夢冰蠶·百萬年', type: 'spiritRing', rarity: 'mythic', cost: 9999999, icon: 'Sun', stats: { int: 50000, vit: 20000, str: 10000, agi: 10000 }, desc: "史無前例的冰屬性百萬年魂環，賦予四大精神神技！", reqStats: { int: 20000, level: 100 } }
+            { id: 'r9', name: '天夢冰蠶·百萬年', type: 'spiritRing', rarity: 'mythic', cost: 9999999, icon: 'Sun', stats: { int: 50000, vit: 20000, str: 10000, agi: 10000 }, desc: "斗羅大陸：史無前例的冰屬性百萬年魂環，賦予四大精神神技！", reqStats: { int: 20000, level: 100 } }
         ];
 
-// --- 第二部分結束，請輸入「繼續」以獲取第三部分 ---
-/* ================= 擴充稱號 ================= */
+        /* ================= 擴充稱號 ================= */
         const TITLES_LIST = [
             { id: 'Novice', name: '初心冒險者', desc: '一切的起點', rarity: 'common', condition: '預設擁有', check: () => true },
             { id: 'Spender1', name: '初級消費者', desc: '懂得花錢的藝術', rarity: 'common', condition: '累積消費 > 1,000', check: (d, r) => d.expenseTotal * r >= 1000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 1000` },
             { id: 'Spender2', name: '揮金如土', desc: '錢就是力量！', rarity: 'rare', condition: '累積消費 > 10,000', check: (d, r) => d.expenseTotal * r >= 10000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 10000` },
             { id: 'BigSpender', name: '大富豪', desc: '財富如流水', rarity: 'epic', condition: '累積消費 > 50,000', check: (d, r) => d.expenseTotal * r >= 50000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 50000` },
             { id: 'Destroyer', name: '滅世者', desc: '破壞的化身', rarity: 'legendary', condition: '累積消費 > 500,000', check: (d, r) => d.expenseTotal * r >= 500000, getProgress: (s, r) => `${Math.floor(s.expenseTotal * r)} / 500000` },
+            
             { id: 'Saver1', name: '儲蓄見習', desc: '積沙成塔', rarity: 'common', condition: '總資產 > 5,000', check: (d, r) => d.balance * r >= 5000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 5000` },
             { id: 'Saver2', name: '理財專家', desc: '財富自由的第一步', rarity: 'rare', condition: '總資產 > 50,000', check: (d, r) => d.balance * r >= 50000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 50000` },
             { id: 'SaverMaster', name: '救世大師', desc: '富可敵國', rarity: 'epic', condition: '總資產 > 100,000', check: (d, r) => d.balance * r >= 100000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 100000` },
             { id: 'GodOfWealth', name: '財神', desc: '金錢的掌控者', rarity: 'legendary', condition: '總資產 > 1,000,000', check: (d, r) => d.balance * r >= 1000000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 1000000` },
-            // 神話稱號
-            { id: 'GodOfEmotion', name: '情緒之神', desc: '傳承神祇之位，掌控世間情緒', rarity: 'mythic', condition: '總資產 > 10,000,000', check: (d, r) => d.balance * r >= 10000000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 10000000` },
             
+            // 結合小說的新稱號
+            { id: 'GodOfEmotion', name: '情緒之神', desc: '斗羅大陸：傳承神祇之位，掌控世間情緒', rarity: 'mythic', condition: '總資產 > 10,000,000', check: (d, r) => d.balance * r >= 10000000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 10000000` },
+            { id: 'MartialAncestor', name: '武祖', desc: '武動乾坤：位面之主，萬武之祖', rarity: 'mythic', condition: '達到 100 級且完成 100 個任務', check: (d) => d.level >= 100 && d.questCount >= 100, getProgress: (s) => `Lv.${s.level}/100, Q:${s.questCount}/100` },
+            { id: 'FlameEmperor', name: '炎帝', desc: '斗破蒼穹：萬火臣服，號令天下', rarity: 'mythic', condition: '裝備庫收集滿 50 件物品', check: (d) => d.itemCount >= 50, getProgress: (s) => `${s.itemCount}/50` },
+            { id: 'SeaGod', name: '海神', desc: '斗羅大陸：無盡大海的絕對主宰', rarity: 'mythic', condition: '總資產 > 50,000,000', check: (d, r) => d.balance * r >= 50000000, getProgress: (s, r) => `${Math.floor(s.balance * r)} / 50000000` },
+
             { id: 'Master', name: '記帳大師', desc: '記錄每一筆開銷', rarity: 'epic', condition: '記錄 > 50 筆交易', check: (d) => d.txCount >= 50, getProgress: (s) => `${s.txCount} / 50` },
             { id: 'Hunter', name: '賞金獵人', desc: '任務狂人', rarity: 'rare', condition: '完成 10 個任務', check: (d) => d.questCount >= 10, getProgress: (s) => `${s.questCount} / 10` },
             { id: 'QuestChamp', name: '任務冠軍', desc: '公會的傳說', rarity: 'epic', condition: '完成 50 個任務', check: (d) => d.questCount >= 50, getProgress: (s) => `${s.questCount} / 50` },
@@ -878,16 +912,20 @@
             { id: 'Abyssal', name: '深淵獵手', desc: '神之境界', rarity: 'legendary', condition: '等級達到 100', check: (d) => d.level >= 100, getProgress: (s) => `${s.level} / 100` }
         ];
 
-        /* ================= 職業系統 (大幅增強職業特色與數值差異) ================= */
+        /* ================= 職業系統 (加入修真/魂師路線) ================= */
         // critBonus: 額外暴擊率(%) | atkMulti: 物理傷害倍率 | magMulti: 魔法傷害倍率 | hpMulti: 血量倍率
         const CLASS_DEFINITIONS = {
-            'novice': { id: 'novice', name: '初心者', icon: 'Smile', color: '#94a3b8', bonuses: { str: 0, int: 0, vit: 0, agi: 0, critBonus: 0, atkMulti: 1, magMulti: 1, hpMulti: 1 }, desc: '全屬性均衡發展，無限的可能性。', tier: 0, reqLevel: 1, nextClasses: ['warrior', 'mage', 'rogue', 'archer'], aura: null, previewEquip: {} },
+            'novice': { id: 'novice', name: '初心者', icon: 'Smile', color: '#94a3b8', bonuses: { str: 0, int: 0, vit: 0, agi: 0, critBonus: 0, atkMulti: 1, magMulti: 1, hpMulti: 1 }, desc: '全屬性均衡發展，無限的可能性。', tier: 0, reqLevel: 1, nextClasses: ['warrior', 'mage', 'rogue', 'archer', 'cultivator', 'spirit_master'], aura: null, previewEquip: {} },
             
             /* 一轉職業 (Lv.10) */
             'warrior': { id: 'warrior', name: '狂戰士', icon: 'Sword', color: '#ef4444', bonuses: { str: 0.30, int: -0.10, vit: 0.20, agi: -0.10, critBonus: 5, atkMulti: 1.2, magMulti: 0.5, hpMulti: 1.2 }, desc: '近戰物理輸出，高血量與攻擊。', tier: 1, reqLevel: 10, nextClasses: ['paladin', 'berserker'], aura: 'aura-fire', previewEquip: { mainHand: {id: 'w_steel'}, body: {id: 'b_plate'} } },
             'mage': { id: 'mage', name: '魔法師', icon: 'Zap', color: '#3b82f6', bonuses: { str: -0.20, int: 0.50, vit: -0.10, agi: 0, critBonus: 0, atkMulti: 0.5, magMulti: 1.5, hpMulti: 0.8 }, desc: '掌握元素之力，極高的魔法傷害。', tier: 1, reqLevel: 10, nextClasses: ['archmage', 'necromancer'], aura: 'aura-magic', previewEquip: { mainHand: {id: 'w_apprentice_wand'}, head: {id: 'h_mage_hat'}, body: {id: 'b_robe'} } },
             'rogue': { id: 'rogue', name: '盜賊', icon: 'Ghost', color: '#8b5cf6', bonuses: { str: 0.10, int: 0, vit: -0.10, agi: 0.40, critBonus: 15, atkMulti: 1.1, magMulti: 0.8, hpMulti: 0.9 }, desc: '身手敏捷，暴擊與閃避特化。', tier: 1, reqLevel: 10, nextClasses: ['assassin', 'ninja'], aura: 'aura-shadow', previewEquip: { mainHand: {id: 'w_dagger'}, head: {id: 'h_thief_hood'}, body: {id: 'b_assassin'} } },
             'archer': { id: 'archer', name: '弓箭手', icon: 'Crosshair', color: '#10b981', bonuses: { str: 0.10, int: 0, vit: 0, agi: 0.30, critBonus: 20, atkMulti: 1.3, magMulti: 0.8, hpMulti: 0.9 }, desc: '遠程物理輸出，穩定且致命(高暴擊)。', tier: 1, reqLevel: 10, nextClasses: ['sniper', 'ranger'], aura: 'aura-thunder', previewEquip: { mainHand: {id: 'w_bow'}, body: {id: 'b_leather_tunic'} } },
+            
+            // 修真與魂師體系
+            'cultivator': { id: 'cultivator', name: '修真者', icon: 'Sun', color: '#d97706', bonuses: { str: 0.15, int: 0.15, vit: 0.15, agi: 0.15, critBonus: 5, atkMulti: 1.1, magMulti: 1.1, hpMulti: 1.1 }, desc: '吸納天地靈氣，性命雙修，屬性極度均衡。', tier: 1, reqLevel: 10, nextClasses: ['dou_zong', 'nirvana'], aura: 'aura-divine', previewEquip: { mainHand: {id: 'w_xuan'}, body: {id: 'b_cloth'} } },
+            'spirit_master': { id: 'spirit_master', name: '魂師', icon: 'Star', color: '#0ea5e9', bonuses: { str: 0.10, int: 0.30, vit: 0.10, agi: 0.10, critBonus: 10, atkMulti: 1.0, magMulti: 1.3, hpMulti: 1.0 }, desc: '覺醒武魂，吸收魂環來增強實力。', tier: 1, reqLevel: 10, nextClasses: ['soul_king'], aura: 'aura-magic', previewEquip: { mainHand: {id: 'w_haotian'}, back: {id: 'o_bluegrass'} } },
 
             /* 二轉職業 (Lv.30) */
             'paladin': { id: 'paladin', name: '聖騎士', icon: 'Shield', color: '#f59e0b', bonuses: { str: 0.40, int: 0.20, vit: 0.60, agi: -0.20, critBonus: 5, atkMulti: 1.1, magMulti: 1.0, hpMulti: 2.0 }, desc: '神聖的守護者，擁有極高防禦與超大血量。', tier: 2, reqLevel: 30, nextClasses: ['divine_knight'], aura: 'aura-holy', previewEquip: { mainHand: {id: 'w_excalibur'}, offHand: {id: 'a_off_aegis'}, body: {id: 'b_paladin'} } },
@@ -898,6 +936,10 @@
             'ninja': { id: 'ninja', name: '忍者', icon: 'Feather', color: '#1e293b', bonuses: { str: 0.30, int: 0.40, vit: 0, agi: 0.60, critBonus: 20, atkMulti: 1.4, magMulti: 1.2, hpMulti: 1.0 }, desc: '物魔雙修，高機動性與多變戰術。', tier: 2, reqLevel: 30, nextClasses: ['shinobi'], aura: 'aura-thunder', previewEquip: { mainHand: {id: 's23'}, head: {id: 'h_ninja_mask'}, body: {id: 'b_assassin'} } },
             'sniper': { id: 'sniper', name: '神射手', icon: 'Crosshair', color: '#047857', bonuses: { str: 0.50, int: 0, vit: 0, agi: 0.60, critBonus: 50, atkMulti: 1.8, magMulti: 0.5, hpMulti: 0.8 }, desc: '百步穿楊，擁有全職業最高的暴擊率。', tier: 2, reqLevel: 30, nextClasses: ['phantom_shooter'], aura: 'aura-thunder', previewEquip: { mainHand: {id: 'w_crossbow'}, eye: {id: 'e_sharingan'}, body: {id: 'b_hunter_vest'} } },
             'ranger': { id: 'ranger', name: '遊俠', icon: 'Cloud', color: '#059669', bonuses: { str: 0.30, int: 0.30, vit: 0.30, agi: 0.50, critBonus: 25, atkMulti: 1.3, magMulti: 1.0, hpMulti: 1.2 }, desc: '與自然為伍，屬性均衡且閃避高。', tier: 2, reqLevel: 30, nextClasses: ['beast_master'], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_longbow'}, back: {id: 'b_elven_cape'}, body: {id: 'b_hunter_vest'} } },
+            
+            'dou_zong': { id: 'dou_zong', name: '斗宗', icon: 'Flame', color: '#c2410c', bonuses: { str: 0.60, int: 0.40, vit: 0.30, agi: 0.30, critBonus: 15, atkMulti: 1.5, magMulti: 1.2, hpMulti: 1.2 }, desc: '踏空而行，掌握空間之力，斗氣化翼。', tier: 2, reqLevel: 30, nextClasses: ['dou_di'], aura: 'aura-fire', previewEquip: { mainHand: {id: 'w_xuan'}, back: {id: 'b_purplewings'}, offHand: {id: 'o_fire'} } },
+            'nirvana': { id: 'nirvana', name: '涅槃境', icon: 'Sun', color: '#b45309', bonuses: { str: 0.50, int: 0.50, vit: 0.50, agi: 0.20, critBonus: 10, atkMulti: 1.3, magMulti: 1.3, hpMulti: 1.5 }, desc: '經歷涅槃劫，金身不壞，元力雄厚。', tier: 2, reqLevel: 30, nextClasses: ['martial_ancestor'], aura: 'aura-divine', previewEquip: { mainHand: {id: 'w_tianlin'}, offHand: {id: 'o_beast_cauldron'}, body: {id: 'b_heavy_plate'} } },
+            'soul_king': { id: 'soul_king', name: '魂王', icon: 'Star', color: '#0284c7', bonuses: { str: 0.30, int: 0.70, vit: 0.30, agi: 0.40, critBonus: 20, atkMulti: 1.2, magMulti: 1.8, hpMulti: 1.2 }, desc: '擁有五個魂環，能施展強大的武魂真身。', tier: 2, reqLevel: 30, nextClasses: ['titled_douluo'], aura: 'aura-magic', previewEquip: { mainHand: {id: 'w_haotian'}, back: {id: 'b_spider'} } },
 
             /* 三轉職業 (Lv.80) */
             'divine_knight': { id: 'divine_knight', name: '神聖騎士', icon: 'Sun', color: '#fde047', bonuses: { str: 0.80, int: 0.50, vit: 1.20, agi: -0.30, critBonus: 10, atkMulti: 1.5, magMulti: 1.5, hpMulti: 3.0 }, desc: '神的代行者，不破之壁。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-divine', previewEquip: { mainHand: {id: 'w_holy_lance'}, offHand: {id: 'a_off_aegis'}, body: {id: 'b_heavy_plate'} } },
@@ -907,9 +949,15 @@
             'shadow_walker': { id: 'shadow_walker', name: '影舞者', icon: 'Ghost', color: '#581c87', bonuses: { str: 0.80, int: 0, vit: -0.50, agi: 1.50, critBonus: 70, atkMulti: 2.5, magMulti: 0.5, hpMulti: 0.5 }, desc: '在現實與影子間穿梭的死神，必定暴擊。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-shadow', previewEquip: { mainHand: {id: 'w_dual_blades'}, eye: {id: 'e_demon_eye'}, body: {id: 'b_shadow_garb'} } },
             'shinobi': { id: 'shinobi', name: '上忍', icon: 'Feather', color: '#1e293b', bonuses: { str: 0.60, int: 0.80, vit: 0, agi: 1.00, critBonus: 40, atkMulti: 2.0, magMulti: 2.0, hpMulti: 1.2 }, desc: '掌握究極忍術與幻術的宗師，雙修極致。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-thunder', previewEquip: { mainHand: {id: 'w_shuriken'}, offHand: {id: 'o_smoke_bomb'}, body: {id: 'b_shadow_garb'} } },
             'phantom_shooter': { id: 'phantom_shooter', name: '幻影射手', icon: 'Crosshair', color: '#059669', bonuses: { str: 0.80, int: 0.30, vit: 0, agi: 1.20, critBonus: 100, atkMulti: 3.0, magMulti: 0.8, hpMulti: 0.9 }, desc: '無發不中，箭矢如同幻影。攻擊力與暴擊無上限。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_phantom_bow'}, eye: {id: 'e_eagle_eye'}, body: {id: 'b_hunter_vest'} } },
-            'beast_master': { id: 'beast_master', name: '百獸之王', icon: 'Cloud', color: '#166534', bonuses: { str: 0.70, int: 0.60, vit: 0.80, agi: 0.80, critBonus: 30, atkMulti: 1.8, magMulti: 1.5, hpMulti: 1.8 }, desc: '與萬物合一，最強的野性呼喚，全能王者。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_longbow'}, head: {id: 'h_ranger_hood'}, body: {id: 'b_dragon_scale'} } }
+            'beast_master': { id: 'beast_master', name: '百獸之王', icon: 'Cloud', color: '#166534', bonuses: { str: 0.70, int: 0.60, vit: 0.80, agi: 0.80, critBonus: 30, atkMulti: 1.8, magMulti: 1.5, hpMulti: 1.8 }, desc: '與萬物合一，最強的野性呼喚，全能王者。', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-nature', previewEquip: { mainHand: {id: 'w_longbow'}, head: {id: 'h_ranger_hood'}, body: {id: 'b_dragon_scale'} } },
+            
+            // 小說終極職業
+            'dou_di': { id: 'dou_di', name: '斗帝', icon: 'Flame', color: '#ea580c', bonuses: { str: 1.20, int: 1.20, vit: 0.80, agi: 0.80, critBonus: 50, atkMulti: 3.0, magMulti: 3.0, hpMulti: 2.0 }, desc: '斗破蒼穹：鬥氣大陸的巔峰，掌控萬火，一念焚天！', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-fire', previewEquip: { mainHand: {id: 'w_heavens_ruler'}, offHand: {id: 'o_buddha_lotus'} } },
+            'martial_ancestor': { id: 'martial_ancestor', name: '武祖', icon: 'Sun', color: '#b45309', bonuses: { str: 1.50, int: 0.80, vit: 1.50, agi: 0.50, critBonus: 40, atkMulti: 3.5, magMulti: 1.5, hpMulti: 3.0 }, desc: '武動乾坤：八大祖符加身，肉身成聖，元力通天！', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-divine', previewEquip: { mainHand: {id: 'w_tianlin'}, offHand: {id: 'o_beast_cauldron'}, body: {id: 'b_x_dragon'}, head: {id: 'h_x_dragon'}, feet: {id: 'f_x_dragon'} } },
+            'titled_douluo': { id: 'titled_douluo', name: '極限斗羅', icon: 'Star', color: '#0369a1', bonuses: { str: 0.80, int: 1.50, vit: 1.00, agi: 1.20, critBonus: 60, atkMulti: 2.0, magMulti: 3.5, hpMulti: 2.0 }, desc: '斗羅大陸：九十九級巔峰，九環齊炸，神祇之下第一人！', tier: 3, reqLevel: 80, nextClasses: [], aura: 'aura-magic', previewEquip: { mainHand: {id: 'w_guanyin'}, head: {id: 'h_destiny'}, back: {id: 'b_sea_god'}, offHand: {id: 'o_life_gold'} } }
         };
 
+        /* ================= 擴大 BOSS 列表 (新增小說Boss) ================= */
         const BOSS_LIST = [
             { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
             { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
@@ -926,12 +974,12 @@
             { id: 'boss_leviathan', name: '深海巨獸·利維坦', cpReq: 3000000, hp: 10000000, icon: 'Cloud', color: '#0369a1', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'r7', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 400 強化石', desc: '能掀起吞噬一切滅世海嘯的巨獸。' },
             { id: 'boss_asura', name: '修羅神', cpReq: 8000000, hp: 30000000, icon: 'Sword', color: '#7f1d1d', exp: 800000, gold: 500000, dropRate: 0.01, dropItem: 'r8', stoneDrop: 1000, rewardDesc: '80萬 EXP / 50萬 G / 1000 強化石', desc: '掌控殺戮法則的神明，非凡人可敵。' },
             
-            // 神話首領
-            { id: 'boss_snow_empress', name: '極北三大天王·雪帝', cpReq: 15000000, hp: 60000000, icon: 'Cloud', color: '#7dd3fc', exp: 1500000, gold: 1000000, dropRate: 0.01, dropItem: 'f_snow_empress', stoneDrop: 2000, rewardDesc: '150萬 EXP / 100萬 G / 2000 強化石', desc: '七十萬年修為的極北冰原主宰，冰雪的化身。' },
-            { id: 'boss_di_tian', name: '獸神·帝天', cpReq: 25000000, hp: 99999999, icon: 'Eye', color: '#111827', exp: 3000000, gold: 2000000, dropRate: 0.005, dropItem: 'r9', stoneDrop: 5000, rewardDesc: '300萬 EXP / 200萬 G / 5000 強化石', desc: '星斗大森林的最高統治者，金眼黑龍王，修為接近百萬年！' }
+            // 小說終極首領
+            { id: 'boss_di_tian', name: '獸神·帝天', cpReq: 15000000, hp: 60000000, icon: 'Eye', color: '#111827', exp: 1500000, gold: 1000000, dropRate: 0.01, dropItem: 'r9', stoneDrop: 2000, rewardDesc: '150萬 EXP / 100萬 G / 2000 強化石', desc: '斗羅大陸：星斗大森林的最高統治者，金眼黑龍王，修為接近百萬年！' },
+            { id: 'boss_yimo_huang', name: '異魔皇', cpReq: 35000000, hp: 120000000, icon: 'Ghost', color: '#000000', exp: 3500000, gold: 2000000, dropRate: 0.005, dropItem: 'w_tianlin', stoneDrop: 5000, rewardDesc: '350萬 EXP / 200萬 G / 5000 強化石', desc: '武動乾坤：帶來毀滅的域外邪族之王，必須凝聚位面之胎方可擊敗。' },
+            { id: 'boss_hun_tiandi', name: '魂天帝', cpReq: 80000000, hp: 300000000, icon: 'Flame', color: '#7f1d1d', exp: 8000000, gold: 5000000, dropRate: 0.002, dropItem: 'w_heavens_ruler', stoneDrop: 10000, rewardDesc: '800萬 EXP / 500萬 G / 1萬 強化石', desc: '斗破蒼穹：以中州為鼎，煉化帝丹，晉升斗帝的絕世魔頭！' }
         ];
-
-        const ACHIEVEMENTS_LIST = [
+const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -1008,7 +1056,7 @@
             );
         };
 
-        /* ================= 固定支出管理 Modal (新增扣款模式：每月固定日/每30天) ================= */
+        /* ================= 固定支出管理 Modal ================= */
         const FixedExpenseManagerModal = ({ fixedExpenses, categories, accounts, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [expenses, setExpenses] = useState(fixedExpenses || []);
@@ -1037,7 +1085,6 @@
                 let newExpenses = [...expenses];
                 const expToSave = { ...editData, amount: finalAmount };
                 
-                // 如果是每 30 天，我們需要設定一個初始的觸發時間基準
                 if (expToSave.deductType === 'interval30' && !expToSave.lastDeductedTime) {
                     expToSave.lastDeductedTime = Date.now();
                 }
@@ -1120,7 +1167,6 @@
                                     <div><label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('name')}</label><input type="text" value={editData.name} onChange={e=>setEditData({...editData, name: e.target.value})} className="w-full bg-theme-bg border border-theme-border rounded-xl p-3 font-bold text-theme-text outline-none focus:border-theme-accent"/></div>
                                     <div onClick={() => setShowCalc(true)} className="relative w-full bg-theme-bg p-3 rounded-xl border border-theme-border flex items-center justify-between cursor-pointer group"><span className={`font-bold ${editData.amount ? 'text-theme-text' : 'text-theme-sub/50'}`}>{editData.amount || '0'}</span><div className="p-2 rounded-xl bg-theme-accent/10 text-theme-accent"><Icon name="Calculator" size={20}/></div></div>
                                     
-                                    {/* 扣款模式選擇 */}
                                     <div>
                                         <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('fixed_type') || '扣款模式'}</label>
                                         <select value={editData.deductType || 'monthly'} onChange={e=>setEditData({...editData, deductType: e.target.value})} className="w-full bg-theme-bg p-3 rounded-xl outline-none font-bold text-theme-text border border-theme-border">
@@ -1129,7 +1175,6 @@
                                         </select>
                                     </div>
 
-                                    {/* 只有在每月固定日時才顯示日期選擇器 */}
                                     {(!editData.deductType || editData.deductType === 'monthly') && (
                                         <div className="animate-pop-in">
                                             <label className="text-[10px] font-bold text-theme-sub uppercase mb-1 block">{t('fixed_date')}</label>
@@ -1153,7 +1198,12 @@
         };
 
         const PixelPet = ({ id, className, animate = true }) => {
-            const isSlime = id.includes('slime'); const isCat = id.includes('cat'); const isDino = id.includes('dino');
+            const isSlime = id.includes('slime') || id.includes('rimuru'); 
+            const isCat = id.includes('cat'); 
+            const isDino = id.includes('dino');
+            const isMarten = id.includes('marten');
+            const isFlame = id.includes('flame') || id.includes('lotus');
+
             const renderContent = () => {
                 if (id === 'slime_rimuru') {
                     return (<g className={animate ? "animate-bounce-gentle" : ""}><ellipse cx="16" cy="28" rx="10" ry="2" fill="rgba(0,0,0,0.2)" /><path fill="#93c5fd" d="M8 26 h16 c2 0 4-2 4-6 c0-8-6-12-12-12 c-6 0-12 4-12 12 c0 4 2 6 4 6 Z" stroke="#3b82f6" strokeWidth="0.5" /><path d="M10 18 Q12 20 14 18 M18 18 Q20 20 22 18" stroke="#1e3a8a" fill="none" strokeWidth="1" strokeLinecap="round"/><ellipse cx="10" cy="21" rx="2" ry="1" fill="#fbcfe8" /><ellipse cx="22" cy="21" rx="2" ry="1" fill="#fbcfe8" /></g>);
@@ -1161,7 +1211,7 @@
                     return (<g className={animate ? "animate-idle-breathe origin-bottom" : ""}><ellipse cx="16" cy="30" rx="8" ry="2" fill="rgba(0,0,0,0.2)" /><path fill="#3b82f6" d="M12 20 h8 v10 h-8 z" /><path fill="#ffffff" d="M10 16 h12 v6 h-12 z" /><path fill="#93c5fd" d="M11 6 h10 v8 h-10 z" /><circle cx="14" cy="11" r="1" fill="#1e3a8a"/><circle cx="18" cy="11" r="1" fill="#1e3a8a"/><path fill="#fbcfe8" d="M11 13 h10 v1 h-10 z" /><path fill="#60a5fa" d="M10 4 h12 v4 h-12 z" /></g>);
                 } else if (id === 'rimuru_demon_lord') {
                     return (<g className={animate ? "animate-float origin-center" : ""}><ellipse cx="16" cy="30" rx="10" ry="2" fill="rgba(0,0,0,0.2)" /><path fill="#111827" d="M8 12 Q2 4 16 2 Q30 4 24 12 Z" opacity="0.8" className="animate-pulse"/><path fill="#1f2937" d="M10 16 h12 v14 h-12 z" /><path fill="#fbbf24" d="M14 16 h4 v14 h-4 z" /><path fill="#93c5fd" d="M12 6 h8 v8 h-8 z" /><circle cx="14" cy="10" r="1" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><circle cx="18" cy="10" r="1" fill="#ef4444" style={{filter:'drop-shadow(0 0 2px #ef4444)'}}/><path fill="#60a5fa" d="M11 4 h10 v3 h-10 z" /></g>);
-                } else if (isSlime) {
+                } else if (isSlime && !id.includes('rimuru')) {
                     const color = id.includes('king') ? '#3b82f6' : id.includes('ninja') ? '#1e40af' : '#60a5fa'; const hasCrown = id.includes('king'); const hasNinjaMask = id.includes('ninja');
                     return (<g className={animate ? "animate-bounce-gentle" : ""}><ellipse cx="16" cy="28" rx="10" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M8 26 h16 c2 0 4-2 4-6 c0-8-6-12-12-12 c-6 0-12 4-12 12 c0 4 2 6 4 6 Z" stroke="#1d4ed8" strokeWidth="0.5" /><path d="M10 14 q4 -4 8 0" strokeLinecap="round" strokeWidth="2" stroke="rgba(255,255,255,0.4)" fill="none" />{hasNinjaMask ? (<g><path fill="#1f2937" d="M6 18 h20 v6 h-20 z" /><rect x="10" y="20" width="4" height="1" fill="white" /><rect x="18" y="20" width="4" height="1" fill="white" /></g>) : (<g className={animate ? "animate-blink" : ""}><rect x="10" y="18" width="2" height="3" fill="#1e3a8a" rx="1" /><rect x="20" y="18" width="2" height="3" fill="#1e3a8a" rx="1" /><circle cx="8" cy="21" r="1.5" fill="rgba(236, 72, 153, 0.4)" /><circle cx="24" cy="21" r="1.5" fill="rgba(236, 72, 153, 0.4)" /></g>)}{hasCrown && (<g transform="translate(8, 2)"><path fill="#fbbf24" d="M4 6 L4 2 L8 6 L12 2 L12 6 Z" stroke="#b45309" strokeWidth="0.5" /><circle cx="4" cy="2" r="1" fill="#ef4444" /><circle cx="8" cy="6" r="1" fill="#3b82f6" /><circle cx="12" cy="2" r="1" fill="#ef4444" /></g>)}{hasNinjaMask && <path fill="#ef4444" d="M24 18 l4 -2 l-2 4 z" />}</g>);
                 } else if (isCat) {
@@ -1170,13 +1220,37 @@
                 } else if (isDino) {
                     const color = id.includes('dragon') ? '#ef4444' : id.includes('rex') ? '#15803d' : '#4ade80'; const isDragon = id.includes('dragon'); const isRex = id.includes('rex');
                     return (<g className={animate ? "animate-bounce" : ""}><ellipse cx="16" cy="28" rx="9" ry="2" fill="rgba(0,0,0,0.2)" /><path fill={color} d="M8 24 l-6 -4 l6 4" stroke={color} strokeWidth="4" />{isDragon && <path fill="#991b1b" d="M20 16 l8 -6 l-2 10 z" opacity="0.8"/>}<rect x="8" y="16" width="14" height="10" fill={color} rx="2" /><path fill={color} d="M14 8 h10 v10 h-10 z" /><path fill="#fde047" d="M8 16 l-2 -2 l2 2 M12 16 l-2 -4 l2 4 M16 8 l-2 -4 l2 4" /><rect x="20" y="10" width="2" height="2" fill="white" /><rect x="21" y="10" width="1" height="1" fill="black" />{isRex && <path fill="white" d="M24 18 l-1 2 l-1 -2" />}</g>);
-                } return null;
+                } else if (isMarten) {
+                    const color = id.includes('ancestor') ? '#3b0764' : id.includes('human') ? '#581c87' : '#4c1d95';
+                    const isAncestor = id.includes('ancestor');
+                    return (
+                        <g className={animate ? "animate-float" : ""}>
+                            <ellipse cx="16" cy="28" rx="8" ry="2" fill="rgba(0,0,0,0.2)" />
+                            {isAncestor && <path fill="#1e1b4b" d="M4 14 L0 4 L10 10 Z M28 14 L32 4 L22 10 Z" style={{filter:'drop-shadow(0 0 2px #000)'}}/>}
+                            <path fill={color} d="M10 26 h12 v-10 h-12 z" />
+                            <circle cx="16" cy="14" r="6" fill={color}/>
+                            <circle cx="13" cy="13" r="1.5" fill="#fca5a5" className="animate-pulse"/>
+                            <circle cx="19" cy="13" r="1.5" fill="#fca5a5" className="animate-pulse"/>
+                        </g>
+                    );
+                } else if (isFlame) {
+                    const color = id.includes('lotus') ? '#f59e0b' : '#ef4444';
+                    const isLotus = id.includes('lotus');
+                    return (
+                        <g className={animate ? "animate-pulse" : ""}>
+                            <ellipse cx="16" cy="28" rx="8" ry="2" fill="rgba(0,0,0,0.2)" />
+                            {isLotus && <path fill="#fbbf24" d="M10 18 Q16 26 22 18 Q16 12 10 18 Z" opacity="0.8"/>}
+                            <path fill={color} d="M16 8 Q24 20 16 26 Q8 20 16 8 Z" style={{filter:`drop-shadow(0 0 8px ${color})`}}/>
+                            <circle cx="16" cy="20" r="2" fill="#fef08a"/>
+                        </g>
+                    );
+                }
+                return null;
             };
             return <svg viewBox="0 0 32 32" className={`${className} pixel-icon`} xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision">{renderContent()}</svg>;
         };
 
-// --- 第三部分結束，請輸入「繼續」以獲取第四部分 ---
-const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 }) => {
+        const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 }) => {
             const actualColors = (colors && colors[gender]) ? colors[gender] : (colors || {});
             const { hair = '#8d6e63', armor = '#0d47a1', cape = '#c62828', skin = '#ffccbc' } = actualColors;
             
@@ -1303,7 +1377,7 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                                     {opt.color && <div className="w-8 h-8 rounded-full border-2 border-white shadow-sm" style={{backgroundColor: opt.color}}></div>}
                                     <div className="flex flex-col items-start">
                                         <span className={`font-bold ${current === opt.value ? 'text-theme-accent' : 'text-theme-text'}`}>{getLabel ? getLabel(opt) : opt.label}</span>
-                                        {opt.desc && <span className="text-[10px] text-theme-sub">{opt.desc}</span>}
+                                        {opt.desc && <span className="text-[10px] text-theme-sub text-left">{opt.desc}</span>}
                                         {opt.locked && opt.condition && <span className="text-[9px] text-red-400 mt-1 font-mono bg-red-50 px-1 rounded border border-red-100">🔒 {opt.condition}</span>}
                                     </div>
                                 </div>
@@ -1390,8 +1464,7 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                 </div>
             );
         };
-        
-        const CategoryManagerModal = ({ categories, onClose, onSave, lang, translations }) => {
+const CategoryManagerModal = ({ categories, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
@@ -1523,12 +1596,13 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
         };
 
         const PetSelectorModal = ({ onSelect }) => {
-            const STARTER_PET_IDS = ['slime_rimuru', 'cat_white', 'dino_green'];
+            // 將新增加的寵物加入初始選擇清單
+            const STARTER_PET_IDS = ['slime_rimuru', 'cat_white', 'dino_green', 'marten_dark', 'flame_spirit'];
             const [selectedId, setSelectedId] = useState(STARTER_PET_IDS[0]);
             const getEvolutionPath = (startId) => { const path = [startId]; let current = PET_DEFINITIONS[startId]; while (current && current.nextEvolution) { const nextId = Object.values(current.nextEvolution)[0]; if (nextId) { path.push(nextId); current = PET_DEFINITIONS[nextId]; } else break; } return path; };
             const evoPath = getEvolutionPath(selectedId);
             return (
-                <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">Choose Starter Pet</h3><p className="text-xs text-theme-sub">The beginning of your journey</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">Evolution Path</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> Confirm</button></div></div></div>
+                <div className="fixed inset-0 z-[100] flex flex-col justify-end animate-[fadeIn_0.2s]"><div className="fixed inset-0 bg-black/70 backdrop-blur-sm"></div><div className="bg-theme-card rounded-t-[2.5rem] shadow-2xl animate-[slideUp_0.3s] relative z-10 w-full max-h-[90vh] flex flex-col overflow-hidden pb-safe border-t-4 border-theme-accent/20"><div className="p-6 pb-2 shrink-0 text-center"><h3 className="font-bold text-xl text-theme-text font-pixel tracking-widest mb-1">Choose Starter Pet</h3><p className="text-xs text-theme-sub">The beginning of your journey</p></div><div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar smooth-scroll"><div className="bg-theme-bg rounded-3xl p-6 mb-6 flex flex-col items-center justify-center border-2 border-theme-border relative overflow-hidden"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div><div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-theme-accent/5 to-transparent"></div><div className="text-xs font-bold text-theme-accent mb-4 relative z-10 bg-theme-accent/10 px-3 py-1 rounded-full border border-theme-accent/20">Evolution Path</div><div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10 w-full">{evoPath.map((pId, idx) => (<React.Fragment key={pId}><div className="flex flex-col items-center group"><div className="w-16 h-16 bg-theme-card rounded-2xl shadow-sm border border-theme-border flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform"><PixelPet id={pId} className="w-12 h-12 drop-shadow-md" animate={true} /></div><span className="text-[10px] font-bold text-theme-text text-center w-20 leading-tight">{PET_DEFINITIONS[pId].name}</span></div>{idx < evoPath.length - 1 && (<Icon name="ArrowDown" className="text-theme-sub opacity-50 sm:-rotate-90 my-1 sm:my-0 shrink-0" size={16}/>)}</React.Fragment>))}</div></div><div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6">{STARTER_PET_IDS.map(id => { const def = PET_DEFINITIONS[id]; const isSelected = selectedId === id; return (<button key={id} onClick={() => setSelectedId(id)} className={`p-3 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all active:scale-95 ${isSelected ? 'bg-theme-accent/10 border-theme-accent shadow-md' : 'bg-theme-card border-theme-border hover:border-theme-sub/30'}`}><div className="w-12 h-12"><PixelPet id={id} className="w-full h-full" animate={false} /></div><span className={`text-[10px] font-bold leading-tight ${isSelected ? 'text-theme-accent' : 'text-theme-sub'}`}>{def.name}</span></button>); })}</div><button onClick={() => onSelect(selectedId)} className="w-full py-4 bg-theme-accent text-white rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2"><Icon name="Check" /> Confirm</button></div></div></div>
             );
         };
 
@@ -1537,12 +1611,14 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
             const [selected, setSelected] = useState(currentClass || 'novice');
             
             const TIER_0 = ['novice'];
-            const TIER_1 = ['warrior', 'mage', 'rogue', 'archer'];
+            const TIER_1 = ['warrior', 'mage', 'rogue', 'archer', 'cultivator', 'spirit_master'];
             const TIER_2 = {
                 warrior: ['paladin', 'berserker'],
                 mage: ['archmage', 'necromancer'],
                 rogue: ['assassin', 'ninja'],
-                archer: ['sniper', 'ranger']
+                archer: ['sniper', 'ranger'],
+                cultivator: ['dou_zong', 'nirvana'],
+                spirit_master: ['soul_king']
             };
             const TIER_3 = {
                 paladin: ['divine_knight'],
@@ -1552,7 +1628,10 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                 assassin: ['shadow_walker'],
                 ninja: ['shinobi'],
                 sniper: ['phantom_shooter'],
-                ranger: ['beast_master']
+                ranger: ['beast_master'],
+                dou_zong: ['dou_di'],
+                nirvana: ['martial_ancestor'],
+                soul_king: ['titled_douluo']
             };
 
             const getParentClass = (clsId, tierDict) => {
@@ -1599,6 +1678,7 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                 if (specificEquip.offHand) eq.offHand = SHOP_ITEMS.find(i => i.id === specificEquip.offHand.id);
                 if (specificEquip.back) eq.back = [SHOP_ITEMS.find(i => i.id === specificEquip.back.id)];
                 if (specificEquip.eye) eq.eye = SHOP_ITEMS.find(i => i.id === specificEquip.eye.id);
+                if (specificEquip.feet) eq.feet = SHOP_ITEMS.find(i => i.id === specificEquip.feet.id);
                 
                 return eq;
             }, [selected, userEquipped, selDef]);
@@ -1670,7 +1750,7 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                             </div>
 
                             <div className="flex-1 overflow-y-auto bg-theme-bg relative custom-scrollbar smooth-scroll p-6 pb-24">
-                                <div className="max-w-3xl mx-auto relative flex flex-col items-center gap-12">
+                                <div className="min-w-max mx-auto relative flex flex-col items-center gap-12 pl-4 pr-4">
                                     
                                     <div className="absolute top-8 bottom-16 left-1/2 w-0.5 bg-theme-border -translate-x-1/2 z-0"></div>
 
@@ -1679,29 +1759,32 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
                                     </div>
 
                                     <div className="w-full relative">
-                                        <div className="absolute top-0 left-[12.5%] right-[12.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
-                                        <div className="absolute top-0 left-[37.5%] right-[37.5%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
-                                        <div className="grid grid-cols-4 gap-2">
+                                        <div className="absolute top-0 left-[8.33%] right-[8.33%] h-6 border-t-2 border-x-2 border-theme-border rounded-t-xl z-0 -translate-y-6"></div>
+                                        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
                                             {TIER_1.map(renderClassNode)}
                                         </div>
                                     </div>
 
                                     <div className="w-full relative">
-                                        <div className="grid grid-cols-4 gap-2">
+                                        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
                                             {TIER_1.map((parentCls, idx) => (
                                                 <div key={parentCls} className="flex flex-col items-center relative gap-6">
                                                     <div className="absolute -top-12 h-12 w-0.5 bg-theme-border z-0"></div>
-                                                    <div className="absolute top-0 w-16 h-4 border-t-2 border-x-2 border-theme-border rounded-t-lg z-0 -translate-y-4"></div>
-                                                    <div className="flex gap-2 w-[200%] justify-center z-10" style={{marginLeft: idx % 2 === 0 ? '50%' : '-50%'}}>
-                                                        {TIER_2[parentCls].map(renderClassNode)}
-                                                    </div>
+                                                    {TIER_2[parentCls] && TIER_2[parentCls].length > 0 && (
+                                                        <>
+                                                            <div className="absolute top-0 w-16 h-4 border-t-2 border-x-2 border-theme-border rounded-t-lg z-0 -translate-y-4"></div>
+                                                            <div className="flex gap-2 w-[200%] justify-center z-10" style={{marginLeft: idx % 2 === 0 ? '50%' : '-50%'}}>
+                                                                {TIER_2[parentCls].map(renderClassNode)}
+                                                            </div>
+                                                        </>
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
 
                                     <div className="w-full relative mt-4">
-                                        <div className="grid grid-cols-8 gap-1">
+                                        <div className="grid grid-cols-12 gap-1">
                                             {Object.keys(TIER_3).map((parent2, idx) => (
                                                 <div key={parent2} className="flex flex-col items-center relative gap-6">
                                                     <div className="absolute -top-16 h-16 w-0.5 bg-theme-border z-0"></div>
@@ -1733,13 +1816,10 @@ const PixelAvatar = ({ gender, colors, equipped, className, auraEffect, level=1 
             );
         };
 
-// --- 第四部分結束，請輸入「繼續」以獲取第五部分 ---
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
-            
-            // 預設為隱藏 (true)
             const [hideAssets, setHideAssets] = useState(true);
             
             const petDef = user.pet && PET_DEFINITIONS[user.pet.id] ? PET_DEFINITIONS[user.pet.id] : null; 
@@ -3137,8 +3217,8 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
             const handleResetTalent = (cost) => {
                 let newUser = { ...safeData.user };
                 newUser.gold -= cost;
-                newUser.talents = {}; // 清空天賦
-                newUser.hasResetTalent = true; // 標記已使用過免費重置
+                newUser.talents = {}; 
+                newUser.hasResetTalent = true; 
                 const newLogs = addLog('system', `Talent Reset!`, safeData.logs);
                 setData(prev => ({ ...prev, user: newUser, logs: newLogs }));
             };
