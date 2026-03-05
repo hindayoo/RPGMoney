@@ -41,7 +41,8 @@
                 'aura-divine': 'auraDivine 3s ease-in-out infinite alternate',
                 'aura-dark': 'auraDark 4s linear infinite',
                 'aura-nature': 'auraNature 3s ease-in-out infinite alternate',
-                'aura-blood': 'auraBlood 2s ease-in-out infinite alternate'
+                'aura-blood': 'auraBlood 2s ease-in-out infinite alternate',
+                'hit-flash': 'hitFlash 0.3s ease-out'
             },
             keyframes: { 
                 float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
@@ -63,7 +64,8 @@
                 auraDivine: { '0%': { filter: 'drop-shadow(0 0 10px #fbbf24)', transform: 'scale(1)' }, '100%': { filter: 'drop-shadow(0 0 40px #fde047)', transform: 'scale(1.15)' } },
                 auraDark: { '0%': { transform: 'rotate(0deg) scale(1)', filter: 'hue-rotate(0deg)' }, '100%': { transform: 'rotate(-360deg) scale(1.1)', filter: 'hue-rotate(45deg)' } },
                 auraNature: { '0%': { filter: 'drop-shadow(0 0 5px #4ade80)', opacity: '0.7' }, '100%': { filter: 'drop-shadow(0 0 20px #22c55e)', opacity: '1' } },
-                auraBlood: { '0%': { filter: 'drop-shadow(0 0 8px #991b1b)', transform: 'scale(1) translateY(0)' }, '100%': { filter: 'drop-shadow(0 0 30px #dc2626)', transform: 'scale(1.1) translateY(-3px)' } }
+                auraBlood: { '0%': { filter: 'drop-shadow(0 0 8px #991b1b)', transform: 'scale(1) translateY(0)' }, '100%': { filter: 'drop-shadow(0 0 30px #dc2626)', transform: 'scale(1.1) translateY(-3px)' } },
+                hitFlash: { '0%': { filter: 'brightness(1) invert(0)' }, '50%': { filter: 'brightness(2) invert(1)' }, '100%': { filter: 'brightness(1) invert(0)' } }
             }
           }
         }
@@ -145,7 +147,6 @@
             const safeLevel = level || 1;
             let style = "bg-gradient-to-br from-gray-400 to-gray-500 text-white border-gray-300 shadow-sm";
             let effect = "";
-            // 擴充等級徽章外觀
             if (safeLevel >= 200) { style = "bg-[linear-gradient(110deg,#fca5a5,45%,#ef4444,55%,#fca5a5)] bg-[length:200%_100%] text-white border-white shadow-[0_0_20px_rgba(239,68,68,0.9)]"; effect = "animate-badge-shine"; } 
             else if (safeLevel >= 100) { style = "bg-[linear-gradient(110deg,#38bdf8,45%,#c084fc,55%,#38bdf8)] bg-[length:200%_100%] text-white border-white shadow-[0_0_15px_rgba(192,132,252,0.8)]"; effect = "animate-badge-shine"; } 
             else if (safeLevel >= 50) { style = "bg-gradient-to-br from-yellow-300 to-yellow-600 text-yellow-900 border-yellow-100 shadow-[0_0_10px_rgba(250,204,21,0.6)]"; effect = "animate-pulse-slow"; } 
@@ -497,9 +498,8 @@
             'r9': () => makeRing(-24, '#ffffff', 36, 13, '200 10', '40 10', '0.4s', 6, {filter: 'drop-shadow(0 0 15px #fde047)'}),
             'r10_god': () => makeRing(-27, '#fbbf24', 38, 14, '250 5', '50 5', '0.3s', 7, {filter: 'drop-shadow(0 0 20px #eab308)'}),
             'r11_origin': () => makeRing(-30, '#ec4899', 40, 15, '300 0', '60 0', '0.2s', 8, {filter: 'drop-shadow(0 0 25px #db2777)'})
-        };
-
-        const ITEM_ICONS = {
+        }; // 結束 GEAR_VISUALS
+const ITEM_ICONS = {
             'w_iron': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M12 4 H20 V20 H12 Z" /><path fill="#94a3b8" d="M10 18 H22 V22 H10 Z" /></g>,
             'w_steel': () => <g transform="rotate(45, 16, 16)"><path fill="#94a3b8" d="M12 2 H20 V22 H12 Z" /><path fill="#1e2937" d="M10 18 H22 V22 H10 Z" /></g>,
             'w_mithril': () => <g transform="rotate(45, 16, 16)"><path fill="#cbd5e1" d="M12 0 H20 V24 H12 Z" /><path fill="#1e3a8a" d="M10 18 H22 V22 H10 Z" /></g>,
@@ -556,7 +556,7 @@
             'h_x_dragon': () => <g><path fill="#10b981" d="M8 14 L12 2 L16 8 L20 2 L24 14 Z"/><path fill="#059669" d="M12 14 L16 6 L20 14 Z"/></g>,
             'h_spirit_bone': () => <g><path fill="#c084fc" d="M8 10 Q16 -4 24 10 V16 H8 Z"/><path fill="#e9d5ff" d="M14 4 H18 V10 H14 Z"/></g>,
             'h_destiny': () => <g><path fill="#fef08a" d="M6 10 Q16 -6 26 10 V18 H6 Z"/><circle cx="16" cy="6" r="3" fill="#ef4444"/></g>
-}; // 結束 ITEM_ICONS 宣告
+        }; 
 
         const SHOP_ITEMS = [
             /* --- 主武器 (Main Hand) --- */
@@ -827,37 +827,38 @@
             'god_inheritor': { id: 'god_inheritor', name: '神王', icon: 'Crown', color: '#ef4444', bonuses: { str: 2.50, int: 2.50, vit: 2.00, agi: 2.00, critBonus: 80, atkMulti: 5.0, magMulti: 5.0, hpMulti: 4.0 }, desc: '至高神王，掌控多元宇宙法則，萬界共尊！', tier: 4, reqLevel: 120, nextClasses: [], aura: 'aura-blood', previewEquip: { mainHand: {id: 'w_clear_sky'}, back: {id: 'back_eight_spider'}, spiritRing: {id: 'r10_god'} } }
         };
 
-        /* ================= 擴充 BOSS 列表 (新增大量修真/魂師Boss) ================= */
+        /* ================= 擴充 BOSS 列表 (為了戰鬥系統新增 atk, def) ================= */
         const BOSS_LIST = [
             // 初期域外/低階魂獸
-            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
-            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
-            { id: 'boss_spirit_beast_1', name: '曼陀羅蛇 (百年)', cpReq: 500, hp: 4000, icon: 'Eye', color: '#10b981', exp: 300, gold: 200, dropRate: 0.2, dropItem: 'r2', stoneDrop: 3, rewardDesc: '300 EXP / 200 G / 百年魂環', desc: '斗羅大陸：帶有毒性的低階魂獸。' },
-            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 8000, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。' },
+            { id: 'boss_slime_green', name: '草綠史萊姆', cpReq: 50, hp: 500, atk: 15, def: 5, icon: 'Cloud', color: '#4ade80', exp: 50, gold: 30, dropRate: 0.1, dropItem: 'w_iron', stoneDrop: 1, rewardDesc: '50 EXP / 30 G / 1 強化石', desc: '在新手村外遊蕩的弱小史萊姆。' },
+            { id: 'boss_wolf', name: '野林灰狼', cpReq: 150, hp: 1500, atk: 40, def: 10, icon: 'Ghost', color: '#9ca3af', exp: 120, gold: 80, dropRate: 0.15, dropItem: 'h_cloth', stoneDrop: 2, rewardDesc: '120 EXP / 80 G / 2 強化石', desc: '森林邊緣的野狼，動作敏捷。' },
+            { id: 'boss_spirit_beast_1', name: '曼陀羅蛇 (百年)', cpReq: 500, hp: 4000, atk: 120, def: 30, icon: 'Eye', color: '#10b981', exp: 300, gold: 200, dropRate: 0.2, dropItem: 'r2', stoneDrop: 3, rewardDesc: '300 EXP / 200 G / 百年魂環', desc: '斗羅大陸：帶有毒性的低階魂獸。' },
+            { id: 'boss_slime', name: '巨型史萊姆王', cpReq: 800, hp: 8000, atk: 200, def: 80, icon: 'Cloud', color: '#60a5fa', exp: 600, gold: 350, dropRate: 0.2, dropItem: 's2', stoneDrop: 5, rewardDesc: '600 EXP / 350 G / 5 強化石', desc: '在平原上稱霸的巨大史萊姆。' },
             
             // 中期域外/魔獸/中階魂獸
-            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。' },
-            { id: 'boss_orc', name: '狂暴獸人酋長', cpReq: 12000, hp: 50000, icon: 'UserPlus', color: '#b45309', exp: 2500, gold: 1500, dropRate: 0.08, dropItem: 'w_steel', stoneDrop: 15, rewardDesc: '2500 EXP / 1500 G / 15 強化石', desc: '統治獸人部落的野蠻酋長，力大無窮。' },
-            { id: 'boss_spirit_beast_2', name: '人面魔蛛 (千年)', cpReq: 18000, hp: 70000, icon: 'Ghost', color: '#7e22ce', exp: 3000, gold: 2000, dropRate: 0.1, dropItem: 'r3', stoneDrop: 18, rewardDesc: '3000 EXP / 2000 G / 千年魂環', desc: '斗羅大陸：極其陰險毒辣的殺戮者。' },
-            { id: 'boss_monster_ape', name: '紫晶翼獅王 (六階)', cpReq: 25000, hp: 90000, icon: 'Flame', color: '#c084fc', exp: 3500, gold: 2500, dropRate: 0.08, dropItem: 'b_purplewings', stoneDrop: 20, rewardDesc: '3500 EXP / 2500 G / 紫雲翼', desc: '斗破蒼穹：魔獸山脈的霸主。' },
+            { id: 'boss_goblin', name: '哥布林國王', cpReq: 5000, hp: 20000, atk: 600, def: 200, icon: 'Crown', color: '#166534', exp: 1200, gold: 800, dropRate: 0.1, dropItem: 's14', stoneDrop: 10, rewardDesc: '1200 EXP / 800 G / 10 強化石', desc: '手持生鏽卻致命巨斧的國王。' },
+            { id: 'boss_orc', name: '狂暴獸人酋長', cpReq: 12000, hp: 50000, atk: 1500, def: 500, icon: 'UserPlus', color: '#b45309', exp: 2500, gold: 1500, dropRate: 0.08, dropItem: 'w_steel', stoneDrop: 15, rewardDesc: '2500 EXP / 1500 G / 15 強化石', desc: '統治獸人部落的野蠻酋長，力大無窮。' },
+            { id: 'boss_spirit_beast_2', name: '人面魔蛛 (千年)', cpReq: 18000, hp: 70000, atk: 2500, def: 800, icon: 'Ghost', color: '#7e22ce', exp: 3000, gold: 2000, dropRate: 0.1, dropItem: 'r3', stoneDrop: 18, rewardDesc: '3000 EXP / 2000 G / 千年魂環', desc: '斗羅大陸：極其陰險毒辣的殺戮者。' },
+            { id: 'boss_monster_ape', name: '紫晶翼獅王 (六階)', cpReq: 25000, hp: 90000, atk: 3500, def: 1200, icon: 'Flame', color: '#c084fc', exp: 3500, gold: 2500, dropRate: 0.08, dropItem: 'b_purplewings', stoneDrop: 20, rewardDesc: '3500 EXP / 2500 G / 紫雲翼', desc: '斗破蒼穹：魔獸山脈的霸主。' },
             
             // 高期巨龍/高階魂獸
-            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, icon: 'Flame', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。' },
-            { id: 'boss_titan_ape', name: '泰坦巨猿 (十萬年)', cpReq: 100000, hp: 350000, icon: 'Shield', color: '#78350f', exp: 10000, gold: 8000, dropRate: 0.03, dropItem: 'r5', stoneDrop: 40, rewardDesc: '1萬 EXP / 8000 G / 十萬年魂環', desc: '斗羅大陸：星斗大森林的王者之一，宛如山岳。' },
-            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。' },
+            { id: 'boss_dragon', name: '深淵魔龍', cpReq: 50000, hp: 150000, atk: 8000, def: 3000, icon: 'Flame', color: '#7e22ce', exp: 5000, gold: 4000, dropRate: 0.05, dropItem: 'a_body_dragon', stoneDrop: 25, rewardDesc: '5000 EXP / 4000 G / 25 強化石', desc: '沉睡於深淵的古老魔龍。' },
+            { id: 'boss_titan_ape', name: '泰坦巨猿 (十萬年)', cpReq: 100000, hp: 350000, atk: 15000, def: 8000, icon: 'Shield', color: '#78350f', exp: 10000, gold: 8000, dropRate: 0.03, dropItem: 'r5', stoneDrop: 40, rewardDesc: '1萬 EXP / 8000 G / 十萬年魂環', desc: '斗羅大陸：星斗大森林的王者之一，宛如山岳。' },
+            { id: 'boss_demon', name: '滅世魔神', cpReq: 150000, hp: 500000, atk: 25000, def: 10000, icon: 'Flame', color: '#ef4444', exp: 15000, gold: 12000, dropRate: 0.02, dropItem: 'e_mystic', stoneDrop: 50, rewardDesc: '1.5萬 EXP / 1.2萬 G / 50 強化石', desc: '企圖毀滅世界的終極存在。' },
             
             // 史詩/傳說級神祇
-            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 王之寶庫', desc: '掌握世間一切財寶的絕對王者。' },
-            { id: 'boss_deep_sea_whale', name: '深海魔鯨王 (近百萬年)', cpReq: 1500000, hp: 5000000, icon: 'Cloud', color: '#0284c7', exp: 100000, gold: 80000, dropRate: 0.015, dropItem: 'r7', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 百萬年魂環', desc: '斗羅大陸：海洋的絕對霸主，距離成神僅一步之遙。' },
-            { id: 'boss_void_dragon', name: '太虛古龍皇', cpReq: 3000000, hp: 10000000, icon: 'Eye', color: '#d8b4fe', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'b_x_dragon', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 始祖龍甲', desc: '斗破蒼穹：魔獸界至尊種族之皇，掌控空間。' },
+            { id: 'boss_gilgamesh', name: '英雄王之影', cpReq: 500000, hp: 2000000, atk: 80000, def: 30000, icon: 'Key', color: '#fbbf24', exp: 50000, gold: 50000, dropRate: 0.01, dropItem: 'w_gate_of_babylon', stoneDrop: 100, rewardDesc: '5萬 EXP / 5萬 G / 王之寶庫', desc: '掌握世間一切財寶的絕對王者。' },
+            { id: 'boss_deep_sea_whale', name: '深海魔鯨王 (近百萬年)', cpReq: 1500000, hp: 5000000, atk: 250000, def: 100000, icon: 'Cloud', color: '#0284c7', exp: 100000, gold: 80000, dropRate: 0.015, dropItem: 'r7', stoneDrop: 200, rewardDesc: '10萬 EXP / 8萬 G / 百萬年魂環', desc: '斗羅大陸：海洋的絕對霸主，距離成神僅一步之遙。' },
+            { id: 'boss_void_dragon', name: '太虛古龍皇', cpReq: 3000000, hp: 10000000, atk: 500000, def: 200000, icon: 'Eye', color: '#d8b4fe', exp: 250000, gold: 150000, dropRate: 0.02, dropItem: 'b_x_dragon', stoneDrop: 400, rewardDesc: '25萬 EXP / 15萬 G / 始祖龍甲', desc: '斗破蒼穹：魔獸界至尊種族之皇，掌控空間。' },
             
             // 小說終極首領 (Mythic)
-            { id: 'boss_di_tian', name: '獸神·帝天', cpReq: 15000000, hp: 60000000, icon: 'Eye', color: '#111827', exp: 1500000, gold: 1000000, dropRate: 0.01, dropItem: 'r9', stoneDrop: 2000, rewardDesc: '150萬 EXP / 100萬 G / 天夢冰蠶環', desc: '斗羅大陸：星斗大森林的最高統治者，金眼黑龍王，修為接近百萬年！' },
-            { id: 'boss_yimo_huang', name: '異魔皇', cpReq: 35000000, hp: 120000000, icon: 'Ghost', color: '#000000', exp: 3500000, gold: 2000000, dropRate: 0.005, dropItem: 'w_tianlin', stoneDrop: 5000, rewardDesc: '350萬 EXP / 200萬 G / 天鱗古戟', desc: '武動乾坤：帶來毀滅的域外邪族之王，必須凝聚位面之胎方可擊敗。' },
-            { id: 'boss_hun_tiandi', name: '魂天帝', cpReq: 80000000, hp: 300000000, icon: 'Flame', color: '#7f1d1d', exp: 8000000, gold: 5000000, dropRate: 0.002, dropItem: 'w_heavens_ruler', stoneDrop: 10000, rewardDesc: '800萬 EXP / 500萬 G / 異火恆古尺', desc: '斗破蒼穹：以中州為鼎，煉化帝丹，晉升斗帝的絕世魔頭！' },
-            { id: 'boss_asura_god', name: '修羅神本尊', cpReq: 200000000, hp: 800000000, icon: 'Sword', color: '#dc2626', exp: 20000000, gold: 15000000, dropRate: 0.001, dropItem: 'r10_god', stoneDrop: 30000, rewardDesc: '2000萬 EXP / 1500萬 G / 神級魂環', desc: '斗羅大陸：神界五大至高神之一，執掌殺戮與審判，不可直視！' }
+            { id: 'boss_di_tian', name: '獸神·帝天', cpReq: 15000000, hp: 60000000, atk: 2500000, def: 1000000, icon: 'Eye', color: '#111827', exp: 1500000, gold: 1000000, dropRate: 0.01, dropItem: 'r9', stoneDrop: 2000, rewardDesc: '150萬 EXP / 100萬 G / 天夢冰蠶環', desc: '斗羅大陸：星斗大森林的最高統治者，金眼黑龍王，修為接近百萬年！' },
+            { id: 'boss_yimo_huang', name: '異魔皇', cpReq: 35000000, hp: 120000000, atk: 6000000, def: 2500000, icon: 'Ghost', color: '#000000', exp: 3500000, gold: 2000000, dropRate: 0.005, dropItem: 'w_tianlin', stoneDrop: 5000, rewardDesc: '350萬 EXP / 200萬 G / 天鱗古戟', desc: '武動乾坤：帶來毀滅的域外邪族之王，必須凝聚位面之胎方可擊敗。' },
+            { id: 'boss_hun_tiandi', name: '魂天帝', cpReq: 80000000, hp: 300000000, atk: 15000000, def: 6000000, icon: 'Flame', color: '#7f1d1d', exp: 8000000, gold: 5000000, dropRate: 0.002, dropItem: 'w_heavens_ruler', stoneDrop: 10000, rewardDesc: '800萬 EXP / 500萬 G / 異火恆古尺', desc: '斗破蒼穹：以中州為鼎，煉化帝丹，晉升斗帝的絕世魔頭！' },
+            { id: 'boss_asura_god', name: '修羅神本尊', cpReq: 200000000, hp: 800000000, atk: 40000000, def: 15000000, icon: 'Sword', color: '#dc2626', exp: 20000000, gold: 15000000, dropRate: 0.001, dropItem: 'r10_god', stoneDrop: 30000, rewardDesc: '2000萬 EXP / 1500萬 G / 神級魂環', desc: '斗羅大陸：神界五大至高神之一，執掌殺戮與審判，不可直視！' }
         ];
-const ACHIEVEMENTS_LIST = [
+
+        const ACHIEVEMENTS_LIST = [
             { id: 'ach_tx_1', icon: 'Scroll', title: '初次行動', desc: '完成第 1 筆記帳', target: 1, type: 'txCount' },
             { id: 'ach_tx_50', icon: 'Book', title: '記帳學徒', desc: '累積 50 筆記帳', target: 50, type: 'txCount' },
             { id: 'ach_tx_100', icon: 'Book', title: '記帳大師', desc: '累積 100 筆記帳', target: 100, type: 'txCount' },
@@ -906,8 +907,7 @@ const ACHIEVEMENTS_LIST = [
             // 修真/神祇 專屬終極天賦
             'godhood': { id: 'godhood', name: '神祇傳承', icon: 'Crown', maxLevel: 1, reqLevel: 120, reqTalent: 'limit_breaker', reqTalentLevel: 1, desc: '凝聚神格，所有屬性暴增 100%，並獲得真神氣息！', cost: 20, tier: 8 }
         };
-
-        const TitleBadge = ({ titleId, className = "" }) => {
+const TitleBadge = ({ titleId, className = "" }) => {
             const titleDef = TITLES_LIST.find(t => t.id === titleId) || TITLES_LIST[0];
             return (
                 <div className={`inline-flex items-center justify-center px-2 py-0.5 rounded border border-theme-border bg-theme-bg shadow-inner ${className}`}>
@@ -1373,7 +1373,7 @@ const ACHIEVEMENTS_LIST = [
                 </div>
             );
         };
-const CategoryManagerModal = ({ categories, onClose, onSave, lang, translations }) => {
+        const CategoryManagerModal = ({ categories, onClose, onSave, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [cats, setCats] = useState(() => { return Object.entries(categories).sort((a,b) => (a[1].order || 0) - (b[1].order || 0)).map(([id, val]) => ({ id, ...val })); });
             const [editingId, setEditingId] = useState(null); const [editLabel, setEditLabel] = useState(''); const [editIcon, setEditIcon] = useState('Star'); const [editColor, setEditColor] = useState('#000000');
@@ -1781,7 +1781,7 @@ const CategoryManagerModal = ({ categories, onClose, onSave, lang, translations 
                 </div>
             );
         };
-const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
+        const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixedExpense, lang, translations, onRenamePet, onNavigate }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const balancesByCurrency = accounts.reduce((acc, curr) => { acc[curr.currency] = (acc[curr.currency] || 0) + curr.balance; return acc; }, {});
             const [isRenamingPet, setIsRenamingPet] = useState(false); const [newPetName, setNewPetName] = useState('');
@@ -2458,13 +2458,18 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                 </div>
             );
         };
-
-        const BossView = ({ cp, user, onBattleEnd, lang, translations }) => {
+const BossView = ({ cp, totalStats, derivedStats, user, equipped, gender, appearance, currentClass, onBattleEnd, lang, translations }) => {
             const t = (key) => translations[lang]?.[key] || key;
             const [selectedBoss, setSelectedBoss] = useState(null);
+            
+            // 戰鬥狀態
             const [isBattling, setIsBattling] = useState(false);
+            const [battleState, setBattleState] = useState(null); // { bossHp, bossMaxHp, playerHp, playerMaxHp, playerMp, playerMaxMp }
+            const [combatLog, setCombatLog] = useState([]);
+            const [playerTurn, setPlayerTurn] = useState(true);
             const [battleResult, setBattleResult] = useState(null); 
             const [rewardModal, setRewardModal] = useState(null); 
+            const [actionEffect, setActionEffect] = useState(null); // 'playerHit', 'bossHit', 'heal'
             
             const safeUser = user || {};
             const bossAttempts = safeUser.bossAttempts || { date: '', count: 0 };
@@ -2472,42 +2477,255 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
             const attempts = bossAttempts.date === todayStr ? (bossAttempts.count || 0) : 0;
             const remaining = Math.max(0, 5 - attempts);
             const currentCp = cp || 0;
-            
-            const handleFight = (boss) => {
+            const classDef = CLASS_DEFINITIONS[currentClass || 'novice'] || CLASS_DEFINITIONS['novice'];
+
+            const addCombatLog = (msg, type = 'normal') => {
+                setCombatLog(prev => [...prev, { id: Date.now() + Math.random(), msg, type }]);
+            };
+
+            const handleFightClick = (boss) => {
                 if (remaining <= 0) return;
                 setSelectedBoss(boss);
+                
+                // 初始化戰鬥數值
+                const maxHp = Math.max(100, Math.floor(derivedStats.hp));
+                const maxMp = Math.max(50, Math.floor(derivedStats.mp));
+                
+                setBattleState({
+                    bossHp: boss.hp,
+                    bossMaxHp: boss.hp,
+                    playerHp: maxHp,
+                    playerMaxHp: maxHp,
+                    playerMp: maxMp,
+                    playerMaxMp: maxMp
+                });
+                
+                setCombatLog([{ id: Date.now(), msg: `遭遇 ${boss.name}！戰鬥開始！`, type: 'system' }]);
+                setPlayerTurn(true);
                 setIsBattling(true);
                 setBattleResult(null);
                 setRewardModal(null);
-                
+            };
+
+            const endBattle = (isWin) => {
                 setTimeout(() => {
-                    const winChance = Math.min(0.95, Math.max(0.01, (currentCp / boss.cpReq) * 0.5));
-                    const isWin = Math.random() < winChance;
-                    
                     setIsBattling(false);
                     setBattleResult(isWin ? 'win' : 'lose');
                     
                     let droppedItem = null;
                     const luckTalent = safeUser.talents?.luck_up || 0;
-                    const finalDropRate = boss.dropRate * (1 + luckTalent * 0.02);
+                    const finalDropRate = selectedBoss.dropRate * (1 + luckTalent * 0.02);
 
-                    if (isWin && boss.dropItem && Math.random() < finalDropRate) {
-                        droppedItem = SHOP_ITEMS.find(i => i.id === boss.dropItem);
+                    if (isWin && selectedBoss.dropItem && Math.random() < finalDropRate) {
+                        droppedItem = SHOP_ITEMS.find(i => i.id === selectedBoss.dropItem);
                     }
                     
                     setTimeout(() => {
                         if (isWin) { 
                             setRewardModal({ 
-                                exp: boss.exp, 
-                                gold: Math.floor(boss.gold * (1 + (safeUser.talents?.gold_bonus || 0) * 0.05)), 
-                                stones: boss.stoneDrop || 0,
+                                exp: selectedBoss.exp, 
+                                gold: Math.floor(selectedBoss.gold * (1 + (safeUser.talents?.gold_bonus || 0) * 0.05)), 
+                                stones: selectedBoss.stoneDrop || 0,
                                 item: droppedItem 
                             }); 
                         }
-                        onBattleEnd({ isWin, boss, droppedItem });
+                        onBattleEnd({ isWin, boss: selectedBoss, droppedItem });
                     }, 1000);
-                }, 2500); 
+                }, 1500);
             };
+
+            const executePlayerAction = (actionType) => {
+                if (!playerTurn || !battleState || battleState.playerHp <= 0 || battleState.bossHp <= 0) return;
+
+                let dmg = 0;
+                let heal = 0;
+                let mpCost = 0;
+                let logMsg = '';
+                let logType = 'player';
+                let isCrit = false;
+
+                const baseAtk = Math.max(derivedStats.atk, derivedStats.matk);
+                const critChance = derivedStats.cri || 5;
+
+                if (actionType === 'attack') {
+                    isCrit = (Math.random() * 100) < critChance;
+                    dmg = Math.floor(baseAtk * (isCrit ? 1.5 : 1) * (0.8 + Math.random() * 0.4));
+                    dmg = Math.max(1, dmg - (selectedBoss.def || 0) * 0.5); // 扣除王的一半防禦
+                    logMsg = `你發動攻擊！${isCrit ? '【會心一擊！】' : ''} 造成 ${Math.floor(dmg)} 點傷害。`;
+                } else if (actionType === 'heal') {
+                    mpCost = 20;
+                    if (battleState.playerMp < mpCost) {
+                        addCombatLog('靈氣不足，無法吐納！', 'error');
+                        return;
+                    }
+                    heal = Math.floor(battleState.playerMaxHp * 0.3 + totalStats.int * 2);
+                    logMsg = `你運轉周天吐納，消耗 ${mpCost} 靈氣，恢復了 ${heal} 點生命。`;
+                    logType = 'heal';
+                    setActionEffect('heal');
+                } else if (actionType === 'ultimate') {
+                    mpCost = 50;
+                    if (battleState.playerMp < mpCost) {
+                        addCombatLog('靈氣不足，無法施展絕技！', 'error');
+                        return;
+                    }
+                    dmg = Math.floor(baseAtk * 3.5 * (0.9 + Math.random() * 0.2)); // 無視防禦高傷
+                    logMsg = `【終極奧義！】你燃燒 ${mpCost} 靈氣施展絕技，爆發出 ${Math.floor(dmg)} 點真實傷害！`;
+                    logType = 'crit';
+                }
+
+                // 更新玩家數值與王血量
+                const newBossHp = Math.max(0, battleState.bossHp - dmg);
+                const newPlayerHp = Math.min(battleState.playerMaxHp, battleState.playerHp + heal);
+                const newPlayerMp = battleState.playerMp - mpCost;
+
+                setBattleState(prev => ({ ...prev, bossHp: newBossHp, playerHp: newPlayerHp, playerMp: newPlayerMp }));
+                addCombatLog(logMsg, logType);
+
+                if (dmg > 0) {
+                    setActionEffect('bossHit');
+                    setTimeout(() => setActionEffect(null), 300);
+                } else if (heal > 0) {
+                    setTimeout(() => setActionEffect(null), 300);
+                }
+
+                setPlayerTurn(false);
+
+                // 檢查王是否死亡
+                if (newBossHp <= 0) {
+                    addCombatLog(`${selectedBoss.name} 被擊敗了！`, 'system');
+                    endBattle(true);
+                    return;
+                }
+
+                // 觸發 Boss 回合
+                setTimeout(() => executeBossTurn(newBossHp, newPlayerHp, newPlayerMp), 1000);
+            };
+
+            const executeBossTurn = (currentBossHp, currentPlayerHp, currentPlayerMp) => {
+                if (currentBossHp <= 0) return;
+
+                const isHeavy = Math.random() < 0.3; // 30% 機率重擊
+                const bossBaseAtk = selectedBoss.atk || 50;
+                
+                let dmg = Math.floor(bossBaseAtk * (isHeavy ? 2 : 1) * (0.8 + Math.random() * 0.4));
+                dmg = Math.max(1, dmg - (derivedStats.def || 0)); // 扣除玩家防禦
+
+                const logMsg = `${selectedBoss.name} 發動了${isHeavy ? '【致命猛擊】' : '攻擊'}！對你造成 ${Math.floor(dmg)} 點傷害。`;
+                
+                const newPlayerHp = Math.max(0, currentPlayerHp - dmg);
+                
+                setBattleState(prev => ({ ...prev, playerHp: newPlayerHp }));
+                addCombatLog(logMsg, 'boss');
+                setActionEffect('playerHit');
+                setTimeout(() => setActionEffect(null), 300);
+
+                if (newPlayerHp <= 0) {
+                    addCombatLog('你重傷倒地，無力再戰...', 'error');
+                    endBattle(false);
+                } else {
+                    // 回復少量 MP (每回合自然恢復)
+                    const mpRegen = Math.floor(battleState.playerMaxMp * 0.05);
+                    setBattleState(prev => ({ ...prev, playerMp: Math.min(prev.playerMaxMp, prev.playerMp + mpRegen) }));
+                    setTimeout(() => setPlayerTurn(true), 500);
+                }
+            };
+
+            // 戰鬥畫面 UI
+            if (isBattling && selectedBoss && battleState) {
+                const bossHpPercent = (battleState.bossHp / battleState.bossMaxHp) * 100;
+                const playerHpPercent = (battleState.playerHp / battleState.playerMaxHp) * 100;
+                const playerMpPercent = (battleState.playerMp / battleState.playerMaxMp) * 100;
+
+                return (
+                    <div className="fixed inset-0 z-[100] flex flex-col bg-gray-900 text-white font-pixel animate-[fadeIn_0.3s]">
+                        {/* Top: Boss Area */}
+                        <div className={`relative flex-1 flex flex-col items-center justify-center p-6 transition-all ${actionEffect === 'bossHit' ? 'bg-red-900/40 animate-shake' : 'bg-gradient-to-b from-gray-900 to-gray-800'}`}>
+                            <div className="absolute top-8 w-full max-w-md px-6">
+                                <div className="flex justify-between items-end mb-1">
+                                    <span className="font-bold text-red-400 drop-shadow">{selectedBoss.name}</span>
+                                    <span className="text-xs font-mono">{Math.floor(battleState.bossHp)} / {battleState.bossMaxHp}</span>
+                                </div>
+                                <div className="w-full h-4 bg-gray-800 rounded-full overflow-hidden border-2 border-gray-700 shadow-inner">
+                                    <div className="h-full bg-red-600 transition-all duration-300" style={{width: `${bossHpPercent}%`}}></div>
+                                </div>
+                            </div>
+                            <div className="w-40 h-40 rounded-full flex items-center justify-center border-4 relative" style={{borderColor: selectedBoss.color, backgroundColor: `${selectedBoss.color}20`}}>
+                                <Icon name={selectedBoss.icon} size={80} color={selectedBoss.color} className={`drop-shadow-[0_0_15px_${selectedBoss.color}] animate-float ${actionEffect === 'bossHit' ? 'animate-hit-flash' : ''}`}/>
+                            </div>
+                        </div>
+
+                        {/* Middle: Combat Log */}
+                        <div className="h-40 bg-gray-950 border-y-4 border-gray-800 p-3 overflow-y-auto flex flex-col-reverse custom-scrollbar shadow-inner text-sm">
+                            <div className="flex flex-col gap-1">
+                                {combatLog.map((log) => (
+                                    <div key={log.id} className={`animate-[slideUp_0.2s] ${log.type === 'system' ? 'text-yellow-400 text-center font-bold my-1' : log.type === 'player' ? 'text-blue-300' : log.type === 'boss' ? 'text-red-400' : log.type === 'heal' ? 'text-green-400' : log.type === 'crit' ? 'text-purple-400 font-bold' : 'text-gray-400'}`}>
+                                        {log.msg}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Bottom: Player Area */}
+                        <div className={`relative shrink-0 flex flex-col p-6 transition-all ${actionEffect === 'playerHit' ? 'bg-red-900/30 animate-shake' : actionEffect === 'heal' ? 'bg-green-900/20' : 'bg-gray-800'}`}>
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="w-16 h-16 bg-gray-700 border-2 border-gray-600 rounded-xl overflow-hidden shrink-0 flex items-end justify-center shadow-lg relative">
+                                    <div className="transform scale-150 translate-y-2">
+                                        <PixelAvatar gender={gender} colors={appearance} equipped={equipped} auraEffect={classDef.aura} className="w-16 h-16" level={safeUser.level}/>
+                                    </div>
+                                    {actionEffect === 'playerHit' && <div className="absolute inset-0 bg-red-500/30 animate-pulse mix-blend-overlay"></div>}
+                                </div>
+                                <div className="flex-1">
+                                    <div className="font-bold mb-1">{safeUser.name}</div>
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] w-6 text-green-400 font-bold">HP</span>
+                                            <div className="flex-1 h-3 bg-gray-900 rounded-full overflow-hidden border border-gray-700">
+                                                <div className="h-full bg-green-500 transition-all duration-300" style={{width: `${playerHpPercent}%`}}></div>
+                                            </div>
+                                            <span className="text-[10px] w-16 text-right font-mono">{Math.floor(battleState.playerHp)}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] w-6 text-blue-400 font-bold">MP</span>
+                                            <div className="flex-1 h-3 bg-gray-900 rounded-full overflow-hidden border border-gray-700">
+                                                <div className="h-full bg-blue-500 transition-all duration-300" style={{width: `${playerMpPercent}%`}}></div>
+                                            </div>
+                                            <span className="text-[10px] w-16 text-right font-mono">{Math.floor(battleState.playerMp)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-3 pb-safe">
+                                <button 
+                                    onClick={() => executePlayerAction('attack')} 
+                                    disabled={!playerTurn}
+                                    className={`py-3 rounded-xl font-bold flex flex-col items-center justify-center gap-1 transition-all border-b-4 shadow-lg ${playerTurn ? 'bg-red-600 border-red-800 text-white active:translate-y-1 active:border-b-0 hover:bg-red-500' : 'bg-gray-700 border-gray-900 text-gray-500 cursor-not-allowed'}`}
+                                >
+                                    <Icon name="Sword" size={18}/>
+                                    <span className="text-xs">攻擊</span>
+                                </button>
+                                <button 
+                                    onClick={() => executePlayerAction('heal')} 
+                                    disabled={!playerTurn || battleState.playerMp < 20}
+                                    className={`py-3 rounded-xl font-bold flex flex-col items-center justify-center gap-1 transition-all border-b-4 shadow-lg ${(playerTurn && battleState.playerMp >= 20) ? 'bg-green-600 border-green-800 text-white active:translate-y-1 active:border-b-0 hover:bg-green-500' : 'bg-gray-700 border-gray-900 text-gray-500 cursor-not-allowed'}`}
+                                >
+                                    <Icon name="Heart" size={18}/>
+                                    <span className="text-xs">吐納 (-20)</span>
+                                </button>
+                                <button 
+                                    onClick={() => executePlayerAction('ultimate')} 
+                                    disabled={!playerTurn || battleState.playerMp < 50}
+                                    className={`py-3 rounded-xl font-bold flex flex-col items-center justify-center gap-1 transition-all border-b-4 shadow-lg ${(playerTurn && battleState.playerMp >= 50) ? 'bg-purple-600 border-purple-800 text-white active:translate-y-1 active:border-b-0 hover:bg-purple-500 relative overflow-hidden' : 'bg-gray-700 border-gray-900 text-gray-500 cursor-not-allowed'}`}
+                                >
+                                    {playerTurn && battleState.playerMp >= 50 && <div className="absolute inset-0 bg-white/20 animate-shimmer"></div>}
+                                    <Icon name="Zap" size={18}/>
+                                    <span className="text-xs">絕技 (-50)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="animate-[fadeIn_0.5s] space-y-4 p-4 pb-24 h-full overflow-y-auto bg-theme-bg relative smooth-scroll">
@@ -2545,7 +2763,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                                         </div>
                                     </div>
                                     <button 
-                                        onClick={() => handleFight(boss)}
+                                        onClick={() => handleFightClick(boss)}
                                         disabled={!canFight}
                                         className={`relative z-10 w-14 h-14 rounded-full flex flex-col items-center justify-center font-bold text-white shadow-lg transition-transform border-b-4 ${canFight ? (isRecommended ? 'bg-theme-accent border-black/30 hover:brightness-110 active:scale-95' : 'bg-red-500 border-red-800 active:scale-95') : 'bg-gray-400 border-gray-600 cursor-not-allowed'}`}
                                     >
@@ -2556,19 +2774,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                             );
                         })}
                     </div>
-
-                    {isBattling && selectedBoss && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
-                            <div className="text-center animate-pulse">
-                                <div className="w-32 h-32 mx-auto bg-red-900/30 rounded-full flex items-center justify-center border-4 border-red-500 animate-shake shadow-[0_0_30px_rgba(239,68,68,0.5)] relative overflow-hidden">
-                                    <Icon name="Sword" size={64} className="text-red-500 drop-shadow-[0_0_10px_rgba(255,0,0,1)]"/>
-                                    <div className="absolute inset-0 bg-white/20 animate-ping"></div>
-                                </div>
-                                <h2 className="text-2xl font-bold text-white mt-6 font-pixel tracking-widest">{t('battling')}</h2>
-                                <p className="text-red-300 text-sm mt-2">VS {selectedBoss.name}</p>
-                            </div>
-                        </div>
-                    )}
 
                     {battleResult && !rewardModal && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s]" onClick={() => setBattleResult(null)}>
@@ -2843,7 +3048,6 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
             const [authUser, setAuthUser] = useState(null);
             const [authLoading, setAuthLoading] = useState(true);
 
-            // 輔助全局日誌
             const addLog = (type, msg, currentLogs) => { 
                 const newLog = { id: Date.now(), date: new Date().toISOString(), type, msg }; 
                 return [newLog, ...currentLogs].slice(0, 50); 
@@ -3519,7 +3723,7 @@ const HomeView = ({ user, equipped, accounts, onOpenAdd, onOpenAsset, onOpenFixe
                         {view === 'forge' && <ForgeView user={safeData.user} inventory={safeData.inventory} onEnhance={handleEnhanceItem} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'talent' && <TalentView user={safeData.user} onUpgradeTalent={handleUpgradeTalent} onResetTalent={handleResetTalent} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'character' && <CharacterView level={safeData.user.level} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} currentClass={safeData.user.currentClass} onToggleGender={() => setData(prev => ({ ...prev, user: { ...prev.user, gender: prev.user.gender === 'male' ? 'female' : 'male' } }))} onUpdateAppearance={(newApp) => setData(prev => ({ ...prev, user: { ...prev.user, appearance: newApp } }))} onEquipSlot={(slot) => { setSelectedSlot(slot); setEquipModalOpen(true); }} onOpenClassSelector={() => setShowClassSelector(true)} lang={lang} translations={TRANSLATIONS} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} cp={calculatedStats.cp} />}
-                        {view === 'boss' && <BossView cp={calculatedStats.cp} onBattleEnd={handleBossBattleEnd} user={safeData.user} lang={lang} translations={TRANSLATIONS} />}
+                        {view === 'boss' && <BossView cp={calculatedStats.cp} totalStats={calculatedStats.totalStats} derivedStats={calculatedStats.derivedStats} user={safeData.user} equipped={safeData.equipped} gender={safeData.user.gender} appearance={safeData.user.appearance} currentClass={safeData.user.currentClass} onBattleEnd={handleBossBattleEnd} lang={lang} translations={TRANSLATIONS} />}
                         {view === 'journal' && <JournalView logs={safeData.logs} transactions={safeData.transactions} categories={safeData.categories} accounts={safeData.accounts} lang={lang} translations={TRANSLATIONS} onEditTx={(tx) => { setEditingTx(tx); setShowAddModal(true); }} onDeleteTx={handleDeleteTransaction} />}
                         {view === 'quests' && <QuestView activeQuests={activeQuests} onClaim={handleClaimQuest} lang={lang} translations={TRANSLATIONS} mainCurrency={mainCurrency} />}
                         {view === 'achievements' && <AchievementView achievements={ACHIEVEMENTS_LIST} unlockedIds={safeData.user.unlockedAchievements} currentStats={currentStats} lang={lang} translations={TRANSLATIONS} />}
